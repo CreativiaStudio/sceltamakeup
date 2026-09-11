@@ -1,0 +1,2361 @@
+[
+  {
+    "code": "DHC110160",
+    "desc": "SUN SHAMPOO doccia-shampoo dopo sol",
+    "ean": "8017834888836",
+    "qty": 2,
+    "page": 1
+  },
+  {
+    "code": "DHC120160",
+    "desc": "SUN MASK maschera dopo sole riparat",
+    "ean": "8017834888843",
+    "qty": 2,
+    "page": 1
+  },
+  {
+    "code": "DHC120161",
+    "desc": "SUN OIL olio spray protettivo illum",
+    "ean": "8017834888850",
+    "qty": 2,
+    "page": 1
+  },
+  {
+    "code": "MF101001F",
+    "desc": "Correttore in stick 01 - 3,5 ml",
+    "ean": "8023264489871",
+    "qty": 1,
+    "page": 1
+  },
+  {
+    "code": "MF101002F",
+    "desc": "Correttore in stick 02 - 3,5 ml",
+    "ean": "8023264489895",
+    "qty": 1,
+    "page": 1
+  },
+  {
+    "code": "MF101003F",
+    "desc": "Correttore in stick 03 - 3,5 ml",
+    "ean": "8023264489901",
+    "qty": 1,
+    "page": 1
+  },
+  {
+    "code": "MF101011",
+    "desc": "Correttore HD effetto lifting 11 -",
+    "ean": "8023264504000",
+    "qty": 1,
+    "page": 1
+  },
+  {
+    "code": "MF101012",
+    "desc": "Correttore HD effetto lifting 12 -",
+    "ean": "8023264504017",
+    "qty": 1,
+    "page": 1
+  },
+  {
+    "code": "MF101013",
+    "desc": "Correttore HD effetto lifting 13 -",
+    "ean": "8023264504024",
+    "qty": 1,
+    "page": 1
+  },
+  {
+    "code": "MF101014",
+    "desc": "Correttore HD effetto lifting 14 -",
+    "ean": "8023264504031",
+    "qty": 1,
+    "page": 1
+  },
+  {
+    "code": "MF101021",
+    "desc": "MESOFILL CONCEALER 21",
+    "ean": "8023264528532",
+    "qty": 3,
+    "page": 1
+  },
+  {
+    "code": "MF101022",
+    "desc": "MESOFILL CONCEALER 22",
+    "ean": "8023264528556",
+    "qty": 3,
+    "page": 1
+  },
+  {
+    "code": "MF101023",
+    "desc": "MESOFILL CONCEALER 23",
+    "ean": "8023264528563",
+    "qty": 3,
+    "page": 1
+  },
+  {
+    "code": "MF101024",
+    "desc": "MESOFILL CONCEALER 24",
+    "ean": "8023264528570",
+    "qty": 3,
+    "page": 2
+  },
+  {
+    "code": "MF101111",
+    "desc": "Fondotinta camouflage a lunga tenut",
+    "ean": "8023264485453",
+    "qty": 1,
+    "page": 2
+  },
+  {
+    "code": "MF101112",
+    "desc": "Fondotinta camouflage a lunga tenut",
+    "ean": "8023264485460",
+    "qty": 1,
+    "page": 2
+  },
+  {
+    "code": "MF101113",
+    "desc": "Fondotinta camouflage a lunga tenut",
+    "ean": "8023264485477",
+    "qty": 1,
+    "page": 2
+  },
+  {
+    "code": "MF101114",
+    "desc": "Fondotinta camouflage a lunga tenut",
+    "ean": "8023264485484",
+    "qty": 1,
+    "page": 2
+  },
+  {
+    "code": "MF101115",
+    "desc": "Fondotinta camouflage a lunga tenut",
+    "ean": "8023264487679",
+    "qty": 1,
+    "page": 2
+  },
+  {
+    "code": "MF101131",
+    "desc": "Fondotinta leggero illuminante 31 -",
+    "ean": "8023264485538",
+    "qty": 1,
+    "page": 2
+  },
+  {
+    "code": "MF101132",
+    "desc": "Fondotinta leggero illuminante 32 -",
+    "ean": "8023264485545",
+    "qty": 1,
+    "page": 2
+  },
+  {
+    "code": "MF101133",
+    "desc": "Fondotinta leggero illuminante 33 -",
+    "ean": "8023264485552",
+    "qty": 1,
+    "page": 2
+  },
+  {
+    "code": "MF101163",
+    "desc": "Fondotinta HD effetto lifting 63 -",
+    "ean": "8023264499764",
+    "qty": 1,
+    "page": 2
+  },
+  {
+    "code": "MF101164",
+    "desc": "Fondotinta HD effetto lifting 64 -",
+    "ean": "8023264499771",
+    "qty": 1,
+    "page": 2
+  },
+  {
+    "code": "MF101165",
+    "desc": "Fondotinta HD effetto lifting 65 -",
+    "ean": "8023264499788",
+    "qty": 1,
+    "page": 2
+  },
+  {
+    "code": "MF101166",
+    "desc": "Fondotinta HD effetto lifting 66 -",
+    "ean": "8023264499795",
+    "qty": 1,
+    "page": 2
+  },
+  {
+    "code": "MF101181",
+    "desc": "HYDRA BOOSTER FOUNDATION fondotinta",
+    "ean": "8023264509142",
+    "qty": 1,
+    "page": 2
+  },
+  {
+    "code": "MF101182",
+    "desc": "HYDRA BOOSTER FOUNDATION fondotinta",
+    "ean": "8023264509395",
+    "qty": 1,
+    "page": 2
+  },
+  {
+    "code": "MF101182A",
+    "desc": "HYDRA BOOSTER FOUNDATION fondotinta",
+    "ean": "8023264531150",
+    "qty": 2,
+    "page": 3
+  },
+  {
+    "code": "MF101183",
+    "desc": "HYDRA BOOSTER FOUNDATION fondotinta",
+    "ean": "8023264509401",
+    "qty": 2,
+    "page": 3
+  },
+  {
+    "code": "MF101184",
+    "desc": "HYDRA BOOSTER FOUNDATION fondotinta",
+    "ean": "8023264509418",
+    "qty": 2,
+    "page": 3
+  },
+  {
+    "code": "MF101185",
+    "desc": "HYDRA BOOSTER FOUNDATION fondotinta",
+    "ean": "8023264509425",
+    "qty": 1,
+    "page": 3
+  },
+  {
+    "code": "MF101186",
+    "desc": "HYDRA BOOSTER FOUNDATION fondotinta",
+    "ean": "8023264509432",
+    "qty": 1,
+    "page": 3
+  },
+  {
+    "code": "MF101191",
+    "desc": "MESOFILL FOUNDATION PLUMP&FILL 91",
+    "ean": "8023264528617",
+    "qty": 3,
+    "page": 3
+  },
+  {
+    "code": "MF101192",
+    "desc": "MESOFILL FOUNDATION PLUMP&FILL 92",
+    "ean": "8023264528631",
+    "qty": 3,
+    "page": 3
+  },
+  {
+    "code": "MF101194",
+    "desc": "MESOFILL FOUNDATION PLUMP&FILL 94",
+    "ean": "8023264528655",
+    "qty": 3,
+    "page": 3
+  },
+  {
+    "code": "MF101195",
+    "desc": "MESOFILL FOUNDATION PLUMP&FILL 95",
+    "ean": "8023264528662",
+    "qty": 3,
+    "page": 3
+  },
+  {
+    "code": "MF101196",
+    "desc": "MESOFILL FOUNDATION PLUMP&FILL 96",
+    "ean": "8023264528679",
+    "qty": 3,
+    "page": 3
+  },
+  {
+    "code": "MF102001F",
+    "desc": "Cipria libera alta definizione 01 -",
+    "ean": "8023264490136",
+    "qty": 3,
+    "page": 3
+  },
+  {
+    "code": "MF102011",
+    "desc": "SMOOTH PERFECTION cipria compatta s",
+    "ean": "8023264509616",
+    "qty": 1,
+    "page": 3
+  },
+  {
+    "code": "MF102012",
+    "desc": "SMOOTH PERFECTION cipria compatta s",
+    "ean": "8023264509623",
+    "qty": 1,
+    "page": 3
+  },
+  {
+    "code": "MF102013",
+    "desc": "SMOOTH PERFECTION cipria compatta s",
+    "ean": "8023264509630",
+    "qty": 1,
+    "page": 3
+  },
+  {
+    "code": "MF103112",
+    "desc": "Polvere per guance 112 - 5 g",
+    "ean": "8023264511732",
+    "qty": 1,
+    "page": 3
+  },
+  {
+    "code": "MF103113",
+    "desc": "Polvere per guance 113 - 5 g",
+    "ean": "8023264511749",
+    "qty": 1,
+    "page": 4
+  },
+  {
+    "code": "MF103115",
+    "desc": "Polvere per guance 115 - 5 g",
+    "ean": "8023264511763",
+    "qty": 1,
+    "page": 4
+  },
+  {
+    "code": "MF103116",
+    "desc": "Polvere per guance 116 - 5 g",
+    "ean": "8023264511770",
+    "qty": 1,
+    "page": 4
+  },
+  {
+    "code": "MF104011",
+    "desc": "Terra abbronzante 11 - 9 g",
+    "ean": "8023264486085",
+    "qty": 2,
+    "page": 4
+  },
+  {
+    "code": "MF104012",
+    "desc": "Terra abbronzante 12 - 9 g",
+    "ean": "8023264486092",
+    "qty": 2,
+    "page": 4
+  },
+  {
+    "code": "MF104013",
+    "desc": "Terra abbronzante 13 - 9 g",
+    "ean": "8023264486108",
+    "qty": 2,
+    "page": 4
+  },
+  {
+    "code": "MF105011",
+    "desc": "Matita occhi 11 - 1,5 g",
+    "ean": "8023264486184",
+    "qty": 3,
+    "page": 4
+  },
+  {
+    "code": "MF105012",
+    "desc": "Matita occhi 12 - 1,5 g",
+    "ean": "8023264486191",
+    "qty": 3,
+    "page": 4
+  },
+  {
+    "code": "MF105014",
+    "desc": "Matita occhi 14 - 1,5 g",
+    "ean": "8023264506790",
+    "qty": 1,
+    "page": 4
+  },
+  {
+    "code": "MF105050R",
+    "desc": "MATITA OCCHI WATER RESISTANT lunga",
+    "ean": "8023264501269",
+    "qty": 3,
+    "page": 4
+  },
+  {
+    "code": "MF105051R",
+    "desc": "MATITA OCCHI WATER RESISTANT lunga",
+    "ean": "8023264089965",
+    "qty": 3,
+    "page": 4
+  },
+  {
+    "code": "MF105052",
+    "desc": "MATITA OCCHI WATER RESISTANT lunga",
+    "ean": "8023264528440",
+    "qty": 2,
+    "page": 4
+  },
+  {
+    "code": "MF105053",
+    "desc": "MATITA OCCHI WATER RESISTANT lunga",
+    "ean": "8023264528464",
+    "qty": 2,
+    "page": 4
+  },
+  {
+    "code": "MF105054R",
+    "desc": "MATITA OCCHI WATER RESISTANT lunga",
+    "ean": "8023264528471",
+    "qty": 2,
+    "page": 4
+  },
+  {
+    "code": "MF106001",
+    "desc": "Matita sopracciglia 01 - 1,2 g",
+    "ean": "8023264486283",
+    "qty": 2,
+    "page": 4
+  },
+  {
+    "code": "MF106002",
+    "desc": "Matita sopracciglia 02 - 1,2 g",
+    "ean": "8023264486290",
+    "qty": 2,
+    "page": 5
+  },
+  {
+    "code": "MF106021",
+    "desc": "EYEBROW CREAM delineatore sopraccig",
+    "ean": "8023264499979",
+    "qty": 1,
+    "page": 5
+  },
+  {
+    "code": "MF106031",
+    "desc": "Matita sopracciglia alta precisione",
+    "ean": "8023264500460",
+    "qty": 2,
+    "page": 5
+  },
+  {
+    "code": "MF106032",
+    "desc": "Matita sopracciglia alta precisione",
+    "ean": "8023264500477",
+    "qty": 2,
+    "page": 5
+  },
+  {
+    "code": "MF107001N",
+    "desc": "KAJAL MAKE UP RVB 01 2024",
+    "ean": "8023264527207",
+    "qty": 2,
+    "page": 5
+  },
+  {
+    "code": "MF107002N",
+    "desc": "KAJAL MARRONE 02 2024",
+    "ean": "8023264527221",
+    "qty": 2,
+    "page": 5
+  },
+  {
+    "code": "MF108011",
+    "desc": "Delineatore occhi resistente all'ac",
+    "ean": "8023264087923",
+    "qty": 1,
+    "page": 5
+  },
+  {
+    "code": "MF109011",
+    "desc": "Ombretto perlato 11 - 2 g",
+    "ean": "8023264517772",
+    "qty": 1,
+    "page": 5
+  },
+  {
+    "code": "MF109012",
+    "desc": "Ombretto perlato 12 - 2 g",
+    "ean": "8023264517796",
+    "qty": 1,
+    "page": 5
+  },
+  {
+    "code": "MF109013",
+    "desc": "Ombretto perlato 13 - 2 g",
+    "ean": "8023264517802",
+    "qty": 1,
+    "page": 5
+  },
+  {
+    "code": "MF109014",
+    "desc": "Ombretto satinato 14 - 2 g",
+    "ean": "8023264517819",
+    "qty": 1,
+    "page": 5
+  },
+  {
+    "code": "MF109015",
+    "desc": "Ombretto satino 15 - 2 g",
+    "ean": "8023264517826",
+    "qty": 1,
+    "page": 5
+  },
+  {
+    "code": "MF109016",
+    "desc": "Ombretto perlato 16 - 2 g",
+    "ean": "8023264517833",
+    "qty": 1,
+    "page": 5
+  },
+  {
+    "code": "MF109017",
+    "desc": "Ombretto opaco 17 - 2 g",
+    "ean": "8023264517840",
+    "qty": 1,
+    "page": 5
+  },
+  {
+    "code": "MF109018",
+    "desc": "Ombretto opaco 18 - 2 g",
+    "ean": "8023264517857",
+    "qty": 1,
+    "page": 5
+  },
+  {
+    "code": "MF109019",
+    "desc": "Ombretto opaco 19 - 2 g",
+    "ean": "8023264517864",
+    "qty": 1,
+    "page": 6
+  },
+  {
+    "code": "MF109020",
+    "desc": "Ombretto opaco 20 - 2 g",
+    "ean": "8023264517871",
+    "qty": 1,
+    "page": 6
+  },
+  {
+    "code": "MF110011",
+    "desc": "MASCARA VOLUME MAKE UP RVBLAB",
+    "ean": "8023264486535",
+    "qty": 2,
+    "page": 6
+  },
+  {
+    "code": "MF110021",
+    "desc": "Mascara ciglia finte 21 - 8 ml",
+    "ean": "8023264486559",
+    "qty": 2,
+    "page": 6
+  },
+  {
+    "code": "MF110041",
+    "desc": "AQUABOMB mascara waterproof extra v",
+    "ean": "8023264087909",
+    "qty": 2,
+    "page": 6
+  },
+  {
+    "code": "MF110051",
+    "desc": "MORE & MORE mascara volume XXL 51 -",
+    "ean": "8023264513231",
+    "qty": 3,
+    "page": 6
+  },
+  {
+    "code": "MF110061",
+    "desc": "GIVE ME MORE mascara volume panoram",
+    "ean": "8023264525449",
+    "qty": 3,
+    "page": 6
+  },
+  {
+    "code": "MF120061",
+    "desc": "MORE THAN THIS kajal eyeliner ombre",
+    "ean": "8023264514153",
+    "qty": 2,
+    "page": 6
+  },
+  {
+    "code": "MF120062",
+    "desc": "MORE THAN THIS kajal eyeliner ombre",
+    "ean": "8023264514160",
+    "qty": 2,
+    "page": 6
+  },
+  {
+    "code": "MF120063",
+    "desc": "MORE THAN THIS kajal eyeliner ombre",
+    "ean": "8023264514177",
+    "qty": 2,
+    "page": 6
+  },
+  {
+    "code": "MF120064",
+    "desc": "MORE THAN THIS kajal eyeliner ombre",
+    "ean": "8023264514184",
+    "qty": 2,
+    "page": 6
+  },
+  {
+    "code": "MF120065",
+    "desc": "MORE THAN THIS kajal eyeliner ombre",
+    "ean": "8023264517970",
+    "qty": 1,
+    "page": 6
+  },
+  {
+    "code": "MF120066",
+    "desc": "MORE THAN THIS kajal eyeliner ombre",
+    "ean": "8023264517987",
+    "qty": 1,
+    "page": 6
+  },
+  {
+    "code": "MF120067",
+    "desc": "MORE THAN THIS kajal eyeliner ombre",
+    "ean": "8023264517994",
+    "qty": 1,
+    "page": 6
+  },
+  {
+    "code": "MF120068",
+    "desc": "MORE THAN THIS kajal eyeliner ombre",
+    "ean": "8023264518007",
+    "qty": 1,
+    "page": 6
+  },
+  {
+    "code": "MF121031",
+    "desc": "MATT & VELVET rossetto opaco 31 - 3",
+    "ean": "8023264087565",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121032",
+    "desc": "MATT & VELVET rossetto opaco 32 - 3",
+    "ean": "8023264087572",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121033",
+    "desc": "MATT & VELVET rossetto opaco 33 - 3",
+    "ean": "8023264087589",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121034",
+    "desc": "MATT & VELVET rossetto opaco 34 - 3",
+    "ean": "8023264087596",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121035",
+    "desc": "MATT & VELVET rossetto opaco 35 - 3",
+    "ean": "8023264087602",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121036",
+    "desc": "MATT & VELVET rossetto opaco 36 - 3",
+    "ean": "8023264087619",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121037",
+    "desc": "MATT & VELVET rossetto opaco 37 - 3",
+    "ean": "8023264087626",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121038",
+    "desc": "MATT & VELVET rossetto opaco 38 - 3",
+    "ean": "8023264087633",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121039",
+    "desc": "MATT & VELVET rossetto opaco 39 - 3",
+    "ean": "8023264087640",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121040",
+    "desc": "MATT & VELVET rossetto opaco 40 - 3",
+    "ean": "8023264087657",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121051",
+    "desc": "HYDRA BOOST CREAMY LIPSTICK rossett",
+    "ean": "8023264522189",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121052",
+    "desc": "HYDRA BOOST CREAMY LIPSTICK rossett",
+    "ean": "8023264522196",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121053",
+    "desc": "HYDRA BOOST CREAMY LIPSTICK rossett",
+    "ean": "8023264522202",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121054",
+    "desc": "HYDRA BOOST CREAMY LIPSTICK rossett",
+    "ean": "8023264522219",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121055",
+    "desc": "HYDRA BOOST CREAMY LIPSTICK rossett",
+    "ean": "8023264522226",
+    "qty": 1,
+    "page": 7
+  },
+  {
+    "code": "MF121056",
+    "desc": "HYDRA BOOST CREAMY LIPSTICK rossett",
+    "ean": "8023264522233",
+    "qty": 1,
+    "page": 8
+  },
+  {
+    "code": "MF121057",
+    "desc": "HYDRA BOOST CREAMY LIPSTICK rossett",
+    "ean": "8023264522240",
+    "qty": 1,
+    "page": 8
+  },
+  {
+    "code": "MF121058",
+    "desc": "HYDRA BOOST CREAMY LIPSTICK rossett",
+    "ean": "8023264522257",
+    "qty": 1,
+    "page": 8
+  },
+  {
+    "code": "MF121059",
+    "desc": "HYDRA BOOST CREAMY LIPSTICK rossett",
+    "ean": "8023264522264",
+    "qty": 1,
+    "page": 8
+  },
+  {
+    "code": "MF121060",
+    "desc": "HYDRA BOOST CREAMY LIPSTICK rossett",
+    "ean": "8023264522271",
+    "qty": 1,
+    "page": 8
+  },
+  {
+    "code": "MF122021",
+    "desc": "Matita labbra 21 - 1,5 g",
+    "ean": "8023264486207",
+    "qty": 1,
+    "page": 8
+  },
+  {
+    "code": "MF122022",
+    "desc": "Matita labbra 22 - 1,5 g",
+    "ean": "8023264486214",
+    "qty": 1,
+    "page": 8
+  },
+  {
+    "code": "MF122023",
+    "desc": "Matita labbra 23 - 1,5 g",
+    "ean": "8023264486221",
+    "qty": 1,
+    "page": 8
+  },
+  {
+    "code": "MF122024",
+    "desc": "Matita labbra 24 - 1,49 g",
+    "ean": "8023264506820",
+    "qty": 1,
+    "page": 8
+  },
+  {
+    "code": "MF122025",
+    "desc": "Matita labbra 25 - 1,49 g",
+    "ean": "8023264506837",
+    "qty": 1,
+    "page": 8
+  },
+  {
+    "code": "MF122031R",
+    "desc": "MATITA LABBRA WR E LL 31 \\(restyle\\)",
+    "ean": "8023264528341",
+    "qty": 2,
+    "page": 8
+  },
+  {
+    "code": "MF122032R",
+    "desc": "MATITA LABBRA WR E LL 32 \\(restyle\\)",
+    "ean": "8023264528365",
+    "qty": 2,
+    "page": 8
+  },
+  {
+    "code": "MF122033R",
+    "desc": "MATITA LABBRA WR E LL 33 \\(restyle\\)",
+    "ean": "8023264528372",
+    "qty": 2,
+    "page": 8
+  },
+  {
+    "code": "MF122034R",
+    "desc": "MATITA LABBRA WR E LL 34 \\(restyle\\)",
+    "ean": "8023264528389",
+    "qty": 2,
+    "page": 8
+  },
+  {
+    "code": "MF122035",
+    "desc": "MATITA LABBRA WR E LL 35",
+    "ean": "8023264528396",
+    "qty": 2,
+    "page": 8
+  },
+  {
+    "code": "MF124001",
+    "desc": "EVER & EVER MATT rossetto liquido o",
+    "ean": "8023264511671",
+    "qty": 2,
+    "page": 9
+  },
+  {
+    "code": "MF124002",
+    "desc": "EVER & EVER MATT rossetto liquido o",
+    "ean": "8023264511688",
+    "qty": 2,
+    "page": 9
+  },
+  {
+    "code": "MF124003",
+    "desc": "EVER & EVER MATT rossetto liquido o",
+    "ean": "8023264487136",
+    "qty": 1,
+    "page": 9
+  },
+  {
+    "code": "MF124004",
+    "desc": "EVER & EVER MATT rossetto liquido o",
+    "ean": "8023264487143",
+    "qty": 2,
+    "page": 9
+  },
+  {
+    "code": "MF124005",
+    "desc": "EVER & EVER MATT rossetto liquido o",
+    "ean": "8023264511411",
+    "qty": 2,
+    "page": 9
+  },
+  {
+    "code": "MF124006",
+    "desc": "EVER & EVER MATT rossetto liquido o",
+    "ean": "8023264511428",
+    "qty": 2,
+    "page": 9
+  },
+  {
+    "code": "MF125041",
+    "desc": "Scrub labbra 41 - 4 g",
+    "ean": "8023264522677",
+    "qty": 1,
+    "page": 9
+  },
+  {
+    "code": "MF125042",
+    "desc": "Siero labbra idratante e levigante",
+    "ean": "8023264522684",
+    "qty": 1,
+    "page": 9
+  },
+  {
+    "code": "MF125043",
+    "desc": "Balsamo labbra volumizzante 43 - 3,",
+    "ean": "8023264522691",
+    "qty": 2,
+    "page": 9
+  },
+  {
+    "code": "MF125044",
+    "desc": "Balsamo labbra volumizzante 44 - 3,",
+    "ean": "8023264522707",
+    "qty": 2,
+    "page": 9
+  },
+  {
+    "code": "MF125045",
+    "desc": "Balsamo labbra volumizzante 45 - 3,",
+    "ean": "8023264522714",
+    "qty": 2,
+    "page": 9
+  },
+  {
+    "code": "MF125046",
+    "desc": "Lip oil rimpolpante 46 - 3,5 ml",
+    "ean": "8023264522721",
+    "qty": 2,
+    "page": 9
+  },
+  {
+    "code": "MF125047",
+    "desc": "Lip oil rimpolpante 47 - 3,5 ml",
+    "ean": "8023264522738",
+    "qty": 2,
+    "page": 9
+  },
+  {
+    "code": "MF125048",
+    "desc": "LIP EXPLOSION lucida labbra volumiz",
+    "ean": "8023264523766",
+    "qty": 2,
+    "page": 9
+  },
+  {
+    "code": "MF130001",
+    "desc": "4D PRO LASH&BROW siero ciglia e sop",
+    "ean": "8023264527085",
+    "qty": 3,
+    "page": 9
+  },
+  {
+    "code": "MF151002",
+    "desc": "BASE TRUCCO 2024",
+    "ean": "8023264526699",
+    "qty": 2,
+    "page": 10
+  },
+  {
+    "code": "MF152001A",
+    "desc": "Struccante bifasico - 125 ml",
+    "ean": "8023264514771",
+    "qty": 1,
+    "page": 10
+  },
+  {
+    "code": "MF153001",
+    "desc": "Fissatore trucco - 100 ml",
+    "ean": "8023264487198",
+    "qty": 2,
+    "page": 10
+  },
+  {
+    "code": "MF1801",
+    "desc": "Spugna pretagliata 01",
+    "ean": "8023264487020",
+    "qty": 1,
+    "page": 10
+  },
+  {
+    "code": "MF1802",
+    "desc": "Piumino in velluto 02",
+    "ean": "8023264487211",
+    "qty": 1,
+    "page": 10
+  },
+  {
+    "code": "MF1808",
+    "desc": "Temperino doppio",
+    "ean": "8023264501047",
+    "qty": 2,
+    "page": 10
+  },
+  {
+    "code": "MF190011",
+    "desc": "PENNELLO OCCHI DI PRECISIONE 11",
+    "ean": "8023264526965",
+    "qty": 1,
+    "page": 10
+  },
+  {
+    "code": "MF190012",
+    "desc": "PENNELLO OCCHI PIATTO 12",
+    "ean": "8023264526989",
+    "qty": 1,
+    "page": 10
+  },
+  {
+    "code": "MF190013",
+    "desc": "PENNELLO OCCHI SFUMATURE PRECIS. 13",
+    "ean": "8023264526996",
+    "qty": 1,
+    "page": 10
+  },
+  {
+    "code": "MF190014",
+    "desc": "PENNELLO OCCHI SFUMATURE AMPIA 14",
+    "ean": "8023264527009",
+    "qty": 1,
+    "page": 10
+  },
+  {
+    "code": "MF190015",
+    "desc": "PENNELLO FONDOTINTA E CORRETTORE 15",
+    "ean": "8023264527016",
+    "qty": 1,
+    "page": 10
+  },
+  {
+    "code": "MF190016",
+    "desc": "PENNELLO PRODOTTI IN CREMA 16",
+    "ean": "8023264527030",
+    "qty": 1,
+    "page": 10
+  },
+  {
+    "code": "MF190017",
+    "desc": "PENNELLO BLUSH E CONTOUR 17",
+    "ean": "8023264527108",
+    "qty": 1,
+    "page": 10
+  },
+  {
+    "code": "MF190018",
+    "desc": "PENNELLO POLVERI VISO 18",
+    "ean": "8023264527115",
+    "qty": 1,
+    "page": 10
+  },
+  {
+    "code": "MFC54326",
+    "desc": "CREAMY FULL FACE PALETTE VISO & OCC",
+    "ean": "8023264528518",
+    "qty": 2,
+    "page": 10
+  },
+  {
+    "code": "MFC75801",
+    "desc": "Fissatore volumizzante sopracciglia",
+    "ean": "8023264498095",
+    "qty": 1,
+    "page": 11
+  },
+  {
+    "code": "MFC75802",
+    "desc": "Fissatore volumizzante sopracciglia",
+    "ean": "8023264498101",
+    "qty": 2,
+    "page": 11
+  },
+  {
+    "code": "MFC75803",
+    "desc": "Fissatore volumizzante sopracciglia",
+    "ean": "8023264498118",
+    "qty": 2,
+    "page": 11
+  },
+  {
+    "code": "MFC75804",
+    "desc": "Fissatore volumizzante trasparente",
+    "ean": "8023264498125",
+    "qty": 1,
+    "page": 11
+  },
+  {
+    "code": "MP0115J",
+    "desc": "SET TST RVBLAB + INCI GENNAIO2026",
+    "ean": "8023264533802",
+    "qty": 1,
+    "page": 11
+  },
+  {
+    "code": "MP0116",
+    "desc": "G.T.MUP RVBLAB DA TERRA NEW",
+    "ean": "8023264496725",
+    "qty": 1,
+    "page": 11
+  },
+  {
+    "code": "MP0438",
+    "desc": "IMMAG.18X18 CON BOLLO TESTED X GT",
+    "ean": "8023264519165",
+    "qty": 1,
+    "page": 11
+  },
+  {
+    "code": "MP5018",
+    "desc": "IMMAGINE 18X18 ISTITUZIONALE RVB GT",
+    "ean": "8023264532690",
+    "qty": 1,
+    "page": 11
+  },
+  {
+    "code": "MSS101114",
+    "desc": "BUSTINA SING.CAMUFLAGE 14",
+    "ean": "8023264523780",
+    "qty": 10,
+    "page": 11
+  },
+  {
+    "code": "MSS101133",
+    "desc": "BUSTINA SING. FDT LEGGERO ILL.33",
+    "ean": "8023264523797",
+    "qty": 10,
+    "page": 11
+  },
+  {
+    "code": "MSS101164",
+    "desc": "BUST.SING FDT EFFETTO LIFTING 64",
+    "ean": "8023264524473",
+    "qty": 10,
+    "page": 11
+  },
+  {
+    "code": "MSS101183",
+    "desc": "BUST.SING FDT TRATTAM-IDRAT. 83",
+    "ean": "8023264525302",
+    "qty": 10,
+    "page": 11
+  },
+  {
+    "code": "MSS101184",
+    "desc": "BUST.SING FDT TRATTAM.IDRAT. 84",
+    "ean": "8023264525319",
+    "qty": 10,
+    "page": 11
+  },
+  {
+    "code": "MSS101194",
+    "desc": "BUST.SING MESO FILL FOUNDATION 94",
+    "ean": "8023264529829",
+    "qty": 10,
+    "page": 11
+  },
+  {
+    "code": "MSS101195",
+    "desc": "BUST.SING MESO FILL FOUNDATION 95",
+    "ean": "8023264529836",
+    "qty": 10,
+    "page": 11
+  },
+  {
+    "code": "MT101003F",
+    "desc": "TST CORRETTORE IN STICK 03 NEW",
+    "ean": "8023264489925",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "MT102001F",
+    "desc": "TST CIPRIA LIBERA ALTA DEFINIZ NEW",
+    "ean": "8023264490143",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "MT102011",
+    "desc": "TST CIPRIA COMPATTA SETIFICANTE 11",
+    "ean": "8023264509647",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "MT120062",
+    "desc": "TST MORE THAN THIS KAJAL-EYES. 62",
+    "ean": "8023264514207",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "MT120067",
+    "desc": "TST MORE THAN THIS KAJAL-EYES. 67",
+    "ean": "8023264518038",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "MT121037",
+    "desc": "TST MATT&VELVET LIPSTICK OPACO 37",
+    "ean": "8023264087725",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "MT121040",
+    "desc": "TST MATT&VELVET LIPSTICK OPACO 40",
+    "ean": "8023264087756",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "MT121056",
+    "desc": "TST HYDRA BOOST CREAMY LIPSTICK 56",
+    "ean": "8023264522332",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "MT124001",
+    "desc": "TST ROSSETTO LIQUIDO MATT 01",
+    "ean": "8023264487075",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "MT124005",
+    "desc": "TST ROSSETTO LIQUIDO MATT 05",
+    "ean": "8023264511435",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "MT125045",
+    "desc": "TST BOOST LABBRA VOLUMIZZANTE 45",
+    "ean": "8023264522783",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "MT125047",
+    "desc": "TST LIP OIL RIMPOLPANTE 47",
+    "ean": "8023264522806",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "MTC75803",
+    "desc": "TST FISSATORE VOLUM.SOPRACC.803",
+    "ean": "8023264498248",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "PA0637",
+    "desc": "SHOPPER DDPPRO 27X10 \\(CONF.15PZ\\)'24",
+    "ean": "8023264525340",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "PA0638",
+    "desc": "SHOPPER DDPPRO 18X10 \\(CONF.10PZ\\)'24",
+    "ean": "8023264525333",
+    "qty": 1,
+    "page": 12
+  },
+  {
+    "code": "PA0642",
+    "desc": "MAXI TELO LETTINO 150X220 CM",
+    "ean": "8023264525920",
+    "qty": 1,
+    "page": 13
+  },
+  {
+    "code": "PA0643",
+    "desc": "TELO LETTINO CLIENTE 150X180 CM",
+    "ean": "8023264525937",
+    "qty": 1,
+    "page": 13
+  },
+  {
+    "code": "PA0644",
+    "desc": "LAVETTE COT.GRIGIO 30X30CM \\(5 PZ\\)",
+    "ean": "8023264525944",
+    "qty": 1,
+    "page": 13
+  },
+  {
+    "code": "PA0645",
+    "desc": "BEAUTY DIVISA S/M",
+    "ean": "8023264525951",
+    "qty": 1,
+    "page": 13
+  },
+  {
+    "code": "PA0646",
+    "desc": "BEAUTY DIVISA L/XL",
+    "ean": "8023264525968",
+    "qty": 1,
+    "page": 13
+  },
+  {
+    "code": "PA0647",
+    "desc": "T-SHIRT ESTETISTA S/M",
+    "ean": "8023264525975",
+    "qty": 1,
+    "page": 13
+  },
+  {
+    "code": "PA0648",
+    "desc": "T-SHIRT ESTETISTA L/XL",
+    "ean": "8023264525982",
+    "qty": 1,
+    "page": 13
+  },
+  {
+    "code": "PA0651",
+    "desc": "CRIO STICKS MASSAGGIATORI",
+    "ean": "8023264526101",
+    "qty": 1,
+    "page": 13
+  },
+  {
+    "code": "PA0675",
+    "desc": "PENNELLI CORPO 2 pezzi",
+    "ean": "8023264531372",
+    "qty": 2,
+    "page": 13
+  },
+  {
+    "code": "PA0676",
+    "desc": "SCULPTOREA BALLS \\(1 MAG BALL + 1 PE",
+    "ean": "8023264531389",
+    "qty": 8,
+    "page": 13
+  },
+  {
+    "code": "PA0678",
+    "desc": "DIEGO TOWEL 2026",
+    "ean": "8023264531648",
+    "qty": 7,
+    "page": 13
+  },
+  {
+    "code": "PA0689",
+    "desc": "LEAFLET MUA DDP PRO 2026 \\(10pz\\)",
+    "ean": "8023264534274",
+    "qty": 1,
+    "page": 13
+  },
+  {
+    "code": "PF00855",
+    "desc": "ICON TIME CREMA ANTI ETA  RIDENSIFI",
+    "ean": "8023264495551",
+    "qty": 1,
+    "page": 13
+  },
+  {
+    "code": "PF00985",
+    "desc": "ICON TIME trattamento concentrato r",
+    "ean": "8023264518366",
+    "qty": 1,
+    "page": 13
+  },
+  {
+    "code": "PF00995",
+    "desc": "ICON TIME siero ridensificante anti",
+    "ean": "8023264518809",
+    "qty": 1,
+    "page": 13
+  },
+  {
+    "code": "PF01065",
+    "desc": "ICON TIME CREMA CONTORNO OCCHI CORR",
+    "ean": "8023264495599",
+    "qty": 1,
+    "page": 14
+  },
+  {
+    "code": "PF01181",
+    "desc": "HA HERO siero fondamentale idratazi",
+    "ean": "8023264520925",
+    "qty": 2,
+    "page": 14
+  },
+  {
+    "code": "PF01365",
+    "desc": "HA HERO - lacto-peeling patch masch",
+    "ean": "8023264525128",
+    "qty": 1,
+    "page": 14
+  },
+  {
+    "code": "PF01375",
+    "desc": "HA HERO - siero fondamentale idrata",
+    "ean": "8023264525135",
+    "qty": 1,
+    "page": 14
+  },
+  {
+    "code": "PF01385",
+    "desc": "HA HERO - hyalu-maschera assorbibil",
+    "ean": "8023264525142",
+    "qty": 1,
+    "page": 14
+  },
+  {
+    "code": "PF01395",
+    "desc": "HA HERO - hyalu-crema gel sorgente",
+    "ean": "8023264525159",
+    "qty": 1,
+    "page": 14
+  },
+  {
+    "code": "PF01405",
+    "desc": "HA HERO - contorno occhi all'acido",
+    "ean": "8023264525166",
+    "qty": 1,
+    "page": 14
+  },
+  {
+    "code": "PF01411",
+    "desc": "HA HERO - contorno occhi all'acido",
+    "ean": "8023264525173",
+    "qty": 2,
+    "page": 14
+  },
+  {
+    "code": "PF01421",
+    "desc": "HA HERO - hyalu-crema gel sorgente",
+    "ean": "8023264525180",
+    "qty": 2,
+    "page": 14
+  },
+  {
+    "code": "PF01431",
+    "desc": "HA HERO - hyalu crema ricca ultra-n",
+    "ean": "8023264525197",
+    "qty": 2,
+    "page": 14
+  },
+  {
+    "code": "PF01441",
+    "desc": "HA HERO - trattamento labbra ripara",
+    "ean": "8023264525203",
+    "qty": 2,
+    "page": 14
+  },
+  {
+    "code": "PF01451",
+    "desc": "CELL DETOXIUM - STRUCCANTE MICELLAR",
+    "ean": "8023264526163",
+    "qty": 3,
+    "page": 14
+  },
+  {
+    "code": "PF01465",
+    "desc": "CELL DETOXIUM - LATTE DETERGENTE MI",
+    "ean": "8023264526170",
+    "qty": 1,
+    "page": 14
+  },
+  {
+    "code": "PF01475",
+    "desc": "CELL DETOXIUM - TONICO 400 ML PROF",
+    "ean": "8023264526187",
+    "qty": 1,
+    "page": 14
+  },
+  {
+    "code": "PF01485",
+    "desc": "CELL DETOXIUM - ESFOLIANTE ENZIMATI",
+    "ean": "8023264526194",
+    "qty": 1,
+    "page": 14
+  },
+  {
+    "code": "PF01495",
+    "desc": "CELL DETOXIUM - ESFOLIANTE ACIDO MA",
+    "ean": "8023264526200",
+    "qty": 1,
+    "page": 15
+  },
+  {
+    "code": "PF01515",
+    "desc": "CELL DETOXIUM - SUPER ESTRATTORE CO",
+    "ean": "8023264526224",
+    "qty": 1,
+    "page": 15
+  },
+  {
+    "code": "PF01525",
+    "desc": "CELL DETOXIUM - MASCHERA LENITIVA A",
+    "ean": "8023264526231",
+    "qty": 1,
+    "page": 15
+  },
+  {
+    "code": "PF01535",
+    "desc": "CELL DETOXIUM - CREMA DA MASSAGGIO",
+    "ean": "8023264526248",
+    "qty": 1,
+    "page": 15
+  },
+  {
+    "code": "PF01541",
+    "desc": "CELL DETOXIUM - FLUIDO PROTEZIONE G",
+    "ean": "8023264526255",
+    "qty": 3,
+    "page": 15
+  },
+  {
+    "code": "PF01551",
+    "desc": "CELL DETOXIUM - LATTE DETERGENTE MI",
+    "ean": "8023264526262",
+    "qty": 3,
+    "page": 15
+  },
+  {
+    "code": "PF01561",
+    "desc": "CELL DETOXIUM - TONICO 250 ML DOM",
+    "ean": "8023264526279",
+    "qty": 3,
+    "page": 15
+  },
+  {
+    "code": "PF01571",
+    "desc": "CELL DETOXIUM - MOUSSE DETERGENTE 1",
+    "ean": "8023264526286",
+    "qty": 3,
+    "page": 15
+  },
+  {
+    "code": "PF01581",
+    "desc": "CELL DETOXIUM - BOOSTER SERUM SIERO",
+    "ean": "8023264526293",
+    "qty": 3,
+    "page": 15
+  },
+  {
+    "code": "PF01591",
+    "desc": "CELL DETOXIUM - BURRO STRUCCANTE 12",
+    "ean": "8023264526309",
+    "qty": 3,
+    "page": 15
+  },
+  {
+    "code": "PF01601",
+    "desc": "CELL DETOXIUM - GOMMAGE ENZIMATICO",
+    "ean": "8023264526316",
+    "qty": 3,
+    "page": 15
+  },
+  {
+    "code": "PF01611",
+    "desc": "CELL DETOXIUM - MASCHERA VISO TEXTU",
+    "ean": "8023264526323",
+    "qty": 3,
+    "page": 15
+  },
+  {
+    "code": "PF01631",
+    "desc": "ICON TIME PRO-COLLAGEN SUPERMASK MA",
+    "ean": "8023264527887",
+    "qty": 2,
+    "page": 15
+  },
+  {
+    "code": "PF01645",
+    "desc": "ICON TIME SIERO BOOSTER DI ELASTINA",
+    "ean": "8023264527894",
+    "qty": 1,
+    "page": 15
+  },
+  {
+    "code": "PF01661",
+    "desc": "ICON TIME RADIANCE COLLAGEN BOOSTER",
+    "ean": "8023264527900",
+    "qty": 2,
+    "page": 15
+  },
+  {
+    "code": "PF01671",
+    "desc": "ICON TIME SILVER CREMA ANTIETA' RIV",
+    "ean": "8023264527917",
+    "qty": 2,
+    "page": 16
+  },
+  {
+    "code": "PF01681",
+    "desc": "ICON TIME GOLD CREMA ANTIETA' RIDEN",
+    "ean": "8023264527924",
+    "qty": 2,
+    "page": 16
+  },
+  {
+    "code": "PF01691",
+    "desc": "ICON TIME PLATINUM CREMA ANTIETA' R",
+    "ean": "8023264527931",
+    "qty": 2,
+    "page": 16
+  },
+  {
+    "code": "PF07001",
+    "desc": "METODO - NERO BLEND RELAX PROFUMO 1",
+    "ean": "8023264527528",
+    "qty": 1,
+    "page": 16
+  },
+  {
+    "code": "PF08101",
+    "desc": "SMART PURE OXY-ACTIVE gel detergent",
+    "ean": "8023264530436",
+    "qty": 4,
+    "page": 16
+  },
+  {
+    "code": "PF08111",
+    "desc": "SMART PURE SOS trattamento rapido a",
+    "ean": "8023264530399",
+    "qty": 4,
+    "page": 16
+  },
+  {
+    "code": "PF08121",
+    "desc": "SMART PURE PORE-STICK maschera esfo",
+    "ean": "8023264530405",
+    "qty": 4,
+    "page": 16
+  },
+  {
+    "code": "PF08131",
+    "desc": "SMART PURE PORE CONTROL concentrato",
+    "ean": "8023264530443",
+    "qty": 4,
+    "page": 16
+  },
+  {
+    "code": "PF08141",
+    "desc": "SMART PURE crema gel sebo-normalizz",
+    "ean": "8023264530412",
+    "qty": 4,
+    "page": 16
+  },
+  {
+    "code": "PF08145",
+    "desc": "SMART PURE crema gel sebo-normalizz",
+    "ean": "8023264530979",
+    "qty": 1,
+    "page": 16
+  },
+  {
+    "code": "PF08151",
+    "desc": "SMART PURE crema opacizzante 50 ml",
+    "ean": "8023264530429",
+    "qty": 4,
+    "page": 16
+  },
+  {
+    "code": "PF08165",
+    "desc": "SMART PURE maschera purificante 200",
+    "ean": "8023264530962",
+    "qty": 1,
+    "page": 16
+  },
+  {
+    "code": "PF58005",
+    "desc": "SCULPTOREA peeling acidi combinati",
+    "ean": "8023264530115",
+    "qty": 1,
+    "page": 16
+  },
+  {
+    "code": "PF58015",
+    "desc": "SCULPTOREA CARBOXY attivatore ossig",
+    "ean": "8023264530122",
+    "qty": 1,
+    "page": 16
+  },
+  {
+    "code": "PF58025",
+    "desc": "SCULTPOREA benda termoattiva cell l",
+    "ean": "8023264530139",
+    "qty": 1,
+    "page": 16
+  },
+  {
+    "code": "PF58035",
+    "desc": "SCULTPOREA concentrato anticellulit",
+    "ean": "8023264530146",
+    "qty": 1,
+    "page": 17
+  },
+  {
+    "code": "PF58045",
+    "desc": "SCULPTOREA concentrato tonificante",
+    "ean": "8023264531617",
+    "qty": 1,
+    "page": 17
+  },
+  {
+    "code": "PF58055",
+    "desc": "SCULPTOREA concentrato modellante 2",
+    "ean": "8023264530184",
+    "qty": 1,
+    "page": 17
+  },
+  {
+    "code": "PF58065",
+    "desc": "SCULPTOREA impacco a mosaico azione",
+    "ean": "8023264530191",
+    "qty": 1,
+    "page": 17
+  },
+  {
+    "code": "PF58075",
+    "desc": "SCULPTOREA CELL-LIPO crema da massa",
+    "ean": "8023264530207",
+    "qty": 1,
+    "page": 17
+  },
+  {
+    "code": "PF58085",
+    "desc": "SCULPTOREA FIRM-DREN olio da massag",
+    "ean": "8023264530214",
+    "qty": 1,
+    "page": 17
+  },
+  {
+    "code": "PF58091",
+    "desc": "SCULPTOREA THALASSO scrub drenante",
+    "ean": "8023264530221",
+    "qty": 3,
+    "page": 17
+  },
+  {
+    "code": "PF58101",
+    "desc": "SCULPTOREA HYDRA-PEEL scrub rigener",
+    "ean": "8023264530238",
+    "qty": 3,
+    "page": 17
+  },
+  {
+    "code": "PF58111",
+    "desc": "SCULPTOREA CREMA SUPERIDRATANTE 250",
+    "ean": "8023264530245",
+    "qty": 3,
+    "page": 17
+  },
+  {
+    "code": "PF58121",
+    "desc": "SCULPTOREA BURRO CORPO ANTI ETA' 20",
+    "ean": "8023264530252",
+    "qty": 3,
+    "page": 17
+  },
+  {
+    "code": "PF58131",
+    "desc": "SCULPTOREA CREMA CORPO EFFETTO LIFT",
+    "ean": "8023264530269",
+    "qty": 3,
+    "page": 17
+  },
+  {
+    "code": "PF58141",
+    "desc": "SCULPTOREA ICESHOT CRIOGEL GAMBE LE",
+    "ean": "8023264530276",
+    "qty": 3,
+    "page": 17
+  },
+  {
+    "code": "PF58151",
+    "desc": "SCULPTOREA POWER MIST concentrato s",
+    "ean": "8023264530283",
+    "qty": 3,
+    "page": 17
+  },
+  {
+    "code": "PF58161",
+    "desc": "SCULPTOREA CREMA ANTICELLULITE TERM",
+    "ean": "8023264530290",
+    "qty": 3,
+    "page": 17
+  },
+  {
+    "code": "PF77001",
+    "desc": "GEL PREPARATORE E POTENZIATORE DI A",
+    "ean": "8023264518069",
+    "qty": 2,
+    "page": 17
+  },
+  {
+    "code": "PF77101",
+    "desc": "ACQUA SUPER ABBRONZANTE -corpo- 300",
+    "ean": "8023264518076",
+    "qty": 2,
+    "page": 18
+  },
+  {
+    "code": "PF77121",
+    "desc": "OLIO SUBLIMATORE DI ABBRONZATURA -c",
+    "ean": "8023264518083",
+    "qty": 2,
+    "page": 18
+  },
+  {
+    "code": "PF77201",
+    "desc": "STICK SOLARE PROTEZIONE INVISIBILE",
+    "ean": "8023264518090",
+    "qty": 2,
+    "page": 18
+  },
+  {
+    "code": "PF77211",
+    "desc": "CREMA PROTETTIVA ILLUMINANTE ANTIMA",
+    "ean": "8023264518106",
+    "qty": 2,
+    "page": 18
+  },
+  {
+    "code": "PF77221",
+    "desc": "CREMA PROTETTIVA ABBRONZANTE ANTIET",
+    "ean": "8023264518113",
+    "qty": 2,
+    "page": 18
+  },
+  {
+    "code": "PF77231",
+    "desc": "CREMA-GEL IDRATANTE PROTETTIVA SPF3",
+    "ean": "8023264518120",
+    "qty": 2,
+    "page": 18
+  },
+  {
+    "code": "PF77241",
+    "desc": "CREMA-GEL IDRATANTE PROTETTIVA SPF",
+    "ean": "8023264518137",
+    "qty": 2,
+    "page": 18
+  },
+  {
+    "code": "PF77521",
+    "desc": "BURRO-MOUSSE DOPOSOLE VELLUTANTE IL",
+    "ean": "8023264518168",
+    "qty": 2,
+    "page": 18
+  },
+  {
+    "code": "PF77531",
+    "desc": "CREMA PROTETTIVA IDRATANTE - VISO -",
+    "ean": "8023264523285",
+    "qty": 2,
+    "page": 18
+  },
+  {
+    "code": "PF77541",
+    "desc": "CREMA-GEL PROTETTIVA ABBRONZANTE -C",
+    "ean": "8023264523292",
+    "qty": 2,
+    "page": 18
+  },
+  {
+    "code": "PF77551",
+    "desc": "LATTE SPRAY DELICATO SPF50 -corpo-",
+    "ean": "8023264527276",
+    "qty": 4,
+    "page": 18
+  },
+  {
+    "code": "PF77561",
+    "desc": "BALSAMO PROTETTIVO LABBRA SPF30 10M",
+    "ean": "8023264531075",
+    "qty": 4,
+    "page": 18
+  },
+  {
+    "code": "PF77571",
+    "desc": "CREMA IDRATANTE PROTETTIVA SPF50+ -",
+    "ean": "8023264531099",
+    "qty": 4,
+    "page": 18
+  },
+  {
+    "code": "PF77581",
+    "desc": "CREMA DOPOSOLE IDRATANTE -VISO E CO",
+    "ean": "8023264531105",
+    "qty": 4,
+    "page": 18
+  },
+  {
+    "code": "PM0667",
+    "desc": "GIFT CARD DDPPRO NATALE 2024",
+    "ean": "8023264524787",
+    "qty": 1,
+    "page": 18
+  },
+  {
+    "code": "PM0677",
+    "desc": "CARTELLO VETRINA DDPPRO ISTITUZ.'24",
+    "ean": "8023264526477",
+    "qty": 1,
+    "page": 19
+  },
+  {
+    "code": "PM0678",
+    "desc": "DOSSIER TECNICO HA HERO 2024",
+    "ean": "8023264526538",
+    "qty": 1,
+    "page": 19
+  },
+  {
+    "code": "PM0688",
+    "desc": "SCHEDE CLIENTE METODO \\(10PZ\\) ***",
+    "ean": "8023264527344",
+    "qty": 2,
+    "page": 19
+  },
+  {
+    "code": "PM0689",
+    "desc": "PROGETTO DI BELLEZZA METODO",
+    "ean": "8023264527351",
+    "qty": 1,
+    "page": 19
+  },
+  {
+    "code": "PM0691",
+    "desc": "CARTELLO VETRINA CELL DETOX ITA '25",
+    "ean": "8023264528112",
+    "qty": 1,
+    "page": 19
+  },
+  {
+    "code": "PM0692",
+    "desc": "BROCHURE CELL DETOXIUM \\(10 PZ\\)  ***",
+    "ean": "8023264528129",
+    "qty": 1,
+    "page": 19
+  },
+  {
+    "code": "PM0697",
+    "desc": "EXPO CABINA RECEPTION A 2025",
+    "ean": "8023264529065",
+    "qty": 1,
+    "page": 19
+  },
+  {
+    "code": "PM0698",
+    "desc": "EXPO CABINA B 2025",
+    "ean": "8023264529072",
+    "qty": 1,
+    "page": 19
+  },
+  {
+    "code": "PM0699",
+    "desc": "VASSOIO METODO 2025",
+    "ean": "8023264529089",
+    "qty": 1,
+    "page": 19
+  },
+  {
+    "code": "PM0700",
+    "desc": "SVUOTA TASCHE 2025",
+    "ean": "8023264529096",
+    "qty": 1,
+    "page": 19
+  },
+  {
+    "code": "PM0704",
+    "desc": "DOSSIER CELL DETOXIUM 2025",
+    "ean": "8023264529171",
+    "qty": 1,
+    "page": 19
+  },
+  {
+    "code": "PM0713",
+    "desc": "CARTELLO VETRINA ICON TIME 2025",
+    "ean": "8023264530078",
+    "qty": 1,
+    "page": 19
+  },
+  {
+    "code": "PM0715",
+    "desc": "BROCHURE ICON TIME 2025 \\(10 pz\\)",
+    "ean": "8023264530092",
+    "qty": 1,
+    "page": 19
+  },
+  {
+    "code": "PM0716",
+    "desc": "DOSSIER TECNICO ICON TIME 2025",
+    "ean": "8023264530108",
+    "qty": 1,
+    "page": 19
+  },
+  {
+    "code": "PM0718",
+    "desc": "SPECCHIO DDP PRO METODO",
+    "ean": "8023264530986",
+    "qty": 1,
+    "page": 19
+  },
+  {
+    "code": "PM0722",
+    "desc": "CARTELLO VETRINA SCULPTOREA",
+    "ean": "8023264531327",
+    "qty": 1,
+    "page": 20
+  },
+  {
+    "code": "PM0723",
+    "desc": "BROCHURE SCULPTOREA \\(10 pz\\)",
+    "ean": "8023264531334",
+    "qty": 2,
+    "page": 20
+  },
+  {
+    "code": "PM0724",
+    "desc": "DOSSIER TECNICO SCULPTOREA",
+    "ean": "8023264531341",
+    "qty": 1,
+    "page": 20
+  },
+  {
+    "code": "PM0725",
+    "desc": "SCHEDA ANAMNESI SCULPTOREA \\(10 PZ\\)",
+    "ean": "8023264531358",
+    "qty": 2,
+    "page": 20
+  },
+  {
+    "code": "PM0730",
+    "desc": "DOSSIER TECNICO SMART PURE",
+    "ean": "8023264531570",
+    "qty": 1,
+    "page": 20
+  },
+  {
+    "code": "PM0732",
+    "desc": "BROCHURE LINEA SMART PURE \\(10 PZ\\)",
+    "ean": "8023264531594",
+    "qty": 1,
+    "page": 20
+  },
+  {
+    "code": "PM0733",
+    "desc": "SMART PURE TOUCH PAPER",
+    "ean": "8023264531600",
+    "qty": 10,
+    "page": 20
+  },
+  {
+    "code": "PM0735",
+    "desc": "BROCHURE SOLARI 2026 \\(CONF.10 PZ\\)",
+    "ean": "8023264532492",
+    "qty": 1,
+    "page": 20
+  },
+  {
+    "code": "PM0736",
+    "desc": "EXPO DA BANCO NOVITA' SOLARI 2026",
+    "ean": "8023264532508",
+    "qty": 1,
+    "page": 20
+  },
+  {
+    "code": "PSS01061",
+    "desc": "SAMPLE ICON TIME CREMA CONTORNO OCC",
+    "ean": "8023264525593",
+    "qty": 10,
+    "page": 20
+  },
+  {
+    "code": "PSS01411",
+    "desc": "SAMPLE HA HERO - CONTORNO OCCHI ALL",
+    "ean": "8023264525241",
+    "qty": 10,
+    "page": 20
+  },
+  {
+    "code": "PSS01421",
+    "desc": "SAMPLE hyalu-crema gel sorgente di",
+    "ean": "8023264525258",
+    "qty": 10,
+    "page": 20
+  },
+  {
+    "code": "PSS01431",
+    "desc": "SAMPLE hyalu crema ricca ultra nutr",
+    "ean": "8023264525265",
+    "qty": 10,
+    "page": 20
+  },
+  {
+    "code": "PSS01541",
+    "desc": "SAMPLE CELL DETOXIUM - FLUIDO PROTE",
+    "ean": "8023264526378",
+    "qty": 10,
+    "page": 20
+  },
+  {
+    "code": "PSS01551",
+    "desc": "SAMPLE CELL DETOXIUM - LATTE DETERG",
+    "ean": "8023264526330",
+    "qty": 10,
+    "page": 20
+  },
+  {
+    "code": "PSS01561",
+    "desc": "SAMPLE CELL DETOXIUM - TONICO 3 ML",
+    "ean": "8023264526347",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS01581",
+    "desc": "SAMPLE CELL DETOXIUM - BOOSTER SERU",
+    "ean": "8023264526354",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS01601",
+    "desc": "SAMPLE CELL DETOXIUM - GOMMAGE ENZI",
+    "ean": "8023264526507",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS01611",
+    "desc": "SAMPLE CELL DETOXIUM - MASCHERA VIS",
+    "ean": "8023264526361",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS01661",
+    "desc": "SAMPLE ICON TIME RADIANCE COLLAGEN",
+    "ean": "8023264529874",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS01681",
+    "desc": "SAMPLE ICON TIME GOLD CREMA ANTI ET",
+    "ean": "8023264527986",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS01691",
+    "desc": "SAMPLE ICON TIME PLATINUM CREMA ANT",
+    "ean": "8023264527993",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS08101",
+    "desc": "SAMPLE SMART PURE OXY-ACTIVE gel de",
+    "ean": "8023264530535",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS08131",
+    "desc": "SAMPLE SMART PURE PORE CONTROL conc",
+    "ean": "8023264530542",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS08141",
+    "desc": "SAMPLE SMART PURE crema gel sebo-no",
+    "ean": "8023264530511",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS08151",
+    "desc": "SAMPLE SMART PURE crema opacizzante",
+    "ean": "8023264530528",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS58101",
+    "desc": "SAMPLE SCULPTOREA HYDRA-PEEL scrub",
+    "ean": "8023264530320",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS58111",
+    "desc": "SAMPLE SCULPTOREA CREMA SUPERIDRATA",
+    "ean": "8023264530306",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS58121",
+    "desc": "SAMPLE SCULPTOREA burro corpo antie",
+    "ean": "8023264530313",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS58131",
+    "desc": "SAMPLE SCULPTOREA crema corpo effet",
+    "ean": "8023264530337",
+    "qty": 10,
+    "page": 21
+  },
+  {
+    "code": "PSS58141",
+    "desc": "SAMPLE SCULPTOREA ICESHOT Criogel g",
+    "ean": "8023264530344",
+    "qty": 10,
+    "page": 22
+  },
+  {
+    "code": "PSS58161",
+    "desc": "SAMPLE SCULPTOREA CREMA ANTICELLULI",
+    "ean": "8023264530351",
+    "qty": 10,
+    "page": 22
+  },
+  {
+    "code": "PT00931",
+    "desc": "TST GOLD ELIXIR ICON TIME",
+    "ean": "8023264088135",
+    "qty": 1,
+    "page": 22
+  },
+  {
+    "code": "PT01181",
+    "desc": "TESTER HA HERO SIERO FONDAMENTALE I",
+    "ean": "8023264521403",
+    "qty": 1,
+    "page": 22
+  },
+  {
+    "code": "PT01411",
+    "desc": "TESTER HA HERO CONTORNO OCCHI ALL'A",
+    "ean": "8023264525210",
+    "qty": 1,
+    "page": 22
+  },
+  {
+    "code": "PT01421",
+    "desc": "TESTER hyalu-crema gel sorgente di",
+    "ean": "8023264525227",
+    "qty": 1,
+    "page": 22
+  },
+  {
+    "code": "PT01431",
+    "desc": "TESTER hyalu crema ricca ultra nutr",
+    "ean": "8023264525234",
+    "qty": 1,
+    "page": 22
+  },
+  {
+    "code": "PT01441",
+    "desc": "TESTER HA HERO trattamento labbra r",
+    "ean": "8023264525272",
+    "qty": 1,
+    "page": 22
+  },
+  {
+    "code": "PT01451",
+    "desc": "TESTER CELL DETOXIUM - STRUCCANTE M",
+    "ean": "8023264526460",
+    "qty": 1,
+    "page": 22
+  },
+  {
+    "code": "PT01541",
+    "desc": "TESTER CELL DETOXIUM - FLUIDO PROTE",
+    "ean": "8023264526385",
+    "qty": 1,
+    "page": 22
+  },
+  {
+    "code": "PT01551",
+    "desc": "TESTER CELL DETOXIUM - LATTE DETERG",
+    "ean": "8023264526392",
+    "qty": 1,
+    "page": 22
+  },
+  {
+    "code": "PT01561",
+    "desc": "TESTER CELL DETOXIUM - TONICO 250 M",
+    "ean": "8023264526408",
+    "qty": 1,
+    "page": 22
+  },
+  {
+    "code": "PT01571",
+    "desc": "TESTER CELL DETOXIUM - MOUSSE DETER",
+    "ean": "8023264526415",
+    "qty": 1,
+    "page": 22
+  },
+  {
+    "code": "PT01581",
+    "desc": "TESTER CELL DETOXIUM - BOOSTER SERU",
+    "ean": "8023264526422",
+    "qty": 1,
+    "page": 22
+  },
+  {
+    "code": "PT01591",
+    "desc": "TESTER CELL DETOXIUM - BURRO STRUCC",
+    "ean": "8023264526439",
+    "qty": 1,
+    "page": 22
+  },
+  {
+    "code": "PT01601",
+    "desc": "TESTER CELL DETOXIUM - GOMMAGE ENZI",
+    "ean": "8023264526446",
+    "qty": 1,
+    "page": 23
+  },
+  {
+    "code": "PT01611",
+    "desc": "TESTER CELL DETOXIUM - MASCHERA VIS",
+    "ean": "8023264526453",
+    "qty": 1,
+    "page": 23
+  },
+  {
+    "code": "PT01671",
+    "desc": "TESTER ICON TIME SILVER CREMA ANTI",
+    "ean": "8023264527948",
+    "qty": 1,
+    "page": 23
+  },
+  {
+    "code": "PT01681",
+    "desc": "TESTER ICON TIME GOLD CREMA ANTI ET",
+    "ean": "8023264527955",
+    "qty": 1,
+    "page": 23
+  },
+  {
+    "code": "PT01691",
+    "desc": "TESTER ICON TIME PLATINUM CREMA ANT",
+    "ean": "8023264527962",
+    "qty": 1,
+    "page": 23
+  },
+  {
+    "code": "PT08101",
+    "desc": "TESTER SMART PURE OXY-ACTIVE gel de",
+    "ean": "8023264530498",
+    "qty": 1,
+    "page": 23
+  },
+  {
+    "code": "PT08111",
+    "desc": "TESTER SMART PURE SOS trattamento r",
+    "ean": "8023264530450",
+    "qty": 1,
+    "page": 23
+  },
+  {
+    "code": "PT08121",
+    "desc": "TESTER SMART PURE PORE-STICK masche",
+    "ean": "8023264530467",
+    "qty": 1,
+    "page": 23
+  },
+  {
+    "code": "PT58151",
+    "desc": "TESTER SCULPTOREA POWER MIST concen",
+    "ean": "8023264530870",
+    "qty": 1,
+    "page": 23
+  }
+]

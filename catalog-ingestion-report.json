@@ -1,0 +1,35 @@
+{
+  "timestamp": "2026-09-06T07:49:06.111Z",
+  "invoices": [
+    {
+      "file": "Prodotti Diego della palma.pdf",
+      "rawCount": 337,
+      "filteredCount": 228
+    },
+    {
+      "file": "FEDERICA CESIANO - MOBILE 1-5.pdf",
+      "rawCount": 431,
+      "filteredCount": 431
+    }
+  ],
+  "catalog": {
+    "totalProducts": 341,
+    "totalVariants": 659,
+    "byBrand": {
+      "Diego dalla Palma": 82,
+      "RVB LAB": 53,
+      "Cipria Make Up": 23,
+      "Eveline Cosmetics": 98,
+      "Pierre René": 59,
+      "Miyo": 26
+    },
+    "byCategory": {
+      "Skincare & Dermo": 82,
+      "Viso": 129,
+      "Occhi": 90,
+      "Labbra": 39,
+      "Beauty & Accessori": 1
+    },
+    "totalImagesOnDisk": 653
+  }
+}
