@@ -1,34 +1,53 @@
-## 2026-09-07T14:35:16Z
-You are Worker M1 for Scelta Makeup.
-Your working directory is: c:\Users\mario\Progetti Antigravity\Scelta Makeup\.agents\worker_m1
-Your original request is at: c:\Users\mario\Progetti Antigravity\Scelta Makeup\ORIGINAL_REQUEST.md
-Your project architecture is at: c:\Users\mario\Progetti Antigravity\Scelta Makeup\PROJECT.md
-You MUST read c:\Users\mario\Progetti Antigravity\Scelta Makeup\ORIGINAL_REQUEST.md and c:\Users\mario\Progetti Antigravity\Scelta Makeup\PROJECT.md before starting work.
-Read Explorer 3's report at: c:\Users\mario\Progetti Antigravity\Scelta Makeup\.agents\explorer_survey_isolation_schema\report.md
+# Dispatch for Worker M1: Brand Identity, Logo Elevation, Typography & Footer Redesign
 
-MANDATORY INTEGRITY WARNING:
-DO NOT CHEAT. All implementations must be genuine. DO NOT hardcode test results, create dummy/facade implementations, or circumvent the intended task. A teamwork_preview_auditor will independently verify your work. Integrity violations WILL be detected and your work WILL be rejected.
+## Objective
+Implement Milestone 1 features with zero TypeScript errors and zero regressions:
+1. `components/BrandLogo.tsx`:
+   - Remove `rounded-full`, square dimensions (`h-10 w-10`, `h-12 w-12`), and `object-cover`.
+   - Use the natural aspect ratio container: `relative h-10 sm:h-12 w-auto aspect-[1600/908]` with `<Image ... className="object-contain" />`.
+   - Remove the redundant manual HTML text block (`SCELTA MAKEUP` / `L'eleganza di essere autentica`) that created duplicate text next to the official logo.
+   - For `variant="footer"`, mount the rectangular logo inside a luxury styled badge/plate (`bg-white/95 backdrop-blur-md rounded-2xl px-3.5 py-2 border border-white/20 shadow-md inline-block`) so that the JPEG with white background renders with crisp, elegant contrast against the dark background.
+2. `components/Footer.tsx`:
+   - Replace obsolete credit string `"Sviluppato con eleganza da Creativia Studio"` with the exact required string: `"Sviluppato da Creativia Studio"`.
+   - Apply luxury deep gradient background: `bg-gradient-to-b from-[#1F1B24] via-[#17141A] to-[#120F16] border-t border-[#D8C2E7]/20` with subtle radial reflection.
+   - Upgrade newsletter input to curved pill with glow effect (`focus:ring-2 focus:ring-[#D462A6]/40 focus:border-[#D462A6] shadow-[0_0_20px_rgba(212,98,166,0.15)]`).
+   - Elevate line 233 (`text-[11px]` -> `text-xs`).
+3. `app/globals.css`:
+   - In `@theme inline`:
+     - `--font-sans: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;`
+     - `--font-serif: var(--font-cormorant), Georgia, Cambria, "Times New Roman", serif;`
+     - Verify `body` uses `var(--font-sans)`.
+4. Storefront Typography Floor & Contrast:
+   - In `components/Header.tsx`: replace `text-[11px]` (lines 225, 238, 258, 262, 279) with `text-xs`.
+   - In `components/ProductCard.tsx`: replace `text-[10px]` and `text-[11px]` (lines 83, 91, 132, 137, 164, 167, 197) with `text-xs font-semibold/bold`. Ensure crisp contrast.
+5. Verification:
+   - Run `npx tsc --noEmit` and ensure 0 errors.
+   - Run `npm run build` and ensure 0 errors.
 
-Write Ownership:
-- `c:\Users\mario\Progetti Antigravity\Scelta Makeup\supabase_schema.sql`
-- `c:\Users\mario\Progetti Antigravity\Scelta Makeup\lib\adminStore.ts`
-- `c:\Users\mario\Progetti Antigravity\Scelta Makeup\.env.example`
 
-Mission:
-Implement Milestone 1: Standalone Supabase DDL & Isolated Local Storage Engine:
-1. Deliver `supabase_schema.sql` at workspace root:
-   - Idempotent DDL script with the mandatory `scelta_` prefix for all 9 tables:
-     `scelta_products`, `scelta_variants`, `scelta_orders`, `scelta_order_items`, `scelta_inventory_logs`, `scelta_customers`, `scelta_appointments`, `scelta_blocked_slots`, `scelta_notification_logs`.
-   - Appropriate columns, foreign keys with ON DELETE CASCADE, updated_at triggers, automated stock deduction trigger (`scelta_handle_order_item_stock_deduction`), POS sale stored procedure (`scelta_record_pos_sale`), high-performance indexes (including EAN barcode index for cassa RT gun scans), and complete Row Level Security (RLS) policies.
-   - Zero references, zero tables, zero credentials relating to Isabel Pepe.
-2. Deliver `lib/adminStore.ts`:
-   - Offline-first mock storage engine managing:
-     a) Variant stock levels initialized from `data/catalog.json` (341 products, 659 variants) with status badges: 'available', 'low_stock' (< 5), 'out_of_stock' (0). Functions to get all stock, update variant stock count, update variant price.
-     b) Orders management initialized with realistic multi-status demo orders (courier & store pickup) with functions: `getAdminOrders()`, `updateOrderStatus()`, `updateOrderTracking()`, `createAdminOrder()`.
-     c) Omnichannel CRM customers initialized with customer profiles merging order history and appointment history, with functions: `getAdminCustomers()`, `updateCustomerNotes()`.
-     d) 1-click Reset function (`resetAdminStoreToDefaults()`).
-     e) Atomic persistence in localStorage (`scelta_makeup_admin_store_v1`) with robust SSR in-memory fallback.
-3. Deliver `.env.example` with clear documentation of future dedicated Supabase environment variables and warning against using Isabel Pepe credentials.
-4. Run `npx tsc --noEmit` and verify 0 TypeScript errors.
-5. Write your completion report to `c:\Users\mario\Progetti Antigravity\Scelta Makeup\.agents\worker_m1\handoff.md`.
-Send a completion message back when done.
+## 2026-09-11T08:24:41Z
+You are Worker M1 (Implementation Worker for Brand Identity, Logo, Typography & Footer Redesign).
+Your working directory is: c:/Users/mario/Progetti Antigravity/Scelta Makeup/.agents/worker_m1
+Your project root is: c:/Users/mario/Progetti Antigravity/Scelta Makeup
+
+Tasks:
+1. Edit `components/BrandLogo.tsx`:
+   - Remove circular mask (`rounded-full`, square dimensions, `object-cover`).
+   - Use natural aspect ratio rectangular container (`aspect-[1600/908] h-10 sm:h-12 w-auto object-contain`).
+   - Remove the redundant manual HTML text block that duplicated the logo's internal typography.
+   - For `variant="footer"`, wrap in a luxury styled badge/plate (`bg-white/95 backdrop-blur-md rounded-2xl px-3.5 py-2 border border-white/20 shadow-md inline-block`).
+2. Edit `components/Footer.tsx`:
+   - Replace "Sviluppato con eleganza da Creativia Studio" with EXACTLY "Sviluppato da Creativia Studio".
+   - Apply luxury deep gradient background: `bg-gradient-to-b from-[#1F1B24] via-[#17141A] to-[#120F16] border-t border-[#D8C2E7]/20` with subtle purple reflection.
+   - Upgrade newsletter input to curved pill with glow effect.
+   - Elevate line 233 (`text-[11px]` -> `text-xs`).
+3. Edit `app/globals.css`:
+   - In `@theme inline`: set `--font-sans: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;`
+   - Declare `--font-serif: var(--font-cormorant), Georgia, Cambria, "Times New Roman", serif;`
+   - Ensure `body { font-family: var(--font-sans); }`.
+4. Edit `components/Header.tsx` and `components/ProductCard.tsx`:
+   - Elevate all `text-[10px]` and `text-[11px]` to `text-xs` (12px). Ensure strong contrast against light background.
+5. Verification:
+   - Run `npx tsc --noEmit` and verify 0 errors.
+   - Run `npm run build` and verify static compilation passes with 0 errors.
+6. Write complete handoff report to `c:/Users/mario/Progetti Antigravity/Scelta Makeup/.agents/worker_m1/handoff.md` and send completion message to parent orchestrator.

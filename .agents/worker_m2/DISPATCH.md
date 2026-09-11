@@ -1,70 +1,90 @@
-## 2026-09-07T14:42:55Z
-You are Worker M2 (Admin Suite UI & Integration Specialist) for Scelta Makeup.
-Your working directory is: c:\Users\mario\Progetti Antigravity\Scelta Makeup\.agents\worker_m2
-Your original request is at: c:\Users\mario\Progetti Antigravity\Scelta Makeup\ORIGINAL_REQUEST.md
-Your project architecture is at: c:\Users\mario\Progetti Antigravity\Scelta Makeup\PROJECT.md
-You MUST read c:\Users\mario\Progetti Antigravity\Scelta Makeup\ORIGINAL_REQUEST.md and c:\Users\mario\Progetti Antigravity\Scelta Makeup\PROJECT.md before starting work.
+# Dispatch for Worker M2: Split Editorial Hero & Dynamic Homepage Restyling
 
-MANDATORY INTEGRITY WARNING:
-DO NOT CHEAT. All implementations must be genuine. DO NOT hardcode test results, create dummy/facade implementations, or circumvent the intended task. A teamwork_preview_auditor will independently verify your work. Integrity violations WILL be detected and your work WILL be rejected.
+## Objective
+Implement Milestone 2: Transform the homepage from a 341-product infinite scroll into a dynamic, luxury editorial experience with modular components and create the dedicated `/prodotti` catalog page.
 
-Context from previous phases:
-- `lib/adminStore.ts` is fully implemented and manages stock for all 341 products / 659 variants, orders, CRM customers, KPIs, and local persistence.
-- `supabase_schema.sql` is delivered with 9 `scelta_*` tables.
-- `app/admin/appuntamenti/page.tsx` (627 lines) exists and MUST be preserved 100% intact.
-- Explorer 2 survey report at `c:\Users\mario\Progetti Antigravity\Scelta Makeup\.agents\explorer_survey_isabel_pepe\report.md` details the Isabel Pepe admin architecture.
+### 1. `components/HeroSection.tsx`
+- Refactor to accept props:
+  ```ts
+  export interface HeroSectionProps {
+    variant?: 'split' | 'fullwidth';
+  }
+  ```
+  Defaulting to `'split'`.
+- In `'split'` variant (per benchmark & user specifications):
+  - Visual column: Beauty portrait + floating product card with satin/glass finish (`bg-white/80 backdrop-blur-md border border-white/40 shadow-xl`) and swatch.
+  - Content column:
+    - Overline badge: `"ALTA COSMESI & ATELIER DI BELLEZZA • NAPOLI"`
+    - Title: `"L'Arte del Viso Perfetto. Senza Filtri, Senza Maschere."` (high contrast, serif title).
+    - Payoff: `"La purezza formulativa Diego dalla Palma e la maestria professionale Cipria Makeup selezionate per esaltare la tua bellezza naturale a Napoli."`
+    - Floating boutique badge: `"Boutique Ufficiale • Via dei Pellegrini 28/29, Napoli"`
+    - Dual CTAs:
+      - Primary CTA: `"Esplora i Bestseller"` (scroll smoothly to `#bestseller`).
+      - Secondary CTA: `"Prenota Make-Up in Atelier"` with `"-10% Online"` badge (links to `/prenota`).
+    - Trust bar: 4 luxury items with >= 12px typography.
+- In `'fullwidth'` variant: support clean, centered wide layout with dark violet gradient overlay and dual CTAs as a reversible fallback.
 
-Mission:
-Build the complete Unified E-Commerce Admin Suite at `/admin`:
-1. Distraction-free layout:
-   - Update `components/Header.tsx` and `components/Footer.tsx` (or `app/layout.tsx`) so that the public customer navbar and footer are hidden when the user is on `/admin` or `/admin/*`, providing a dedicated, clean administration cockpit.
-2. Admin Shell & Sidebar (`app/admin/page.tsx`, `components/admin/AdminSidebar.tsx`, `components/admin/AdminClientWrapper.tsx`):
-   - Responsive sidebar with Scelta Makeup brand identity: Royal Violet `#5E1788`, Vivid Orchid `#7A3293`, Pastel Lilac `#D8C2E7`, Mauve Rose `#D462A6`, Optical White `#FFFFFF`.
-   - Sidebar tabs:
-     - `panoramica`: Panoramica / Dashboard
-     - `prodotti`: Catalogo & Stock (341 prodotti)
-     - `ordini`: Ordini E-Commerce
-     - `spedizioni`: Spedizioni & Ritiro Store
-     - `clienti`: Clienti & CRM
-     - `appuntamenti`: Appuntamenti & Cassa RT (links/embeds `/admin/appuntamenti`)
-     - `notifiche`: Coda Notifiche & WhatsApp (embeds `NotificationQueueTab.tsx`)
-     - `analytics`: Statistiche Vendite
-   - Mobile responsive toggle (drawer/hamburger on mobile).
-   - Sync `activeTab` with URL query param `?tab=...` and fallback to `panoramica`.
-3. Overview / Dashboard (`components/admin/DashboardHome.tsx`):
-   - Sales KPIs: Fatturato totale, Ordini evasi, Carrello medio, Clienti registrati, Conversion rate, Allarmi scorte basse.
-   - Interactive revenue/sales trends chart (SVG/CSS responsive bars or line chart).
-   - Recent orders feed with status badges and quick links.
-4. Product Catalog & Stock Management (`components/admin/ProductCatalogTable.tsx`, `components/admin/ProductStockModal.tsx`):
-   - Paginated table showing all 341 products from `data/catalog.json` linked with real-time stock from `lib/adminStore.ts`.
-   - Search bar (filtering by title, brand, category, SKU).
-   - Brand filter pills: All, Diego dalla Palma, Eveline Cosmetics, Pierre René, RVB LAB, Miyo, Cipria Make Up.
-   - Category filter pills: All, Viso, Occhi, Skincare & Dermo, Labbra, Beauty & Accessori.
-   - Stock level indicators: "Disponibile" (emerald), "Scorte Basse" (amber, < 5), "Esaurito" (rose, 0).
-   - Edit modal to update price, discount price, and stock quantity for each variant/shade, persisting atomically to `lib/adminStore.ts`.
-5. Orders & Shipping Management (`components/admin/OrdersTable.tsx`, `components/admin/ShippingTable.tsx`):
-   - Orders Table: Filter by status ("In Elaborazione", "Spedito con Corriere Tracciato", "Pronto per Ritiro in Boutique", "Completato", "Annullato") and fulfillment type (`courier` vs `store_pickup`).
-   - Status change dropdown directly updating `lib/adminStore.ts`.
-   - Expandable order drawer/row with customer details, items with shades, totals.
-   - Shipping Table: Dedicated desk for courier and pickup orders. 1-click clipboard address copy, tracking number entry with "Salva Tracking", and boutique pickup readiness toggle.
-6. Customers & CRM (`components/admin/CrmTable.tsx`):
-   - Omnichannel customer list showing total lifetime spend (e-commerce orders + salon appointments), orders count, appointments count, last active date.
-   - Editable beauty / skin type notes.
-   - 1-click WhatsApp launcher button (`https://wa.me/...`).
-7. Preserved Modules Integration:
-   - Tab `appuntamenti`: renders a seamless direct link or embed to `/admin/appuntamenti`, ensuring Federica can access the Epson FP-81II RT cassa XML generator, slot locks, and daily deposits without disruption.
-   - Tab `notifiche`: renders `NotificationQueueTab.tsx` directly inside the admin shell.
-8. Comprehensive E2E Test Suite (`tests/e2e-admin-suite.test.ts`):
-   - Write tests covering all 4 tiers:
-     - Tier 1: Database isolation check, 341 products loaded, brand and category distributions, stock status calculations, order status transitions, CRM aggregation.
-     - Tier 2: Boundary cases (empty search, 0 stock transition, missing tracking, boundary filters).
-     - Tier 3: Cross-feature interactions (order creation impacts stock and customer spend; stock edit updates badge).
-     - Tier 4: Real-world scenarios (full courier workflow, full in-store pickup workflow).
-   - Execute via `npx tsx --test tests/e2e-admin-suite.test.ts`.
-   - Update `TEST_READY.md` with full coverage summary.
-9. Verification:
-   - Run `npx tsc --noEmit` and confirm 0 errors.
-   - Run `npm run lint` and confirm 0 errors.
-   - Run `npm run build` and confirm all 345+ static pages compile successfully.
-10. Write your handoff report to `c:\Users\mario\Progetti Antigravity\Scelta Makeup\.agents\worker_m2\handoff.md`.
-Send a completion message back when done.
+### 2. Create `components/CategoryStoryCircles.tsx`
+- Horizontal scrollable row of 6 category story circles with luxury gradient borders (`from-[#5E1788] via-[#D462A6] to-[#D8C2E7]`):
+  1. Viso (`/prodotti?categoria=Viso`)
+  2. Occhi (`/prodotti?categoria=Occhi`)
+  3. Labbra (`/prodotti?categoria=Labbra`)
+  4. Skincare & Dermo (`/prodotti?categoria=Skincare+%26+Dermo`)
+  5. Accessori (`/prodotti?categoria=Beauty+%26+Accessori`)
+  6. Atelier Servizi (`/prenota`) with distinctive `-10%` badge linking to booking wizard.
+- Labels >= 12px/14px.
+
+### 3. Create `components/BestsellerCarousel.tsx`
+- Container anchored with `id="bestseller"`.
+- Header: Section badge `"Icone di Bellezza & Tendenze"`, Title `"I Bestseller della Maison"`, Chevron left/right buttons with smooth horizontal scrolling.
+- Horizontal track: `flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-none pb-4`.
+- Card width: `w-[280px] sm:w-[320px] shrink-0 snap-start`.
+- Embeds `ProductCard` directly (preserving shade swatches and quick add to cart).
+
+### 4. Create `components/AtelierBanner.tsx`
+- Luxury deep card (`bg-gradient-to-br from-[#1F1B24] via-[#2D163B] to-[#1F1B24] border border-[#D8C2E7]/30 text-white rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden`).
+- Badge: `"Atelier di Bellezza & Cabina Trucco • Napoli"`
+- Heading: `"L'Arte del Make-Up Sartoriale"`
+- Description highlighting Federica's personalized makeup sessions in Via dei Pellegrini 28/29 Napoli.
+- Special highlight: `"-10% di Sconto Immediato su tutte le prenotazioni online (Acconto 20%, saldo in boutique)"`.
+- Primary CTA: `"Prenota la Tua Seduta (-10%)"` -> `/prenota`
+- Secondary CTA: `"Scopri i Trattamenti"` -> `/servizi`
+
+### 5. Create `components/CuratedProductGrid.tsx`
+- Capped at 12 items (`products.slice(0, 12)`).
+- Category filter pills to filter within the 12 curated items.
+- Bottom action block:
+  - Text: `"Mostrando una selezione curata di creazioni esclusive"`
+  - Primary button: `"Sfoglia Tutti i 341 Prodotti nel Catalogo Completo"` -> `/prodotti`.
+
+### 6. Create `app/prodotti/page.tsx`
+- Full catalog page rendering all 341 products with search input, category filters, brand filters, sorting, and pagination/load more.
+- Ensures all 341 products remain 100% accessible via SEO-friendly route.
+
+### 7. Update `app/page.tsx`
+- Compose the new dynamic homepage:
+  - `<HeroSection variant="split" />`
+  - `<CategoryStoryCircles />`
+  - `<BestsellerCarousel products={bestsellerProducts} />`
+  - `<AtelierBanner />`
+  - `<CuratedProductGrid initialProducts={products} />`
+  - `<BoutiqueSection />`
+
+### 8. Verification
+- `npx tsc --noEmit` -> 0 errors.
+- `npm run lint` -> 0 errors.
+- `npm run build` -> compiles cleanly (including `/prodotti`).
+- Write complete handoff report in `c:/Users/mario/Progetti Antigravity/Scelta Makeup/.agents/worker_m2/handoff.md`.
+
+## 2026-09-11T08:35:05Z
+You are Worker M2 (Implementation Worker for Split Editorial Hero & Dynamic Homepage Restyling).
+Your working directory is: c:/Users/mario/Progetti Antigravity/Scelta Makeup/.agents/worker_m2
+Your project root is: c:/Users/mario/Progetti Antigravity/Scelta Makeup
+
+MANDATORY: Read the authoritative specifications in:
+c:/Users/mario/Progetti Antigravity/Scelta Makeup/.agents/ORIGINAL_REQUEST.md
+and read your dispatch instructions in:
+c:/Users/mario/Progetti Antigravity/Scelta Makeup/.agents/worker_m2/DISPATCH.md
+Also read the detailed Explorer M0-2 findings in:
+c:/Users/mario/Progetti Antigravity/Scelta Makeup/.agents/explorer_m0_2/handoff.md
+

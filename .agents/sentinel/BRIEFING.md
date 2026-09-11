@@ -1,17 +1,17 @@
-# BRIEFING — 2026-09-07T14:23:10Z
+# BRIEFING — 2026-09-11T08:17:36Z
 
 ## Mission
-Supervise execution of Scelta Makeup Admin Suite: Complete E-Commerce Admin panel (/admin) inspired by Isabel Pepe architecture, unified with existing Appointments/RT/WhatsApp system, with absolute database isolation from Isabel Pepe.
+Supervise execution of Scelta Makeup Luxury Aesthetic Restyling and Dynamic Upgrade of the Storefront: Logo restoration (remove circular mask), Hero split glamour section, dynamic homepage (circles, carousel, atelier banner, curated 12-item grid), global typography readability, /prenota review, and luxury footer redesign with Creativia Studio credit.
 
 ## 🔒 My Identity
 - Archetype: sentinel
 - Working directory: c:\Users\mario\Progetti Antigravity\Scelta Makeup\.agents\sentinel
 - Orchestrator: c3ace6ec-e939-4ff7-a360-6fc84b6af45e (completed & retired)
 - Victory Auditor: e4a96af6-e107-41c1-bbe5-eacae5a0f10b (completed & retired)
-- Active Orchestrator: ad354468-29d7-420c-83aa-5e05483baea0 (.agents/orchestrator_2)
-- Active Auditor: 28c27870-3f4a-4681-8cfb-b9b41637c70c (.agents/auditor_victory_3)
-- Cron 1 (Progress): task-28
-- Cron 2 (Liveness): task-30
+- Active Orchestrator: 7cfc832a-7e16-4b7c-bcd9-d4b8fe5ad7c7 (.agents/orchestrator_3)
+- Active Auditor: to be spawned on victory claim
+- Cron 1 (Progress): task-35
+- Cron 2 (Liveness): task-37
 
 ## 🔒 Key Constraints
 - No technical decisions — relay only
@@ -24,19 +24,19 @@ Supervise execution of Scelta Makeup Admin Suite: Complete E-Commerce Admin pane
 - Preserve 100% of existing /admin/appuntamenti and storefront
 
 ## User Context
-- **Last user request**: Costruire la suite completa di Amministrazione E-Commerce per Scelta Makeup (/admin), unificata con appuntamenti/cassa RT/WhatsApp, con isolamento totale da Isabel Pepe.
+- **Last user request**: Eseguire un restyling estetico d'alta gamma e un upgrade dinamico dello storefront Scelta Makeup per la presentazione al cliente: logo originale intero (no taglio circolare), Hero editoriale glamour, homepage dinamica (circles, carousel, atelier banner, 12 grid), tipografia minima 12-14px, verifica /prenota, footer "Sviluppato da Creativia Studio".
 - **Pending clarifications**: none
 - **Delivered results**:
-  - Previous Phase (FASE 3): WhatsApp anti-ban, Resend email templates, admin queue monitor, base supabase schema. All verified and confirmed.
-  - Current Phase: Complete E-Commerce Admin Suite (/admin) with 100% DB isolation, standalone supabase_schema.sql (10 scelta_* tables), offline-first adminStore.ts, unified cockpit, and 120/120 tests passing. VICTORY CONFIRMED.
+  - Previous Phase: Complete E-Commerce Admin Suite (/admin) with 100% DB isolation. VICTORY CONFIRMED.
+  - Current Phase: Restyling estetico d'alta gamma e upgrade dinamico storefront Scelta Makeup (in progress).
 
 ## Project Status
-- **Phase**: complete
+- **Phase**: in progress
 
 ## Victory Audit Status
-- **Triggered**: yes
-- **Verdict**: VICTORY CONFIRMED
-- **Retry count**: 1
+- **Triggered**: no
+- **Verdict**: pending
+- **Retry count**: 0
 
 ## Artifact Index
 - ORIGINAL_REQUEST.md — Authoritative record of user request

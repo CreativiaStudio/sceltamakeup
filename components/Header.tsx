@@ -222,7 +222,7 @@ function HeaderContent() {
                 href="/prenota"
                 className={`hidden md:flex items-center gap-1.5 font-bold text-white bg-gradient-to-r from-[#7A3293] to-[#D462A6] hover:opacity-95 rounded-full shadow-xs shadow-[#7A3293]/20 transition-all ${
                   isScrolled
-                    ? "px-3 py-1.5 text-[11px]"
+                    ? "px-3 py-1.5 text-xs"
                     : "px-3.5 py-1.5 text-xs"
                 }`}
               >
@@ -235,7 +235,7 @@ function HeaderContent() {
                 href="#boutique"
                 className={`hidden sm:flex items-center gap-1.5 font-medium text-[#7A3293] hover:text-[#5E1788] rounded-full border border-[#D8C2E7]/60 hover:bg-[#FAF7FC] transition-colors ${
                   isScrolled
-                    ? "px-2.5 py-1 text-[11px]"
+                    ? "px-2.5 py-1 text-xs"
                     : "px-3 py-1.5 text-xs"
                 }`}
               >
@@ -255,11 +255,11 @@ function HeaderContent() {
                 aria-label="Apri Carrello"
               >
                 <ShoppingBag className={`transition-transform group-hover:scale-110 ${isScrolled ? "h-4 w-4" : "h-4 w-4 sm:h-5 sm:w-5"}`} />
-                <span className="hidden sm:inline tracking-wider uppercase text-[11px] font-semibold">
+                <span className="hidden sm:inline tracking-wider uppercase text-xs font-semibold">
                   Carrello
                 </span>
                 {isMounted && totalItems > 0 && (
-                  <span className="inline-flex items-center justify-center bg-[#D462A6] text-white text-[11px] font-bold w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-full ring-2 ring-white animate-pulse">
+                  <span className="inline-flex items-center justify-center bg-[#D462A6] text-white text-xs font-bold w-5 h-5 rounded-full ring-2 ring-white animate-pulse">
                     {totalItems}
                   </span>
                 )}
@@ -276,7 +276,7 @@ function HeaderContent() {
         {isMobileMenuOpen && (
           <div className="lg:hidden border-t border-[#D8C2E7]/40 bg-white/95 backdrop-blur-md px-6 py-6 shadow-xl space-y-4 animate-in fade-in slide-in-from-top-3 duration-200">
             <div className="space-y-1.5">
-              <p className="text-[11px] font-semibold text-neutral-400 tracking-wider uppercase mb-2">
+              <p className="text-xs font-semibold text-neutral-600 tracking-wider uppercase mb-2">
                 Macro-Categorie
               </p>
               {NAV_CATEGORIES.map(({ label, key }) => {

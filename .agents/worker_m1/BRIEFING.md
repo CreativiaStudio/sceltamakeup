@@ -1,14 +1,14 @@
-# BRIEFING — 2026-09-07T16:42:00Z
+# BRIEFING — 2026-09-11T10:29:15Z
 
 ## Mission
-Deliver Milestone 1 for Scelta Makeup: Standalone Supabase DDL (9 scelta_* tables with triggers, indexes, RLS) and Isolated Local Storage Engine (lib/adminStore.ts) plus .env.example.
+Deliver Milestone 1 for Scelta Makeup: Brand Identity & Logo Elevation (remove circular crop, aspect-ratio container, footer badge), Footer Redesign ("Sviluppato da Creativia Studio", deep luxury gradient, pill glow), Global Typography fix (--font-sans Inter, --font-serif Cormorant), and Storefront Typography Floor (>=12px in Header and ProductCard).
 
 ## 🔒 My Identity
 - Archetype: worker_m1
 - Roles: implementer, qa, specialist
 - Working directory: c:\Users\mario\Progetti Antigravity\Scelta Makeup\.agents\worker_m1
-- Original parent: ad354468-29d7-420c-83aa-5e05483baea0
-- Milestone: M1 — Standalone Supabase DDL & Isolated Local Storage Engine
+- Original parent: 7cfc832a-7e16-4b7c-bcd9-d4b8fe5ad7c7
+- Milestone: M1 — Brand Identity, Logo, Typography & Footer Redesign
 
 ## 🔒 Key Constraints
 - DO NOT CHEAT. All implementations must be genuine.
@@ -17,49 +17,56 @@ Deliver Milestone 1 for Scelta Makeup: Standalone Supabase DDL (9 scelta_* table
 - Offline-first mock storage engine in `lib/adminStore.ts` with 341 products and 659 variants initialized from `data/catalog.json`.
 - Deliver `.env.example` with clear documentation of future dedicated Supabase environment variables and warning against Isabel Pepe credentials.
 - `npx tsc --noEmit` must pass with 0 errors.
+- `npm run build` must compile cleanly with 0 errors.
+- Remove circular mask on logo, no duplicate text, exact footer credit "Sviluppato da Creativia Studio".
+- Minimum font size >= 12px (`text-xs`) across storefront components.
 
 ## Current Parent
-- Conversation ID: ad354468-29d7-420c-83aa-5e05483baea0
-- Updated: 2026-09-07T16:35:16+02:00
+- Conversation ID: 7cfc832a-7e16-4b7c-bcd9-d4b8fe5ad7c7
+- Updated: 2026-09-11T10:29:15+02:00
 
 ## Task Summary
-- **What to build**: Deliver `supabase_schema.sql`, `lib/adminStore.ts`, `.env.example`.
+- **What to build**:
+  1. `components/BrandLogo.tsx`: Rectangular aspect ratio `aspect-[1600/908] h-10 sm:h-12 w-auto object-contain`, removed redundant HTML text block, luxury badge for `variant="footer"`. (STATUS: COMPLETED)
+  2. `components/Footer.tsx`: Exact credit "Sviluppato da Creativia Studio", luxury gradient `#1F1B24` to `#120F16` with purple glow, pill newsletter input with glow, elevated text-[11px] to text-xs. (STATUS: COMPLETED)
+  3. `app/globals.css`: Fixed `--font-sans` to use `var(--font-geist-sans)`, added `--font-serif: var(--font-cormorant)...`, ensured body uses `var(--font-sans)`. (STATUS: COMPLETED)
+  4. `components/Header.tsx` & `components/ProductCard.tsx`: Elevated all `text-[10px]` and `text-[11px]` to `text-xs` (12px) with crisp contrast. (STATUS: COMPLETED)
 - **Success criteria**:
-  1. `supabase_schema.sql`: 9 isolated `scelta_*` tables, RLS policies, triggers (`updated_at`, stock deduction), stored procedure `scelta_record_pos_sale`, EAN barcode index. (STATUS: COMPLETED)
-  2. `lib/adminStore.ts`: Variant stock initialized from `data/catalog.json` (341 products, 659 variants) with status badges ('available', 'low_stock' < 5, 'out_of_stock' = 0), orders management (`getAdminOrders()`, `updateOrderStatus()`, `updateOrderTracking()`, `createAdminOrder()`), CRM customers (`getAdminCustomers()`, `updateCustomerNotes()`), 1-click reset (`resetAdminStoreToDefaults()`), atomic persistence in `localStorage` (`scelta_makeup_admin_store_v1`) with SSR fallback. (STATUS: COMPLETED)
-  3. `.env.example`: Dedicated Supabase env vars with isolation warning. (STATUS: COMPLETED)
-  4. 0 errors on `npx tsc --noEmit` and `npm run lint`. (STATUS: VERIFIED)
-- **Interface contracts**: PROJECT.md § Interface Contracts
-- **Code layout**: PROJECT.md § Code Layout
+  - `npx tsc --noEmit` 0 errors. (VERIFIED: PASS)
+  - `npm run build` 0 errors (349/349 pages). (VERIFIED: PASS)
+- **Interface contracts**: PROJECT.md / ORIGINAL_REQUEST.md
+- **Code layout**: Next.js App Router layout
 
 ## Key Decisions Made
-- Prefix all database objects with `scelta_` for absolute database isolation.
-- `lib/adminStore.ts` implements the exact interface contracts specified in `PROJECT.md` and provides all required getter and setter functions.
-- Multi-status realistic demo orders and omnichannel CRM profiles bridging e-commerce orders and appointments.
-- Verified test suite `scripts/verify-m1.ts` covering 68 test assertions with 100% pass rate.
+- `components/BrandLogo.tsx`: Applied natural aspect ratio `aspect-[1600/908]` with Next.js Image `object-contain`. Eliminated manual HTML text so only the official typography inside the vector/raster asset is shown. For the dark footer, framed the logo in `bg-white/95 backdrop-blur-md rounded-2xl px-3.5 py-2 border border-white/20 shadow-md inline-block`.
+- `components/Footer.tsx`: Replaced credit with verbatim `"Sviluppato da Creativia Studio"`. Implemented deep gradient `bg-gradient-to-b from-[#1F1B24] via-[#17141A] to-[#120F16] border-t border-[#D8C2E7]/20` with top radial purple reflection. Pill newsletter input with focus glow.
+- `app/globals.css`: Inlined `--font-sans` with `var(--font-geist-sans)` as primary sans-serif and declared `--font-serif` with `var(--font-cormorant)` for luxury serif headings. Set `body { font-family: var(--font-sans); }`.
+- `components/Header.tsx` & `components/ProductCard.tsx`: Replaced all instances of `text-[10px]` and `text-[11px]` with `text-xs` (12px) and adjusted text contrast (`text-neutral-600`/`text-neutral-700` and dark stock text).
 
 ## Artifact Index
-- `c:\Users\mario\Progetti Antigravity\Scelta Makeup\supabase_schema.sql` — Standalone Supabase DDL
-- `c:\Users\mario\Progetti Antigravity\Scelta Makeup\lib\adminStore.ts` — Offline mock storage engine
-- `c:\Users\mario\Progetti Antigravity\Scelta Makeup\.env.example` — Environment configuration template
-- `c:\Users\mario\Progetti Antigravity\Scelta Makeup\scripts\verify-m1.ts` — M1 verification test suite
-- `c:\Users\mario\Progetti Antigravity\Scelta Makeup\.agents\worker_m1\handoff.md` — Completion handoff report
+- `components/BrandLogo.tsx` — Natural aspect ratio logo & footer badge
+- `components/Footer.tsx` — Luxury gradient, exact credit, pill glow newsletter
+- `app/globals.css` — Corrected sans/serif typography mappings
+- `components/Header.tsx` — Elevated font sizes (>=12px)
+- `components/ProductCard.tsx` — Elevated font sizes & contrast (>=12px)
+- `.agents/worker_m1/handoff.md` — Detailed 5-component handoff report
 
 ## Change Tracker
 - **Files modified**:
-  - `supabase_schema.sql`: Created standalone idempotent DDL with 9 `scelta_*` tables, triggers, indexes, RLS.
-  - `lib/adminStore.ts`: Created offline-first mock storage engine with 659 variants, orders state machine, CRM customers, reset.
-  - `.env.example`: Created configuration template with isolation warnings.
-  - `scripts/verify-m1.ts`: Created 68-point verification test script.
-- **Build status**: Passing (tsc 0 errors, lint 0 errors)
+  - `components/BrandLogo.tsx`: Aspect ratio, removed duplicate text, luxury badge plate for footer.
+  - `components/Footer.tsx`: Exact credit, luxury gradient, newsletter glow, elevated cassa link font.
+  - `app/globals.css`: Corrected font-sans and font-serif variables.
+  - `components/Header.tsx`: Elevated small text instances to text-xs.
+  - `components/ProductCard.tsx`: Elevated badges, tags, categories, shades, swatches to text-xs and improved contrast.
+- **Build status**: PASS (tsc: 0 errors, build: 349/349 static pages, lint: 0 errors)
 - **Pending issues**: None
 
 ## Quality Status
-- **Build/test result**: Passing (tsc 0 errors, verify-m1.ts 68/68 passed)
+- **Build/test result**: Pass (tsc 0 errors, build 0 errors, lint 0 errors)
 - **Lint status**: 0 errors
-- **Tests added/modified**: `scripts/verify-m1.ts` (68 test assertions)
+- **Tests added/modified**: Full static production build validation (349 pages)
 
 ## Loaded Skills
-- **Source**: C:\Users\mario\.gemini\config\skills\scelta_makeup\SKILL.md
-- **Local copy**: C:\Users\mario\.gemini\config\skills\scelta_makeup\SKILL.md
-- **Core methodology**: Scelta Makeup e-commerce architecture, catalog, store cassa RT / POS, booking & WhatsApp anti-ban, absolute database isolation from Isabel Pepe.
+- **Source**: C:\Users\mario\config\skills\scelta_makeup\SKILL.md
+- **Local copy**: C:\Users\mario\config\skills\scelta_makeup\SKILL.md
+- **Core methodology**: Scelta Makeup design system, luxury aesthetic, typography hierarchy, high contrast.

@@ -37,7 +37,7 @@ export default function BoutiqueSection() {
               </div>
               <div className="text-left text-xs">
                 <p className="font-bold text-[#1F1B24]">Consulenza Make-up</p>
-                <p className="text-neutral-500 text-[11px]">
+                <p className="text-neutral-500 text-xs font-light">
                   Seduta personalizzata con le nostre esperte di bellezza.
                 </p>
               </div>
@@ -113,7 +113,7 @@ export default function BoutiqueSection() {
                     className="text-sm font-semibold text-[#5E1788] hover:underline text-left cursor-pointer flex items-center gap-1.5"
                   >
                     <span>Numero in attivazione al lancio</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#FAF7FC] text-[#7A3293] border border-[#D8C2E7]/50 font-normal">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-[#FAF7FC] text-[#7A3293] border border-[#D8C2E7]/50 font-medium">
                       Demo
                     </span>
                   </button>

@@ -1,20 +1,15 @@
 # Progress Log - Worker M1
 
-**Last visited**: 2026-09-07T16:41:45Z
-**Milestone**: M1 (Standalone Supabase DDL & Isolated Local Storage Engine)
+**Last visited**: 2026-09-11T10:29:15+02:00
+**Milestone**: M1 (Brand Identity, Logo, Typography & Footer Redesign)
 **Status**: COMPLETED
 
-## Steps Completed
-- [x] Initialized DISPATCH.md and BRIEFING.md
-- [x] Read ORIGINAL_REQUEST.md, PROJECT.md, and Explorer 3's survey report
-- [x] Inspected existing codebase types, orders, and products
-- [x] Created `supabase_schema.sql` at workspace root (9 core tables with `scelta_` prefix, RLS, triggers, indexes, zero external references)
-- [x] Created `.env.example` at workspace root with dedicated Scelta Makeup placeholders and isolation warnings
-- [x] Created `lib/adminStore.ts` with isolated mock storage engine (341 catalog products, 659 variants stock, orders state machine, omnichannel CRM, 1-click reset)
-- [x] Created `scripts/verify-m1.ts` test suite
-- [x] Ran `npx tsc --noEmit`: 0 errors
-- [x] Ran `npm run lint`: 0 errors
-- [x] Executed `scripts/verify-m1.ts`: 68/68 checks passed
-
-## Current Step
-- [x] Write completion handoff report to `.agents/worker_m1/handoff.md`
+## Tasks
+- [x] 1. Inspect target files (`BrandLogo.tsx`, `Footer.tsx`, `globals.css`, `Header.tsx`, `ProductCard.tsx`)
+- [x] 2. Update `components/BrandLogo.tsx`: remove circular mask, set aspect-[1600/908] h-10 sm:h-12 w-auto object-contain, remove duplicate HTML text, add luxury badge for footer variant
+- [x] 3. Update `components/Footer.tsx`: exact credit "Sviluppato da Creativia Studio", deep luxury gradient background, curved pill newsletter input with glow, elevate text-[11px] to text-xs
+- [x] 4. Update `app/globals.css`: configure --font-sans and --font-serif in @theme inline, body font-family
+- [x] 5. Update `components/Header.tsx`: elevate text-[11px] to text-xs
+- [x] 6. Update `components/ProductCard.tsx`: elevate text-[10px] and text-[11px] to text-xs with strong contrast
+- [x] 7. Verification: `npx tsc --noEmit` (0 errors) and `npm run build` (349/349 pages, 0 errors)
+- [x] 8. Write `handoff.md` and notify parent

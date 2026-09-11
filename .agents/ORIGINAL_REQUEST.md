@@ -92,3 +92,99 @@ Integrity mode: development
 - [ ] `npx tsc --noEmit` completato con 0 errori.
 - [ ] `npm run lint` completato con 0 errori.
 - [ ] `npm run build` completato con successo.
+
+## 2026-09-11T08:16:25Z
+
+Eseguire un restyling estetico d'alta gamma e un upgrade dinamico dello storefront Scelta Makeup per la presentazione al cliente: valorizzazione visiva del logo originale (eliminando il taglio circolare), Hero section editoriale glamour ad alto impatto (strutturata in modo modulare con fallback full-width reversibile), riorganizzazione dinamica della homepage (cerchi categorie, carosello orizzontale bestseller e banner atelier con prenotazione -10% per eliminare lo scroll infinito), ottimizzazione della leggibilità tipografica globale, collaudo estetico del wizard prenotazioni (/prenota) e restyling del footer con credit esatto "Sviluppato da Creativia Studio".
+
+Working directory: c:/Users/mario/Progetti Antigravity/Scelta Makeup
+Integrity mode: development
+
+## Requirements
+
+### R1. Brand Identity & Logo Elevation (Header & Footer)
+- Rimuovere tassativamente la maschera circolare che taglia il logo ufficiale rettangolare (icona volto stilizzato + scritta "Scelta MAKE UP" + claim).
+- Nell'header: mostrare il logo originale in proporzione naturale (object-contain, altezza ottimizzata h-10/h-12) con massima nitidezza sia da desktop che da mobile, garantendo perfetta visibilità senza scritte duplicate o ritagli anomali.
+- Nel footer: integrare il logo con un trattamento visivo di lusso coerente con lo sfondo scuro (badge sagomato, sfondo chiaro elegante o versione ad alto contrasto), rendendo leggibile ogni dettaglio dell'illustrazione e del payoff.
+
+### R2. Hero Section Split Editoriale di Grande Impatto (Modulare e Reversibile)
+- Riprogettare la Hero section con layout "Split Editoriale Glamour":
+  - Colonna visiva: grande fotografia beauty editoriale di alta cosmesi affiancata da una card fluttuante del prodotto icona con dettagli e finitura satinata/vetro.
+  - Colonna contenuti: badge distintivo ("Atelier di Bellezza & Alta Cosmesi • Napoli"), titolo d'impatto con font ad alto contrasto, payoff istituzionale e duplice CTA ("Esplora i Bestseller" con scroll morbido al carosello e "Prenota Make-Up in Atelier" con sconto 10% online).
+  - Floating badge della Boutique fisica: Via dei Pellegrini 28/29 Napoli con icona boutique.
+  - Barra trust lusso (Spedizione gratuita da 49€, 100% Cosmetici originali, Ritiro in Boutique, Consulenza personalizzata).
+  - Architettura del componente Hero modulare con possibilità di attivare la variante full-width tramite prop o switch.
+
+### R3. Dynamic Homepage & Smart Navigation (Eliminazione dello Scroll Infinito)
+- Riorganizzare la homepage per offrire un'esperienza dinamica da maison di cosmesi contemporanea (ispirata ai benchmark di settore), evitando di costringere l'utente a scrollare verticalmente tutti i 341 prodotti:
+  - **Category Story Circles:** barra orizzontale di cerchi grafici con icone/foto per le macro-categorie ("Viso", "Occhi", "Labbra", "Skincare & Dermo", "Accessori", "Atelier Trattamenti") per navigazione istantanea con un click.
+  - **Carosello Orizzontale Bestseller & Tendenze:** carosello scorrevole fluido con controlli freccia e scroll orizzontale touch per i prodotti più amati (Diego dalla Palma, Cipria, RVB LAB, Pierre René, Eveline) con card prodotto eleganti, swatches di colore interattivi e pulsante quick-add.
+  - **Banner Esperienziale Atelier & Cabina Trucco:** sezione promozionale dedicata alle sedute di trucco personalizzate di Federica a Napoli (Trucco Sposa/Cerimonia, Consulenza Armocromia) con highlight dello sconto online 10% e pulsante diretto a `/prenota`.
+  - **Vetrina Curata a Griglia (12 Prodotti):** selezione curata con filtro a pillola per categoria e pulsante d'azione primario "Sfoglia Tutti i 341 Prodotti nel Catalogo Completo" che indirizza alla pagina dedicata con filtri avanzati.
+
+### R4. Upgrade Tipografico & Leggibilità Globale
+- Risolvere la criticità dei font troppo piccoli: stabilire una dimensione minima di 12px/14px per etichette, badge, note e prezzi secondari, con line-height arioso e pesi bilanciati (font serif elegante per i titoli e sans-serif geometrico pulito per testi tecnici e INCI).
+- Ottimizzare il contrasto colore contro lo sfondo chiaro per prevenire scritte grigie sbiadite o poco leggibili.
+
+### R5. Verifica & Elevazione Estetica del Modulo Prenotazioni (/prenota)
+- Collaudare e raffinare il wizard interattivo di prenotazione pacchetti make-up:
+  - Card di selezione trattamenti con durata, prezzo di listino, badge "-10% Prenotazione Online", acconto 20% calcolato chiaramente e saldo in boutique.
+  - Step di selezione data e orario con stile luxury calendar chiaro e intuitivo.
+  - Conferma dati cliente e riepilogo finanziario trasparente prima dell'invio.
+
+### R6. Redesign del Footer & Credit Creativia Studio
+- Elevare l'estetica del footer per eliminare l'aspetto piatto:
+  - Sfondo arricchito con gradiente profondo `#1F1B24` e bordi satinati.
+  - Sezione Newsletter "Scelta Privilège Club" con input curvo ed effetto glow.
+  - 4 colonne equilibrate: Brand & Filosofia, Boutique Napoli (indirizzo, orari di apertura, WhatsApp), Macro-Collezioni, Garanzie di Qualità.
+  - Bottom bar con copyright aggiornato e dicitura categorica: "Sviluppato da Creativia Studio" (rimuovere ogni riferimento a "sviluppato con eleganza").
+
+## Acceptance Criteria
+
+### Brand & Logo
+- [ ] Il logo rettangolare ufficiale di Scelta Makeup non è inserito all'interno di maschere circolari tagliate: è visibile nella sua interezza con proporzioni naturali sia nell'header che nel footer.
+- [ ] Il footer riporta esattamente la dicitura "Sviluppato da Creativia Studio".
+
+### Hero & Dinamismo
+- [ ] La Hero section adotta il layout split editoriale con visual cosmetico d'impatto, titoli leggibili e duplice CTA (Catalogo & Prenotazione).
+- [ ] La homepage non mostra una lista infinita di 341 prodotti: presenta i cerchi categoria, il carosello orizzontale Bestseller, il banner Atelier e una griglia curata limitata a 12 articoli con link alla collezione completa.
+
+### Leggibilità & Prenotazioni
+- [ ] Nessun testo secondario o etichetta ha dimensione inferiore a 12px nel corpo del sito; i contrasti cromatici sono conformi agli standard di leggibilità.
+- [ ] La rotta `/prenota` è perfettamente funzionante, con calcolo corretto dello sconto 10% online e dell'acconto 20%, e un'interfaccia curata in ogni dettaglio.
+
+### Qualità Tecnica & Build
+- [ ] `npx tsc --noEmit` completato con 0 errori TypeScript.
+- [ ] `npm run build` completato con successo su tutte le rotte.
+
+## 2026-09-11T08:17:36Z
+
+Risultati dell'analisi di benchmark estetico svolta dal subagent browser su Diego dalla Palma, RVB LAB, Cipria Make Up e brand luxury internazionali (Charlotte Tilbury, Rare Beauty):
+
+1. HERO SECTION (Split Glamour):
+   - Dual-layer staging: Beauty portrait editoriale + floating packshot cosmetico trasparente con finitura vetro e swatch materico.
+   - Overline: "ALTA COSMESI & ATELIER DI BELLEZZA • NAPOLI"
+   - Titolo: "L'Arte del Viso Perfetto. Senza Filtri, Senza Maschere."
+   - Payoff: "La purezza formulativa Diego dalla Palma e la maestria professionale Cipria Makeup..."
+   - Floating badge: "Boutique Ufficiale • Via dei Pellegrini 28/29, Napoli"
+   - Doppia CTA: "Esplora i Bestseller" (scroll morbido) e "Prenota Make-Up in Atelier" (-10% online).
+
+2. HOMEPAGE DINAMICA (Stop allo scroll infinito dei 341 prodotti):
+   - Componente CategoryCircles: bolle/circles orizzontali per le 6 macro-categorie (Viso, Occhi, Labbra, Skincare Dermo, Accessori, Atelier Servizi).
+   - Componente FeaturedCarousel: carosello orizzontale a schede (Bestseller, Nuovi Arrivi Diego & Cipria, Selezione Make-Up Artist) con frecce, swipe touch e card con swatches colore.
+   - Componente BoutiqueBanner: modulo dedicato all'Atelier di Napoli (Via dei Pellegrini 28/29) con servizi cabina e WhatsApp.
+   - Vetrina Curata (12 prodotti) + CTA primaria a pagina intera per il catalogo completo.
+
+3. LOGO:
+   - Rimuovere la maschera circolare che tagliava il logo rettangolare ufficiale. Usare il logo intero con proporzioni naturali (h-10/h-12 object-contain) sia in Header che nel Footer.
+
+4. TIPOGRAFIA:
+   - Aumentare i font minimi: mai sotto i 12-14px per etichette, badge e descrizioni; contrasto cromatico nitido anti-sbiadimento.
+
+5. FOOTER:
+   - Sfondo profondo sfumato (#17141A con riflesso radiale viola reale), box Scelta Privilège Club, 4 badge di garanzia, e copyright con dicitura rigorosa: "Sviluppato da Creativia Studio".
+
+6. SICUREZZA:
+   - È già stato creato il commit git iniziale 'checkpoint: stato stabile prima del restyling estetico'. Mantieni tutto modulare e reversibile, e verifica che alla fine 'npx tsc --noEmit' e 'npm run build' completino con 0 errori.
+
+

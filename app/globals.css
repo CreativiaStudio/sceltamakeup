@@ -22,13 +22,14 @@
   --color-mauve-rose: var(--mauve-rose);
   --color-charcoal-deep: var(--charcoal-deep);
   --color-satin-metallic: var(--satin-metallic);
-  --font-sans: var(--font-cormorant), var(--font-geist-sans), Georgia, serif;
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-cormorant), Georgia, Cambria, "Times New Roman", serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }

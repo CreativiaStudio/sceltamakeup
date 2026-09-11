@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import Link from "next/link";
 import {
   Calendar as CalendarIcon,
   Clock,
   Sparkles,
   CheckCircle2,
+  ChevronLeft,
   ChevronRight,
   ShieldCheck,
   CreditCard,
@@ -76,9 +77,21 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
   const [selectedDate, setSelectedDate] = useState<string>(() => new Date().toISOString().split("T")[0]);
   const [selectedSlot, setSelectedSlot] = useState<string>("");
 
+  const dateScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollDates = (direction: "left" | "right") => {
+    if (dateScrollRef.current) {
+      const scrollAmount = direction === "left" ? -240 : 240;
+      dateScrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
+
   const slots = useMemo(() => {
     return selectedDate ? getAvailableSlots(selectedDate) : [];
   }, [selectedDate]);
+
+  const afternoonSlots = useMemo(() => slots.filter((s) => s.time < "18:00"), [slots]);
+  const eveningSlots = useMemo(() => slots.filter((s) => s.time >= "18:00"), [slots]);
 
   // Customer form
   const [customer, setCustomer] = useState<CustomerData>({
@@ -272,7 +285,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                     <span className="text-2xl font-serif font-bold text-[#5E1788]">
                       €{service.priceOnline.toFixed(2)}
                     </span>
-                    <span className="block text-[11px] text-[#1F1B24]/60 mt-0.5">
+                    <span className="block text-xs text-[#1F1B24]/70 mt-1">
                       Acconto online: <strong>€{service.depositAmount.toFixed(2)}</strong> (saldo in store: €{service.balanceAmount.toFixed(2)})
                     </span>
                   </div>
@@ -322,11 +335,35 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
 
           {/* Date Picker Horizontal Bar */}
           <div>
-            <label className="block text-sm font-semibold text-[#1F1B24] mb-3 flex items-center gap-2">
-              <CalendarIcon className="w-4 h-4 text-[#5E1788]" />
-              Seleziona il Giorno dell&apos;Appuntamento
-            </label>
-            <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-thin">
+            <div className="flex items-center justify-between mb-3">
+              <label className="text-sm font-semibold text-[#1F1B24] flex items-center gap-2">
+                <CalendarIcon className="w-4 h-4 text-[#5E1788]" />
+                Seleziona il Giorno dell&apos;Appuntamento
+              </label>
+              {/* Desktop navigation chevrons */}
+              <div className="hidden sm:flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => scrollDates("left")}
+                  aria-label="Scorri indietro nei giorni disponibili"
+                  className="w-8 h-8 rounded-full border border-[#D8C2E7]/60 bg-white hover:bg-[#FAF7FC] text-[#5E1788] flex items-center justify-center transition-all shadow-xs hover:border-[#5E1788] active:scale-95 cursor-pointer"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollDates("right")}
+                  aria-label="Scorri avanti nei giorni disponibili"
+                  className="w-8 h-8 rounded-full border border-[#D8C2E7]/60 bg-white hover:bg-[#FAF7FC] text-[#5E1788] flex items-center justify-center transition-all shadow-xs hover:border-[#5E1788] active:scale-95 cursor-pointer"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+            <div
+              ref={dateScrollRef}
+              className="flex gap-2.5 overflow-x-auto pb-2 scroll-smooth scrollbar-thin"
+            >
               {availableDates.map((item) => {
                 const isSelected = item.dateStr === selectedDate;
                 return (
@@ -334,20 +371,30 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                     key={item.dateStr}
                     type="button"
                     onClick={() => handleDateSelect(item.dateStr)}
-                    className={`shrink-0 flex flex-col items-center justify-center w-20 py-3 px-2 rounded-xl border text-center transition-all ${
+                    className={`shrink-0 flex flex-col items-center justify-center w-20 py-3 px-2 rounded-xl border text-center transition-all cursor-pointer ${
                       isSelected
-                        ? "bg-[#5E1788] text-white border-[#5E1788] shadow-md shadow-[#5E1788]/20"
-                        : "bg-white text-[#1F1B24] border-[#D8C2E7]/50 hover:border-[#5E1788]"
+                        ? "bg-gradient-to-br from-[#5E1788] via-[#7B2CBF] to-[#5E1788] text-white shadow-lg shadow-[#5E1788]/25 border-transparent"
+                        : "bg-white text-[#1F1B24] border-[#D8C2E7]/50 hover:border-[#5E1788] hover:shadow-xs"
                     }`}
                   >
-                    <span className={`text-[11px] font-semibold uppercase ${isSelected ? "text-[#D8C2E7]" : "text-[#1F1B24]/60"}`}>
+                    <span
+                      className={`text-xs font-semibold uppercase ${
+                        isSelected ? "text-[#E9D8FD]" : "text-[#1F1B24]/70"
+                      }`}
+                    >
                       {item.dayName}
                     </span>
                     <span className="text-sm font-bold mt-0.5">
                       {item.label}
                     </span>
                     {item.isToday && (
-                      <span className={`text-[9px] font-bold px-1 rounded mt-1 ${isSelected ? "bg-white/20 text-white" : "bg-[#FAF7FC] text-[#5E1788]"}`}>
+                      <span
+                        className={`text-xs font-semibold px-2 py-0.5 rounded-full mt-1 ${
+                          isSelected
+                            ? "bg-white/25 text-white"
+                            : "bg-[#FAF7FC] text-[#5E1788] border border-[#D8C2E7]/40"
+                        }`}
+                      >
                         Oggi
                       </span>
                     )}
@@ -372,30 +419,85 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
               <Clock className="w-4 h-4 text-[#5E1788]" />
               Seleziona l&apos;Orario Disponibile
             </label>
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-              {slots.map((slot) => {
-                const isSelected = selectedSlot === slot.time;
-                return (
-                  <button
-                    key={slot.id}
-                    type="button"
-                    disabled={!slot.available}
-                    onClick={() => handleSlotSelect(slot.time)}
-                    className={`py-3 px-4 rounded-xl border text-center font-medium text-sm transition-all ${
-                      !slot.available
-                        ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed line-through"
-                        : isSelected
-                        ? "bg-[#5E1788] text-white border-[#5E1788] shadow-md shadow-[#5E1788]/20"
-                        : "bg-white text-[#1F1B24] border-[#D8C2E7]/60 hover:border-[#5E1788]"
-                    }`}
-                  >
-                    <span className="block font-bold">{slot.time}</span>
-                    <span className="block text-[10px] opacity-75 mt-0.5">
-                      {slot.available ? (slot.time >= "20:00" ? "Serale" : "Pomeriggio") : slot.reason}
+
+            <div className="space-y-4">
+              {/* Sessione Pomeriggio */}
+              {afternoonSlots.length > 0 && (
+                <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#D8C2E7]/50 shadow-xs">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-3">
+                    <span className="text-xs uppercase tracking-wider font-semibold text-[#5E1788]">
+                      Sessione Pomeriggio
                     </span>
-                  </button>
-                );
-              })}
+                    <span className="text-xs text-[#1F1B24]/70 font-medium">
+                      Pausa pranzo boutique (13:30 – 15:30)
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {afternoonSlots.map((slot) => {
+                      const isSelected = selectedSlot === slot.time;
+                      return (
+                        <button
+                          key={slot.id}
+                          type="button"
+                          disabled={!slot.available}
+                          onClick={() => handleSlotSelect(slot.time)}
+                          className={`py-3 px-4 rounded-xl border text-center transition-all cursor-pointer ${
+                            !slot.available
+                              ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed line-through"
+                              : isSelected
+                              ? "bg-gradient-to-br from-[#5E1788] via-[#7B2CBF] to-[#5E1788] text-white shadow-md shadow-[#5E1788]/25 border-transparent"
+                              : "bg-[#FAF7FC] text-[#1F1B24] border-[#D8C2E7]/50 hover:border-[#5E1788] hover:bg-white hover:shadow-xs"
+                          }`}
+                        >
+                          <span className="block text-sm font-bold">{slot.time}</span>
+                          <span className="block text-xs font-medium opacity-80 mt-0.5">
+                            {slot.available ? "Pausa Pranzo" : slot.reason}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Sessione Serale */}
+              {eveningSlots.length > 0 && (
+                <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#D8C2E7]/50 shadow-xs">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-3">
+                    <span className="text-xs uppercase tracking-wider font-semibold text-[#5E1788]">
+                      Sessione Serale
+                    </span>
+                    <span className="text-xs text-[#1F1B24]/70 font-medium">
+                      Atelier esclusivo post-chiusura (dalle 20:00)
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {eveningSlots.map((slot) => {
+                      const isSelected = selectedSlot === slot.time;
+                      return (
+                        <button
+                          key={slot.id}
+                          type="button"
+                          disabled={!slot.available}
+                          onClick={() => handleSlotSelect(slot.time)}
+                          className={`py-3 px-4 rounded-xl border text-center transition-all cursor-pointer ${
+                            !slot.available
+                              ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed line-through"
+                              : isSelected
+                              ? "bg-gradient-to-br from-[#5E1788] via-[#7B2CBF] to-[#5E1788] text-white shadow-md shadow-[#5E1788]/25 border-transparent"
+                              : "bg-[#FAF7FC] text-[#1F1B24] border-[#D8C2E7]/50 hover:border-[#5E1788] hover:bg-white hover:shadow-xs"
+                          }`}
+                        >
+                          <span className="block text-sm font-bold">{slot.time}</span>
+                          <span className="block text-xs font-medium opacity-80 mt-0.5">
+                            {slot.available ? "Atelier Serale" : slot.reason}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -575,7 +677,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                 <div className="flex justify-between text-sm font-bold text-[#5E1788] bg-white p-3 rounded-xl border border-[#5E1788]/20 shadow-sm">
                   <div>
                     <span>Quota di conferma da versare ora (20%):</span>
-                    <span className="block text-[11px] font-normal text-[#1F1B24]/60">
+                    <span className="block text-xs font-normal text-neutral-600 mt-0.5">
                       Blocca definitivamente l&apos;orario in boutique
                     </span>
                   </div>
@@ -614,7 +716,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                   <CreditCard className="w-4 h-4 text-[#5E1788]" />
                   Pagamento Sicuro Acconto (€{selectedService.depositAmount.toFixed(2)})
                 </span>
-                <span className="text-[10px] text-green-700 bg-green-50 px-2 py-0.5 rounded font-semibold">
+                <span className="text-xs text-green-700 bg-green-50 px-2.5 py-1 rounded-full font-semibold border border-green-200/60">
                   Crittografia SSL 256-bit Stripe
                 </span>
               </div>

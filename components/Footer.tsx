@@ -36,8 +36,11 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#1F1B24] text-white pt-16 pb-12 border-t border-neutral-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="relative bg-gradient-to-b from-[#1F1B24] via-[#17141A] to-[#120F16] text-white pt-16 pb-12 border-t border-[#D8C2E7]/20 overflow-hidden">
+      {/* Subtle Purple Reflection Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-[#5E1788]/15 blur-3xl pointer-events-none rounded-full" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Newsletter & Atelier Club Row */}
         <div className="pb-12 border-b border-neutral-800/80 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -68,11 +71,11 @@ export default function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="flex-1 px-4 py-3 rounded-full bg-neutral-900 border border-neutral-700 text-white placeholder:text-neutral-500 text-xs sm:text-sm focus:outline-none focus:border-[#D462A6]"
+                  className="flex-1 px-5 py-3 rounded-full bg-neutral-900/90 border border-neutral-700 text-white placeholder:text-neutral-500 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#D462A6]/40 focus:border-[#D462A6] shadow-[0_0_20px_rgba(212,98,166,0.15)] transition-all"
                 />
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-full bg-gradient-to-r from-[#5E1788] to-[#7A3293] hover:from-[#7A3293] hover:to-[#D462A6] text-white text-xs font-semibold tracking-wider uppercase transition-all shadow-md active:scale-95 shrink-0"
+                  className="px-6 py-3 rounded-full bg-gradient-to-r from-[#5E1788] to-[#7A3293] hover:from-[#7A3293] hover:to-[#D462A6] text-white text-xs font-semibold tracking-wider uppercase transition-all shadow-md active:scale-95 shrink-0 cursor-pointer"
                 >
                   Iscriviti
                 </button>
@@ -230,13 +233,13 @@ export default function Footer() {
           <div className="flex items-center gap-4">
             <Link
               href="/admin/appuntamenti"
-              className="hover:text-[#D8C2E7] transition-colors underline decoration-dotted text-[11px]"
+              className="hover:text-[#D8C2E7] transition-colors underline decoration-dotted text-xs"
             >
               Cassa & Appuntamenti Store
             </Link>
             <span className="opacity-30">|</span>
-            <div className="flex items-center gap-1.5 text-neutral-400">
-              <span>Sviluppato con eleganza da</span>
+            <div className="flex items-center gap-1.5 text-neutral-400 text-xs">
+              <span>Sviluppato da</span>
               <span className="text-white font-medium tracking-wider hover:text-[#D8C2E7] transition-colors">
                 Creativia Studio
               </span>

@@ -80,7 +80,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Badge */}
         {product.badge && (
           <div className="absolute top-3 left-3 z-10">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#1F1B24]/90 text-white backdrop-blur-xs shadow-xs">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold tracking-wider uppercase bg-[#1F1B24]/90 text-white backdrop-blur-xs shadow-xs">
               {product.badge}
             </span>
           </div>
@@ -88,7 +88,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Brand Tag */}
         <div className="absolute top-3 right-3 z-10">
-          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold tracking-wider uppercase bg-white/90 text-[#5E1788] border border-[#D8C2E7]/50 shadow-xs">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold tracking-wider uppercase bg-white/95 text-[#5E1788] border border-[#D8C2E7]/60 shadow-xs">
             {product.brand}
           </span>
         </div>
@@ -128,18 +128,18 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Product Content & Swatches */}
       <div className="flex flex-1 flex-col p-4 sm:p-5">
         {/* Category & Stock Status */}
-        <div className="flex items-center justify-between text-xs text-neutral-500 mb-1.5">
-          <span className="tracking-wider uppercase text-[10px] font-medium text-[#7A3293]">
+        <div className="flex items-center justify-between text-xs text-neutral-600 mb-1.5">
+          <span className="tracking-wider uppercase text-xs font-semibold text-[#7A3293]">
             {product.category}
           </span>
           {product.stock !== undefined && (
             <span
-              className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${
+              className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
                 product.stock <= 0
-                  ? "bg-rose-50 text-rose-600"
+                  ? "bg-rose-50 text-rose-700 font-semibold"
                   : product.stock < 5
-                  ? "bg-amber-50 text-amber-700"
-                  : "bg-emerald-50 text-emerald-700"
+                  ? "bg-amber-50 text-amber-800 font-semibold"
+                  : "bg-emerald-50 text-emerald-800 font-semibold"
               }`}
             >
               {product.stock <= 0 ? "Esaurito" : product.stock < 5 ? `Ultime ${product.stock} pz` : "Disponibile"}
@@ -161,10 +161,10 @@ export default function ProductCard({ product }: ProductCardProps) {
         {product.shades && product.shades.length > 0 && (
           <div className="mt-3 pt-2.5 border-t border-[#E2E8F0]/70">
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[11px] text-neutral-600 font-medium truncate max-w-[170px]">
+              <span className="text-xs text-neutral-700 font-medium truncate max-w-[170px]">
                 {selectedShade ? selectedShade.name : `${product.shades.length} tonalità`}
               </span>
-              <span className="text-[10px] text-neutral-400 font-mono">
+              <span className="text-xs text-neutral-600 font-mono">
                 {product.shades.length} {product.shades.length === 1 ? "shade" : "shades"}
               </span>
             </div>
@@ -194,7 +194,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 );
               })}
               {product.shades.length > 6 && (
-                <span className="text-[10px] text-neutral-400 ml-1">
+                <span className="text-xs text-neutral-600 font-medium ml-1">
                   +{product.shades.length - 6}
                 </span>
               )}
