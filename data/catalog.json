@@ -25858,6 +25858,64 @@
     "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-crema-lifting-50.jpg"
   },
   {
+    "id": "cipria-67238b",
+    "slug": "eveline-cosmetics-biohyaluron-3xretinol-crema-40",
+    "name": "Eveline Cosmetics BioHyaluron 3xRetinol Crema Riparatrice 40+",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento antirughe intensivo giorno e notte 40+ a base di acido ialuronico e triplo retinolo per pelli mature precoci.",
+    "shortDescription": "Crema giorno e notte antirughe intensiva 40+ con acido ialuronico e triplo retinolo.",
+    "price": 11.9,
+    "originalPrice": 14,
+    "originalWholesalePrice": 4.59,
+    "badge": "Bestseller",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Triplo retinolo e acido ialuronico a tre pesi molecolari per rassodare e nutrire in profondità.",
+    "howToUse": "Applicare mattina e sera su pelle perfettamente detersa con delicati sfioramenti verso l'alto.",
+    "inci": "Aqua (Water), Caprylic/Capric Triglyceride, Glycerin, Retinol, Sodium Hyaluronate, Tocopheryl Acetate, Phenoxyethanol.",
+    "features": [
+      "rassoda la pelle lasciandola distesa",
+      "riduce le prime rughe e ne previene la formazione",
+      "idratazione profonda 24h",
+      "adatta a tutti i tipi di pelle dai 40 anni"
+    ],
+    "images": [
+      "/products/eveline-cosmetics-packshot.jpg"
+    ],
+    "shades": [
+      {
+        "id": "var-5903416026051",
+        "name": "50ML",
+        "code": "5903416026051",
+        "hex": "#E9C299",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-5903416026051",
+        "name": "50ML",
+        "sku": "5903416026051",
+        "ean": "5903416026051",
+        "colorHex": "#E9C299",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 4.59,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-packshot.jpg"
+  },
+  {
     "id": "cipria-67239",
     "slug": "eveline-cosmetics-biohyaluron-3xretinol-anti-wrinkle-eye-gel",
     "name": "Eveline Cosmetics BioHyaluron 3xRetinol Gel occhi antirughe",

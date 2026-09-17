@@ -16,6 +16,7 @@ import CrmTable from "./CrmTable";
 import AppointmentsBridgeTab from "./AppointmentsBridgeTab";
 import NotificationQueueTab from "./NotificationQueueTab";
 import AnalyticsTab from "./AnalyticsTab";
+import QuickScanBarcodeModal from "./QuickScanBarcodeModal";
 import { AdminTab } from "@/types/admin";
 import {
   getAdminKpis,
@@ -182,6 +183,9 @@ export default function AdminClientWrapper() {
           {activeTab === "analytics" && <AnalyticsTab kpis={kpis} />}
         </main>
       </div>
+
+      {/* Global Hardware Barcode Scanner Listener & Modal */}
+      <QuickScanBarcodeModal />
     </div>
   );
 }

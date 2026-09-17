@@ -18,6 +18,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import NotificationQueueTab from "@/components/admin/NotificationQueueTab";
+import QuickScanBarcodeModal from "@/components/admin/QuickScanBarcodeModal";
 import { Appointment } from "@/types/booking";
 import { SERVICES } from "@/data/services";
 import {
@@ -1043,6 +1044,9 @@ export default function AdminAppuntamentiPage() {
           </div>
         )}
       </main>
+
+      {/* Global Hardware Barcode Scanner Listener & Modal */}
+      <QuickScanBarcodeModal />
     </div>
   );
 }
