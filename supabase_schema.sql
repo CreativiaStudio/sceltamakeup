@@ -12,6 +12,15 @@
 -- 0. ESTENSIONI & RUOLI
 -- ------------------------------------------------------------------------------
 
+DO $$
+BEGIN
+    -- Role safety check
+    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'authenticated') THEN
+        NULL;
+    END IF;
+END
+$$;
+
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 

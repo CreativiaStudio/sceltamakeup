@@ -87,6 +87,7 @@ export interface SceltaCrmCustomer {
 export interface SceltaAdminStoreState {
   version: number;
   variantStocks: Record<string, SceltaVariantStock>;
+  productOverrides: Record<string, Partial<Product>>;
   orders: SceltaAdminOrder[];
   customers: SceltaCrmCustomer[];
   lastResetAt: string;
@@ -548,6 +549,7 @@ export function getDefaultAdminStoreState(): SceltaAdminStoreState {
   return {
     version: 2,
     variantStocks: generateInitialVariantStocks(),
+    productOverrides: {},
     orders: generateInitialOrders(),
     customers: generateInitialCustomers(),
     lastResetAt: new Date().toISOString(),
@@ -592,6 +594,26 @@ export function getAdminStoreState(): SceltaAdminStoreState {
       const defaultState = getDefaultAdminStoreState();
       saveAdminStoreState(defaultState);
       return defaultState;
+    }
+
+    if (!parsed.productOverrides || typeof parsed.productOverrides !== "object") {
+      parsed.productOverrides = {};
+    }
+
+    // Auto-heal variant stock images against verified catalog to purge any stale client cache
+    if (parsed.variantStocks && typeof parsed.variantStocks === "object") {
+      const products = rawCatalog as Product[];
+      for (const vStock of Object.values(parsed.variantStocks as Record<string, SceltaVariantStock>)) {
+        if (!vStock || !vStock.productId) continue;
+        const prod = products.find(p => p.id === vStock.productId);
+        if (prod) {
+          const freshVariant = prod.variants?.find(v => v.id === vStock.variantId);
+          const freshImg = freshVariant?.image || (prod.images && prod.images[0]);
+          if (freshImg && vStock.image !== freshImg) {
+            vStock.image = freshImg;
+          }
+        }
+      }
     }
 
     memoryAdminStore = parsed as SceltaAdminStoreState;
@@ -733,6 +755,138 @@ export function updateVariantPrice(variantId: string, price: number): SceltaVari
   state.variantStocks[variantId] = updated;
   saveAdminStoreState(state);
   return updated;
+}
+
+// ------------------------------------------------------------------------------
+// Product Overrides Management API (R2)
+// ------------------------------------------------------------------------------
+
+/**
+ * Returns all custom product overrides stored in local state.
+ */
+export function getProductOverrides(): Record<string, Partial<Product>> {
+  const state = getAdminStoreState();
+  return state.productOverrides || {};
+}
+
+/**
+ * Retrieves custom product overrides by product ID or slug.
+ */
+export function getProductOverride(idOrSlug: string): Partial<Product> | undefined {
+  if (!idOrSlug) return undefined;
+  const state = getAdminStoreState();
+  const overrides = state.productOverrides || {};
+
+  // Direct match by productId
+  if (overrides[idOrSlug]) {
+    return overrides[idOrSlug];
+  }
+
+  // Search by slug or id property inside overrides
+  for (const [key, ov] of Object.entries(overrides)) {
+    if (key === idOrSlug || ov.slug === idOrSlug || ov.id === idOrSlug) {
+      return ov;
+    }
+  }
+
+  // Also check if idOrSlug matches a product in catalog
+  const catalogProduct = (rawCatalog as Product[]).find(
+    (p) => p.id === idOrSlug || p.slug === idOrSlug
+  );
+  if (catalogProduct && overrides[catalogProduct.id]) {
+    return overrides[catalogProduct.id];
+  }
+
+  return undefined;
+}
+
+/**
+ * Atomically updates product details (texts, photos, variants) and updates
+ * synchronized variantStocks in the admin store. Emits scelta_admin_store_updated.
+ */
+export function updateProductDetails(
+  productId: string,
+  updates: Partial<Product>
+): Partial<Product> {
+  const state = getAdminStoreState();
+  if (!state.productOverrides) {
+    state.productOverrides = {};
+  }
+
+  const existing = state.productOverrides[productId] || {};
+  const merged: Partial<Product> = {
+    ...existing,
+    ...updates,
+  };
+
+  state.productOverrides[productId] = merged;
+
+  // Synchronize variant stocks if relevant product metadata or variants were updated
+  const now = new Date().toISOString();
+  const rawProduct = (rawCatalog as Product[]).find((p) => p.id === productId);
+
+  // If variants array is explicitly passed in updates, update/add corresponding variantStocks
+  if (updates.variants && Array.isArray(updates.variants)) {
+    for (const v of updates.variants) {
+      const existingStock = state.variantStocks[v.id];
+      const quantity = typeof v.stock === "number" ? v.stock : (existingStock?.stockQuantity ?? 0);
+      const effectivePrice = v.price !== undefined ? v.price : (existingStock?.price ?? updates.price ?? 0);
+
+      state.variantStocks[v.id] = {
+        variantId: v.id,
+        productId,
+        sku: v.sku || existingStock?.sku || v.id,
+        ean: v.ean || existingStock?.ean || "",
+        name: v.name || existingStock?.name || "Variante",
+        colorHex: v.colorHex !== undefined ? (v.colorHex || undefined) : existingStock?.colorHex,
+        stockQuantity: Math.max(0, Math.floor(quantity)),
+        stockStatus: computeStockStatus(quantity),
+        price: Math.max(0, Math.round(effectivePrice * 100) / 100),
+        originalWholesalePrice: v.originalWholesalePrice ?? existingStock?.originalWholesalePrice,
+        productName: updates.name || existingStock?.productName || rawProduct?.name,
+        brand: updates.brand || existingStock?.brand || rawProduct?.brand,
+        category: updates.category || existingStock?.category || rawProduct?.category,
+        image: v.image || (updates.images && updates.images[0]) || existingStock?.image || "",
+        updatedAt: now,
+      };
+    }
+  } else {
+    // If top-level fields like name, brand, category, images, or price changed without replacing variants array:
+    // Propagate changes to existing variants of this product in variantStocks
+    for (const [varId, vStock] of Object.entries(state.variantStocks)) {
+      if (vStock.productId === productId) {
+        let changed = false;
+        const updatedV: SceltaVariantStock = { ...vStock };
+        if (updates.name && updates.name !== vStock.productName) {
+          updatedV.productName = updates.name;
+          changed = true;
+        }
+        if (updates.brand && updates.brand !== vStock.brand) {
+          updatedV.brand = updates.brand;
+          changed = true;
+        }
+        if (updates.category && updates.category !== vStock.category) {
+          updatedV.category = updates.category;
+          changed = true;
+        }
+        if (updates.images && updates.images[0] && (!vStock.image || vStock.image === rawProduct?.images[0])) {
+          updatedV.image = updates.images[0];
+          changed = true;
+        }
+        if (updates.price !== undefined && updates.price > 0 && (!rawProduct?.variants?.some((v) => v.id === varId && v.price !== undefined))) {
+          updatedV.price = updates.price;
+          changed = true;
+        }
+        if (changed) {
+          updatedV.updatedAt = now;
+          state.variantStocks[varId] = updatedV;
+        }
+      }
+    }
+  }
+
+  saveAdminStoreState(state);
+  return merged;
 }
 
 // ------------------------------------------------------------------------------

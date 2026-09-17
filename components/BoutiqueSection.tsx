@@ -16,7 +16,7 @@ export default function BoutiqueSection() {
             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
               <Image
                 src="/brand/negozio-fisico.png"
-                alt="Boutique Scelta Makeup a Napoli"
+                alt="Salone Scelta Makeup a Napoli"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover transition-transform duration-700 hover:scale-105"
@@ -25,7 +25,7 @@ export default function BoutiqueSection() {
               
               <div className="absolute top-4 left-4">
                 <span className="px-3.5 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-white/95 text-[#5E1788] shadow-sm backdrop-blur-xs">
-                  Boutique Napoli
+                  Salone Napoli
                 </span>
               </div>
             </div>
@@ -60,7 +60,7 @@ export default function BoutiqueSection() {
             </h2>
 
             <p className="text-neutral-600 text-sm sm:text-base font-light leading-relaxed">
-              Nel cuore di Napoli, la boutique <strong>Scelta Makeup</strong> è il tempio della cosmesi professionale. Un ambiente raffinato dove scoprire dal vivo le nuove collezioni <strong>Diego della Palma</strong> e <strong>Cipria Makeup</strong>, provare le sfumature perfette per il tuo sottotono e ricevere consigli su misura.
+              Nel cuore di Napoli, il salone <strong>Scelta Makeup</strong> è il tempio della cosmesi professionale. Un ambiente raffinato dove scoprire dal vivo le nuove collezioni <strong>Diego della Palma</strong> e <strong>Cipria Makeup</strong>, provare le sfumature perfette per il tuo sottotono e ricevere consigli su misura.
             </p>
 
             <div className="space-y-4 pt-2 border-t border-[#D8C2E7]/40">
@@ -109,7 +109,7 @@ export default function BoutiqueSection() {
                   </h4>
                   <button
                     type="button"
-                    onClick={() => openWhatsAppModal("Salve, vorrei informazioni sui prodotti o servizi Scelta Makeup", "Boutique Napoli")}
+                    onClick={() => openWhatsAppModal("Salve, vorrei informazioni sui prodotti o servizi Scelta Makeup", "Salone Napoli")}
                     className="text-sm font-semibold text-[#5E1788] hover:underline text-left cursor-pointer flex items-center gap-1.5"
                   >
                     <span>Numero in attivazione al lancio</span>
@@ -137,7 +137,7 @@ export default function BoutiqueSection() {
 
               <button
                 type="button"
-                onClick={() => openWhatsAppModal("Salve, vorrei informazioni sui prodotti Scelta Makeup", "Boutique Napoli")}
+                onClick={() => openWhatsAppModal("Salve, vorrei informazioni sui prodotti Scelta Makeup", "Salone Napoli")}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-600 text-white text-xs font-semibold tracking-wider uppercase hover:bg-emerald-700 transition-colors cursor-pointer shadow-md shadow-emerald-700/20"
               >
                 <MessageCircle className="h-4 w-4" />

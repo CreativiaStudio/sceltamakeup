@@ -1,14 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, Activity, Sparkles, Layers } from "lucide-react";
 import { AdminKpiSummary } from "@/lib/adminStore";
+import TrackingInfrastructureSection from "./TrackingInfrastructureSection";
 
 interface AnalyticsTabProps {
   kpis: AdminKpiSummary;
 }
 
 export default function AnalyticsTab({ kpis }: AnalyticsTabProps) {
+  const [activeSection, setActiveSection] = useState<"sales" | "tracking">("sales");
   const [timeRange, setTimeRange] = useState<"7d" | "30d" | "90d">("30d");
 
   const brandBreakdown = [
@@ -29,7 +31,7 @@ export default function AnalyticsTab({ kpis }: AnalyticsTabProps) {
   ];
 
   const funnelStages = [
-    { stage: "Visite Boutique Online", count: 14250, conversion: "100%" },
+    { stage: "Visite Salone Online", count: 14250, conversion: "100%" },
     { stage: "Visualizzazioni Prodotto", count: 9120, conversion: "64.0%" },
     { stage: "Aggiunte al Carrello", count: 1680, conversion: "11.8%" },
     { stage: "Inizio Checkout", count: 720, conversion: "5.05%" },
@@ -44,57 +46,90 @@ export default function AnalyticsTab({ kpis }: AnalyticsTabProps) {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="font-serif text-2xl font-bold text-[#1F1B24]">
-              Statistiche & Performance Vendite
-            </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#5E1788]/10 text-[#5E1788] border border-[#5E1788]/20">
-              Report E-Commerce
-            </span>
-          </div>
-          <p className="text-xs text-gray-500 mt-1">
-            Analisi del fatturato, quote di mercato per brand, canali di spedizione e imbuto di conversione.
-          </p>
-        </div>
+      {/* Navigation Sub-Tabs */}
+      <div className="flex items-center gap-2 border-b border-gray-200 pb-3">
+        <button
+          type="button"
+          onClick={() => setActiveSection("sales")}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+            activeSection === "sales"
+              ? "bg-[#5E1788] text-white shadow-sm"
+              : "bg-white text-gray-600 hover:text-gray-900 border border-gray-200"
+          }`}
+        >
+          <TrendingUp className="w-3.5 h-3.5" />
+          <span>Performance Vendite & Imbuto</span>
+        </button>
 
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-gray-200 text-xs">
-            <button
-              onClick={() => setTimeRange("7d")}
-              className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
-                timeRange === "7d"
-                  ? "bg-[#5E1788] text-white font-semibold"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
-            >
-              7 Giorni
-            </button>
-            <button
-              onClick={() => setTimeRange("30d")}
-              className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
-                timeRange === "30d"
-                  ? "bg-[#5E1788] text-white font-semibold"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
-            >
-              30 Giorni
-            </button>
-            <button
-              onClick={() => setTimeRange("90d")}
-              className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
-                timeRange === "90d"
-                  ? "bg-[#5E1788] text-white font-semibold"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
-            >
-              Trimestre
-            </button>
-          </div>
-        </div>
+        <button
+          type="button"
+          onClick={() => setActiveSection("tracking")}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+            activeSection === "tracking"
+              ? "bg-[#5E1788] text-white shadow-sm"
+              : "bg-white text-gray-600 hover:text-gray-900 border border-gray-200"
+          }`}
+        >
+          <Activity className="w-3.5 h-3.5 text-[#D462A6]" />
+          <span>Infrastruttura Tracciamento & Pixel (GA4 / GTM / Meta CAPI)</span>
+        </button>
       </div>
+
+      {activeSection === "tracking" ? (
+        <TrackingInfrastructureSection />
+      ) : (
+        <>
+          {/* Page Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="font-serif text-2xl font-bold text-[#1F1B24]">
+                  Statistiche & Performance Vendite
+                </h1>
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#5E1788]/10 text-[#5E1788] border border-[#5E1788]/20">
+                  Report E-Commerce
+                </span>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                Analisi del fatturato, quote di mercato per brand, canali di spedizione e imbuto di conversione.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-gray-200 text-xs">
+                <button
+                  onClick={() => setTimeRange("7d")}
+                  className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
+                    timeRange === "7d"
+                      ? "bg-[#5E1788] text-white font-semibold"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  7 Giorni
+                </button>
+                <button
+                  onClick={() => setTimeRange("30d")}
+                  className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
+                    timeRange === "30d"
+                      ? "bg-[#5E1788] text-white font-semibold"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  30 Giorni
+                </button>
+                <button
+                  onClick={() => setTimeRange("90d")}
+                  className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
+                    timeRange === "90d"
+                      ? "bg-[#5E1788] text-white font-semibold"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  Trimestre
+                </button>
+              </div>
+            </div>
+          </div>
 
       {/* Top Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -125,7 +160,7 @@ export default function AnalyticsTab({ kpis }: AnalyticsTabProps) {
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm space-y-1">
-          <div className="text-xs text-gray-500">Ritiro Boutique vs Corriere</div>
+          <div className="text-xs text-gray-500">Ritiro Salone vs Corriere</div>
           <div className="text-2xl font-bold text-[#1F1B24]">42% / 58%</div>
           <div className="text-[11px] text-gray-500">
             Forte preferenza in-store a Napoli
@@ -199,7 +234,7 @@ export default function AnalyticsTab({ kpis }: AnalyticsTabProps) {
         <div className="flex items-center justify-between pb-3 border-b border-gray-100">
           <div>
             <h3 className="font-serif text-base font-bold text-[#1F1B24]">
-              Imbuto di Conversione Store & Boutique
+              Imbuto di Conversione Store & Salone
             </h3>
             <p className="text-xs text-gray-500">
               Dalla prima visita anonima fino alla transazione completata
@@ -232,6 +267,8 @@ export default function AnalyticsTab({ kpis }: AnalyticsTabProps) {
           ))}
         </div>
       </div>
+        </>
+      )}
     </div>
   );
 }

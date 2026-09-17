@@ -19,7 +19,7 @@ export function calculateJitter(): number {
 const GREETINGS = ["Gentile", "Cara", "Buongiorno", "Ciao"];
 const SIGNOFFS = [
   "Federica Cesiano — Scelta Makeup",
-  "Un caro saluto, Federica — Scelta Makeup Boutique",
+  "Un caro saluto, Federica — Scelta Makeup Salone",
   "Ti aspetto con gioia, Federica Cesiano",
   "Con affetto, Federica — Scelta Makeup",
 ];
@@ -125,21 +125,21 @@ abbiamo il piacere di confermarti la riservazione del tuo trattamento:
 📅 *Data:* ${bookingDate}
 ⏰ *Orario:* ${bookingTime}
 👩‍🎨 *Professionista:* ${operatorName}
-📍 *Boutique:* ${STORE_ADDRESS}
+📍 *Salone:* ${STORE_ADDRESS}
 🔖 *Codice Prenotazione:* ${bookingCode}
 
 💳 *Riepilogo Tariffa Trasparente:*
 • Prezzo di Listino: €${priceList.toFixed(2)}
 • Vantaggio Esclusivo Online (-10%): -€${discountOnline.toFixed(2)}
 • Quota di Conferma Versata (20%): €${depositPaid.toFixed(2)} (Incassata)
-👉 *Saldo Residuo in Boutique (80%): €${balanceDue.toFixed(2)}*
+👉 *Saldo Residuo in Salone (80%): €${balanceDue.toFixed(2)}*
 (Potrai saldare comodamente in negozio con Carta/POS myPOS o Contanti)
 
 🌿 *Consiglio di Bellezza Scelta Makeup:*
 ${preTreatmentTip}
 
 Per qualsiasi esigenza puoi rispondere direttamente a questo messaggio.
-A presto in Boutique!
+A presto in Salone!
 *${signOff}*`;
       break;
     }
@@ -185,7 +185,7 @@ il tuo ordine *#${orderNumber}* è in preparazione!
 🛍️ *Articoli:*
 ${itemsListFormatted}
 
-📍 *Ritiro Gratuito in Boutique:*
+📍 *Ritiro Gratuito in Salone:*
 • Sede: ${STORE_ADDRESS}
 • Orari di apertura: Lun - Sab 09:30 - 13:30 / 16:30 - 20:00
 • Campioncini di benvenuto: Inclusi nel tuo pacchetto ✨
@@ -316,7 +316,7 @@ const INITIAL_DEMO_HISTORY: QueuedWhatsAppMessage[] = [
     recipientPhone: "+39 333 456 7890",
     recipientName: "Chiara Rossi",
     templateType: "booking_confirmation",
-    messageText: `🌸 *SCELTA MAKEUP — Conferma Prenotazione* 🌸\n\nGentile *Chiara Rossi*,\nabbiamo il piacere di confermarti la riservazione del tuo trattamento:\n\n✨ *Servizio:* Make-up Evento & Cerimonia\n📅 *Data:* Oggi\n⏰ *Orario:* 13:30\n👩‍🎨 *Professionista:* Federica Cesiano\n📍 *Boutique:* Via dei Pellegrini 28/29, 80132 Napoli\n🔖 *Codice Prenotazione:* SC-260906-FC11\n\n💳 *Riepilogo:* Acconto versato €9.00 | Saldo in boutique €36.00\n\nA presto in Boutique!\n*Federica Cesiano — Scelta Makeup*`,
+    messageText: `🌸 *SCELTA MAKEUP — Conferma Prenotazione* 🌸\n\nGentile *Chiara Rossi*,\nabbiamo il piacere di confermarti la riservazione del tuo trattamento:\n\n✨ *Servizio:* Make-up Evento & Cerimonia\n📅 *Data:* Oggi\n⏰ *Orario:* 13:30\n👩‍🎨 *Professionista:* Federica Cesiano\n📍 *Salone:* Via dei Pellegrini 28/29, 80132 Napoli\n🔖 *Codice Prenotazione:* SC-260906-FC11\n\n💳 *Riepilogo:* Acconto versato €9.00 | Saldo in salone €36.00\n\nA presto in Salone!\n*Federica Cesiano — Scelta Makeup*`,
     checksum: "sha256_demo_a1b2c3d4",
     scheduledAt: new Date(Date.now() - 3600000 * 2).toISOString(),
     sentAt: new Date(Date.now() - 3600000 * 2 + 28000).toISOString(),

@@ -187,4 +187,56 @@ Risultati dell'analisi di benchmark estetico svolta dal subagent browser su Dieg
 6. SICUREZZA:
    - È già stato creato il commit git iniziale 'checkpoint: stato stabile prima del restyling estetico'. Mantieni tutto modulare e reversibile, e verifica che alla fine 'npx tsc --noEmit' e 'npm run build' completino con 0 errori.
 
+## 2026-09-15T10:57:21Z
+
+# Teamwork Project Prompt
+
+Audit approfondito e bonifica al 100% delle immagini del catalogo Scelta Makeup (risolvendo i placeholder errati come la matita 31 assegnata allo shampoo doccia DHC110160 e ad altri 37 prodotti) tramite riscontro con fatture caricate e siti ufficiali dei produttori, unitamente alla finalizzazione completa della suite gestionale (/admin) per la call con Federica Cesiano.
+
+Working directory: c:/Users/mario/Progetti Antigravity/Scelta Makeup
+Integrity mode: development
+
+## Requirements
+
+### R1. Bonifica e Allineamento Immagini Catalogo Prodotti (Zero Mismatch)
+- Analizzare tutti i 341 prodotti e le rispettive immagini in `public/products/` e `data/catalog.json`.
+- Individuare e sostituire tutte le immagini duplicate/placeholder (in particolare il gruppo di 38 prodotti a cui è stata erroneamente associata la matita `rvb-matita-labbra-31`, e gli altri gruppi clonati di skincare DDP).
+- Ricercare sui siti ufficiali dei produttori (`rvblab.com`, `diegodallapalma.com`, distributori e `cipriamakeup.it`) i packshot esatti associati al codice articolo del DDT/fattura (SKU/EAN).
+- Scaricare e posizionare le immagini HD corrette in `public/products/` aggiornando i riferimenti in `data/catalog.json`.
+
+### R2. Suite Gestionale: Editor Prodotto Completo (Foto, Testi, Varianti)
+- Implementare l'interfaccia e la logica per modificare completamente qualsiasi prodotto da `/admin?tab=prodotti`:
+  - Modifica Foto packshot e gallery immagini (anteprima live, sostituzione/inserimento URL o upload);
+  - Modifica Testi: nome prodotto, categoria, brand, descrizione, consigli d'uso e benefici;
+  - Modifica Varianti: codici SKU/EAN, prezzi e scorte con ricalcolo immediato dei badge giacenza.
+- Persistenza atomica delle modifiche in `lib/adminStore.ts`.
+
+### R3. Suite Gestionale: Ordini, Spedizioni & Tracciamento Veloce
+- Completare il tab `/admin?tab=ordini` con modale dettaglio stampabile e inserimento ordini manuali da banco/telefono/WhatsApp.
+- Nel tab `/admin?tab=spedizioni`, implementare i link diretti di tracking cliccabili per BRT, GLS, DHL e Poste Italiane, oltre a template di notifica WhatsApp precompilati con link di tracking con 1 click.
+
+### R4. Suite Gestionale: Tracciamento Sito & Analytics
+- Nel tab `/admin?tab=analytics`, integrare la sezione "Infrastruttura Tracciamento & Pixel" esponendo lo stato e gli ID di Google Analytics 4, Google Tag Manager, Meta Pixel / CAPI e il registro degli eventi e-commerce tracciati (`page_view`, `view_item`, `add_to_cart`, `purchase`, ecc.).
+
+### R5. Suite Gestionale: Agenda Appuntamenti Semplificata Multi-Operatrice
+- Trasformare il modulo prenotazioni in un'agenda oraria semplificata con visualizzazione a slot orari.
+- Supporto Multi-Operatrice nativo:
+  - 🟣 Federica Cesiano (Master Make-Up Artist — Postazione Trucco Negozio);
+  - 🌸 Futura Collega / Cabina Estetica (Beauty Specialist Cabina Privata).
+- Filtro rapido tra le operatrici e assegnazione in fase di prenotazione al volo, mantenendo il calcolo automatico acconto (20%) / saldo store (80%) e il comando scontrino per la cassa Epson FP-81II RT.
+
+## Acceptance Criteria
+
+### Verifica Immagini & Catalogo
+- [ ] Nessun prodotto di skincare o solari (es. `DHC110160 SUN SHAMPOO`) visualizza più immagini di matite per labbra o cosmetici non pertinenti.
+- [ ] La verifica di corrispondenza hash tra immagini dimostra che i 38 duplicati anomali sono stati eliminati e sostituiti da packshot reali dei relativi prodotti.
+- [ ] Il catalogo di 341 prodotti carica correttamente senza immagini 404 o rotte.
+
+### Verifica Funzionale Gestionale
+- [ ] Modifica prodotto: è possibile modificare nome, descrizione, foto e scorte di un prodotto da `/admin?tab=prodotti`, salvare e verificare la persistenza sia in admin che nella scheda pubblica `/prodotti/[slug]`.
+- [ ] Spedizioni: inserendo un codice tracking BRT o GLS compare il link cliccabile e il tasto WhatsApp genera il messaggio corretto con tracking.
+- [ ] Tracciamento: la sezione Analytics mostra chiaramente le credenziali di GA4, GTM e Meta Pixel con la simulazione eventi.
+- [ ] Agenda: l'agenda mostra gli appuntamenti divisi o filtrabili per operatrice (Federica vs Futura collega) con incasso saldo funzionante.
+- [ ] Zero errori TypeScript (`npx tsc --noEmit`) e tutti i test di regressione esistenti superati (`npx tsx --test tests/e2e-admin-suite.test.ts`).
+
 

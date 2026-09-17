@@ -149,7 +149,7 @@ export default function CheckoutPage() {
               Grazie per il tuo acquisto
             </h1>
             <p className="text-sm text-neutral-600 font-light">
-              Il tuo ordine è stato registrato con successo. Ti invieremo un&apos;email di riepilogo con i dettagli per la spedizione o per il ritiro nella nostra Boutique di Napoli.
+              Il tuo ordine è stato registrato con successo. Ti invieremo un&apos;email di riepilogo con i dettagli per la spedizione o per il ritiro nel nostro Salone di Napoli.
             </p>
           </div>
 
@@ -157,7 +157,7 @@ export default function CheckoutPage() {
             <p>
               <strong>Metodo di consegna:</strong>{" "}
               {deliveryMethod === "boutique"
-                ? "Ritiro in Boutique (Via dei Pellegrini 28/29, Napoli)"
+                ? "Ritiro in Salone (Via dei Pellegrini 28/29, Napoli)"
                 : "Corriere Espresso Tracciato 24/48h"}
             </p>
             <p>
@@ -262,7 +262,7 @@ export default function CheckoutPage() {
                     <Store className="h-5 w-5 text-[#5E1788] shrink-0 mt-0.5" />
                     <div>
                       <p className="text-sm font-bold text-[#1F1B24]">
-                        Ritiro in Boutique Napoli
+                        Ritiro in Salone Napoli
                       </p>
                       <p className="text-xs text-emerald-600 font-semibold">
                         Sempre Gratuito • Via dei Pellegrini
@@ -426,7 +426,7 @@ export default function CheckoutPage() {
                           className="text-[#5E1788] focus:ring-[#5E1788]"
                         />
                         <span className="text-sm font-medium text-neutral-800">
-                          Paga direttamente al Ritiro in Boutique a Napoli
+                          Paga direttamente al Ritiro in Salone a Napoli
                         </span>
                       </div>
                       <Store className="h-5 w-5 text-neutral-400" />

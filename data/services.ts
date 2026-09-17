@@ -5,19 +5,19 @@ export const OPERATORS: Operator[] = [
     id: "op-federica-cesiano",
     name: "Federica Cesiano",
     channel: "makeup",
-    role: "Founder & Master Make-Up Artist",
+    role: "Master Make-Up Artist — Postazione Trucco Negozio",
     bio: "Esperta dermocosmetica e make-up artist specializzata in trucco cerimonia, valorizzazione dell'incarnato e consulenza su misura.",
     avatar: "/brand/logo.png",
     active: true,
   },
   {
     id: "op-beauty-cabina",
-    name: "Operatrice Estetica Dedicata",
+    name: "Futura Collega / Cabina Estetica",
     channel: "beauty",
-    role: "Beauty Specialist Cabina",
+    role: "Beauty Specialist Cabina Privata",
     bio: "Trattamenti dermocosmetici avanzati e cura della pelle in cabina privata.",
     avatar: "/brand/logo.png",
-    active: false, // Disattivato ora, pronto per il lancio futuro
+    active: true,
   },
 ];
 
@@ -174,7 +174,7 @@ export const SERVICES: Service[] = [
     depositPercent: 0.2,
     depositAmount: 12.6,
     balanceAmount: 50.4,
-    active: false, // Futuro Canale Beauty
+    active: true, // Attivo per Canale Beauty / Cabina
     image: "/products/diego-dalla-palma-sun-oil-olio-spray-protettivo-illum-dhc120161.jpg",
     benefits: [
       "Cabina privata e atmosfera relax totale",

@@ -12,6 +12,7 @@ import {
   Save,
   MessageSquare,
   Sparkles,
+  ExternalLink,
 } from "lucide-react";
 import {
   getAdminOrders,
@@ -19,6 +20,11 @@ import {
   updateOrderStatus,
   SceltaAdminOrder,
 } from "@/lib/adminStore";
+import {
+  getCourierTrackingUrl,
+  getWhatsAppTrackingMessage,
+  getWhatsAppDirectUrl,
+} from "@/lib/trackingUtils";
 
 export default function ShippingTable() {
   const [orders, setOrders] = useState<SceltaAdminOrder[]>(() => getAdminOrders());
@@ -133,7 +139,7 @@ export default function ShippingTable() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="font-serif text-2xl font-bold text-[#1F1B24]">
-              Banco Spedizioni & Ritiro in Boutique
+              Banco Spedizioni & Ritiro in Salone
             </h1>
             <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
               Logistica Operativa
@@ -194,7 +200,7 @@ export default function ShippingTable() {
               }`}
             >
               <Store className="w-3.5 h-3.5 text-[#5E1788]" />
-              <span>Ritiro in Boutique ({orders.filter((o) => o.fulfillmentType === "store_pickup").length})</span>
+              <span>Ritiro Salone ({orders.filter((o) => o.fulfillmentType === "store_pickup").length})</span>
             </button>
           </div>
 
@@ -251,7 +257,7 @@ export default function ShippingTable() {
                       ) : (
                         <>
                           <Store className="w-3 h-3 text-[#5E1788]" />
-                          <span>Ritiro in Boutique Napoli</span>
+                          <span>Ritiro Salone Napoli</span>
                         </>
                       )}
                     </span>
@@ -274,7 +280,7 @@ export default function ShippingTable() {
                     {order.status === "ready_for_pickup" && (
                       <span className="text-xs px-2.5 py-1 rounded-full bg-purple-100 text-[#5E1788] font-semibold flex items-center gap-1.5">
                         <Sparkles className="w-3 h-3" />
-                        Pronto per Ritiro in Boutique
+                        Pronto per Ritiro Salone
                       </span>
                     )}
                     {order.status === "completed" && (
@@ -336,7 +342,7 @@ export default function ShippingTable() {
                       <div className="p-3 bg-purple-50 rounded-xl border border-purple-200 text-xs text-purple-900 space-y-1">
                         <div className="font-semibold flex items-center gap-1">
                           <Store className="w-3.5 h-3.5 text-[#5E1788]" />
-                          <span>Ritiro in Boutique</span>
+                          <span>Ritiro Salone</span>
                         </div>
                         <p className="text-[11px] text-gray-600">
                           Via dei Pellegrini 28/29, Napoli (Atelier Federica Cesiano).
@@ -436,6 +442,34 @@ export default function ShippingTable() {
                             </>
                           )}
                         </button>
+
+                        {/* Direct Clickable Tracking Link & WhatsApp 1-Click Button */}
+                        {Boolean((tracking || order.trackingCode || "").trim()) && (
+                          <div className="pt-1.5 space-y-2">
+                            <a
+                              href={getCourierTrackingUrl(courier, (tracking || order.trackingCode || "").trim())}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="w-full py-2 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5 text-blue-600" />
+                              <span>Apri Portale Tracking ({courier})</span>
+                            </a>
+
+                            <a
+                              href={getWhatsAppDirectUrl(
+                                order.customerPhone,
+                                getWhatsAppTrackingMessage(order, (tracking || order.trackingCode || "").trim(), courier)
+                              )}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="w-full py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition-colors flex items-center justify-center gap-1.5"
+                            >
+                              <MessageSquare className="w-3.5 h-3.5" />
+                              <span>Notifica Spedizione WhatsApp (1-Click)</span>
+                            </a>
+                          </div>
+                        )}
                       </div>
                     ) : (
                       /* Boutique Pickup Actions */
@@ -466,7 +500,7 @@ export default function ShippingTable() {
 
                         <a
                           href={`https://wa.me/${order.customerPhone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-                            `Ciao ${order.customerName}! Il tuo ordine #${order.id} è stato preparato con cura ed è pronto per essere ritirato in boutique da Scelta Makeup (Via dei Pellegrini 28/29, Napoli). Ti aspettiamo!`
+                            `Ciao ${order.customerName}! Il tuo ordine #${order.id} è stato preparato con cura ed è pronto per essere ritirato in salone da Scelta Makeup (Via dei Pellegrini 28/29, Napoli). Ti aspettiamo!`
                           )}`}
                           target="_blank"
                           rel="noreferrer"

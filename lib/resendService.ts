@@ -8,7 +8,7 @@ import {
 } from "@/types/notification";
 
 const STORAGE_EMAILS_KEY = "scelta_makeup_dispatched_emails_v1";
-const STORE_NAME = "Scelta Makeup Boutique";
+const STORE_NAME = "Scelta Makeup Salone";
 const STORE_ADDRESS = "Via dei Pellegrini 28/29, 80132 Napoli (NA)";
 const OFFICIAL_FROM_EMAIL = "Scelta Makeup <onboarding@resend.dev>";
 
@@ -28,7 +28,7 @@ export const BRAND_PALETTE = {
  * Mathematical Financial Engine:
  * - 10% exclusive online booking discount
  * - 20% online confirmation deposit
- * - 80% remaining balance due in boutique
+ * - 80% remaining balance due in salone
  * Guarantees that depositPaid + balanceDue === priceOnline to the exact cent.
  */
 export function calculateBookingFinancials(priceList: number): BookingFinancials {
@@ -200,10 +200,10 @@ export function renderBookingConfirmationEmail(context: {
     financials,
   } = context;
 
-  const subject = `Conferma Prenotazione: ${serviceName} | Scelta Makeup Boutique`;
+  const subject = `Conferma Prenotazione: ${serviceName} | Scelta Makeup Salone`;
 
   const eventTitle = `Scelta Makeup: ${serviceName}`;
-  const eventDetails = `Appuntamento per ${serviceName} con ${operatorName} presso Scelta Makeup. Codice prenotazione: ${bookingCode}. Saldo residuo da corrispondere in boutique: €${financials.balanceDue.toFixed(2)}.`;
+  const eventDetails = `Appuntamento per ${serviceName} con ${operatorName} presso Scelta Makeup. Codice prenotazione: ${bookingCode}. Saldo residuo da corrispondere in salone: €${financials.balanceDue.toFixed(2)}.`;
   const googleCalUrl = generateGoogleCalendarUrl(
     eventTitle,
     eventDetails,
@@ -249,7 +249,7 @@ export function renderBookingConfirmationEmail(context: {
                     Cara ${customerName},
                   </h2>
                   <p style="margin: 0; font-size: 14px; color: #585060; line-height: 1.6;">
-                    Abbiamo riservato la postazione e la professionista in via del tutto esclusiva per il tuo momento di bellezza in boutique.
+                    Abbiamo riservato la postazione e la professionista in via del tutto esclusiva per il tuo momento di bellezza in salone.
                   </p>
                 </div>
 
@@ -306,7 +306,7 @@ export function renderBookingConfirmationEmail(context: {
                   </h3>
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; font-size: 13px; color: ${BRAND_PALETTE.charcoalDeep};">
                     <tr style="border-bottom: 1px solid #F0E8F5;">
-                      <td style="padding: 10px 0; color: #6D6475;">Prezzo di Listino Boutique</td>
+                      <td style="padding: 10px 0; color: #6D6475;">Prezzo di Listino Salone</td>
                       <td style="padding: 10px 0; text-align: right; font-weight: 600;">€${financials.priceList.toFixed(2)}</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #F0E8F5;">
@@ -331,7 +331,7 @@ export function renderBookingConfirmationEmail(context: {
                     </tr>
                     <tr style="background-color: #FAF4FD; border-top: 2px solid ${BRAND_PALETTE.pastelLilac};">
                       <td style="padding: 14px 8px; font-family: 'Playfair Display', Georgia, serif; font-size: 16px; font-weight: bold; color: ${BRAND_PALETTE.royalViolet};">
-                        👉 Saldo Residuo in Boutique (80%)
+                        👉 Saldo Residuo in Salone (80%)
                       </td>
                       <td style="padding: 14px 8px; text-align: right; font-family: 'Playfair Display', Georgia, serif; font-size: 20px; font-weight: bold; color: ${BRAND_PALETTE.royalViolet};">
                         €${financials.balanceDue.toFixed(2)}
@@ -435,7 +435,7 @@ export function renderBookingReminderEmail(context: {
                     Cara ${customerName}, ti aspettiamo domani!
                   </h2>
                   <p style="margin: 0; font-size: 14px; color: #585060; line-height: 1.6;">
-                    Il tuo appuntamento esclusivo in boutique è programmato per domani. Ecco tutti i dettagli per vivere al meglio la tua esperienza:
+                    Il tuo appuntamento esclusivo in salone è programmato per domani. Ecco tutti i dettagli per vivere al meglio la tua esperienza:
                   </p>
                 </div>
 
@@ -457,7 +457,7 @@ export function renderBookingReminderEmail(context: {
                     </tr>
                     <tr>
                       <td style="padding-bottom: 10px;">
-                        <span style="font-size: 12px; color: #685E70;">💳 <strong>Saldo dovuto in boutique:</strong> €${balanceDue.toFixed(2)} (Carta o Contanti)</span>
+                        <span style="font-size: 12px; color: #685E70;">💳 <strong>Saldo dovuto in salone:</strong> €${balanceDue.toFixed(2)} (Carta o Contanti)</span>
                       </td>
                     </tr>
                     <tr>
@@ -546,7 +546,7 @@ export function renderOrderPlacedEmail(order: Order): EmailRenderOutput {
     ? `
     <div style="background-color: #FAF4FD; border: 1px solid ${BRAND_PALETTE.pastelLilac}; border-radius: 14px; padding: 18px; margin-bottom: 24px;">
       <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: ${BRAND_PALETTE.royalViolet}; letter-spacing: 1px; margin-bottom: 6px;">
-        📍 Ritiro Gratuito in Boutique
+        📍 Ritiro Gratuito in Salone
       </div>
       <div style="font-size: 13px; color: #4F4656; line-height: 1.6;">
         <strong>Sede:</strong> Scelta Makeup, Via dei Pellegrini 28/29, 80132 Napoli<br/>

@@ -53,7 +53,7 @@ export default function Footer() {
               Ricevi anteprime esclusive e il 10% di benvenuto
             </h3>
             <p className="text-xs sm:text-sm text-neutral-400 mt-1 font-light">
-              Iscriviti alla newsletter per consigli dai nostri make-up artist, inviti agli eventi in boutique e promozioni riservate.
+              Iscriviti alla newsletter per consigli dai nostri make-up artist, inviti agli eventi in Salone e promozioni riservate.
             </p>
           </div>
 
@@ -91,7 +91,7 @@ export default function Footer() {
           <div className="lg:col-span-4 space-y-4">
             <BrandLogo variant="footer" />
             <p className="text-xs text-neutral-400 font-light leading-relaxed pt-2">
-              Boutique cosmetica e atelier di bellezza a Napoli. Selezioniamo le migliori formulazioni Diego della Palma e Cipria Makeup per esaltare l&apos;eleganza di ogni donna con autenticità e maestria.
+              Salone cosmetico e atelier di bellezza a Napoli. Selezioniamo le migliori formulazioni Diego della Palma e Cipria Makeup per esaltare l&apos;eleganza di ogni donna con autenticità e maestria.
             </p>
             <div className="flex items-center gap-3 pt-2 text-neutral-400">
               <a
@@ -121,10 +121,10 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Col 2: Boutique Fisica Napoli */}
+          {/* Col 2: Salone Fisico Napoli */}
           <div className="lg:col-span-4 space-y-3">
             <h4 className="text-xs tracking-widest uppercase font-semibold text-[#D8C2E7]">
-              Boutique Napoli
+              Salone Napoli
             </h4>
             <ul className="space-y-2.5 text-xs text-neutral-300 font-light">
               <li className="flex items-start gap-2.5">
@@ -135,7 +135,7 @@ export default function Footer() {
                 <Phone className="h-4 w-4 text-[#D462A6] shrink-0" />
                 <button
                   type="button"
-                  onClick={() => openWhatsAppModal("Salve, vorrei informazioni sui prodotti o servizi della boutique", "Footer Info")}
+                  onClick={() => openWhatsAppModal("Salve, vorrei informazioni sui prodotti o servizi del salone", "Footer Info")}
                   className="hover:text-white transition-colors cursor-pointer text-left"
                 >
                   WhatsApp: In attivazione (Demo)
@@ -203,7 +203,7 @@ export default function Footer() {
           {/* Col 4: Servizio Clienti & Garanzie */}
           <div className="lg:col-span-2 space-y-3">
             <h4 className="text-xs tracking-widest uppercase font-semibold text-[#D8C2E7]">
-              Garanzie Boutique
+              Garanzie Salone
             </h4>
             <ul className="space-y-2 text-xs text-neutral-400">
               <li className="flex items-center gap-2">

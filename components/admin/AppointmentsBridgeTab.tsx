@@ -16,19 +16,19 @@ export default function AppointmentsBridgeTab() {
       {/* Top Banner */}
       <div className="bg-gradient-to-r from-[#5E1788] to-[#7A3293] rounded-2xl p-6 text-white shadow-xl flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-white/20 text-[#D8C2E7] border border-white/20">
-              Modulo Ufficiale Salone
+          <div className="flex flex-wrap items-center gap-2 mb-1">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-white/20 text-[#D8C2E7] border border-white/20">
+              Modulo Ufficiale Salone & Cassa RT
             </span>
             <span className="text-xs text-[#D8C2E7]/90 font-medium">
-              Epson FP-81II RT XML • Saldi 80% • Slot Protection
+              Epson FP-81II RT XML • Multi-Operatrice • Giornata 09:30-20:30 • Saldi 80%
             </span>
           </div>
           <h1 className="font-serif text-2xl font-bold tracking-tight">
-            Appuntamenti Cabina & Cassa RT
+            Agenda Appuntamenti Multi-Operatrice & Cassa RT
           </h1>
           <p className="text-xs text-[#D8C2E7] max-w-xl mt-1">
-            Il modulo storico di Federica Cesiano per la gestione delle sedute trucco, trattamenti viso, emissione scontrini telematici e blocco slot orari.
+            Gestione integrata per <strong>Federica Cesiano</strong> (Postazione Trucco Negozio) e <strong>Futura Collega</strong> (Cabina Estetica Privata), con scontrini fiscali telematici e incasso saldo.
           </p>
         </div>
 
@@ -51,7 +51,7 @@ export default function AppointmentsBridgeTab() {
             Registratore Telematico ePOS XML
           </h3>
           <p className="text-xs text-gray-600 leading-relaxed">
-            Generatore istantaneo di tracciati XML conformi Epson FP-81II RT con scorporo IVA ventilata e invio telematico Agenzia delle Entrate.
+            Generatore istantaneo di tracciati SOAP XML conformi Epson FP-81II RT (IP 192.168.68.63 fpmate.cgi) con scorporo IVA ventilata e invio telematico.
           </p>
           <Link
             href="/admin/appuntamenti"
@@ -67,10 +67,10 @@ export default function AppointmentsBridgeTab() {
             <DollarSign className="w-5 h-5" />
           </div>
           <h3 className="font-serif text-base font-bold text-[#1F1B24]">
-            Incasso Saldi in Boutique (80%)
+            Incasso Saldi in Salone (80%)
           </h3>
           <p className="text-xs text-gray-600 leading-relaxed">
-            Dopo il 20% di acconto online con carta/Stripe, incassa il restante 80% direttamente al banco boutique in contanti o POS myPOS Go 2.
+            Dopo il 20% di acconto online (Stripe), incassa il restante 80% direttamente al banco salone con POS myPOS Go 2 o Contanti.
           </p>
           <Link
             href="/admin/appuntamenti"
@@ -86,10 +86,10 @@ export default function AppointmentsBridgeTab() {
             <Lock className="w-5 h-5" />
           </div>
           <h3 className="font-serif text-base font-bold text-[#1F1B24]">
-            Tutela Solo-Worker & Blocco Slot
+            Agenda Oraria 09:30-20:30 & Multi-Operatrice
           </h3>
           <p className="text-xs text-gray-600 leading-relaxed">
-            Blocco 1-click per pause pranzo (13:30), orari oltre le 20:00 o trasferte sposa esterne, sincronizzato istantaneamente col booking online.
+            Pianificazione oraria con filtri rapidi tra Federica e Cabina Estetica, prenotazione al volo e blocco 1-click degli slot orari.
           </p>
           <Link
             href="/admin/appuntamenti"

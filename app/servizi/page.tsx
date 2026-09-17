@@ -53,7 +53,7 @@ export default function ServiziPage() {
                   10% di Sconto Immediato su tutte le prenotazioni online
                 </p>
                 <p className="text-xs text-[#D8C2E7] mt-0.5">
-                  Versa solo il 20% di acconto con carta, saldi il resto comodamente in boutique
+                  Versa solo il 20% di acconto con carta, saldi il resto comodamente in Salone
                 </p>
               </div>
               <Link
@@ -72,7 +72,7 @@ export default function ServiziPage() {
             <div>
               <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#5E1788]">
                 <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
-                Canale 1 — Postazione Trucco Boutique
+                Canale 1 — Postazione Trucco Salone
               </div>
               <h2 className="text-3xl font-serif font-bold text-[#1F1B24] mt-1">
                 Servizi Make-Up & Atelier Viso

@@ -8,7 +8,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Catalogo Completo Make-Up & Skincare | Scelta Makeup Napoli",
   description:
-    "Sfoglia l'intero catalogo di 341 creazioni cosmetiche professionali: Diego dalla Palma, Cipria Makeup, RVB LAB, Pierre René ed Eveline Cosmetics. Spedizione gratuita da 49€ o ritiro in boutique a Napoli.",
+    "Sfoglia l'intero catalogo di 341 creazioni cosmetiche professionali: Diego dalla Palma, Cipria Makeup, RVB LAB, Pierre René ed Eveline Cosmetics. Spedizione gratuita da 49€ o ritiro in Salone a Napoli.",
 };
 
 export default async function ProdottiCatalogPage() {

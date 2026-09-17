@@ -17,8 +17,9 @@ import {
   getAdminVariantStocks,
   computeStockStatus,
   SceltaVariantStock,
+  getProductOverrides,
 } from "@/lib/adminStore";
-import ProductStockModal from "./ProductStockModal";
+import ProductEditorModal from "./ProductEditorModal";
 
 const ALL_PRODUCTS = rawCatalog as Product[];
 
@@ -52,13 +53,17 @@ export default function ProductCatalogTable() {
   // Selected product for modal stock & price editing
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
-  // Variant stocks from adminStore initialized synchronously
+  // Variant stocks and product overrides from adminStore
   const [stocksMap, setStocksMap] = useState<Record<string, SceltaVariantStock>>(() =>
     getAdminVariantStocks()
+  );
+  const [overridesMap, setOverridesMap] = useState<Record<string, Partial<Product>>>(() =>
+    getProductOverrides()
   );
 
   const refreshStocks = useCallback(() => {
     setStocksMap(getAdminVariantStocks());
+    setOverridesMap(getProductOverrides());
   }, []);
 
   useEffect(() => {
@@ -128,11 +133,25 @@ export default function ProductCatalogTable() {
     [stocksMap]
   );
 
+  // Products with applied overrides from admin store
+  const productsWithOverrides = useMemo(() => {
+    return ALL_PRODUCTS.map((product) => {
+      const override = overridesMap[product.id];
+      if (!override) return product;
+      return {
+        ...product,
+        ...override,
+        variants: override.variants || product.variants,
+        images: override.images || product.images,
+      };
+    });
+  }, [overridesMap]);
+
   // Filtered products
   const filteredProducts = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
 
-    return ALL_PRODUCTS.filter((product) => {
+    return productsWithOverrides.filter((product) => {
       // Brand filter
       if (selectedBrand !== "Tutti" && product.brand !== selectedBrand) {
         return false;
@@ -476,10 +495,10 @@ export default function ProductCatalogTable() {
                             type="button"
                             onClick={() => setEditingProduct(product)}
                             className="px-3 py-1.5 rounded-lg bg-[#5E1788]/10 hover:bg-[#5E1788] text-[#5E1788] hover:text-white text-xs font-semibold transition-colors flex items-center gap-1.5"
-                            title="Modifica prezzi e giacenze per variante"
+                            title="Modifica scheda completa, foto, testi e varianti"
                           >
                             <Edit className="w-3.5 h-3.5" />
-                            <span>Stock & Prezzi</span>
+                            <span>Modifica Prodotto</span>
                           </button>
 
                           <Link
@@ -534,8 +553,8 @@ export default function ProductCatalogTable() {
         </div>
       </div>
 
-      {/* Variant Stock Edit Modal */}
-      <ProductStockModal
+      {/* Product Full Editor Modal */}
+      <ProductEditorModal
         product={editingProduct}
         isOpen={Boolean(editingProduct)}
         onClose={() => setEditingProduct(null)}

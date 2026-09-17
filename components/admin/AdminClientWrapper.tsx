@@ -86,7 +86,7 @@ export default function AdminClientWrapper() {
       case "ordini":
         return "Ordini E-Commerce";
       case "spedizioni":
-        return "Banco Spedizioni Corriere & Ritiro Boutique";
+        return "Banco Spedizioni Corriere & Ritiro Salone";
       case "clienti":
         return "Clienti & CRM Omnichannel";
       case "appuntamenti":

@@ -78,7 +78,7 @@ export default function NotificationQueueTab() {
   const handleToggleConnection = () => {
     if (queueState.sessionStatus === "open") {
       setWhatsAppSessionStatus("close");
-      showFeedback("Sessione WhatsApp boutique disconnessa.");
+      showFeedback("Sessione WhatsApp salone disconnessa.");
     } else if (queueState.sessionStatus === "close") {
       setWhatsAppSessionStatus("connecting");
       showFeedback("Nuova sessione QR generata in attesa di scansione.");
@@ -109,7 +109,7 @@ export default function NotificationQueueTab() {
       });
 
       const result = await sendResendEmail({
-        to: "boutique@sceltamakeup.it",
+        to: "salone@sceltamakeup.it",
         recipientName: "Federica Cesiano",
         templateType: emailPreviewTab,
         subject,
@@ -284,7 +284,7 @@ export default function NotificationQueueTab() {
               Centro Notifiche & Pacing Anti-Ban WhatsApp • Resend Email
             </div>
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#1F1B24]">
-              Monitor Trasmissioni & Sessione Boutique
+              Monitor Trasmissioni & Sessione Salone
             </h2>
             <p className="text-xs text-[#1F1B24]/70 max-w-2xl leading-relaxed">
               Protezione integrale anti-ban per il numero di Federica con ritardo naturale controllato (20–45s) e anteprima visuale ad alta fedeltà delle comunicazioni di lusso.
@@ -344,7 +344,7 @@ export default function NotificationQueueTab() {
                 </div>
                 <div>
                   <h3 className="text-base font-serif font-bold text-[#1F1B24]">
-                    WhatsApp Store Boutique
+                    WhatsApp Store Salone
                   </h3>
                   <span className="text-[11px] text-gray-500 block">
                     Evolution API • Sessione Negozio
@@ -385,7 +385,7 @@ export default function NotificationQueueTab() {
                   {queueState.connectedNumber}
                 </span>
                 <span className="text-[10px] text-gray-500 block mt-0.5">
-                  Boutique Scelta Makeup • Napoli
+                  Salone Scelta Makeup • Napoli
                 </span>
               </div>
               <div className="text-right">
@@ -955,7 +955,7 @@ export default function NotificationQueueTab() {
                 <span className="text-base font-serif font-bold text-gray-900 mt-1 block">
                   €{previewFinancials.priceList.toFixed(2)}
                 </span>
-                <span className="text-[9px] text-gray-500 block mt-0.5">Tariffa Store Boutique</span>
+                <span className="text-[9px] text-gray-500 block mt-0.5">Tariffa Store Salone</span>
               </div>
 
               <div className="bg-white p-3.5 rounded-xl border border-emerald-200 shadow-xs">
@@ -977,7 +977,7 @@ export default function NotificationQueueTab() {
               </div>
 
               <div className="bg-white p-3.5 rounded-xl border border-[#D462A6]/30 shadow-xs">
-                <span className="text-[10px] uppercase font-bold text-[#D462A6] block">4. Saldo Boutique (80%)</span>
+                <span className="text-[10px] uppercase font-bold text-[#D462A6] block">4. Saldo Salone (80%)</span>
                 <span className="text-base font-serif font-bold text-[#D462A6] mt-1 block">
                   €{previewFinancials.balanceDue.toFixed(2)}
                 </span>

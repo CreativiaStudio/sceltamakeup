@@ -82,7 +82,7 @@ export default function DashboardHome({
             Benvenuta, Federica
           </h1>
           <p className="text-xs sm:text-sm text-[#D8C2E7] max-w-2xl mt-1 font-light">
-            Monitoraggio in tempo reale del catalogo 341 prodotti, spedizioni con corriere espresso, ritiri in boutique e storico clienti.
+            Monitoraggio in tempo reale del catalogo 341 prodotti, spedizioni con corriere espresso, ritiri in salone e storico clienti.
           </p>
         </div>
 
@@ -262,7 +262,7 @@ export default function DashboardHome({
             <div className="text-base font-bold text-[#1F1B24]">
               {kpis.readyForPickupCount}
             </div>
-            <div className="text-[11px] text-gray-500">Pronti Ritiro Boutique</div>
+            <div className="text-[11px] text-gray-500">Pronti Ritiro Salone</div>
           </div>
         </div>
 
@@ -397,7 +397,7 @@ export default function DashboardHome({
                   Ordini Recenti
                 </h2>
                 <p className="text-xs text-gray-500 mt-0.5">
-                  Ultime richieste da corriere e boutique
+                  Ultime richieste da corriere e salone
                 </p>
               </div>
               <button

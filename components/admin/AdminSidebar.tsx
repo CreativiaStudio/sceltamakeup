@@ -142,7 +142,7 @@ export default function AdminSidebar({
                 </span>
               </div>
               <p className="text-[11px] text-[#D8C2E7]/80 tracking-wider">
-                Cockpit Boutique Napoli
+                Cockpit Salone Napoli
               </p>
             </div>
           </div>
@@ -230,7 +230,7 @@ export default function AdminSidebar({
           >
             <div className="flex items-center gap-2">
               <Store className="w-3.5 h-3.5 text-[#D462A6]" />
-              <span>Vedi Boutique Online</span>
+              <span>Vedi Salone Online</span>
             </div>
             <ExternalLink className="w-3.5 h-3.5 opacity-70" />
           </Link>

@@ -22,6 +22,9 @@ import {
   updateVariantPrice,
   computeStockStatus,
   getAdminKpis,
+  updateProductDetails,
+  getProductOverride,
+  getProductOverrides,
 } from "../lib/adminStore";
 import {
   catalog,
@@ -34,6 +37,27 @@ import {
   getAllCategories,
   getAllBrands,
 } from "../lib/catalog";
+import {
+  getOperators,
+  createAppointment,
+  markAppointmentPaid,
+  getAgendaSlots,
+  AGENDA_BOUTIQUE_SLOTS,
+} from "../lib/bookingService";
+import { SERVICES } from "../data/services";
+import {
+  getCourierTrackingUrl,
+  getWhatsAppTrackingMessage,
+  getWhatsAppDirectUrl,
+  formatPhoneForWhatsApp,
+} from "../lib/trackingUtils";
+import {
+  getTrackingConfig,
+  getTrackingEvents,
+  simulateTrackingEvent,
+  clearTrackingEvents,
+  resetTrackingEventsToDefault,
+} from "../lib/pixelTracker";
 
 const PROJECT_ROOT = path.resolve(__dirname, "..");
 
@@ -242,7 +266,7 @@ describe("Scelta Makeup E-Commerce Admin Suite E2E Test Suite (/admin)", () => {
 
       // Verify store state version and variant stocks map
       const state = getAdminStoreState();
-      assert.strictEqual(state.version, 1, "Admin store state version must be 1");
+      assert.strictEqual(state.version, 2, "Admin store state version must be 2");
       const stocksMap = getAdminVariantStocks();
       assert.strictEqual(Object.keys(stocksMap).length, 659, "getAdminVariantStocks must have 659 keys");
 
@@ -348,6 +372,257 @@ describe("Scelta Makeup E-Commerce Admin Suite E2E Test Suite (/admin)", () => {
 
       const notifQueueTabPath = path.join(PROJECT_ROOT, "components", "admin", "NotificationQueueTab.tsx");
       assert.ok(fs.existsSync(notifQueueTabPath), "components/admin/NotificationQueueTab.tsx must exist intact");
+    });
+
+    // 1.10 Multi-Operator Scheduling, Boutique Hourly Slots & Cassa RT (R5)
+    it("1.10 should support multi-operator scheduling, rapid assignment, 09:30-20:30 slots, and fiscal RT balance clearance", () => {
+      // 1. Verify both operators exist and are active
+      const operators = getOperators();
+      assert.ok(operators.length >= 2, "Must support at least 2 operators");
+
+      const federica = operators.find((o) => o.id === "op-federica-cesiano");
+      assert.ok(federica, "Federica Cesiano must exist");
+      assert.strictEqual(federica?.active, true);
+      assert.ok(federica?.role.includes("Postazione Trucco Negozio"));
+
+      const futuraCollega = operators.find((o) => o.id === "op-beauty-cabina");
+      assert.ok(futuraCollega, "Futura Collega / Cabina Estetica must exist");
+      assert.strictEqual(futuraCollega?.active, true);
+      assert.strictEqual(futuraCollega?.name, "Futura Collega / Cabina Estetica");
+      assert.strictEqual(futuraCollega?.role, "Beauty Specialist Cabina Privata");
+
+      // 2. Verify agenda boutique slots cover 09:30 - 20:30
+      assert.ok(AGENDA_BOUTIQUE_SLOTS.includes("09:30"), "Must include opening slot 09:30");
+      assert.ok(AGENDA_BOUTIQUE_SLOTS.includes("20:30"), "Must include closing slot 20:30");
+      assert.ok(AGENDA_BOUTIQUE_SLOTS.length >= 10, "Must contain full boutique day coverage");
+
+      // 3. Create appointment assigned to Futura Collega
+      const today = new Date().toISOString().split("T")[0];
+      const cabinaApp = createAppointment({
+        serviceId: "srv-beauty-mesofill",
+        date: today,
+        time: "11:30",
+        operatorId: "op-beauty-cabina",
+        customer: {
+          name: "Serena",
+          surname: "Maggiulli",
+          phone: "+39 333 998 7766",
+          email: "serena.maggiulli@example.com",
+          notes: "Trattamento cabina privata viso rigenerante",
+        },
+      });
+
+      assert.strictEqual(cabinaApp.operatorId, "op-beauty-cabina");
+      assert.strictEqual(cabinaApp.operatorName, "Futura Collega / Cabina Estetica");
+
+      // 4. Invariant: 20% online deposit, 80% balance due with zero cent discrepancy
+      const service = SERVICES.find((s) => s.id === "srv-beauty-mesofill");
+      assert.ok(service, "srv-beauty-mesofill service must exist");
+      assert.strictEqual(cabinaApp.pricing.depositPaid, service?.depositAmount);
+      assert.strictEqual(cabinaApp.pricing.balanceDue, service?.balanceAmount);
+      assert.strictEqual(
+        Math.round((cabinaApp.pricing.depositPaid + cabinaApp.pricing.balanceDue) * 100) / 100,
+        cabinaApp.pricing.priceOnline,
+        "Deposit + Balance must equal total online price with zero cent discrepancy"
+      );
+
+      // 5. In-store balance clearance and Epson FP-81II RT SOAP receipt generation
+      const checkout = markAppointmentPaid(cabinaApp.id, "mypos_card");
+      assert.strictEqual(checkout.success, true);
+      assert.strictEqual(checkout.appointment.status, "completed_paid");
+      assert.strictEqual(checkout.appointment.paymentMethodBalance, "mypos_card");
+      assert.ok(checkout.appointment.cassaReceiptNumber?.startsWith("RT-"));
+      assert.ok(checkout.receiptXml.includes("<printerFiscalReceipt>"));
+      assert.ok(checkout.receiptXml.includes("SCELTA MAKEUP - BOUTIQUE NAPOLI"));
+      assert.ok(checkout.receiptXml.includes("CARTA"));
+
+      // 6. Verify getAgendaSlots returns slots with appointments and respects operator filter
+      const allSlots = getAgendaSlots(today, "all");
+      assert.ok(allSlots.length >= AGENDA_BOUTIQUE_SLOTS.length);
+      const slot1130 = allSlots.find((s) => s.time === "11:30");
+      assert.ok(slot1130, "Slot 11:30 must exist");
+      assert.ok(slot1130?.appointments.some((a) => a.id === cabinaApp.id));
+
+      const cabinaOnlySlots = getAgendaSlots(today, "op-beauty-cabina");
+      const cabina1130 = cabinaOnlySlots.find((s) => s.time === "11:30");
+      assert.ok(cabina1130?.appointments.some((a) => a.id === cabinaApp.id));
+
+      const federicaOnlySlots = getAgendaSlots(today, "op-federica-cesiano");
+      const federica1130 = federicaOnlySlots.find((s) => s.time === "11:30");
+      assert.ok(!federica1130?.appointments.some((a) => a.id === cabinaApp.id));
+    });
+
+    // 1.11 Product Editor Modal Overrides & Catalog Integrity (R1 & R2)
+    it("1.11 should support full product editing with live overrides and catalog integrity (R1 & R2)", async () => {
+      // 1. Verify that DHC110160 does not point to lip pencil
+      const allProducts = await getAllProducts();
+      const sunShampoo = allProducts.find((p) => p.id.includes("DHC110160") || p.name.toUpperCase().includes("SUN SHAMPOO"));
+      if (sunShampoo) {
+        for (const img of sunShampoo.images) {
+          assert.strictEqual(
+            img.includes("rvb-matita-labbra-31"),
+            false,
+            "Sun shampoo must not use lip pencil 31 image"
+          );
+        }
+      }
+
+      // 2. Select a product to edit via ProductEditorModal logic
+      const targetProduct = allProducts[0];
+      assert.ok(targetProduct, "Target product must exist");
+
+      const originalOverrides = getProductOverrides();
+      assert.strictEqual(originalOverrides[targetProduct.id], undefined);
+
+      // 3. Atomically update product details (texts, photos, variants)
+      const updatedData = {
+        name: "Rossetto Iconico Edizione Speciale Atelier Napoli",
+        brand: "Diego dalla Palma",
+        category: "Labbra" as const,
+        shortDescription: "Formula vellutata e idratante a lunga durata.",
+        description: "Nuova descrizione completa con attivi emollienti e finish demi-matt.",
+        howToUse: "Stendere direttamente sulle labbra partendo dal centro verso gli angoli.",
+        formulaBenefits: "Acido ialuronico e burro di karité bio.",
+        inci: "Dimethicone, Synthetic Wax, Butyrospermum Parkii Butter, Sodium Hyaluronate.",
+        images: [
+          "/products/diego-dalla-palma-rossetto-iconico.png",
+          "/products/diego-dalla-palma-rossetto-texture.png",
+        ],
+        variants: [
+          {
+            id: `${targetProduct.id}-var-01`,
+            name: "01 Rosso Rubino Intenso",
+            sku: "DDP-LIP-01-TEST",
+            ean: "8015150123456",
+            colorHex: "#990000",
+            image: "/products/diego-dalla-palma-rossetto-iconico.png",
+            inStock: true,
+            stock: 25,
+            price: 26.5,
+          },
+        ],
+      };
+
+      const result = updateProductDetails(targetProduct.id, updatedData);
+      assert.strictEqual(result.name, updatedData.name);
+
+      // 4. Verify getProductOverride reflects all changes
+      const override = getProductOverride(targetProduct.id);
+      assert.ok(override, "Product override must exist in adminStore");
+      assert.strictEqual(override?.name, updatedData.name);
+      assert.strictEqual(override?.description, updatedData.description);
+      assert.strictEqual(override?.images?.length, 2);
+      assert.strictEqual(override?.variants?.[0].sku, "DDP-LIP-01-TEST");
+      assert.strictEqual(override?.variants?.[0].ean, "8015150123456");
+
+      // 5. Verify variant stocks map was updated
+      const stocksMap = getAdminVariantStocks();
+      const updatedVariantStock = stocksMap[`${targetProduct.id}-var-01`];
+      assert.ok(updatedVariantStock, "Variant stock item must be updated in admin store");
+      assert.strictEqual(updatedVariantStock?.productName, updatedData.name);
+      assert.strictEqual(updatedVariantStock?.price, 26.5);
+      assert.strictEqual(updatedVariantStock?.stockQuantity, 25);
+      assert.strictEqual(updatedVariantStock?.stockStatus, "available");
+      assert.strictEqual(updatedVariantStock?.sku, "DDP-LIP-01-TEST");
+      assert.strictEqual(updatedVariantStock?.ean, "8015150123456");
+    });
+
+    // 1.12 Carrier Clickable Tracking URLs, 1-Click WhatsApp & Manual Orders (R3)
+    it("1.12 should generate official carrier tracking URLs, WhatsApp notifications and manual orders (R3)", () => {
+      // 1. Official carrier tracking URL generation
+      const brtUrl = getCourierTrackingUrl("BRT Express", "BRT-9921448102");
+      assert.ok(brtUrl.includes("brt.it") && brtUrl.includes("BRT-9921448102"));
+
+      const glsUrl = getCourierTrackingUrl("GLS Italy", "GLS-123456789");
+      assert.ok(glsUrl.includes("gls-group.com") && glsUrl.includes("GLS-123456789"));
+
+      const dhlUrl = getCourierTrackingUrl("DHL Express", "DHL-987654321");
+      assert.ok(dhlUrl.includes("dhl.com") && dhlUrl.includes("DHL-987654321"));
+
+      const posteUrl = getCourierTrackingUrl("Poste Italiane", "POSTE-5544332211");
+      assert.ok(posteUrl.includes("poste.it") && posteUrl.includes("POSTE-5544332211"));
+
+      // 2. Precompiled WhatsApp notification message
+      const testOrder = getAdminOrders()[0];
+      const trackingMsg = getWhatsAppTrackingMessage(testOrder, "BRT-9921448102", "BRT Express");
+      assert.ok(trackingMsg.includes(testOrder.customerName));
+      assert.ok(trackingMsg.includes(testOrder.id));
+      assert.ok(trackingMsg.includes("BRT Express"));
+      assert.ok(trackingMsg.includes("brt.it"));
+      assert.ok(trackingMsg.includes("Federica Cesiano - Scelta Makeup Atelier Napoli"));
+
+      // 3. Direct wa.me link generation
+      const waUrl = getWhatsAppDirectUrl("+39 349 765 4321", trackingMsg);
+      assert.ok(waUrl.startsWith("https://wa.me/393497654321?text="));
+
+      // 4. Create manual order from counter / phone / WhatsApp
+      const manualOrder = createAdminOrder({
+        customerName: "Elena De Rosa",
+        customerEmail: "elena.derosa@example.com",
+        customerPhone: "+39 333 4455667",
+        fulfillmentType: "store_pickup",
+        items: [
+          {
+            productId: "diego-dalla-palma-rossetto-iconico",
+            productTitle: "Rossetto Iconico Diego dalla Palma",
+            variantName: "01 Rosso Rubino",
+            quantity: 2,
+            price: 24.5,
+          },
+        ],
+        total: 49.0,
+      });
+
+      assert.ok(manualOrder.id.startsWith("SC-ORD-"));
+      assert.strictEqual(manualOrder.status, "processing");
+      assert.strictEqual(manualOrder.fulfillmentType, "store_pickup");
+      assert.strictEqual(manualOrder.total, 49.0);
+
+      // Verify order is retrievable
+      const retrieved = getAdminOrderById(manualOrder.id);
+      assert.strictEqual(retrieved?.id, manualOrder.id);
+      assert.strictEqual(retrieved?.customerName, "Elena De Rosa");
+    });
+
+    // 1.13 Tracking & Pixel Infrastructure (GA4, GTM, Meta CAPI) and Event Simulator (R4)
+    it("1.13 should expose tracking credentials and simulate e-commerce telemetry events (R4)", () => {
+      // 1. Verify official tracking configuration
+      const config = getTrackingConfig();
+      assert.strictEqual(config.ga4MeasurementId, "G-SCELTA2026");
+      assert.strictEqual(config.ga4Status, "active");
+      assert.strictEqual(config.gtmContainerId, "GTM-SCELTA99");
+      assert.strictEqual(config.gtmStatus, "active");
+      assert.strictEqual(config.metaPixelId, "984210349812745");
+      assert.strictEqual(config.metaPixelStatus, "active");
+      assert.strictEqual(config.metaCapiStatus, "active");
+      assert.strictEqual(config.metaMatchQualityScore, 8.9);
+      assert.strictEqual(config.eventDeduplicationEnabled, true);
+
+      // 2. Initial event stream
+      const initialEvents = getTrackingEvents();
+      assert.ok(initialEvents.length >= 4, "Initial event log must contain seed events");
+
+      // 3. Simulate view_item event
+      const viewItemEvt = simulateTrackingEvent("view_item");
+      assert.strictEqual(viewItemEvt.eventName, "view_item");
+      assert.strictEqual(viewItemEvt.status, "delivered");
+      assert.strictEqual(viewItemEvt.responseStatus, 200);
+      assert.ok(viewItemEvt.destinations.includes("ga4"));
+      assert.ok(viewItemEvt.destinations.includes("gtm"));
+      assert.ok(viewItemEvt.destinations.includes("meta_pixel"));
+      assert.ok(viewItemEvt.destinations.includes("meta_capi"));
+      assert.strictEqual(viewItemEvt.payload.currency, "EUR");
+
+      // 4. Simulate purchase event
+      const purchaseEvt = simulateTrackingEvent("purchase");
+      assert.strictEqual(purchaseEvt.eventName, "purchase");
+      assert.ok(purchaseEvt.payload.transaction_id.startsWith("SC-ORD-SIM-"));
+      assert.strictEqual(purchaseEvt.responseStatus, 200);
+
+      // 5. Verify events stream contains the newly simulated events
+      const allEvents = getTrackingEvents();
+      assert.ok(allEvents.some((e) => e.id === viewItemEvt.id));
+      assert.ok(allEvents.some((e) => e.id === purchaseEvt.id));
     });
   });
 
@@ -807,6 +1082,96 @@ describe("Scelta Makeup E-Commerce Admin Suite E2E Test Suite (/admin)", () => {
       assert.ok(categories.length >= 5, "Catalog must cover at least 5 main categories");
       const brands = getAllBrands();
       assert.ok(brands.length >= 6, "Catalog must cover at least 6 cosmetics brands");
+    });
+
+    // 4.6 Scenario 6: Unified Omnichannel Workflow across R1 to R5
+    it("4.6 Scenario 6: should execute unified operational workflow across manual orders, carrier dispatch, product overrides, pixel telemetry, and multi-operator RT checkout", () => {
+      // Step 1: Create manual phone order for a loyal customer
+      const manualOrder = createAdminOrder({
+        customerName: "Camilla De Luca",
+        customerEmail: "camilla.deluca@example.com",
+        customerPhone: "+39 340 1234567",
+        fulfillmentType: "courier",
+        shippingAddress: {
+          street: "Corso Umberto I 24",
+          city: "Napoli",
+          postalCode: "80138",
+          province: "NA",
+        },
+        items: [
+          {
+            productId: "diego-dalla-palma-rossetto-iconico",
+            productTitle: "Rossetto Iconico Diego dalla Palma",
+            variantName: "01 Rosso Rubino",
+            quantity: 1,
+            price: 24.5,
+          },
+        ],
+        total: 24.5,
+      });
+
+      assert.strictEqual(manualOrder.status, "processing");
+
+      // Step 2: Courier dispatch with BRT tracking code
+      const trackingCode = "BRT-E2E-99001122";
+      const dispatchedOrder = updateOrderTracking(manualOrder.id, trackingCode, "BRT Express");
+      assert.strictEqual(dispatchedOrder.status, "shipped");
+      assert.strictEqual(dispatchedOrder.trackingCode, trackingCode);
+
+      // Verify direct clickable tracking URL and WhatsApp notification
+      const trackingUrl = getCourierTrackingUrl("BRT Express", trackingCode);
+      assert.ok(trackingUrl.includes("brt.it") && trackingUrl.includes(trackingCode));
+
+      const waMsg = getWhatsAppTrackingMessage(dispatchedOrder, trackingCode, "BRT Express");
+      assert.ok(waMsg.includes("Camilla De Luca"));
+      assert.ok(waMsg.includes(trackingUrl));
+      const waUrl = getWhatsAppDirectUrl(dispatchedOrder.customerPhone, waMsg);
+      assert.ok(waUrl.includes("wa.me/393401234567"));
+
+      // Step 3: Product Editor customization with live override
+      const overrideResult = updateProductDetails("diego-dalla-palma-rossetto-iconico", {
+        shortDescription: "Bestseller assoluto dell'Atelier Scelta Makeup a Napoli.",
+        price: 25.0,
+      });
+      assert.strictEqual(overrideResult.price, 25.0);
+      const storedOverride = getProductOverride("diego-dalla-palma-rossetto-iconico");
+      assert.strictEqual(storedOverride?.shortDescription, "Bestseller assoluto dell'Atelier Scelta Makeup a Napoli.");
+
+      // Step 4: Telemetry pixel event dispatch and verification
+      const telemetryEvent = simulateTrackingEvent("purchase", {
+        transaction_id: dispatchedOrder.id,
+        value: 24.5,
+      });
+      assert.strictEqual(telemetryEvent.eventName, "purchase");
+      assert.strictEqual(telemetryEvent.status, "delivered");
+      assert.strictEqual(telemetryEvent.responseStatus, 200);
+
+      const recentEvents = getTrackingEvents();
+      assert.ok(recentEvents.some((e) => e.id === telemetryEvent.id));
+
+      // Step 5: Salon booking with Futura Collega and RT cash register checkout
+      const today = new Date().toISOString().split("T")[0];
+      const cabinaBooking = createAppointment({
+        serviceId: "srv-beauty-mesofill",
+        date: today,
+        time: "15:00",
+        operatorId: "op-beauty-cabina",
+        customer: {
+          name: "Camilla",
+          surname: "De Luca",
+          phone: "+39 340 1234567",
+          email: "camilla.deluca@example.com",
+        },
+      });
+
+      assert.strictEqual(cabinaBooking.operatorId, "op-beauty-cabina");
+      assert.strictEqual(cabinaBooking.pricing.depositPaid, 12.6); // 20%
+      assert.strictEqual(cabinaBooking.pricing.balanceDue, 50.4); // 80%
+
+      const checkout = markAppointmentPaid(cabinaBooking.id, "mypos_card");
+      assert.strictEqual(checkout.success, true);
+      assert.strictEqual(checkout.appointment.status, "completed_paid");
+      assert.ok(checkout.receiptXml.includes("<printerFiscalReceipt>"));
     });
   });
 });

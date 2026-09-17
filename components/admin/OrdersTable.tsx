@@ -13,12 +13,16 @@ import {
   MessageSquare,
   MapPin,
   Check,
+  Printer,
+  Plus,
 } from "lucide-react";
 import {
   getAdminOrders,
   updateOrderStatus,
   SceltaAdminOrder,
 } from "@/lib/adminStore";
+import OrderPrintModal from "./OrderPrintModal";
+import NewManualOrderModal from "./NewManualOrderModal";
 
 export default function OrdersTable() {
   const [orders, setOrders] = useState<SceltaAdminOrder[]>(() => getAdminOrders());
@@ -27,6 +31,8 @@ export default function OrdersTable() {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [copiedOrderId, setCopiedOrderId] = useState<string | null>(null);
+  const [printingOrder, setPrintingOrder] = useState<SceltaAdminOrder | null>(null);
+  const [isNewOrderModalOpen, setIsNewOrderModalOpen] = useState(false);
 
   useEffect(() => {
     const handleStoreUpdate = () => setOrders(getAdminOrders());
@@ -112,12 +118,22 @@ export default function OrdersTable() {
             </span>
           </div>
           <p className="text-xs text-gray-500 mt-1">
-            Macchina a stati operativi con invio notifiche corriere e ritiro in boutique.
+            Macchina a stati operativi con invio notifiche corriere e ritiro in salone.
           </p>
         </div>
 
-        <div className="text-xs text-gray-500 font-medium">
-          Filtrati: <strong className="text-[#1F1B24]">{filteredOrders.length}</strong> ordini
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setIsNewOrderModalOpen(true)}
+            className="px-4 py-2 bg-gradient-to-r from-[#5E1788] via-[#7A3293] to-[#5E1788] hover:shadow-md text-white text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>+ Nuovo Ordine Manuale</span>
+          </button>
+          <div className="text-xs text-gray-500 font-medium">
+            Filtrati: <strong className="text-[#1F1B24]">{filteredOrders.length}</strong> ordini
+          </div>
         </div>
       </div>
 
@@ -179,7 +195,7 @@ export default function OrdersTable() {
               }`}
             >
               <Store className="w-3 h-3 text-[#5E1788]" />
-              <span>Ritiro Boutique</span>
+              <span>Ritiro Salone</span>
             </button>
           </div>
         </div>
@@ -231,7 +247,7 @@ export default function OrdersTable() {
                 : "bg-purple-50 text-purple-900 hover:bg-purple-100"
             }`}
           >
-            Pronto per Ritiro in Boutique
+            Pronto per Ritiro in Salone
           </button>
           <button
             type="button"
@@ -371,7 +387,7 @@ export default function OrdersTable() {
                           >
                             <option value="processing">In Elaborazione</option>
                             <option value="shipped">Spedito con Corriere</option>
-                            <option value="ready_for_pickup">Pronto Ritiro Boutique</option>
+                            <option value="ready_for_pickup">Pronto Ritiro Salone</option>
                             <option value="completed">Completato</option>
                             <option value="cancelled">Annullato</option>
                           </select>
@@ -379,20 +395,32 @@ export default function OrdersTable() {
 
                         {/* Actions / Expand */}
                         <td className="py-3.5 px-4 text-right">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setExpandedOrderId(isExpanded ? null : order.id)
-                            }
-                            className="p-1.5 rounded-lg text-gray-400 hover:text-[#5E1788] hover:bg-purple-50 transition-colors"
-                            aria-label={isExpanded ? "Nascondi dettagli" : "Mostra dettagli"}
-                          >
-                            {isExpanded ? (
-                              <ChevronUp className="w-5 h-5 text-[#5E1788]" />
-                            ) : (
-                              <ChevronDown className="w-5 h-5" />
-                            )}
-                          </button>
+                          <div className="flex items-center justify-end gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => setPrintingOrder(order)}
+                              className="px-2.5 py-1.5 rounded-lg text-gray-600 hover:text-[#5E1788] hover:bg-purple-50 transition-colors flex items-center gap-1 text-xs font-semibold border border-gray-200"
+                              title="Stampa Ricevuta e Bolla"
+                            >
+                              <Printer className="w-3.5 h-3.5 text-[#5E1788]" />
+                              <span className="hidden sm:inline">Stampa</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setExpandedOrderId(isExpanded ? null : order.id)
+                              }
+                              className="p-1.5 rounded-lg text-gray-400 hover:text-[#5E1788] hover:bg-purple-50 transition-colors"
+                              aria-label={isExpanded ? "Nascondi dettagli" : "Mostra dettagli"}
+                            >
+                              {isExpanded ? (
+                                <ChevronUp className="w-5 h-5 text-[#5E1788]" />
+                              ) : (
+                                <ChevronDown className="w-5 h-5" />
+                              )}
+                            </button>
+                          </div>
                         </td>
                       </tr>
 
@@ -509,10 +537,10 @@ export default function OrdersTable() {
                                   <div className="p-3.5 rounded-xl border border-purple-200 bg-purple-50/50 space-y-2 text-xs">
                                     <div className="flex items-center gap-2 font-semibold text-[#5E1788]">
                                       <Store className="w-4 h-4" />
-                                      <span>Ritiro Gratuito in Boutique</span>
+                                      <span>Ritiro Gratuito in Salone</span>
                                     </div>
                                     <p className="text-gray-600">
-                                      Boutique Scelta Makeup, Via dei Pellegrini 28/29, Napoli.
+                                      Salone Scelta Makeup, Via dei Pellegrini 28/29, Napoli.
                                     </p>
                                     <div className="pt-2 border-t border-purple-200/60 text-[11px] text-purple-900">
                                       Cliente avvisato appena l&apos;ordine passa a &quot;Pronto per Ritiro&quot;.
@@ -520,11 +548,20 @@ export default function OrdersTable() {
                                   </div>
                                 )}
 
-                                {/* WhatsApp Launcher CTA */}
-                                <div className="pt-1">
+                                {/* Stampa Ricevuta & WhatsApp Launcher CTA */}
+                                <div className="pt-1 space-y-2">
+                                  <button
+                                    type="button"
+                                    onClick={() => setPrintingOrder(order)}
+                                    className="w-full py-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#5E1788] text-xs font-semibold border border-purple-200 transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                                  >
+                                    <Printer className="w-4 h-4" />
+                                    <span>Stampa Ricevuta & Bolla Confezionamento</span>
+                                  </button>
+
                                   <a
                                     href={`https://wa.me/${order.customerPhone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-                                      `Ciao ${order.customerName}! Ti scriviamo dalla boutique Scelta Makeup di Napoli in merito al tuo ordine #${order.id}.`
+                                      `Ciao ${order.customerName}! Ti scriviamo dal salone Scelta Makeup di Napoli in merito al tuo ordine #${order.id}.`
                                     )}`}
                                     target="_blank"
                                     rel="noreferrer"
@@ -547,6 +584,20 @@ export default function OrdersTable() {
           </table>
         </div>
       </div>
+
+      {/* Printable Receipt Modal */}
+      <OrderPrintModal
+        order={printingOrder}
+        isOpen={Boolean(printingOrder)}
+        onClose={() => setPrintingOrder(null)}
+      />
+
+      {/* Manual Order Creation Modal */}
+      <NewManualOrderModal
+        isOpen={isNewOrderModalOpen}
+        onClose={() => setIsNewOrderModalOpen(false)}
+        onOrderCreated={() => setOrders(getAdminOrders())}
+      />
     </div>
   );
 }

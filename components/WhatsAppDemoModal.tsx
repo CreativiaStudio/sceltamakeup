@@ -6,7 +6,7 @@ import { useWhatsAppModalStore } from "@/store/useWhatsAppModalStore";
 
 const QUICK_PROMPTS = [
   "Salve, vorrei una consulenza sulla tonalità di fondotinta adatta a me",
-  "Vorrei prenotare una seduta make-up in boutique a Napoli",
+  "Vorrei prenotare una seduta make-up in salone a Napoli",
   "Ho una domanda sulla disponibilità di un prodotto a catalogo",
   "Vorrei informazioni sui tempi di spedizione e consegna",
 ];
@@ -62,9 +62,9 @@ function WhatsAppModalDialog({
                 <Sparkles className="w-3.5 h-3.5 text-amber-300" />
               </div>
               <p className="text-xs text-white/80 font-light flex items-center gap-1">
-                <span>Scelta Makeup Boutique</span>
+                <span>Scelta Makeup Salone</span>
                 <span>•</span>
-                <span className="text-emerald-200 font-medium">Boutique Napoli</span>
+                <span className="text-emerald-200 font-medium">Salone Napoli</span>
               </p>
             </div>
           </div>
@@ -106,7 +106,7 @@ function WhatsAppModalDialog({
                 Ciao! ✨ Benvenuta nell&apos;assistenza ufficiale di <strong>Scelta Makeup</strong>.
               </p>
               <p className="text-neutral-700 leading-relaxed font-light">
-                Come posso aiutarti oggi? Posso consigliarti le nuance perfette per il tuo incarnato, darti dettagli su un ordine o riservare il tuo appuntamento trucco in boutique a Napoli.
+                Come posso aiutarti oggi? Posso consigliarti le nuance perfette per il tuo incarnato, darti dettagli su un ordine o riservare il tuo appuntamento trucco in salone a Napoli.
               </p>
               <span className="text-[10px] text-neutral-400 block text-right">
                 10:00
@@ -189,7 +189,7 @@ function WhatsAppModalDialog({
         {/* Informative Footer */}
         <div className="p-3 bg-[#FAF7FC] border-t border-neutral-100 text-center text-[11px] text-neutral-500 font-light flex items-center justify-center gap-2">
           <Phone className="w-3.5 h-3.5 text-[#5E1788]" />
-          <span>Numero ufficiale boutique: <strong>In assegnazione da parte di Federica</strong></span>
+          <span>Numero ufficiale salone: <strong>In assegnazione da parte di Federica</strong></span>
         </div>
       </div>
     </div>

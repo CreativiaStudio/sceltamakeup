@@ -150,7 +150,7 @@ function HeaderContent() {
           className="inline-flex items-center gap-1 text-[#D8C2E7] hover:underline"
         >
           <MapPin className="h-3 w-3" />
-          Boutique Napoli: Via dei Pellegrini 28/29
+          Salone Napoli: Via dei Pellegrini 28/29
         </a>
       </div>
 
@@ -240,7 +240,7 @@ function HeaderContent() {
                 }`}
               >
                 <MapPin className="h-3.5 w-3.5 text-[#D462A6]" />
-                <span className="hidden md:inline">Boutique</span> Napoli
+                <span className="hidden md:inline">Salone</span> Napoli
               </Link>
 
               {/* Reactive Cart Button */}
@@ -325,7 +325,7 @@ function HeaderContent() {
                 className="flex items-center gap-3 text-sm text-[#7A3293] font-medium p-2 rounded-lg hover:bg-[#FAF7FC]"
               >
                 <MapPin className="h-4 w-4 text-[#D462A6]" />
-                <span>Boutique Napoli: Via dei Pellegrini 28/29</span>
+                <span>Salone Napoli: Via dei Pellegrini 28/29</span>
               </Link>
               <button
                 type="button"

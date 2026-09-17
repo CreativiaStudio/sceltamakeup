@@ -69,6 +69,12 @@ The E-Commerce Administration Suite for Scelta Makeup (`/admin`) is built as a u
 | 14 | WhatsApp Anti-Ban & Email Queue Integration | Direct access to the live WhatsApp queue monitor and transactional email logs | M6 | ORIGINAL_REQUEST §R2 |
 | 15 | E2E Testing Suite (Tiers 1-4) | Opaque-box test suite verifying all admin features, catalog filters, stock states, and isolation | Test Track | Dual Track Mandate |
 | 16 | Final Adversarial Hardening & Build Verification | Tier 5 adversarial tests, zero error `tsc`, `lint`, and 346 static page build | M7 | ORIGINAL_REQUEST §R3 |
+| 17 | R1 Catalog Image Remediation | Zero mismatch: replace 38 matita-31 clones and DDP skincare placeholders with real packshots, update `data/catalog.json` | M_R1 | ORIGINAL_REQUEST 2026-09-15 |
+| 18 | R2 Product Full Editor | Full photo gallery, texts, SKU/EAN, price, stock per variant, atomic persistence in `lib/adminStore.ts` | M_R2 | ORIGINAL_REQUEST 2026-09-15 |
+| 19 | R3 Orders & Quick Tracking | Printable packing slip modal, manual order form, clickable courier tracking (BRT/GLS/DHL/Poste) & 1-click WhatsApp | M_R3 | ORIGINAL_REQUEST 2026-09-15 |
+| 20 | R4 Site Tracking & Analytics | Pixel infrastructure (GA4, GTM, Meta Pixel/CAPI), live events log, interactive event simulator | M_R4 | ORIGINAL_REQUEST 2026-09-15 |
+| 21 | R5 Multi-Operator Hourly Agenda | Hourly slot grid (09:30-20:30), Federica Cesiano vs Cabina Estetica, quick filter, al-volo booking, 20%/80% deposit, Epson FP-81II RT | M_R5 | ORIGINAL_REQUEST 2026-09-15 |
+| 22 | R6 E2E Test Suite & Gate | Extend `tests/e2e-admin-suite.test.ts` to validate R1-R5, run Reviewers, Challengers, Forensic Auditor | M_TEST | ORIGINAL_REQUEST 2026-09-15 |
 
 ---
 
@@ -83,6 +89,12 @@ The E-Commerce Administration Suite for Scelta Makeup (`/admin`) is built as a u
 | M5 | Orders & Shipping Management | Implement `OrdersTable.tsx` and `ShippingTable.tsx` | M1, M2 | DONE |
 | M6 | Omnichannel CRM & Appointments Bridge | Implement `CrmTable.tsx` and integrate `/admin/appuntamenti` & WhatsApp queue | M1, M2, M5 | DONE |
 | M7 | Final E2E Verification & Adversarial Gate | Pass 100% E2E tests, pass adversarial challenger, verify `tsc`, `lint`, `build` | M0-M6 | DONE |
+| M_R1 | R1 Catalog Image Remediation | Eliminate 38 matita labbra clones, fetch/download HD packshots for 93 products, update `data/catalog.json` | None | IN_PROGRESS |
+| M_R2 | R2 Product Full Editor | Full editor modal (photos, texts, variants/SKU/EAN/stock), atomic store overrides, sync `/prodotti/[slug]` | None | IN_PROGRESS |
+| M_R3 | R3 Orders & Quick Tracking | Printable packing slip modal, manual order modal, clickable courier URLs & 1-click WhatsApp notification | None | IN_PROGRESS |
+| M_R4 | R4 Site Tracking & Analytics | Pixel infrastructure, GA4/GTM/Meta IDs, live events log & simulator in `/admin?tab=analytics` | None | IN_PROGRESS |
+| M_R5 | R5 Multi-Operator Hourly Agenda | Hourly slot grid (09:30-20:30), Federica Cesiano vs Cabina Estetica, quick filter, al-volo booking, 20%/80% deposit, Epson FP-81II RT | None | IN_PROGRESS |
+| M_TEST | R6 E2E Test Suite & Gate | Extend `tests/e2e-admin-suite.test.ts` for R1-R5, Reviewers, Challengers, Forensic Auditor | M_R1-M_R5 | PLANNED |
 
 ---
 

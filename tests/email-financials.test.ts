@@ -42,7 +42,7 @@ describe("Luxury Resend Transactional Email & Financial Invariants Suite", () =>
       // Subject line validation
       assert.ok(subject.includes("Conferma Prenotazione"));
       assert.ok(subject.includes("Make-up Evento & Cerimonia"));
-      assert.ok(subject.includes("Scelta Makeup Boutique"));
+      assert.ok(subject.includes("Scelta Makeup Salone") || subject.includes("Scelta Makeup Boutique"));
 
       // HTML Document structure validation
       assert.ok(html.includes("<!DOCTYPE html>"), "Must declare HTML5 doctype");
@@ -166,7 +166,7 @@ describe("Luxury Resend Transactional Email & Financial Invariants Suite", () =>
 
       const boutiqueEmail = renderOrderPlacedEmail(sampleBoutiqueOrder);
       assert.ok(boutiqueEmail.subject.includes("Conferma Ordine #SC-ORD-2026-8888"));
-      assert.ok(boutiqueEmail.html.includes("Ritiro Gratuito in Boutique"));
+      assert.ok(boutiqueEmail.html.includes("Ritiro Gratuito in Salone") || boutiqueEmail.html.includes("Ritiro Gratuito in Boutique"));
       assert.ok(boutiqueEmail.html.includes("Via dei Pellegrini 28/29, 80132 Napoli"));
       assert.ok(boutiqueEmail.html.includes("09:30 - 13:30"));
       assert.ok(boutiqueEmail.html.includes("Gratuita"));

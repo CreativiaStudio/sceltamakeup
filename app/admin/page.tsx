@@ -5,7 +5,7 @@ import AdminClientWrapper from "@/components/admin/AdminClientWrapper";
 export const metadata: Metadata = {
   title: "Admin Cockpit | Scelta Makeup",
   description:
-    "Pannello di controllo unificato per l'e-commerce, catalogo cosmetici, ordini, spedizioni corriere, ritiro in boutique e CRM di Scelta Makeup.",
+    "Pannello di controllo unificato per l'e-commerce, catalogo cosmetici, ordini, spedizioni corriere, ritiro in salone e CRM di Scelta Makeup.",
 };
 
 export default function AdminPage() {

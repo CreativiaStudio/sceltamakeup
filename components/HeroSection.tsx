@@ -79,10 +79,10 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
             </Link>
           </div>
 
-          {/* Boutique Presence */}
+          {/* Salone Presence */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs text-neutral-200 mb-12">
             <Store className="h-4 w-4 text-[#D8C2E7]" />
-            <span className="font-semibold text-white">Boutique Ufficiale:</span>
+            <span className="font-semibold text-white">Salone Ufficiale:</span>
             <span>Via dei Pellegrini 28/29, Napoli Centro</span>
           </div>
 
@@ -102,7 +102,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
                 <Store className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="text-xs sm:text-sm font-semibold text-white">Ritiro in Boutique</h4>
+                <h4 className="text-xs sm:text-sm font-semibold text-white">Ritiro in Salone</h4>
                 <p className="text-xs text-neutral-300">Via dei Pellegrini 28/29</p>
               </div>
             </div>
@@ -185,10 +185,10 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
               </Link>
             </div>
 
-            {/* Floating Boutique Official Badge */}
+            {/* Floating Salone Official Badge */}
             <div className="pt-3 flex items-center justify-center lg:justify-start gap-2.5 text-xs text-neutral-700">
               <Store className="h-4 w-4 text-[#5E1788]" />
-              <span className="font-semibold text-[#1F1B24]">Boutique Ufficiale •</span>
+              <span className="font-semibold text-[#1F1B24]">Salone Ufficiale •</span>
               <span className="text-neutral-600">Via dei Pellegrini 28/29, Napoli</span>
             </div>
 
@@ -247,14 +247,14 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
                 </div>
               </div>
 
-              {/* Floating Top Accent Badge: Boutique Napoli */}
+              {/* Floating Top Accent Badge: Salone Napoli */}
               <div className="absolute -top-4 -left-4 sm:-top-6 sm:-left-6 p-3.5 sm:p-4 rounded-2xl bg-white/95 backdrop-blur-md shadow-xl border border-[#D8C2E7]/70 hidden sm:flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#FAF7FC] flex items-center justify-center text-[#5E1788]">
                   <Store className="h-5 w-5 text-[#5E1788]" />
                 </div>
                 <div className="text-left">
                   <p className="text-xs tracking-wider uppercase font-bold text-[#7A3293]">
-                    Boutique Ufficiale
+                    Salone Ufficiale
                   </p>
                   <p className="text-xs font-semibold text-[#1F1B24]">
                     Via dei Pellegrini 28/29
@@ -291,7 +291,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
             </div>
             <div>
               <h4 className="text-xs sm:text-sm font-semibold text-[#1F1B24]">
-                Ritiro in Boutique
+                Ritiro in Salone
               </h4>
               <p className="text-xs text-neutral-600">
                 Via dei Pellegrini 28/29, Napoli

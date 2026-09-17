@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -18,6 +18,7 @@ import {
 import { Product, Shade } from "@/types/product";
 import { useCartStore } from "@/store/useCartStore";
 import ProductCard from "@/components/ProductCard";
+import { getProductOverride } from "@/lib/adminStore";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -25,9 +26,45 @@ interface ProductDetailClientProps {
 }
 
 export default function ProductDetailClient({
-  product,
+  product: initialProduct,
   relatedProducts,
 }: ProductDetailClientProps) {
+  const [product, setProduct] = useState<Product>(() => {
+    const override = getProductOverride(initialProduct.id);
+    if (!override) return initialProduct;
+    return {
+      ...initialProduct,
+      ...override,
+      variants: override.variants || initialProduct.variants,
+      shades: override.shades || initialProduct.shades,
+      images: override.images || initialProduct.images,
+    };
+  });
+
+  useEffect(() => {
+    const applyOverride = () => {
+      const override = getProductOverride(initialProduct.id);
+      if (override) {
+        setProduct((prev) => ({
+          ...prev,
+          ...override,
+          variants: override.variants || prev.variants,
+          shades: override.shades || prev.shades,
+          images: override.images || prev.images,
+        }));
+      } else {
+        setProduct(initialProduct);
+      }
+    };
+
+    applyOverride();
+    window.addEventListener("scelta_admin_store_updated", applyOverride);
+    window.addEventListener("scelta_admin_store_reset", applyOverride);
+    return () => {
+      window.removeEventListener("scelta_admin_store_updated", applyOverride);
+      window.removeEventListener("scelta_admin_store_reset", applyOverride);
+    };
+  }, [initialProduct]);
   const [selectedShade, setSelectedShade] = useState<Shade | null>(
     product.shades && product.shades.length > 0 ? product.shades[0] : null
   );
@@ -352,7 +389,7 @@ export default function ProductDetailClient({
                 100% Originale Garantito
               </span>
               <span className="text-neutral-300">•</span>
-              <span className="text-neutral-600 font-medium">Boutique Ufficiale Napoli</span>
+              <span className="text-neutral-600 font-medium">Salone Ufficiale Napoli</span>
             </div>
 
             {/* Price Box & Verified Invoice Stock Status */}
@@ -377,12 +414,12 @@ export default function ProductDetailClient({
                   currentStock < 5 ? (
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200">
                       <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                      Ultime {currentStock} unità disponibili in boutique
+                      Ultime {currentStock} unità disponibili in Salone
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200">
                       <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                      Disponibile in boutique ({currentStock} pz)
+                      Disponibile in Salone ({currentStock} pz)
                     </span>
                   )
                 ) : (
@@ -533,7 +570,7 @@ export default function ProductDetailClient({
               <div className="p-4 rounded-2xl bg-[#FAF7FC] border border-[#D8C2E7]/40 space-y-2 text-xs">
                 <div className="flex items-center gap-2 text-[#5E1788] font-medium">
                   <Store className="h-4 w-4 text-[#D462A6]" />
-                  <span>Disponibile anche per il ritiro gratuito in Boutique a Napoli</span>
+                  <span>Disponibile anche per il ritiro gratuito in Salone a Napoli</span>
                 </div>
                 <div className="flex items-center justify-between text-neutral-500 text-[11px] pt-1 border-t border-purple-100">
                   <span className="flex items-center gap-1">

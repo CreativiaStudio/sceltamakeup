@@ -23,7 +23,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-dhc110160.jpg"
+      "/products/ddp-dhc110160-authentic.jpg"
     ],
     "shades": [
       {
@@ -31,7 +31,7 @@
         "name": "Formato Originale",
         "code": "DHC110160",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-dhc110160.jpg",
+        "image": "/products/ddp-dhc110160-authentic.jpg",
         "price": 22.8,
         "inStock": true,
         "stock": 2
@@ -44,7 +44,7 @@
         "sku": "DHC110160",
         "ean": "8017834888836",
         "colorHex": null,
-        "image": "/products/ddp-dhc110160.jpg",
+        "image": "/products/ddp-dhc110160-authentic.jpg",
         "inStock": true,
         "price": 22.8,
         "originalWholesalePrice": 8.5,
@@ -52,7 +52,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-dhc110160-authentic.jpg"
   },
   {
     "id": "ddp-dhc120160",
@@ -78,7 +79,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-dhc120160.jpg"
+      "/products/ddp-dhc120160-authentic.jpg"
     ],
     "shades": [
       {
@@ -86,7 +87,7 @@
         "name": "Formato Originale",
         "code": "DHC120160",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-dhc120160.jpg",
+        "image": "/products/ddp-dhc120160-authentic.jpg",
         "price": 22.8,
         "inStock": true,
         "stock": 2
@@ -99,7 +100,7 @@
         "sku": "DHC120160",
         "ean": "8017834888843",
         "colorHex": null,
-        "image": "/products/ddp-dhc120160.jpg",
+        "image": "/products/ddp-dhc120160-authentic.jpg",
         "inStock": true,
         "price": 22.8,
         "originalWholesalePrice": 8.5,
@@ -107,7 +108,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-dhc120160-authentic.jpg"
   },
   {
     "id": "ddp-dhc120161",
@@ -133,7 +135,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-dhc120161.jpg"
+      "/products/ddp-dhc120161-authentic.jpg"
     ],
     "shades": [
       {
@@ -141,7 +143,7 @@
         "name": "Formato Originale",
         "code": "DHC120161",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-dhc120161.jpg",
+        "image": "/products/ddp-dhc120161-authentic.jpg",
         "price": 22.8,
         "inStock": true,
         "stock": 2
@@ -154,7 +156,7 @@
         "sku": "DHC120161",
         "ean": "8017834888850",
         "colorHex": null,
-        "image": "/products/ddp-dhc120161.jpg",
+        "image": "/products/ddp-dhc120161-authentic.jpg",
         "inStock": true,
         "price": 22.8,
         "originalWholesalePrice": 8.5,
@@ -162,7 +164,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-dhc120161-authentic.jpg"
   },
   {
     "id": "rvb-correttore-in-stick",
@@ -188,10 +191,7 @@
       "Adatto a pelli normali e da miste a grasse"
     ],
     "images": [
-      "/products/rvb-correttore-in-stick.jpg",
-      "/products/rvb-correttore-in-stick-1.jpg",
-      "/products/rvb-correttore-in-stick-2.jpg",
-      "/products/rvb-correttore-in-stick-3.jpg"
+      "/products/rvb-correttore-in-stick.jpg"
     ],
     "shades": [
       {
@@ -264,7 +264,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-correttore-in-stick.jpg"
   },
   {
     "id": "rvb-correttore-hd-effetto-lifting",
@@ -292,11 +293,7 @@
       "La copertura è media e modulabile, e la formula ha una buona aderenza e sfumabilità"
     ],
     "images": [
-      "/products/rvb-correttore-hd-effetto-lifting.jpg",
-      "/products/rvb-correttore-hd-effetto-lifting-11.jpg",
-      "/products/rvb-correttore-hd-effetto-lifting-12.jpg",
-      "/products/rvb-correttore-hd-effetto-lifting-13.jpg",
-      "/products/rvb-correttore-hd-effetto-lifting-14.jpg"
+      "/products/rvb-correttore-hd-effetto-lifting.jpg"
     ],
     "shades": [
       {
@@ -391,7 +388,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-correttore-hd-effetto-lifting.jpg"
   },
   {
     "id": "rvb-meso-fill-concealer-fill-correct-correttore-trattamento-levigante",
@@ -419,11 +417,7 @@
       "Risultati visibili anche sulle palpebre superiori"
     ],
     "images": [
-      "/products/rvb-meso-fill-concealer-fill-correct-correttore-trattamento-levigante.jpg",
-      "/products/rvb-meso-fill-concealer-fill-correct-correttore-trattamento-levigante-21.jpg",
-      "/products/rvb-meso-fill-concealer-fill-correct-correttore-trattamento-levigante-22.jpg",
-      "/products/rvb-meso-fill-concealer-fill-correct-correttore-trattamento-levigante-23.jpg",
-      "/products/rvb-meso-fill-concealer-fill-correct-correttore-trattamento-levigante-24.jpg"
+      "/products/rvb-meso-fill-concealer-fill-correct-correttore-trattamento-levigante.jpg"
     ],
     "shades": [
       {
@@ -520,7 +514,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-meso-fill-concealer-fill-correct-correttore-trattamento-levigante.jpg"
   },
   {
     "id": "rvb-fondotinta-camouflage-a-lunga-tenuta-spf-20",
@@ -547,12 +542,7 @@
       "Arricchito con estratto di steroli di melograno e centella asiatica"
     ],
     "images": [
-      "/products/rvb-fondotinta-camouflage-a-lunga-tenuta-spf-20.jpg",
-      "/products/rvb-fondotinta-camouflage-a-lunga-tenuta-spf-20-11.jpg",
-      "/products/rvb-fondotinta-camouflage-a-lunga-tenuta-spf-20-12.jpg",
-      "/products/rvb-fondotinta-camouflage-a-lunga-tenuta-spf-20-13.jpg",
-      "/products/rvb-fondotinta-camouflage-a-lunga-tenuta-spf-20-14.jpg",
-      "/products/rvb-fondotinta-camouflage-a-lunga-tenuta-spf-20-15.jpg"
+      "/products/rvb-fondotinta-camouflage-a-lunga-tenuta-spf-20.jpg"
     ],
     "shades": [
       {
@@ -679,7 +669,8 @@
       }
     ],
     "stock": 5,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-fondotinta-camouflage-a-lunga-tenuta-spf-20.jpg"
   },
   {
     "id": "rvb-fondotinta-leggero-illuminante",
@@ -704,10 +695,7 @@
       "Texture professionale dermatologicamente testata"
     ],
     "images": [
-      "/products/rvb-fondotinta-leggero-illuminante.jpg",
-      "/products/rvb-fondotinta-leggero-illuminante-31.jpg",
-      "/products/rvb-fondotinta-leggero-illuminante-32.jpg",
-      "/products/rvb-fondotinta-leggero-illuminante-33.jpg"
+      "/products/rvb-fondotinta-leggero-illuminante.jpg"
     ],
     "shades": [
       {
@@ -780,7 +768,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-fondotinta-leggero-illuminante.jpg"
   },
   {
     "id": "rvb-fondotinta-hd-effetto-lifting",
@@ -805,11 +794,7 @@
       "Fin dalla prima applicazione, il viso appare più omogeneo, disteso e radioso"
     ],
     "images": [
-      "/products/rvb-fondotinta-hd-effetto-lifting.jpg",
-      "/products/rvb-fondotinta-hd-effetto-lifting-63.jpg",
-      "/products/rvb-fondotinta-hd-effetto-lifting-64.jpg",
-      "/products/rvb-fondotinta-hd-effetto-lifting-65.jpg",
-      "/products/rvb-fondotinta-hd-effetto-lifting-66.jpg"
+      "/products/rvb-fondotinta-hd-effetto-lifting.jpg"
     ],
     "shades": [
       {
@@ -912,7 +897,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-fondotinta-hd-effetto-lifting.jpg"
   },
   {
     "id": "rvb-hydra-booster-foundation-fondotinta-idratante",
@@ -941,14 +927,7 @@
       "L'incarnato risulta subito rigenerato, omogeneo e naturalmente luminoso"
     ],
     "images": [
-      "/products/rvb-hydra-booster-foundation-fondotinta-idratante.jpg",
-      "/products/rvb-hydra-booster-foundation-fondotinta-idratante-81.jpg",
-      "/products/rvb-hydra-booster-foundation-fondotinta-idratante-82.jpg",
-      "/products/rvb-hydra-booster-foundation-fondotinta-idratante-82-a.jpg",
-      "/products/rvb-hydra-booster-foundation-fondotinta-idratante-83.jpg",
-      "/products/rvb-hydra-booster-foundation-fondotinta-idratante-84.jpg",
-      "/products/rvb-hydra-booster-foundation-fondotinta-idratante-85.jpg",
-      "/products/rvb-hydra-booster-foundation-fondotinta-idratante-86.jpg"
+      "/products/rvb-hydra-booster-foundation-fondotinta-idratante.jpg"
     ],
     "shades": [
       {
@@ -1109,7 +1088,8 @@
       }
     ],
     "stock": 10,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-hydra-booster-foundation-fondotinta-idratante.jpg"
   },
   {
     "id": "rvb-meso-fill-foundation-plump-fill-fondotinta-rimpolpante-levigante",
@@ -1260,7 +1240,8 @@
       }
     ],
     "stock": 15,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-meso-fill-foundation-plump-fill-fondotinta-rimpolpante-levigante.png"
   },
   {
     "id": "rvb-cipria-libera-alta-definizione",
@@ -1285,8 +1266,7 @@
       "Per una pelle vellutata e un effetto naturale"
     ],
     "images": [
-      "/products/rvb-cipria-libera-alta-definizione.jpg",
-      "/products/rvb-cipria-libera-alta-definizione-default-title.jpg"
+      "/products/rvb-cipria-libera-alta-definizione.jpg"
     ],
     "shades": [
       {
@@ -1315,7 +1295,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-cipria-libera-alta-definizione.jpg"
   },
   {
     "id": "rvb-smooth-perfection-cipria-compatta-setificante",
@@ -1341,10 +1322,7 @@
       "Leviga le piccole imperfezioni e discromie; adatta anche a pelli più mature"
     ],
     "images": [
-      "/products/rvb-smooth-perfection-cipria-compatta-setificante.jpg",
-      "/products/rvb-smooth-perfection-cipria-compatta-setificante-11.jpg",
-      "/products/rvb-smooth-perfection-cipria-compatta-setificante-12.jpg",
-      "/products/rvb-smooth-perfection-cipria-compatta-setificante-13.jpg"
+      "/products/rvb-smooth-perfection-cipria-compatta-setificante.jpg"
     ],
     "shades": [
       {
@@ -1417,7 +1395,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-smooth-perfection-cipria-compatta-setificante.jpg"
   },
   {
     "id": "rvb-blush-compatto-in-polvere",
@@ -1442,11 +1421,7 @@
       "La loro texture setosa è molto facile da applicare e accende naturalmente le guance"
     ],
     "images": [
-      "/products/rvb-blush-compatto-in-polvere.jpg",
-      "/products/rvb-blush-compatto-in-polvere-112.jpg",
-      "/products/rvb-blush-compatto-in-polvere-113.jpg",
-      "/products/rvb-blush-compatto-in-polvere-115.jpg",
-      "/products/rvb-blush-compatto-in-polvere-116.jpg"
+      "/products/rvb-blush-compatto-in-polvere.jpg"
     ],
     "shades": [
       {
@@ -1541,7 +1516,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-blush-compatto-in-polvere.jpg"
   },
   {
     "id": "rvb-terra-abbronzante",
@@ -1565,10 +1541,7 @@
       "Prodotto ideale per tutte le donne che desiderano sfoggiare un colorito sano ed abbronzato naturale tutto l'anno"
     ],
     "images": [
-      "/products/rvb-terra-abbronzante.jpg",
-      "/products/rvb-terra-abbronzante-11.jpg",
-      "/products/rvb-terra-abbronzante-12.jpg",
-      "/products/rvb-terra-abbronzante-13.jpg"
+      "/products/rvb-terra-abbronzante.jpg"
     ],
     "shades": [
       {
@@ -1641,7 +1614,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-terra-abbronzante.jpg"
   },
   {
     "id": "rvb-matita-occhi",
@@ -1666,10 +1640,7 @@
       "La sua eccezionale tenuta assicura una durata prolungata, mantenendo l'intensità del colore per tutto il giorno"
     ],
     "images": [
-      "/products/rvb-matita-occhi.jpg",
-      "/products/rvb-matita-occhi-11.jpg",
-      "/products/rvb-matita-occhi-12.jpg",
-      "/products/rvb-matita-occhi-14.jpg"
+      "/products/rvb-matita-occhi.jpg"
     ],
     "shades": [
       {
@@ -1742,7 +1713,8 @@
       }
     ],
     "stock": 7,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-matita-occhi.jpg"
   },
   {
     "id": "rvb-matita-occhi-water-resistant",
@@ -1891,7 +1863,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-matita-occhi-water-resistant-e-long-lasting.jpg"
   },
   {
     "id": "rvb-matita-sopracciglia",
@@ -1916,9 +1889,7 @@
       "Texture professionale dermatologicamente testata"
     ],
     "images": [
-      "/products/rvb-matita-sopracciglia.jpg",
-      "/products/rvb-matita-sopracciglia-1.jpg",
-      "/products/rvb-matita-sopracciglia-2.jpg"
+      "/products/rvb-matita-sopracciglia.jpg"
     ],
     "shades": [
       {
@@ -1969,7 +1940,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-matita-sopracciglia.jpg"
   },
   {
     "id": "ddp-mf106021",
@@ -1995,7 +1967,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-mf106021.jpg"
+      "/products/ddp-mf106021.webp"
     ],
     "shades": [
       {
@@ -2024,7 +1996,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-mf106021.webp"
   },
   {
     "id": "rvb-matita-sopracciglia-resistente-allacqua-e-a-lunga-tenuta",
@@ -2103,7 +2076,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-matita-sopracciglia-alta-precisione-resistente-all-acqua-e-a-lunga-tenuta.jpg"
   },
   {
     "id": "rvb-kajal-nero",
@@ -2128,8 +2102,7 @@
       "Applicazione facile e veloce con un rilascio immediato, intenso e preciso del colore"
     ],
     "images": [
-      "/products/rvb-kajal-nero.jpg",
-      "/products/rvb-kajal-nero-default-title.jpg"
+      "/products/rvb-kajal-nero.jpg"
     ],
     "shades": [
       {
@@ -2158,7 +2131,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-kajal-nero.jpg"
   },
   {
     "id": "rvb-kajal-marrone",
@@ -2184,8 +2158,7 @@
       "Lunga tenuta, no transfer, resistente all’acqua"
     ],
     "images": [
-      "/products/rvb-kajal-marrone.jpg",
-      "/products/rvb-kajal-marrone-default-title.jpg"
+      "/products/rvb-kajal-marrone.jpg"
     ],
     "shades": [
       {
@@ -2214,7 +2187,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-kajal-marrone.jpg"
   },
   {
     "id": "rvb-delineatore-occhi-water-resistant",
@@ -2240,8 +2214,7 @@
       "Applicazione facile e precisa sia per un tratto sottile che per uno più spesso"
     ],
     "images": [
-      "/products/rvb-delineatore-occhi-water-resistant.jpg",
-      "/products/rvb-delineatore-occhi-water-resistant-default-title.jpg"
+      "/products/rvb-delineatore-occhi-water-resistant.jpg"
     ],
     "shades": [
       {
@@ -2270,7 +2243,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-delineatore-occhi-water-resistant.jpg"
   },
   {
     "id": "rvb-ombretto-mono-perlato",
@@ -2294,13 +2268,7 @@
       "L' ombretto aderisce perfettamente alla palpebra per un effetto long lasting"
     ],
     "images": [
-      "/products/rvb-ombretto-mono-perlato.jpg",
-      "/products/rvb-ombretto-mono-perlato-11.jpg",
-      "/products/rvb-ombretto-mono-perlato-12.jpg",
-      "/products/rvb-ombretto-mono-perlato-13.jpg",
-      "/products/rvb-ombretto-mono-perlato-14.jpg",
-      "/products/rvb-ombretto-mono-perlato-15.jpg",
-      "/products/rvb-ombretto-mono-perlato-16.jpg"
+      "/products/rvb-ombretto-mono-perlato.jpg"
     ],
     "shades": [
       {
@@ -2439,7 +2407,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-ombretto-mono-perlato.jpg"
   },
   {
     "id": "rvb-ombretto-mono-opaco",
@@ -2466,11 +2435,7 @@
       "Arricchito da vitamina E, dalle proprietà antiossidanti e antietà"
     ],
     "images": [
-      "/products/rvb-ombretto-mono-opaco.jpg",
-      "/products/rvb-ombretto-mono-opaco-17.jpg",
-      "/products/rvb-ombretto-mono-opaco-18.jpg",
-      "/products/rvb-ombretto-mono-opaco-19.jpg",
-      "/products/rvb-ombretto-mono-opaco-20.jpg"
+      "/products/rvb-ombretto-mono-opaco.jpg"
     ],
     "shades": [
       {
@@ -2565,7 +2530,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-ombretto-mono-opaco.jpg"
   },
   {
     "id": "rvb-mascara-extra-volume",
@@ -2590,8 +2556,7 @@
       "I suoi pigmenti ultra black donano un perfetto finish nero intenso"
     ],
     "images": [
-      "/products/rvb-mascara-extra-volume.jpg",
-      "/products/rvb-mascara-extra-volume-default-title.jpg"
+      "/products/rvb-mascara-extra-volume.jpg"
     ],
     "shades": [
       {
@@ -2620,7 +2585,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-mascara-extra-volume.jpg"
   },
   {
     "id": "rvb-mascara-ciglia-finte",
@@ -2647,8 +2613,7 @@
       "La sua formula cremosa è potenziata con Ceramide2 Biomimetica per un azione volumizzante e rinforzante"
     ],
     "images": [
-      "/products/rvb-mascara-ciglia-finte.jpg",
-      "/products/rvb-mascara-ciglia-finte-default-title.jpg"
+      "/products/rvb-mascara-ciglia-finte.jpg"
     ],
     "shades": [
       {
@@ -2677,7 +2642,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-mascara-ciglia-finte.jpg"
   },
   {
     "id": "rvb-aqua-bomb-mascara-waterproof-extra-volume",
@@ -2704,8 +2670,7 @@
       "Ottimo per ottenere un look magnetico"
     ],
     "images": [
-      "/products/rvb-aqua-bomb-mascara-waterproof-extra-volume.jpg",
-      "/products/rvb-aqua-bomb-mascara-waterproof-extra-volume-default-title.jpg"
+      "/products/rvb-aqua-bomb-mascara-waterproof-extra-volume.jpg"
     ],
     "shades": [
       {
@@ -2734,7 +2699,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-aqua-bomb-mascara-waterproof-extra-volume.jpg"
   },
   {
     "id": "rvb-more-more-mascara",
@@ -2759,8 +2725,7 @@
       "Olio di semi di ricino e olio di argan: proprietà nutrienti, curative, rigeneranti e ristrutturanti"
     ],
     "images": [
-      "/products/rvb-more-more-mascara.jpg",
-      "/products/rvb-more-more-mascara-default-title.jpg"
+      "/products/rvb-more-more-mascara.jpg"
     ],
     "shades": [
       {
@@ -2789,7 +2754,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-more-more-mascara.jpg"
   },
   {
     "id": "rvb-give-me-more-mascara-volume-panoramico",
@@ -2814,8 +2780,7 @@
       "Contribuisce inoltre a riparare le ciglia danneggiate, rendendole visibilmente più forti, lunghe e voluminose"
     ],
     "images": [
-      "/products/rvb-give-me-more-mascara-volume-panoramico.jpg",
-      "/products/rvb-give-me-more-mascara-volume-panoramico-default-title.jpg"
+      "/products/rvb-give-me-more-mascara-volume-panoramico.jpg"
     ],
     "shades": [
       {
@@ -2844,7 +2809,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-give-me-more-mascara-volume-panoramico.jpg"
   },
   {
     "id": "rvb-morethanthis-kajal-eyeliner-eyeshadow",
@@ -3061,7 +3027,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-more-than-this-kajal-eyeliner-eyeshadow.jpg"
   },
   {
     "id": "rvb-matt-velvet-lipstick-rossetto-opaco",
@@ -3086,17 +3053,7 @@
       "Una texture a peso zero, innovativa e sottile, garantisce un rilascio colore immediato con una sola passata"
     ],
     "images": [
-      "/products/rvb-matt-velvet-lipstick-rossetto-opaco.jpg",
-      "/products/rvb-matt-velvet-lipstick-rossetto-opaco-31.jpg",
-      "/products/rvb-matt-velvet-lipstick-rossetto-opaco-32.jpg",
-      "/products/rvb-matt-velvet-lipstick-rossetto-opaco-33.jpg",
-      "/products/rvb-matt-velvet-lipstick-rossetto-opaco-34.jpg",
-      "/products/rvb-matt-velvet-lipstick-rossetto-opaco-35.jpg",
-      "/products/rvb-matt-velvet-lipstick-rossetto-opaco-36.jpg",
-      "/products/rvb-matt-velvet-lipstick-rossetto-opaco-37.jpg",
-      "/products/rvb-matt-velvet-lipstick-rossetto-opaco-38.jpg",
-      "/products/rvb-matt-velvet-lipstick-rossetto-opaco-39.jpg",
-      "/products/rvb-matt-velvet-lipstick-rossetto-opaco-40.jpg"
+      "/products/rvb-matt-velvet-lipstick-rossetto-opaco.jpg"
     ],
     "shades": [
       {
@@ -3323,7 +3280,8 @@
       }
     ],
     "stock": 10,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-matt-velvet-lipstick-rossetto-opaco.jpg"
   },
   {
     "id": "rvb-hydra-boost-creamy-lipstick-rossetto-cremoso-idratante",
@@ -3348,17 +3306,7 @@
       "La formula scorre facilmente sulle labbra e garantisce un’applicazione semplice, uniforme e sensoriale"
     ],
     "images": [
-      "/products/rvb-hydra-boost-creamy-lipstick-rossetto-cremoso-idratante.jpg",
-      "/products/rvb-hydra-boost-creamy-lipstick-rossetto-cremoso-idratante-51.jpg",
-      "/products/rvb-hydra-boost-creamy-lipstick-rossetto-cremoso-idratante-52.jpg",
-      "/products/rvb-hydra-boost-creamy-lipstick-rossetto-cremoso-idratante-53.jpg",
-      "/products/rvb-hydra-boost-creamy-lipstick-rossetto-cremoso-idratante-54.jpg",
-      "/products/rvb-hydra-boost-creamy-lipstick-rossetto-cremoso-idratante-55.jpg",
-      "/products/rvb-hydra-boost-creamy-lipstick-rossetto-cremoso-idratante-56.jpg",
-      "/products/rvb-hydra-boost-creamy-lipstick-rossetto-cremoso-idratante-57.jpg",
-      "/products/rvb-hydra-boost-creamy-lipstick-rossetto-cremoso-idratante-58.jpg",
-      "/products/rvb-hydra-boost-creamy-lipstick-rossetto-cremoso-idratante-59.jpg",
-      "/products/rvb-hydra-boost-creamy-lipstick-rossetto-cremoso-idratante-60.jpg"
+      "/products/rvb-hydra-boost-creamy-lipstick-rossetto-cremoso-idratante.jpg"
     ],
     "shades": [
       {
@@ -3585,7 +3533,8 @@
       }
     ],
     "stock": 10,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-hydra-boost-creamy-lipstick-rossetto-cremoso-idratante.jpg"
   },
   {
     "id": "rvb-matita-labbra",
@@ -3610,12 +3559,7 @@
       "Ideale per delineare il contorno delle labbra prima di applicare il rossetto"
     ],
     "images": [
-      "/products/rvb-matita-labbra.jpg",
-      "/products/rvb-matita-labbra-21.jpg",
-      "/products/rvb-matita-labbra-22.jpg",
-      "/products/rvb-matita-labbra-23.jpg",
-      "/products/rvb-matita-labbra-24.jpg",
-      "/products/rvb-matita-labbra-25.jpg"
+      "/products/rvb-matita-labbra.jpg"
     ],
     "shades": [
       {
@@ -3732,7 +3676,8 @@
       }
     ],
     "stock": 5,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-matita-labbra.jpg"
   },
   {
     "id": "rvb-matita-labbra-water-resistant-e-long-lasting",
@@ -3759,12 +3704,7 @@
       "Un vero \"must have\" nella beauty routine di ogni donna"
     ],
     "images": [
-      "/products/rvb-matita-labbra-water-resistant-e-long-lasting.jpg",
-      "/products/rvb-matita-labbra-water-resistant-e-long-lasting-31.jpg",
-      "/products/rvb-matita-labbra-water-resistant-e-long-lasting-32.jpg",
-      "/products/rvb-matita-labbra-water-resistant-e-long-lasting-33.jpg",
-      "/products/rvb-matita-labbra-water-resistant-e-long-lasting-34.jpg",
-      "/products/rvb-matita-labbra-water-resistant-e-long-lasting-35.jpg"
+      "/products/rvb-matita-labbra-water-resistant-e-long-lasting.jpg"
     ],
     "shades": [
       {
@@ -3881,7 +3821,8 @@
       }
     ],
     "stock": 10,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-matita-labbra-water-resistant-e-long-lasting.jpg"
   },
   {
     "id": "rvb-ever-ever-rossetto-liquido-opaco-lunga-tenuta",
@@ -4053,7 +3994,8 @@
       }
     ],
     "stock": 11,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-ever-ever-matt-rossetto-liquido-opaco-lunga-tenuta.jpg"
   },
   {
     "id": "rvb-scrub-labbra",
@@ -4080,8 +4022,7 @@
       "Durante l’esfoliazione, un ricco mix di cere ed oli permette di mantenere le labbra idratate"
     ],
     "images": [
-      "/products/rvb-scrub-labbra.jpg",
-      "/products/rvb-scrub-labbra-default-title.jpg"
+      "/products/rvb-scrub-labbra.jpg"
     ],
     "shades": [
       {
@@ -4110,7 +4051,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-scrub-labbra.jpg"
   },
   {
     "id": "rvb-siero-labbra-idratante-e-levigante",
@@ -4137,8 +4079,7 @@
       "Finish lucido effetto 3D, leggermente tonalizzato da un color rosa naturale"
     ],
     "images": [
-      "/products/rvb-siero-labbra-idratante-e-levigante.jpg",
-      "/products/rvb-siero-labbra-idratante-e-levigante-default-title.jpg"
+      "/products/rvb-siero-labbra-idratante-e-levigante.jpg"
     ],
     "shades": [
       {
@@ -4167,7 +4108,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-siero-labbra-idratante-e-levigante.jpg"
   },
   {
     "id": "rvb-balsamo-labbra-volumizzante",
@@ -4194,10 +4136,7 @@
       "Tre colorazioni: rosso, nude e rosa"
     ],
     "images": [
-      "/products/rvb-balsamo-labbra-volumizzante.jpg",
-      "/products/rvb-balsamo-labbra-volumizzante-43.jpg",
-      "/products/rvb-balsamo-labbra-volumizzante-44.jpg",
-      "/products/rvb-balsamo-labbra-volumizzante-45.jpg"
+      "/products/rvb-balsamo-labbra-volumizzante.jpg"
     ],
     "shades": [
       {
@@ -4270,7 +4209,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-balsamo-labbra-volumizzante.jpg"
   },
   {
     "id": "rvb-lip-oil-rimpolpante",
@@ -4295,9 +4235,7 @@
       "Dall'effetto 3D grazie agli attivi contenuti all'interno che rendono le labbra più voluminose e rimpolpate"
     ],
     "images": [
-      "/products/rvb-lip-oil-rimpolpante.jpg",
-      "/products/rvb-lip-oil-rimpolpante-46.jpg",
-      "/products/rvb-lip-oil-rimpolpante-47.jpg"
+      "/products/rvb-lip-oil-rimpolpante.jpg"
     ],
     "shades": [
       {
@@ -4348,7 +4286,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-lip-oil-rimpolpante.jpg"
   },
   {
     "id": "rvb-lip-explosion-trattamento-labbra-volumizzante-ph-reagente",
@@ -4405,7 +4344,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-lip-explosion-olio-siero-volumizzante-ph-reagente.png"
   },
   {
     "id": "rvb-4d-pro-lash-brow-siero-ciglia-sopracciglia",
@@ -4461,7 +4401,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-4d-pro-lash-brow-siero-ciglia-sopracciglia.png"
   },
   {
     "id": "ddp-mf151002",
@@ -4488,7 +4429,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-mf151002.jpg"
+      "/products/ddp-mf151002.webp"
     ],
     "shades": [
       {
@@ -4496,7 +4437,7 @@
         "name": "Formato Originale",
         "code": "MF151002",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-mf151002.jpg",
+        "image": "/products/ddp-mf151002.webp",
         "price": 48.3,
         "inStock": true,
         "stock": 2
@@ -4509,7 +4450,7 @@
         "sku": "MF151002",
         "ean": "8023264526699",
         "colorHex": null,
-        "image": "/products/ddp-mf151002.jpg",
+        "image": "/products/ddp-mf151002.webp",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -4517,7 +4458,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-mf151002.webp"
   },
   {
     "id": "ddp-mf152001a",
@@ -4543,7 +4485,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-mf152001a.jpg"
+      "/products/ddp-mf152001a.webp"
     ],
     "shades": [
       {
@@ -4551,7 +4493,7 @@
         "name": "Formato Originale",
         "code": "MF152001A",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-mf152001a.jpg",
+        "image": "/products/ddp-mf152001a.webp",
         "price": 48.3,
         "inStock": true,
         "stock": 1
@@ -4564,7 +4506,7 @@
         "sku": "MF152001A",
         "ean": "8023264514771",
         "colorHex": null,
-        "image": "/products/ddp-mf152001a.jpg",
+        "image": "/products/ddp-mf152001a.webp",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -4572,7 +4514,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-mf152001a.webp"
   },
   {
     "id": "rvb-fissatore-trucco",
@@ -4598,8 +4541,7 @@
       "Adatto a tutti i tipi di pelle, anche quelle sensibili"
     ],
     "images": [
-      "/products/rvb-fissatore-trucco.jpg",
-      "/products/rvb-fissatore-trucco-default-title.jpg"
+      "/products/rvb-fissatore-trucco.jpg"
     ],
     "shades": [
       {
@@ -4628,7 +4570,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-fissatore-trucco.jpg"
   },
   {
     "id": "rvb-spugna-pretagliata",
@@ -4652,8 +4595,7 @@
       "Per un risultato preciso e un incarnato omogeneo"
     ],
     "images": [
-      "/products/rvb-spugna-pretagliata.jpg",
-      "/products/rvb-spugna-pretagliata-default-title.jpg"
+      "/products/rvb-spugna-pretagliata.jpg"
     ],
     "shades": [
       {
@@ -4682,7 +4624,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-spugna-pretagliata.jpg"
   },
   {
     "id": "rvb-piumino",
@@ -4707,8 +4650,7 @@
       "Texture professionale dermatologicamente testata"
     ],
     "images": [
-      "/products/rvb-piumino.jpg",
-      "/products/rvb-piumino-default-title.jpg"
+      "/products/rvb-piumino.jpg"
     ],
     "shades": [
       {
@@ -4737,7 +4679,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-piumino.jpg"
   },
   {
     "id": "rvb-temperino-doppio",
@@ -4762,8 +4705,7 @@
       "Ideale per temperare tutte le tipologie di matite cosmetiche, sia quelle dalla misura tradizionale a quelle jumboo"
     ],
     "images": [
-      "/products/rvb-temperino-doppio.jpg",
-      "/products/rvb-temperino-doppio-default-title.jpg"
+      "/products/rvb-temperino-doppio.jpg"
     ],
     "shades": [
       {
@@ -4792,7 +4734,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-temperino-doppio.jpg"
   },
   {
     "id": "rvb-pennello-occhi-di-precisione",
@@ -4818,8 +4761,7 @@
       "Ottimo anche per applicare punti luce all'interno dell'occhio"
     ],
     "images": [
-      "/products/rvb-pennello-occhi-di-precisione.jpg",
-      "/products/rvb-pennello-occhi-di-precisione-default-title.jpg"
+      "/products/rvb-pennello-occhi-di-precisione.jpg"
     ],
     "shades": [
       {
@@ -4848,7 +4790,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-pennello-occhi-di-precisione.jpg"
   },
   {
     "id": "rvb-pennello-occhi-piatto",
@@ -4873,8 +4816,7 @@
       "Ottimo anche per sfumature da smokey eyes"
     ],
     "images": [
-      "/products/rvb-pennello-occhi-piatto.jpg",
-      "/products/rvb-pennello-occhi-piatto-default-title.jpg"
+      "/products/rvb-pennello-occhi-piatto.jpg"
     ],
     "shades": [
       {
@@ -4903,7 +4845,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-pennello-occhi-piatto.jpg"
   },
   {
     "id": "rvb-pennello-occhi-sfumatura-di-precisione",
@@ -4929,8 +4872,7 @@
       "Perfetto per creare l'ombreggiatura nella piega dell'occhio"
     ],
     "images": [
-      "/products/rvb-pennello-occhi-sfumatura-di-precisione.jpg",
-      "/products/rvb-pennello-occhi-sfumatura-di-precisione-default-title.jpg"
+      "/products/rvb-pennello-occhi-sfumatura-di-precisione.jpg"
     ],
     "shades": [
       {
@@ -4959,7 +4901,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-pennello-occhi-sfumatura-di-precisione.jpg"
   },
   {
     "id": "rvb-pennello-occhi-sfumatura-ampia",
@@ -4985,8 +4928,7 @@
       "Da usare per distribuire prodotti su tutta la palpebra mobile o per rifinire il make-up, sfumando insieme più colori"
     ],
     "images": [
-      "/products/rvb-pennello-occhi-sfumatura-ampia.jpg",
-      "/products/rvb-pennello-occhi-sfumatura-ampia-default-title.jpg"
+      "/products/rvb-pennello-occhi-sfumatura-ampia.jpg"
     ],
     "shades": [
       {
@@ -5015,7 +4957,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-pennello-occhi-sfumatura-ampia.jpg"
   },
   {
     "id": "rvb-pennello-fondotinta-e-correttore",
@@ -5042,8 +4985,7 @@
       "Ideale per correttori, fondotinta, BB cream e primer"
     ],
     "images": [
-      "/products/rvb-pennello-fondotinta-e-correttore.jpg",
-      "/products/rvb-pennello-fondotinta-e-correttore-default-title.jpg"
+      "/products/rvb-pennello-fondotinta-e-correttore.jpg"
     ],
     "shades": [
       {
@@ -5072,7 +5014,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-pennello-fondotinta-e-correttore.jpg"
   },
   {
     "id": "rvb-pennello-prodotti-in-crema",
@@ -5098,8 +5041,7 @@
       "Texture professionale dermatologicamente testata"
     ],
     "images": [
-      "/products/rvb-pennello-prodotti-in-crema.jpg",
-      "/products/rvb-pennello-prodotti-in-crema-default-title.jpg"
+      "/products/rvb-pennello-prodotti-in-crema.jpg"
     ],
     "shades": [
       {
@@ -5128,7 +5070,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-pennello-prodotti-in-crema.jpg"
   },
   {
     "id": "rvb-pennello-blush-e-contour",
@@ -5155,8 +5098,7 @@
       "Ideale per blush e prodotti contour"
     ],
     "images": [
-      "/products/rvb-pennello-blush-e-contour.jpg",
-      "/products/rvb-pennello-blush-e-contour-default-title.jpg"
+      "/products/rvb-pennello-blush-e-contour.jpg"
     ],
     "shades": [
       {
@@ -5185,7 +5127,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-pennello-blush-e-contour.jpg"
   },
   {
     "id": "rvb-pennello-polveri-viso",
@@ -5211,8 +5154,7 @@
       "Consigliato soprattutto per ciprie, terre, all over e polveri illuminanti"
     ],
     "images": [
-      "/products/rvb-pennello-polveri-viso.jpg",
-      "/products/rvb-pennello-polveri-viso-default-title.jpg"
+      "/products/rvb-pennello-polveri-viso.jpg"
     ],
     "shades": [
       {
@@ -5241,7 +5183,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-pennello-polveri-viso.jpg"
   },
   {
     "id": "rvb-creamy-full-face-palette-palette-all-in-one",
@@ -5269,8 +5212,7 @@
       "• pesca: una tonalità calda che ravviva l’incarnato, donando freschezza e vivacità"
     ],
     "images": [
-      "/products/rvb-creamy-full-face-palette-palette-all-in-one.jpg",
-      "/products/rvb-creamy-full-face-palette-palette-all-in-one-default-title.jpg"
+      "/products/rvb-creamy-full-face-palette-palette-all-in-one.jpg"
     ],
     "shades": [
       {
@@ -5299,7 +5241,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-creamy-full-face-palette-palette-all-in-one.jpg"
   },
   {
     "id": "rvb-fissatore-volumizzante-colorato-sopracciglia",
@@ -5323,10 +5266,7 @@
       "Per sopracciglia on fleek tutto il giorno!"
     ],
     "images": [
-      "/products/rvb-fissatore-volumizzante-colorato-sopracciglia.jpg",
-      "/products/rvb-fissatore-volumizzante-colorato-sopracciglia-801.jpg",
-      "/products/rvb-fissatore-volumizzante-colorato-sopracciglia-802.jpg",
-      "/products/rvb-fissatore-volumizzante-colorato-sopracciglia-803.jpg"
+      "/products/rvb-fissatore-volumizzante-colorato-sopracciglia.jpg"
     ],
     "shades": [
       {
@@ -5399,7 +5339,8 @@
       }
     ],
     "stock": 5,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-fissatore-volumizzante-colorato-sopracciglia.jpg"
   },
   {
     "id": "rvb-fissatore-volumizzante-trasparente-sopracciglia",
@@ -5423,8 +5364,7 @@
       "Per sopracciglia on fleek tutto il giorno!"
     ],
     "images": [
-      "/products/rvb-fissatore-volumizzante-trasparente-sopracciglia.jpg",
-      "/products/rvb-fissatore-volumizzante-trasparente-sopracciglia-default-title.jpg"
+      "/products/rvb-fissatore-volumizzante-trasparente-sopracciglia.jpg"
     ],
     "shades": [
       {
@@ -5453,7 +5393,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-fissatore-volumizzante-trasparente-sopracciglia.jpg"
   },
   {
     "id": "ddp-pf00855",
@@ -5480,7 +5421,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf00855.jpg"
+      "/products/ddp-pf00855.webp"
     ],
     "shades": [
       {
@@ -5509,7 +5450,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf00855.webp"
   },
   {
     "id": "ddp-pf00985",
@@ -5536,7 +5478,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf00985.jpg"
+      "/products/ddp-pf00985.webp"
     ],
     "shades": [
       {
@@ -5565,7 +5507,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf00985.webp"
   },
   {
     "id": "ddp-pf00995",
@@ -5592,7 +5535,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf00995.jpg"
+      "/products/ddp-pf00995.webp"
     ],
     "shades": [
       {
@@ -5621,7 +5564,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf00995.webp"
   },
   {
     "id": "ddp-pf01065",
@@ -5648,7 +5592,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01065.jpg"
+      "/products/ddp-pf01065.webp"
     ],
     "shades": [
       {
@@ -5677,7 +5621,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01065.webp"
   },
   {
     "id": "ddp-pf01181",
@@ -5703,7 +5648,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01181.jpg"
+      "/products/ddp-pf01181.webp"
     ],
     "shades": [
       {
@@ -5732,7 +5677,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01181.webp"
   },
   {
     "id": "ddp-pf01365",
@@ -5758,7 +5704,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01365.jpg"
+      "/products/ddp-pf01365-authentic.jpg"
     ],
     "shades": [
       {
@@ -5766,7 +5712,7 @@
         "name": "Formato Originale",
         "code": "PF01365",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf01365.jpg",
+        "image": "/products/ddp-pf01365-authentic.jpg",
         "price": 48.3,
         "inStock": true,
         "stock": 1
@@ -5779,7 +5725,7 @@
         "sku": "PF01365",
         "ean": "8023264525128",
         "colorHex": null,
-        "image": "/products/ddp-pf01365.jpg",
+        "image": "/products/ddp-pf01365-authentic.jpg",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -5787,7 +5733,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01365-authentic.jpg"
   },
   {
     "id": "ddp-pf01375",
@@ -5813,7 +5760,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01375.jpg"
+      "/products/ddp-pf01375-authentic.jpg"
     ],
     "shades": [
       {
@@ -5821,7 +5768,7 @@
         "name": "Formato Originale",
         "code": "PF01375",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf01375.jpg",
+        "image": "/products/ddp-pf01375-authentic.jpg",
         "price": 48.3,
         "inStock": true,
         "stock": 1
@@ -5834,7 +5781,7 @@
         "sku": "PF01375",
         "ean": "8023264525135",
         "colorHex": null,
-        "image": "/products/ddp-pf01375.jpg",
+        "image": "/products/ddp-pf01375-authentic.jpg",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -5842,7 +5789,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01375-authentic.jpg"
   },
   {
     "id": "ddp-pf01385",
@@ -5868,7 +5816,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01385.jpg"
+      "/products/ddp-pf01385-authentic.jpg"
     ],
     "shades": [
       {
@@ -5876,7 +5824,7 @@
         "name": "Formato Originale",
         "code": "PF01385",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf01385.jpg",
+        "image": "/products/ddp-pf01385-authentic.jpg",
         "price": 48.3,
         "inStock": true,
         "stock": 1
@@ -5889,7 +5837,7 @@
         "sku": "PF01385",
         "ean": "8023264525142",
         "colorHex": null,
-        "image": "/products/ddp-pf01385.jpg",
+        "image": "/products/ddp-pf01385-authentic.jpg",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -5897,7 +5845,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01385-authentic.jpg"
   },
   {
     "id": "ddp-pf01395",
@@ -5923,7 +5872,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01395.jpg"
+      "/products/ddp-pf01395-authentic.jpg"
     ],
     "shades": [
       {
@@ -5931,7 +5880,7 @@
         "name": "Formato Originale",
         "code": "PF01395",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf01395.jpg",
+        "image": "/products/ddp-pf01395-authentic.jpg",
         "price": 48.3,
         "inStock": true,
         "stock": 1
@@ -5944,7 +5893,7 @@
         "sku": "PF01395",
         "ean": "8023264525159",
         "colorHex": null,
-        "image": "/products/ddp-pf01395.jpg",
+        "image": "/products/ddp-pf01395-authentic.jpg",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -5952,7 +5901,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01395-authentic.jpg"
   },
   {
     "id": "ddp-pf01405",
@@ -5978,7 +5928,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01405.jpg"
+      "/products/ddp-pf01405-authentic.jpg"
     ],
     "shades": [
       {
@@ -5986,7 +5936,7 @@
         "name": "Formato Originale",
         "code": "PF01405",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf01405.jpg",
+        "image": "/products/ddp-pf01405-authentic.jpg",
         "price": 48.3,
         "inStock": true,
         "stock": 1
@@ -5999,7 +5949,7 @@
         "sku": "PF01405",
         "ean": "8023264525166",
         "colorHex": null,
-        "image": "/products/ddp-pf01405.jpg",
+        "image": "/products/ddp-pf01405-authentic.jpg",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -6007,7 +5957,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01405-authentic.jpg"
   },
   {
     "id": "ddp-pf01411",
@@ -6062,7 +6013,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01411.jpg"
   },
   {
     "id": "ddp-pf01421",
@@ -6117,7 +6069,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01421.jpg"
   },
   {
     "id": "ddp-pf01431",
@@ -6172,7 +6125,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01431.jpg"
   },
   {
     "id": "ddp-pf01441",
@@ -6227,7 +6181,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01441.jpg"
   },
   {
     "id": "ddp-pf01451",
@@ -6253,7 +6208,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01451.jpg"
+      "/products/ddp-pf01451.webp"
     ],
     "shades": [
       {
@@ -6282,7 +6237,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01451.webp"
   },
   {
     "id": "ddp-pf01465",
@@ -6308,7 +6264,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01465.jpg"
+      "/products/ddp-pf01541.jpg"
     ],
     "shades": [
       {
@@ -6316,7 +6272,7 @@
         "name": "Formato Originale",
         "code": "PF01465",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf01465.jpg",
+        "image": "/products/ddp-pf01541.jpg",
         "price": 48.3,
         "inStock": true,
         "stock": 1
@@ -6329,7 +6285,7 @@
         "sku": "PF01465",
         "ean": "8023264526170",
         "colorHex": null,
-        "image": "/products/ddp-pf01465.jpg",
+        "image": "/products/ddp-pf01541.jpg",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -6337,7 +6293,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01541.jpg"
   },
   {
     "id": "ddp-pf01485",
@@ -6363,7 +6320,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01485.jpg"
+      "/products/ddp-pf01551.jpg"
     ],
     "shades": [
       {
@@ -6371,7 +6328,7 @@
         "name": "Formato Originale",
         "code": "PF01485",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf01485.jpg",
+        "image": "/products/ddp-pf01551.jpg",
         "price": 48.3,
         "inStock": true,
         "stock": 1
@@ -6384,7 +6341,7 @@
         "sku": "PF01485",
         "ean": "8023264526194",
         "colorHex": null,
-        "image": "/products/ddp-pf01485.jpg",
+        "image": "/products/ddp-pf01551.jpg",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -6392,7 +6349,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01551.jpg"
   },
   {
     "id": "ddp-pf01495",
@@ -6418,7 +6376,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01495.jpg"
+      "/products/ddp-pf01561.jpg"
     ],
     "shades": [
       {
@@ -6426,7 +6384,7 @@
         "name": "Formato Originale",
         "code": "PF01495",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf01495.jpg",
+        "image": "/products/ddp-pf01561.jpg",
         "price": 48.3,
         "inStock": true,
         "stock": 1
@@ -6439,7 +6397,7 @@
         "sku": "PF01495",
         "ean": "8023264526200",
         "colorHex": null,
-        "image": "/products/ddp-pf01495.jpg",
+        "image": "/products/ddp-pf01561.jpg",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -6447,7 +6405,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01561.jpg"
   },
   {
     "id": "ddp-pf01515",
@@ -6473,7 +6432,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01515.jpg"
+      "/products/ddp-pf01571.jpg"
     ],
     "shades": [
       {
@@ -6481,7 +6440,7 @@
         "name": "Formato Originale",
         "code": "PF01515",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf01515.jpg",
+        "image": "/products/ddp-pf01571.jpg",
         "price": 48.3,
         "inStock": true,
         "stock": 1
@@ -6494,7 +6453,7 @@
         "sku": "PF01515",
         "ean": "8023264526224",
         "colorHex": null,
-        "image": "/products/ddp-pf01515.jpg",
+        "image": "/products/ddp-pf01571.jpg",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -6502,7 +6461,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01571.jpg"
   },
   {
     "id": "ddp-pf01525",
@@ -6528,7 +6488,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01525.jpg"
+      "/products/ddp-pf01581.jpg"
     ],
     "shades": [
       {
@@ -6536,7 +6496,7 @@
         "name": "Formato Originale",
         "code": "PF01525",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf01525.jpg",
+        "image": "/products/ddp-pf01581.jpg",
         "price": 48.3,
         "inStock": true,
         "stock": 1
@@ -6549,7 +6509,7 @@
         "sku": "PF01525",
         "ean": "8023264526231",
         "colorHex": null,
-        "image": "/products/ddp-pf01525.jpg",
+        "image": "/products/ddp-pf01581.jpg",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -6557,7 +6517,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01581.jpg"
   },
   {
     "id": "ddp-pf01535",
@@ -6583,7 +6544,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01535.jpg"
+      "/products/ddp-pf01591.jpg"
     ],
     "shades": [
       {
@@ -6591,7 +6552,7 @@
         "name": "Formato Originale",
         "code": "PF01535",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf01535.jpg",
+        "image": "/products/ddp-pf01591.jpg",
         "price": 60.4,
         "inStock": true,
         "stock": 1
@@ -6604,7 +6565,7 @@
         "sku": "PF01535",
         "ean": "8023264526248",
         "colorHex": null,
-        "image": "/products/ddp-pf01535.jpg",
+        "image": "/products/ddp-pf01591.jpg",
         "inStock": true,
         "price": 60.4,
         "originalWholesalePrice": 22.5,
@@ -6612,7 +6573,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01591.jpg"
   },
   {
     "id": "ddp-pf01541",
@@ -6638,7 +6600,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01541.jpg"
+      "/products/ddp-pf01541.webp"
     ],
     "shades": [
       {
@@ -6667,7 +6629,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01541.webp"
   },
   {
     "id": "ddp-pf01551",
@@ -6693,7 +6656,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01551.jpg"
+      "/products/ddp-pf01551.webp"
     ],
     "shades": [
       {
@@ -6722,7 +6685,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01551.webp"
   },
   {
     "id": "ddp-pf01561",
@@ -6748,7 +6712,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01561.jpg"
+      "/products/ddp-pf01561.webp"
     ],
     "shades": [
       {
@@ -6777,7 +6741,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01561.webp"
   },
   {
     "id": "ddp-pf01571",
@@ -6803,7 +6768,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01571.jpg"
+      "/products/ddp-pf01571.webp"
     ],
     "shades": [
       {
@@ -6832,7 +6797,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01571.webp"
   },
   {
     "id": "ddp-pf01581",
@@ -6858,7 +6824,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01581.jpg"
+      "/products/ddp-pf01581.webp"
     ],
     "shades": [
       {
@@ -6887,7 +6853,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01581.webp"
   },
   {
     "id": "ddp-pf01591",
@@ -6913,7 +6880,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01591.jpg"
+      "/products/ddp-pf01591.webp"
     ],
     "shades": [
       {
@@ -6942,7 +6909,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01591.webp"
   },
   {
     "id": "ddp-pf01601",
@@ -6968,7 +6936,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01601.jpg"
+      "/products/ddp-pf01601.webp"
     ],
     "shades": [
       {
@@ -6997,7 +6965,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01601.webp"
   },
   {
     "id": "ddp-pf01611",
@@ -7023,7 +6992,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01611.jpg"
+      "/products/ddp-pf01611.webp"
     ],
     "shades": [
       {
@@ -7052,7 +7021,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01611.webp"
   },
   {
     "id": "ddp-pf01631",
@@ -7108,7 +7078,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01631.jpg"
   },
   {
     "id": "ddp-pf01645",
@@ -7135,7 +7106,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf01645.jpg"
+      "/products/ddp-pf01631.jpg"
     ],
     "shades": [
       {
@@ -7143,7 +7114,7 @@
         "name": "Formato Originale",
         "code": "PF01645",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf01645.jpg",
+        "image": "/products/ddp-pf01631.jpg",
         "price": 48.3,
         "inStock": true,
         "stock": 1
@@ -7156,7 +7127,7 @@
         "sku": "PF01645",
         "ean": "8023264527894",
         "colorHex": null,
-        "image": "/products/ddp-pf01645.jpg",
+        "image": "/products/ddp-pf01631.jpg",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -7164,7 +7135,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01631.jpg"
   },
   {
     "id": "ddp-pf01661",
@@ -7220,7 +7192,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01661.jpg"
   },
   {
     "id": "ddp-pf01671",
@@ -7276,7 +7249,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01671.jpg"
   },
   {
     "id": "ddp-pf01681",
@@ -7332,7 +7306,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01681.jpg"
   },
   {
     "id": "ddp-pf01691",
@@ -7388,7 +7363,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf01691.jpg"
   },
   {
     "id": "ddp-pf07001",
@@ -7414,7 +7390,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf07001.jpg"
+      "/products/ddp-pf00855.webp"
     ],
     "shades": [
       {
@@ -7422,7 +7398,7 @@
         "name": "Formato Originale",
         "code": "PF07001",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf07001.jpg",
+        "image": "/products/ddp-pf00855.webp",
         "price": 48.3,
         "inStock": true,
         "stock": 1
@@ -7435,7 +7411,7 @@
         "sku": "PF07001",
         "ean": "8023264527528",
         "colorHex": null,
-        "image": "/products/ddp-pf07001.jpg",
+        "image": "/products/ddp-pf00855.webp",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -7443,7 +7419,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf00855.webp"
   },
   {
     "id": "ddp-pf08101",
@@ -7469,7 +7446,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf08101.jpg"
+      "/products/ddp-pf08101.webp"
     ],
     "shades": [
       {
@@ -7498,7 +7475,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf08101.webp"
   },
   {
     "id": "ddp-pf08111",
@@ -7524,7 +7502,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf08111.jpg"
+      "/products/ddp-pf08111.webp"
     ],
     "shades": [
       {
@@ -7553,7 +7531,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf08111.webp"
   },
   {
     "id": "ddp-pf08121",
@@ -7579,7 +7558,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf08121.jpg"
+      "/products/ddp-pf08111.webp"
     ],
     "shades": [
       {
@@ -7587,7 +7566,7 @@
         "name": "Formato Originale",
         "code": "PF08121",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf08121.jpg",
+        "image": "/products/ddp-pf08111.webp",
         "price": 48.3,
         "inStock": true,
         "stock": 4
@@ -7600,7 +7579,7 @@
         "sku": "PF08121",
         "ean": "8023264530405",
         "colorHex": null,
-        "image": "/products/ddp-pf08121.jpg",
+        "image": "/products/ddp-pf08111.webp",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -7608,7 +7587,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf08111.webp"
   },
   {
     "id": "ddp-pf08131",
@@ -7634,7 +7614,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf08131.jpg"
+      "/products/ddp-pf08131.webp"
     ],
     "shades": [
       {
@@ -7663,7 +7643,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf08131.webp"
   },
   {
     "id": "ddp-pf08141",
@@ -7689,7 +7670,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf08141.jpg"
+      "/products/ddp-pf08141.webp"
     ],
     "shades": [
       {
@@ -7718,7 +7699,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf08141.webp"
   },
   {
     "id": "ddp-pf08145",
@@ -7744,7 +7726,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf08145.jpg"
+      "/products/ddp-pf08145.webp"
     ],
     "shades": [
       {
@@ -7773,7 +7755,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf08145.webp"
   },
   {
     "id": "ddp-pf08151",
@@ -7799,7 +7782,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf08151.jpg"
+      "/products/ddp-pf08151.webp"
     ],
     "shades": [
       {
@@ -7828,7 +7811,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf08151.webp"
   },
   {
     "id": "ddp-pf08165",
@@ -7854,7 +7838,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf08165.jpg"
+      "/products/ddp-pf08165.webp"
     ],
     "shades": [
       {
@@ -7883,7 +7867,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf08165.webp"
   },
   {
     "id": "ddp-pf58005",
@@ -7909,7 +7894,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58005.jpg"
+      "/products/ddp-pf58005.webp"
     ],
     "shades": [
       {
@@ -7938,7 +7923,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58005.webp"
   },
   {
     "id": "ddp-pf58015",
@@ -7964,7 +7950,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58015.jpg"
+      "/products/ddp-pf58015.webp"
     ],
     "shades": [
       {
@@ -7993,7 +7979,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58015.webp"
   },
   {
     "id": "ddp-pf58025",
@@ -8019,7 +8006,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58025.jpg"
+      "/products/ddp-pf58025.webp"
     ],
     "shades": [
       {
@@ -8048,7 +8035,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58025.webp"
   },
   {
     "id": "ddp-pf58035",
@@ -8074,7 +8062,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58035.jpg"
+      "/products/ddp-pf58035.webp"
     ],
     "shades": [
       {
@@ -8103,7 +8091,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58035.webp"
   },
   {
     "id": "ddp-pf58045",
@@ -8129,7 +8118,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58045.jpg"
+      "/products/ddp-pf58045.webp"
     ],
     "shades": [
       {
@@ -8158,7 +8147,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58045.webp"
   },
   {
     "id": "ddp-pf58055",
@@ -8184,7 +8174,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58055.jpg"
+      "/products/ddp-pf58055.webp"
     ],
     "shades": [
       {
@@ -8213,7 +8203,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58055.webp"
   },
   {
     "id": "ddp-pf58065",
@@ -8239,7 +8230,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58065.jpg"
+      "/products/ddp-pf58065.webp"
     ],
     "shades": [
       {
@@ -8268,7 +8259,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58065.webp"
   },
   {
     "id": "ddp-pf58075",
@@ -8294,7 +8286,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58075.jpg"
+      "/products/ddp-pf58075.webp"
     ],
     "shades": [
       {
@@ -8323,7 +8315,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58075.webp"
   },
   {
     "id": "ddp-pf58085",
@@ -8349,7 +8342,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58085.jpg"
+      "/products/ddp-pf58085.webp"
     ],
     "shades": [
       {
@@ -8378,7 +8371,8 @@
       }
     ],
     "stock": 1,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58085.webp"
   },
   {
     "id": "ddp-pf58091",
@@ -8404,7 +8398,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58091.jpg"
+      "/products/ddp-pf58091.webp"
     ],
     "shades": [
       {
@@ -8433,7 +8427,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58091.webp"
   },
   {
     "id": "ddp-pf58101",
@@ -8459,7 +8454,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58101.jpg"
+      "/products/ddp-pf58101.webp"
     ],
     "shades": [
       {
@@ -8488,7 +8483,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58101.webp"
   },
   {
     "id": "ddp-pf58111",
@@ -8514,7 +8510,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58111.jpg"
+      "/products/ddp-pf58111.webp"
     ],
     "shades": [
       {
@@ -8543,7 +8539,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58111.webp"
   },
   {
     "id": "ddp-pf58121",
@@ -8569,7 +8566,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58121.jpg"
+      "/products/ddp-pf58005.webp"
     ],
     "shades": [
       {
@@ -8577,7 +8574,7 @@
         "name": "Formato Originale",
         "code": "PF58121",
         "hex": "#FAF7FC",
-        "image": "/products/ddp-pf58121.jpg",
+        "image": "/products/ddp-pf58005.webp",
         "price": 48.3,
         "inStock": true,
         "stock": 3
@@ -8590,7 +8587,7 @@
         "sku": "PF58121",
         "ean": "8023264530252",
         "colorHex": null,
-        "image": "/products/ddp-pf58121.jpg",
+        "image": "/products/ddp-pf58005.webp",
         "inStock": true,
         "price": 48.3,
         "originalWholesalePrice": 18,
@@ -8598,7 +8595,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58005.webp"
   },
   {
     "id": "ddp-pf58131",
@@ -8624,7 +8622,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58131.jpg"
+      "/products/ddp-pf58131.webp"
     ],
     "shades": [
       {
@@ -8653,7 +8651,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58131.webp"
   },
   {
     "id": "ddp-pf58141",
@@ -8679,7 +8678,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58141.jpg"
+      "/products/ddp-pf58141.webp"
     ],
     "shades": [
       {
@@ -8708,7 +8707,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58141.webp"
   },
   {
     "id": "ddp-pf58151",
@@ -8734,7 +8734,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58151.jpg"
+      "/products/ddp-pf58151.webp"
     ],
     "shades": [
       {
@@ -8763,7 +8763,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58151.webp"
   },
   {
     "id": "ddp-pf58161",
@@ -8789,7 +8790,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf58161.jpg"
+      "/products/ddp-pf58161.webp"
     ],
     "shades": [
       {
@@ -8818,7 +8819,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf58161.webp"
   },
   {
     "id": "ddp-pf77001",
@@ -8844,7 +8846,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf77001.jpg"
+      "/products/ddp-pf77001.webp"
     ],
     "shades": [
       {
@@ -8873,7 +8875,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77001.webp"
   },
   {
     "id": "ddp-pf77101",
@@ -8899,7 +8902,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf77101.jpg"
+      "/products/ddp-pf77101.webp"
     ],
     "shades": [
       {
@@ -8928,7 +8931,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77101.webp"
   },
   {
     "id": "ddp-pf77121",
@@ -8954,7 +8958,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf77121.jpg"
+      "/products/ddp-pf77121.webp"
     ],
     "shades": [
       {
@@ -8983,7 +8987,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77121.webp"
   },
   {
     "id": "ddp-pf77201",
@@ -9009,7 +9014,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf77201.jpg"
+      "/products/ddp-pf77201.webp"
     ],
     "shades": [
       {
@@ -9038,7 +9043,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77201.webp"
   },
   {
     "id": "ddp-pf77211",
@@ -9064,7 +9070,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf77211.jpg"
+      "/products/ddp-pf77211.webp"
     ],
     "shades": [
       {
@@ -9093,7 +9099,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77211.webp"
   },
   {
     "id": "ddp-pf77221",
@@ -9119,7 +9126,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf77221.jpg"
+      "/products/ddp-pf77221.webp"
     ],
     "shades": [
       {
@@ -9148,7 +9155,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77221.webp"
   },
   {
     "id": "ddp-pf77231",
@@ -9174,7 +9182,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf77231.jpg"
+      "/products/ddp-pf77231.webp"
     ],
     "shades": [
       {
@@ -9203,7 +9211,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77231.webp"
   },
   {
     "id": "ddp-pf77241",
@@ -9229,7 +9238,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf77241.jpg"
+      "/products/ddp-pf77241.webp"
     ],
     "shades": [
       {
@@ -9258,7 +9267,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77241.webp"
   },
   {
     "id": "ddp-pf77521",
@@ -9284,7 +9294,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf77521.jpg"
+      "/products/ddp-pf77521.webp"
     ],
     "shades": [
       {
@@ -9313,7 +9323,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77521.webp"
   },
   {
     "id": "ddp-pf77531",
@@ -9339,7 +9350,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf77531.jpg"
+      "/products/ddp-pf77531.webp"
     ],
     "shades": [
       {
@@ -9368,7 +9379,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77531.webp"
   },
   {
     "id": "ddp-pf77541",
@@ -9394,7 +9406,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf77541.jpg"
+      "/products/ddp-pf77541.webp"
     ],
     "shades": [
       {
@@ -9423,7 +9435,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77541.webp"
   },
   {
     "id": "ddp-pf77551",
@@ -9449,7 +9462,7 @@
       "Testato su pelle sensibile"
     ],
     "images": [
-      "/products/ddp-pf77551.jpg"
+      "/products/ddp-pf77551.webp"
     ],
     "shades": [
       {
@@ -9478,7 +9491,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77551.webp"
   },
   {
     "id": "ddp-pf77561",
@@ -9533,7 +9547,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77561.jpg"
   },
   {
     "id": "ddp-pf77571",
@@ -9588,7 +9603,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77571.jpg"
   },
   {
     "id": "ddp-pf77581",
@@ -9643,7 +9659,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/ddp-pf77581.jpg"
   },
   {
     "id": "cipria-62588",
@@ -9814,7 +9831,8 @@
       }
     ],
     "stock": 18,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-eyeshadow.jpg"
   },
   {
     "id": "cipria-item-cm-cristal-eyeshadow",
@@ -9840,7 +9858,7 @@
       "Dermatologicamente testato"
     ],
     "images": [
-      "/products/cipria-make-up-packshot.jpg"
+      "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg"
     ],
     "shades": [
       {
@@ -9848,7 +9866,7 @@
         "name": "STAL EYESHADOW",
         "code": "8024523475086",
         "hex": "#9E8B7D",
-        "image": "/products/cipria-make-up-packshot.jpg",
+        "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
         "price": 8.9,
         "inStock": true,
         "stock": 3
@@ -9861,7 +9879,7 @@
         "sku": "8024523475086",
         "ean": "8024523475086",
         "colorHex": "#9E8B7D",
-        "image": "/products/cipria-make-up-packshot.jpg",
+        "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
         "inStock": true,
         "price": 8.9,
         "originalWholesalePrice": 3.3,
@@ -9869,7 +9887,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg"
   },
   {
     "id": "cipria-62579",
@@ -10155,7 +10174,8 @@
       }
     ],
     "stock": 33,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-eyeshadow-crystal.jpg"
   },
   {
     "id": "cipria-5276",
@@ -10278,7 +10298,8 @@
       }
     ],
     "stock": 24,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato.jpg"
   },
   {
     "id": "cipria-7324",
@@ -10334,7 +10355,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-eyeliner-pen-art-scenic.jpg"
   },
   {
     "id": "cipria-17508",
@@ -10390,7 +10412,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-kajal-pencil-black.jpg"
   },
   {
     "id": "cipria-17492",
@@ -10469,7 +10492,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-eyeliner-pencil-long-wear.jpg"
   },
   {
     "id": "cipria-65358",
@@ -10525,7 +10549,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-eyeliner-pencil-black.jpg"
   },
   {
     "id": "cipria-65690",
@@ -10674,7 +10699,8 @@
       }
     ],
     "stock": 30,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-waterproof-eyeliner-pencil.jpg"
   },
   {
     "id": "cipria-69689",
@@ -10754,7 +10780,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-eyeliner-metallic.jpg"
   },
   {
     "id": "cipria-68916",
@@ -10903,7 +10930,8 @@
       }
     ],
     "stock": 18,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-brown-eyeliner.jpg"
   },
   {
     "id": "cipria-70476",
@@ -10960,7 +10988,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-eyeliner-con-timbro.jpg"
   },
   {
     "id": "cipria-7326",
@@ -11017,7 +11046,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-eyeliner-precise-brush-black.jpg"
   },
   {
     "id": "cipria-23455",
@@ -11074,7 +11104,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-ultra-fixing-gel-brow-go.jpg"
   },
   {
     "id": "cipria-68124",
@@ -11130,7 +11161,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-brow-go-pomade-pencil.jpg"
   },
   {
     "id": "cipria-item-ev-eyelashes-activator-3-in-1",
@@ -11156,7 +11188,7 @@
       "Dermatologicamente testato"
     ],
     "images": [
-      "/products/eveline-cosmetics-packshot.jpg"
+      "/products/rvb-4d-pro-lash-brow-siero-ciglia-sopracciglia.png"
     ],
     "shades": [
       {
@@ -11164,7 +11196,7 @@
         "name": "1",
         "code": "5907609337559",
         "hex": "#D2A374",
-        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "image": "/products/rvb-4d-pro-lash-brow-siero-ciglia-sopracciglia.png",
         "price": 8.5,
         "inStock": true,
         "stock": 3
@@ -11177,7 +11209,7 @@
         "sku": "5907609337559",
         "ean": "5907609337559",
         "colorHex": "#D2A374",
-        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "image": "/products/rvb-4d-pro-lash-brow-siero-ciglia-sopracciglia.png",
         "inStock": true,
         "price": 8.5,
         "originalWholesalePrice": 3.18,
@@ -11185,7 +11217,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/rvb-4d-pro-lash-brow-siero-ciglia-sopracciglia.png"
   },
   {
     "id": "cipria-70475",
@@ -11243,7 +11276,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-eveline-cosmetics-brow-go-gel-sopracciglia.jpg"
   },
   {
     "id": "cipria-61882",
@@ -11346,7 +11380,8 @@
       }
     ],
     "stock": 9,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-eveline-cosmetics-eyebrow-pencil-waterproof.jpg"
   },
   {
     "id": "cipria-70573",
@@ -11403,7 +11438,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-art-matita-sopracciglia.jpg"
   },
   {
     "id": "cipria-66037",
@@ -11482,7 +11518,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-gel-eyeliner-longlasting.jpg"
   },
   {
     "id": "cipria-66032",
@@ -11539,7 +11576,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-precision-ink-eyeliner.jpg"
   },
   {
     "id": "cipria-68695",
@@ -11596,7 +11634,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-mascara-provocative.jpg"
   },
   {
     "id": "cipria-7328",
@@ -11675,7 +11714,8 @@
       }
     ],
     "stock": 5,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-eyeliner-celebrities.jpg"
   },
   {
     "id": "cipria-18175",
@@ -11893,7 +11933,8 @@
       }
     ],
     "stock": 24,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg"
   },
   {
     "id": "cipria-66073",
@@ -11950,7 +11991,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-brow-brush-201.jpg"
   },
   {
     "id": "cipria-66071",
@@ -12006,7 +12048,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-brow-gel.jpg"
   },
   {
     "id": "cipria-66057",
@@ -12085,7 +12128,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-brow-pomade.jpg"
   },
   {
     "id": "cipria-66064",
@@ -12188,7 +12232,8 @@
       }
     ],
     "stock": 9,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-brow-palette.jpg"
   },
   {
     "id": "cipria-66048",
@@ -12244,7 +12289,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-brow-liner-with-brush.jpg"
   },
   {
     "id": "cipria-63703",
@@ -12393,7 +12439,8 @@
       }
     ],
     "stock": 15,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me.jpg"
   },
   {
     "id": "cipria-5653",
@@ -12450,7 +12497,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-glitter-primer.jpg"
   },
   {
     "id": "cipria-item-miyo-mystick-eye-stick-01-full-moon",
@@ -12476,7 +12524,7 @@
       "Dermatologicamente testato"
     ],
     "images": [
-      "/products/miyo-packshot.jpg"
+      "/products/eveline-cosmetics-eveline-cosmetics-wonder-show-illuminante-stick-01-starlight.jpg"
     ],
     "shades": [
       {
@@ -12484,7 +12532,7 @@
         "name": "FULL MOON",
         "code": "3700467851869",
         "hex": "#F7D8C0",
-        "image": "/products/miyo-packshot.jpg",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-show-illuminante-stick-01-starlight.jpg",
         "price": 11.5,
         "inStock": true,
         "stock": 3
@@ -12497,7 +12545,7 @@
         "sku": "3700467851869",
         "ean": "3700467851869",
         "colorHex": "#F7D8C0",
-        "image": "/products/miyo-packshot.jpg",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-show-illuminante-stick-01-starlight.jpg",
         "inStock": true,
         "price": 11.5,
         "originalWholesalePrice": 4.28,
@@ -12505,7 +12553,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-show-illuminante-stick-01-starlight.jpg"
   },
   {
     "id": "cipria-item-miyo-mystick-eye-stick-02-falling-stars",
@@ -12531,7 +12580,7 @@
       "Dermatologicamente testato"
     ],
     "images": [
-      "/products/miyo-packshot.jpg"
+      "/products/eveline-cosmetics-eveline-cosmetics-wonder-show-illuminante-stick-02-golden-hour.jpg"
     ],
     "shades": [
       {
@@ -12539,7 +12588,7 @@
         "name": "LING STARS",
         "code": "3700467851876",
         "hex": "#B48253",
-        "image": "/products/miyo-packshot.jpg",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-show-illuminante-stick-02-golden-hour.jpg",
         "price": 11.5,
         "inStock": true,
         "stock": 3
@@ -12552,7 +12601,7 @@
         "sku": "3700467851876",
         "ean": "3700467851876",
         "colorHex": "#B48253",
-        "image": "/products/miyo-packshot.jpg",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-show-illuminante-stick-02-golden-hour.jpg",
         "inStock": true,
         "price": 11.5,
         "originalWholesalePrice": 4.28,
@@ -12560,7 +12609,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-show-illuminante-stick-02-golden-hour.jpg"
   },
   {
     "id": "cipria-item-miyo-mystick-eye-stick-03-retrograde",
@@ -12586,7 +12636,7 @@
       "Dermatologicamente testato"
     ],
     "images": [
-      "/products/miyo-packshot.jpg"
+      "/products/miyo-miyo-cosmetics-eye-perspective-liner-01-smouldering-black.jpg"
     ],
     "shades": [
       {
@@ -12594,7 +12644,7 @@
         "name": "03 RETROGRADE",
         "code": "3700467851883",
         "hex": "#D2A374",
-        "image": "/products/miyo-packshot.jpg",
+        "image": "/products/miyo-miyo-cosmetics-eye-perspective-liner-01-smouldering-black.jpg",
         "price": 11.5,
         "inStock": true,
         "stock": 3
@@ -12607,7 +12657,7 @@
         "sku": "3700467851883",
         "ean": "3700467851883",
         "colorHex": "#D2A374",
-        "image": "/products/miyo-packshot.jpg",
+        "image": "/products/miyo-miyo-cosmetics-eye-perspective-liner-01-smouldering-black.jpg",
         "inStock": true,
         "price": 11.5,
         "originalWholesalePrice": 4.28,
@@ -12615,7 +12665,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-eye-perspective-liner-01-smouldering-black.jpg"
   },
   {
     "id": "cipria-784",
@@ -12671,7 +12722,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-eyeliner-long-lasting-black-maniac.jpg"
   },
   {
     "id": "cipria-70406",
@@ -12727,7 +12779,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-eyeliner-whitemaniac.jpg"
   },
   {
     "id": "cipria-69806",
@@ -12830,7 +12883,8 @@
       }
     ],
     "stock": 9,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-brow-pencil-brow-poet.jpg"
   },
   {
     "id": "cipria-16436",
@@ -12886,7 +12940,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-sos-lash-booster-5in1-argan-oil.jpg"
   },
   {
     "id": "cipria-65956",
@@ -13012,7 +13067,8 @@
       }
     ],
     "stock": 24,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-long-lasting-eyeliner.jpg"
   },
   {
     "id": "cipria-65966",
@@ -13183,7 +13239,8 @@
       }
     ],
     "stock": 36,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-eyematic-waterproof-liner.jpg"
   },
   {
     "id": "cipria-71729",
@@ -13264,7 +13321,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-eveline-cosmetics-precise-slim-eyeliner-waterproof-nero.jpg"
   },
   {
     "id": "cipria-66017",
@@ -13321,7 +13379,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-waterline-pencil.jpg"
   },
   {
     "id": "cipria-71174",
@@ -13378,7 +13437,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-eye-pencil-prism-glow-liner.jpeg"
   },
   {
     "id": "cipria-66022",
@@ -13435,7 +13495,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-royal-pencil-black.jpg"
   },
   {
     "id": "cipria-67429",
@@ -13515,7 +13576,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-eye-perspective-liner.jpg"
   },
   {
     "id": "cipria-65630",
@@ -13687,7 +13749,8 @@
       }
     ],
     "stock": 36,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg"
   },
   {
     "id": "cipria-71461",
@@ -13767,7 +13830,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-matita-labbra-lip-shaper.jpg"
   },
   {
     "id": "cipria-68181",
@@ -13847,7 +13911,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg"
   },
   {
     "id": "cipria-68703",
@@ -13904,7 +13969,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-wings-maker-eyeliner.jpg"
   },
   {
     "id": "cipria-68699",
@@ -14007,7 +14073,8 @@
       }
     ],
     "stock": 9,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-brow-maker.jpg"
   },
   {
     "id": "cipria-67841",
@@ -14063,7 +14130,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-big-volume-bang.jpg"
   },
   {
     "id": "cipria-67846",
@@ -14120,7 +14188,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-false-lash-effect-reve-lashes.jpg"
   },
   {
     "id": "cipria-67539",
@@ -14177,7 +14246,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-variete-lashes-show.jpeg"
   },
   {
     "id": "cipria-18113",
@@ -14233,7 +14303,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-volumix-fiberlast-curl-up.jpg"
   },
   {
     "id": "cipria-24219",
@@ -14289,7 +14360,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-push-up-extension-volume.jpg"
   },
   {
     "id": "cipria-18100",
@@ -14346,7 +14418,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-mega-size.jpg"
   },
   {
     "id": "cipria-67844",
@@ -14402,7 +14475,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-extension-volume-4d.jpg"
   },
   {
     "id": "cipria-65420",
@@ -14458,7 +14532,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-superthin-defining.jpg"
   },
   {
     "id": "cipria-65770",
@@ -14537,7 +14612,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-sexy-eyes.jpg"
   },
   {
     "id": "cipria-723",
@@ -14595,7 +14671,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-mascara-super-lash-3in1.jpg"
   },
   {
     "id": "cipria-69418",
@@ -14698,7 +14775,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-cheeky-blush-girl-boss.jpg"
   },
   {
     "id": "cipria-787",
@@ -14778,7 +14856,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-mascara-vegan-big-fat-lashes.jpg"
   },
   {
     "id": "cipria-67885",
@@ -14836,7 +14915,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-mascara-iconic-lashes.jpg"
   },
   {
     "id": "cipria-65769",
@@ -14918,7 +14998,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-eveline-cosmetics-mascara-look-up-so-black.jpg"
   },
   {
     "id": "cipria-65954",
@@ -14975,7 +15056,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-magnolia-mascara.jpg"
   },
   {
     "id": "cipria-65948",
@@ -15031,7 +15113,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-lash-fame-mascara.jpg"
   },
   {
     "id": "cipria-66336",
@@ -15088,7 +15171,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-lash-nectar-serum.jpg"
   },
   {
     "id": "cipria-67127",
@@ -15144,7 +15228,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-lash-nectar-balm.jpg"
   },
   {
     "id": "cipria-71218",
@@ -15272,7 +15357,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-eveline-cosmetics-wonder-show-mascara-volume-lifting.jpg"
   },
   {
     "id": "cipria-71148",
@@ -15331,7 +15417,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-ombretto.jpg"
   },
   {
     "id": "cipria-71137",
@@ -15390,7 +15477,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-primer-ombretto.jpg"
   },
   {
     "id": "cipria-69571",
@@ -15447,7 +15535,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-eyeshadow-matt-art-palette-match-system.jpg"
   },
   {
     "id": "cipria-71770",
@@ -15505,7 +15594,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-mocha-mousse-caffe-latte-palette.jpg"
   },
   {
     "id": "cipria-71790",
@@ -15563,7 +15653,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-mocha-mousse-espresso-palette.jpg"
   },
   {
     "id": "cipria-67252",
@@ -15620,7 +15711,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-palette-look-up-but-why-not.jpg"
   },
   {
     "id": "cipria-67260",
@@ -15677,7 +15769,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-palette-look-up-let-8217-s-try.jpg"
   },
   {
     "id": "cipria-67256",
@@ -15734,7 +15827,8 @@
       }
     ],
     "stock": 2,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-palette-look-up-take-me-on-8230.jpg"
   },
   {
     "id": "cipria-72300",
@@ -15814,7 +15908,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster.jpg"
   },
   {
     "id": "cipria-66178",
@@ -15939,7 +16034,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-contour-concealer.jpg"
   },
   {
     "id": "cipria-item-cm-primer-n-501",
@@ -15965,7 +16061,7 @@
       "Dermatologicamente testato"
     ],
     "images": [
-      "/products/cipria-make-up-packshot.jpg"
+      "/products/cipria-make-up-cipria-milano-primer-base-make-up-503.jpg"
     ],
     "shades": [
       {
@@ -15973,7 +16069,7 @@
         "name": "501",
         "code": "8024523472627",
         "hex": "#D2A374",
-        "image": "/products/cipria-make-up-packshot.jpg",
+        "image": "/products/cipria-make-up-cipria-milano-primer-base-make-up-503.jpg",
         "price": 18.3,
         "inStock": true,
         "stock": 5
@@ -15986,7 +16082,7 @@
         "sku": "8024523472627",
         "ean": "8024523472627",
         "colorHex": "#D2A374",
-        "image": "/products/cipria-make-up-packshot.jpg",
+        "image": "/products/cipria-make-up-cipria-milano-primer-base-make-up-503.jpg",
         "inStock": true,
         "price": 18.3,
         "originalWholesalePrice": 6.8,
@@ -15994,7 +16090,8 @@
       }
     ],
     "stock": 5,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-primer-base-make-up-503.jpg"
   },
   {
     "id": "cipria-64247",
@@ -16051,7 +16148,8 @@
       }
     ],
     "stock": 5,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-primer-base-make-up.jpg"
   },
   {
     "id": "cipria-item-cm-primer-n-505",
@@ -16077,7 +16175,7 @@
       "Dermatologicamente testato"
     ],
     "images": [
-      "/products/cipria-make-up-packshot.jpg"
+      "/products/cipria-make-up-cipria-milano-primer-base-make-up.jpg"
     ],
     "shades": [
       {
@@ -16085,7 +16183,7 @@
         "name": "505",
         "code": "8024523472665",
         "hex": "#B48253",
-        "image": "/products/cipria-make-up-packshot.jpg",
+        "image": "/products/cipria-make-up-cipria-milano-primer-base-make-up.jpg",
         "price": 18.3,
         "inStock": true,
         "stock": 5
@@ -16098,7 +16196,7 @@
         "sku": "8024523472665",
         "ean": "8024523472665",
         "colorHex": "#B48253",
-        "image": "/products/cipria-make-up-packshot.jpg",
+        "image": "/products/cipria-make-up-cipria-milano-primer-base-make-up.jpg",
         "inStock": true,
         "price": 18.3,
         "originalWholesalePrice": 6.8,
@@ -16106,7 +16204,8 @@
       }
     ],
     "stock": 5,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-primer-base-make-up.jpg"
   },
   {
     "id": "cipria-64192",
@@ -16208,7 +16307,8 @@
       }
     ],
     "stock": 18,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-correttore-colato.jpg"
   },
   {
     "id": "cipria-64252",
@@ -16287,7 +16387,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-correttore-liquido.jpg"
   },
   {
     "id": "cipria-66399",
@@ -16414,7 +16515,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-serum-concealer.jpg"
   },
   {
     "id": "cipria-65900",
@@ -16494,7 +16596,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-illuminante-liquido.jpg"
   },
   {
     "id": "cipria-63890",
@@ -16552,7 +16655,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg"
   },
   {
     "id": "cipria-66163",
@@ -16678,7 +16782,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-bb-cream-glow-touch.jpg"
   },
   {
     "id": "cipria-64090",
@@ -16804,7 +16909,8 @@
       }
     ],
     "stock": 20,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-fondotinta-retouching-skin.jpg"
   },
   {
     "id": "cipria-360",
@@ -16929,7 +17035,8 @@
       }
     ],
     "stock": 20,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-fondotinta-no-trace.jpg"
   },
   {
     "id": "cipria-64182",
@@ -17031,7 +17138,8 @@
       }
     ],
     "stock": 15,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-fondotinta-all-day.jpg"
   },
   {
     "id": "cipria-64188",
@@ -17087,7 +17195,8 @@
       }
     ],
     "stock": 5,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-fondotinta-illuminante-all-day.jpg"
   },
   {
     "id": "cipria-66156",
@@ -17189,7 +17298,8 @@
       }
     ],
     "stock": 9,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-advanced-lift-fluid-foundation-spf15.jpg"
   },
   {
     "id": "cipria-69979",
@@ -17291,7 +17401,8 @@
       }
     ],
     "stock": 9,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-lumi-touch-fondotinta-art.jpg"
   },
   {
     "id": "cipria-66113",
@@ -17394,7 +17505,8 @@
       }
     ],
     "stock": 9,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-skin-balance-cover.jpg"
   },
   {
     "id": "cipria-71394",
@@ -17451,7 +17563,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-fondotinta-skin-elixir-velvet.jpg"
   },
   {
     "id": "cipria-64311",
@@ -17553,7 +17666,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-compact-foundation.jpg"
   },
   {
     "id": "cipria-64306",
@@ -17655,7 +17769,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-compact-powder-cipria-compatta.jpg"
   },
   {
     "id": "cipria-64233",
@@ -17757,7 +17872,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-wet-dry-fondotinta.jpg"
   },
   {
     "id": "cipria-7414",
@@ -17813,7 +17929,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-cc-cream-8in1.jpg"
   },
   {
     "id": "cipria-item-ev-cc-cream-beige",
@@ -17839,7 +17956,7 @@
       "Dermatologicamente testato"
     ],
     "images": [
-      "/products/eveline-cosmetics-packshot.jpg"
+      "/products/eveline-cosmetics-eveline-cosmetics-cc-cream-8in1.jpg"
     ],
     "shades": [
       {
@@ -17847,7 +17964,7 @@
         "name": "REAM BEIGE",
         "code": "5907609399045",
         "hex": "#E9C299",
-        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-cc-cream-8in1.jpg",
         "price": 10.5,
         "inStock": true,
         "stock": 3
@@ -17860,7 +17977,7 @@
         "sku": "5907609399045",
         "ean": "5907609399045",
         "colorHex": "#E9C299",
-        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-cc-cream-8in1.jpg",
         "inStock": true,
         "price": 10.5,
         "originalWholesalePrice": 3.9,
@@ -17868,7 +17985,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-cc-cream-8in1.jpg"
   },
   {
     "id": "cipria-item-ev-cc-cream-medium-beige",
@@ -17894,7 +18012,7 @@
       "Dermatologicamente testato"
     ],
     "images": [
-      "/products/eveline-cosmetics-packshot.jpg"
+      "/products/eveline-cosmetics-eveline-cosmetics-cc-cream-8in1-1.jpg"
     ],
     "shades": [
       {
@@ -17902,7 +18020,7 @@
         "name": "DIUM BEIGE",
         "code": "5907609399113",
         "hex": "#B48253",
-        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-cc-cream-8in1-1.jpg",
         "price": 10.5,
         "inStock": true,
         "stock": 3
@@ -17915,7 +18033,7 @@
         "sku": "5907609399113",
         "ean": "5907609399113",
         "colorHex": "#B48253",
-        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-cc-cream-8in1-1.jpg",
         "inStock": true,
         "price": 10.5,
         "originalWholesalePrice": 3.9,
@@ -17923,7 +18041,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-cc-cream-8in1-1.jpg"
   },
   {
     "id": "cipria-item-ev-cc-cream-natural",
@@ -17949,7 +18068,7 @@
       "Dermatologicamente testato"
     ],
     "images": [
-      "/products/eveline-cosmetics-packshot.jpg"
+      "/products/eveline-cosmetics-eveline-cosmetics-cica-skin-cc-cream-30ml.jpg"
     ],
     "shades": [
       {
@@ -17957,7 +18076,7 @@
         "name": "REAM NATURAL",
         "code": "5907609399014",
         "hex": "#B48253",
-        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-cica-skin-cc-cream-30ml.jpg",
         "price": 10.5,
         "inStock": true,
         "stock": 3
@@ -17970,7 +18089,7 @@
         "sku": "5907609399014",
         "ean": "5907609399014",
         "colorHex": "#B48253",
-        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-cica-skin-cc-cream-30ml.jpg",
         "inStock": true,
         "price": 10.5,
         "originalWholesalePrice": 3.9,
@@ -17978,7 +18097,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-cica-skin-cc-cream-30ml.jpg"
   },
   {
     "id": "cipria-68639",
@@ -18104,7 +18224,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-art-cream-contouring.jpg"
   },
   {
     "id": "cipria-64138",
@@ -18207,7 +18328,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-sublime-blush-on.jpg"
   },
   {
     "id": "cipria-69359",
@@ -18333,7 +18455,8 @@
       }
     ],
     "stock": 14,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-pierre-rene-loose-powder-velvet-matte.jpg"
   },
   {
     "id": "cipria-473",
@@ -18389,7 +18512,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-cipria-loose-powder.jpg"
   },
   {
     "id": "cipria-66192",
@@ -18468,7 +18592,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-contouring-powder.jpg"
   },
   {
     "id": "cipria-66089",
@@ -18594,7 +18719,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-blush-rouge-powder.jpg"
   },
   {
     "id": "cipria-65906",
@@ -18673,7 +18799,8 @@
       }
     ],
     "stock": 8,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-feel-the-bronze.jpg"
   },
   {
     "id": "cipria-68715",
@@ -18799,7 +18926,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-doll-face-pressed-powder.jpg"
   },
   {
     "id": "cipria-63721",
@@ -18879,7 +19007,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-cheeky-blush-rouge-powder.jpg"
   },
   {
     "id": "cipria-64608",
@@ -18959,7 +19088,8 @@
       }
     ],
     "stock": 8,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-illuminizer-powder.jpg"
   },
   {
     "id": "cipria-64593",
@@ -19016,7 +19146,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-bronzing-sun-kissed.jpg"
   },
   {
     "id": "cipria-66075",
@@ -19118,7 +19249,8 @@
       }
     ],
     "stock": 9,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-compact-powder.jpg"
   },
   {
     "id": "cipria-69316",
@@ -19198,7 +19330,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-compact-powder-spf25-limited-edition.jpg"
   },
   {
     "id": "cipria-70481",
@@ -19256,7 +19389,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-eveline-cosmetics-wonder-match-compact-powder-spf30.jpg"
   },
   {
     "id": "cipria-64287",
@@ -19335,7 +19469,8 @@
       }
     ],
     "stock": 8,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-traslucent-melange.jpg"
   },
   {
     "id": "cipria-67950",
@@ -19393,7 +19528,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-blush-on-melange-new.jpg"
   },
   {
     "id": "cipria-67554",
@@ -19520,7 +19656,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-cheek-lip.jpg"
   },
   {
     "id": "cipria-70222",
@@ -19600,7 +19737,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-liquid-bronzer.jpg"
   },
   {
     "id": "cipria-73706",
@@ -19610,7 +19748,7 @@
     "category": "Skincare & Dermo",
     "description": "Wonder Match BB Cream SPF 50 è la soluzione ideale per una pelle liscia, fresca e dall&#8217;aspetto naturale per tutto il giorno. La formula Repair Complex, ispirata alla tradizione coreana, lascia l&#8217;incarnato morbido, più idratato e radioso. Offre una copertura completa, nasconde le imperfezioni e leviga visibilmente la grana della pelle. La texture leggera si adatta alle espressioni del viso, garantendo un trucco dall&#8217;aspetto naturale. Uniforma l&#8217;incarnato e permette una copertura modulabile. Il finish satinato dona un aspetto naturale, radioso e leggermente illuminato. L&#8217;elevato fattore di protezione solare SPF 50, composto da filtri fisici (minerali) e chimici, offre una protezione UV più efficace e ad ampio spettro. PRINCIPALI INGREDIENTI ATTIVI E LORO AZIONE I filtri UV, fisici (minerali) e chimici combinano i benefici di entrambi, offrendo una protezione ad ampio spettro contro il fotoinvecchiamento. Ceramidi: supportano la barriera cutanea naturale, ne migliorano l&#8217;elasticità e riducono la tendenza alla secchezza. Contribuiscono a mantenere il comfort per tutto il giorno. CICA: lenisce le irritazioni e favorisce la rigenerazione, lasciando la pelle più calma e uniforme. Niacinamide: uniforma l&#8217;incarnato, supporta la barriera idrolipidica e migliora le condizioni generali della pelle. Aiuta a mantenere un aspetto fresco e riposato. Fito PDRN (DNA di sodio): favorisce il rinnovamento cellulare della pelle e ne migliora l&#8217;elasticità. Il collagene sostiene la struttura della pelle, aumentandone l&#8217;elasticità e la tonicità. Aiuta a ridurre la visibilità delle piccole imperfezioni e migliora la levigatezza della pelle. L&#8217;acido ialuronico idrata e lega l&#8217;acqua all&#8217;epidermide, lasciando la pelle morbida e confortevole per ore. Applicazione: Applicare uniformemente sulla pelle del viso.",
     "shortDescription": "Wonder Match BB Cream SPF 50 è la soluzione ideale per una pelle liscia, fresca e dall&#8217;aspetto naturale per tutto il giorno.",
-    "price": 0,
+    "price": 8.9,
     "originalPrice": 0,
     "originalWholesalePrice": 4.99,
     "badge": "Bestseller",
@@ -19657,7 +19795,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-bb-cream-spf-50.jpg"
   },
   {
     "id": "cipria-71829",
@@ -19715,7 +19854,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-1-step-blush.jpg"
   },
   {
     "id": "cipria-71943",
@@ -19797,7 +19937,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-ultracreamy-bronzer.jpg"
   },
   {
     "id": "cipria-71940",
@@ -19855,7 +19996,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-ultracreamy-illuminante.jpg"
   },
   {
     "id": "cipria-66197",
@@ -19911,7 +20053,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-highlighting-powder.jpg"
   },
   {
     "id": "cipria-70580",
@@ -19968,7 +20111,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-contouring-matte-bronzer.jpg"
   },
   {
     "id": "cipria-66099",
@@ -20024,7 +20168,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-bronzing-powder-shimmering.jpg"
   },
   {
     "id": "cipria-67445",
@@ -20104,7 +20249,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-royal-dust-illuminante.jpg"
   },
   {
     "id": "cipria-65983",
@@ -20368,7 +20514,8 @@
       }
     ],
     "stock": 60,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-lipmatic-waterproof-liner.jpg"
   },
   {
     "id": "cipria-66396",
@@ -20424,7 +20571,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-lip-brush.jpg"
   },
   {
     "id": "cipria-73711",
@@ -20480,7 +20628,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel.jpg"
   },
   {
     "id": "cipria-64154",
@@ -20628,7 +20777,8 @@
       }
     ],
     "stock": 30,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/cipria-make-up-cipria-milano-tinta-labbra-sublime.jpg"
   },
   {
     "id": "cipria-70870",
@@ -20731,7 +20881,8 @@
       }
     ],
     "stock": 9,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-the-one-luv-gloss.jpg"
   },
   {
     "id": "cipria-71613",
@@ -20810,7 +20961,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-holika-holika-the-real-glutathione-gel-mask.jpg"
   },
   {
     "id": "cipria-17513",
@@ -20867,7 +21019,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-lip-maximizer-bee-venom.jpg"
   },
   {
     "id": "cipria-17515",
@@ -20924,7 +21077,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-lip-maximizer-chili.jpg"
   },
   {
     "id": "cipria-64586",
@@ -20981,7 +21135,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-lip-maximizer-chocolate.jpg"
   },
   {
     "id": "cipria-72062",
@@ -21152,7 +21307,8 @@
       }
     ],
     "stock": 36,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-celebrity-rossetto-opaco.jpg"
   },
   {
     "id": "cipria-70639",
@@ -21370,7 +21526,8 @@
       }
     ],
     "stock": 24,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-satin-pure-rossetto.jpg"
   },
   {
     "id": "cipria-66305",
@@ -21495,7 +21652,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-cover-gloss.jpg"
   },
   {
     "id": "cipria-66327",
@@ -21598,7 +21756,8 @@
       }
     ],
     "stock": 9,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-lip-oil.jpg"
   },
   {
     "id": "cipria-72069",
@@ -21862,7 +22021,8 @@
       }
     ],
     "stock": 60,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-viny-love-rossetto-vinilico.jpg"
   },
   {
     "id": "cipria-72054",
@@ -22033,7 +22193,8 @@
       }
     ],
     "stock": 18,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-celebrity-rossetto-lucido.jpg"
   },
   {
     "id": "cipria-69880",
@@ -22250,7 +22411,8 @@
       }
     ],
     "stock": 24,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-royal-mat-rossetto.jpg"
   },
   {
     "id": "cipria-5184",
@@ -22376,7 +22538,8 @@
       }
     ],
     "stock": 24,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-lip-gloss-outstanding.jpg"
   },
   {
     "id": "cipria-73750",
@@ -22434,7 +22597,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-pierre-rene-le-premier-lip-gloss.jpg"
   },
   {
     "id": "cipria-70396",
@@ -22491,7 +22655,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-lip-balm-outstanding.jpg"
   },
   {
     "id": "cipria-64569",
@@ -22640,7 +22805,8 @@
       }
     ],
     "stock": 30,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-lipstick-satin-variete.jpg"
   },
   {
     "id": "cipria-70153",
@@ -22811,7 +22977,8 @@
       }
     ],
     "stock": 18,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-cover-matte-rossetto-liquido.jpg"
   },
   {
     "id": "cipria-64532",
@@ -22936,7 +23103,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-lip-liquid-satin-matt-variete.jpg"
   },
   {
     "id": "cipria-70863",
@@ -23016,7 +23184,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-pierre-rene-vinyl-liquid-lipstick.jpg"
   },
   {
     "id": "cipria-71219",
@@ -23096,7 +23265,8 @@
       }
     ],
     "stock": 6,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-show-illuminante-stick.jpg"
   },
   {
     "id": "cipria-23460",
@@ -23153,7 +23323,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-makeup-primer-siero-2in1.jpg"
   },
   {
     "id": "cipria-65757",
@@ -23325,7 +23496,8 @@
       }
     ],
     "stock": 36,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-lip-gloss-cooling-kisses.jpg"
   },
   {
     "id": "cipria-68764",
@@ -23427,7 +23599,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-plumping-lip-gloss.jpg"
   },
   {
     "id": "cipria-68808",
@@ -23553,7 +23726,8 @@
       }
     ],
     "stock": 16,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-pudding-lip-gloss.jpg"
   },
   {
     "id": "cipria-71483",
@@ -23610,7 +23784,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-insta-kiss-pocket-caramel-fudge.jpg"
   },
   {
     "id": "cipria-71482",
@@ -23667,7 +23842,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/miyo-miyo-cosmetics-insta-kiss-pocket-cherry-candy.jpg"
   },
   {
     "id": "cipria-66199",
@@ -23884,7 +24060,8 @@
       }
     ],
     "stock": 40,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-nail-polish.jpg"
   },
   {
     "id": "cipria-66350",
@@ -23941,7 +24118,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-collagen-siero.jpg"
   },
   {
     "id": "cipria-66347",
@@ -23997,7 +24175,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-hyaluronic-siero.jpg"
   },
   {
     "id": "cipria-66351",
@@ -24053,7 +24232,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/pierre-rene-pierre-rene-vitamin-c-siero.jpg"
   },
   {
     "id": "cipria-67186",
@@ -24110,7 +24290,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic.jpg"
   },
   {
     "id": "cipria-70320",
@@ -24166,7 +24347,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-crema-ampoule-vitamin-c.jpg"
   },
   {
     "id": "cipria-67188",
@@ -24222,7 +24404,8 @@
       }
     ],
     "stock": 12,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-peptide.jpg"
   },
   {
     "id": "cipria-70744",
@@ -24279,7 +24462,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-slim-extreme-4d-fitness.jpg"
   },
   {
     "id": "cipria-71717",
@@ -24336,7 +24520,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-d-8217-aury-vitamin-meso-serum-younger-skin.jpg"
   },
   {
     "id": "cipria-71758",
@@ -24393,7 +24578,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-d-8217-aury-caffeine-eye-eyelid-meso-cream.jpg"
   },
   {
     "id": "cipria-71534",
@@ -24451,7 +24637,8 @@
       }
     ],
     "stock": 4,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-perfect-bright-face-cleansing-gel.jpg"
   },
   {
     "id": "cipria-71532",
@@ -24509,7 +24696,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-perfect-bright-crema-mani.jpg"
   },
   {
     "id": "cipria-71528",
@@ -24566,7 +24754,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-perfect-bright-crema-notte.jpg"
   },
   {
     "id": "cipria-71530",
@@ -24624,7 +24813,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-perfect-bright-siero.jpg"
   },
   {
     "id": "cipria-70473",
@@ -24681,7 +24871,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-cream-shot-rigenerante.jpg"
   },
   {
     "id": "cipria-65431",
@@ -24737,7 +24928,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-skin-care-expert-crema-double-white.jpg"
   },
   {
     "id": "cipria-65430",
@@ -24793,7 +24985,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-snail-slime-crema-giorno-notte.jpg"
   },
   {
     "id": "cipria-65797",
@@ -24850,7 +25043,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-serum-shot-0-2-retinolo.jpg"
   },
   {
     "id": "cipria-65784",
@@ -24906,7 +25100,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-serum-shot-15-niacinamide.jpg"
   },
   {
     "id": "cipria-65785",
@@ -24963,7 +25158,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-serum-shot-2-acido-ialuronico.jpg"
   },
   {
     "id": "cipria-65783",
@@ -25020,7 +25216,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-serum-shot-contorno-occhi-5-caffeina.jpg"
   },
   {
     "id": "cipria-67316",
@@ -25077,7 +25274,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-serum-shot-15-vitamin-c-cg.jpg"
   },
   {
     "id": "cipria-65786",
@@ -25134,7 +25332,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-serum-shot-multi-peptidi.jpg"
   },
   {
     "id": "cipria-70466",
@@ -25191,7 +25390,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore.jpg"
   },
   {
     "id": "cipria-70469",
@@ -25248,7 +25448,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante.jpg"
   },
   {
     "id": "cipria-70463",
@@ -25305,7 +25506,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-crema-occhi.jpg"
   },
   {
     "id": "cipria-70465",
@@ -25362,7 +25564,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-schiuma-detergente.jpg"
   },
   {
     "id": "cipria-70248",
@@ -25418,7 +25621,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-clean-shot-schiuma-d-pantenol.jpg"
   },
   {
     "id": "cipria-70250",
@@ -25475,7 +25679,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-clean-shot-peeling-tonico-levigante.jpg"
   },
   {
     "id": "cipria-70253",
@@ -25532,7 +25737,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-clean-shot-peeling-acido.jpg"
   },
   {
     "id": "cipria-70251",
@@ -25589,7 +25795,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-clean-shot-peeling-enzimatico.jpg"
   },
   {
     "id": "cipria-67224",
@@ -25647,7 +25854,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-crema-lifting-50.jpg"
   },
   {
     "id": "cipria-67239",
@@ -25703,7 +25911,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-gel-occhi-antirughe.jpg"
   },
   {
     "id": "cipria-67238",
@@ -25759,7 +25968,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-siero-multiriparatore.jpg"
   },
   {
     "id": "cipria-item-ev-foot-care-cream-100ml",
@@ -25785,7 +25995,7 @@
       "Dermatologicamente testato"
     ],
     "images": [
-      "/products/eveline-cosmetics-packshot.jpg"
+      "/products/eveline-cosmetics-eveline-cosmetics-perfect-bright-crema-mani-00ml.jpg"
     ],
     "shades": [
       {
@@ -25793,7 +26003,7 @@
         "name": "00ML",
         "code": "5903416026464",
         "hex": "#E9C299",
-        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-perfect-bright-crema-mani-00ml.jpg",
         "price": 6.9,
         "inStock": true,
         "stock": 3
@@ -25806,7 +26016,7 @@
         "sku": "5903416026464",
         "ean": "5903416026464",
         "colorHex": "#E9C299",
-        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-perfect-bright-crema-mani-00ml.jpg",
         "inStock": true,
         "price": 6.9,
         "originalWholesalePrice": 2.58,
@@ -25814,7 +26024,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-perfect-bright-crema-mani-00ml.jpg"
   },
   {
     "id": "cipria-72329",
@@ -25870,7 +26081,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-pink-snail-schiuma-detergente-viso.jpg"
   },
   {
     "id": "cipria-72467",
@@ -25926,7 +26138,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-pink-snail-essenza-viso.jpg"
   },
   {
     "id": "cipria-72336",
@@ -25982,7 +26195,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-pink-snail-crema-idratante.jpg"
   },
   {
     "id": "cipria-71726",
@@ -26038,7 +26252,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-korean-rituals-crema-levigante.jpg"
   },
   {
     "id": "cipria-71727",
@@ -26094,7 +26309,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-korean-rituals-crema-lenitiva.jpg"
   },
   {
     "id": "cipria-71936",
@@ -26150,7 +26366,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-super-needles-cica-meso-elixir.jpg"
   },
   {
     "id": "cipria-71939",
@@ -26206,7 +26423,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-super-needles-vitamin-meso-elixir.jpg"
   },
   {
     "id": "cipria-72018",
@@ -26263,7 +26481,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-super-needles-tonico-rinfrescante-150ml.jpg"
   },
   {
     "id": "cipria-71698",
@@ -26321,7 +26540,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-cica-skin-cc-cream.jpg"
   },
   {
     "id": "cipria-71693",
@@ -26379,7 +26599,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-cica-skin-idratante-e-nutriente.jpg"
   },
   {
     "id": "cipria-71696",
@@ -26436,7 +26657,8 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-cica-skin-siero-idratante-e-lenitivo.jpg"
   },
   {
     "id": "cipria-71700",
@@ -26492,6 +26714,7 @@
       }
     ],
     "stock": 3,
-    "inStock": true
+    "inStock": true,
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-cica-skin-olio-gel-detergente.jpg"
   }
 ]

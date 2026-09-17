@@ -27,6 +27,18 @@ yarn-error.log*
 .env*.local
 .env
 
+# vercel
+.vercel
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# internal agency & supplier docs
+.agents/
+ddp_invoice.txt
+*.pdf
+Fatture Cipria Makeup/
+Fatture Diego della Palma/
+Logo/
+Negozio fisico.png

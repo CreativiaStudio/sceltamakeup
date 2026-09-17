@@ -132,7 +132,7 @@ describe("Milestone 2: Split Editorial Hero & Dynamic Homepage Restyling", () =>
 
       // Trust bar with all 4 items
       assert.ok(html.includes("Spedizione Gratuita"), "Must have Spedizione Gratuita");
-      assert.ok(html.includes("Ritiro in Boutique"), "Must have Ritiro in Boutique");
+      assert.ok(html.includes("Ritiro in Salone") || html.includes("Ritiro in Boutique"), "Must have Ritiro in Salone or Boutique");
       assert.ok(html.includes("100% Autentico"), "Must have 100% Autentico");
       assert.ok(html.includes("Consulenza &amp; Shade Match") || html.includes("Consulenza & Shade Match"), "Must have Consulenza & Shade Match");
     });

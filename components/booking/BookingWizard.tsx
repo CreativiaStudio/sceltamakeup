@@ -236,7 +236,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
               Scegli il tuo Trattamento Make-Up
             </h1>
             <p className="mt-3 text-[#1F1B24]/70 text-sm sm:text-base leading-relaxed">
-              Tutte le sedute sono eseguite personalmente da <strong>Federica Cesiano</strong> presso la nostra boutique di Napoli. Prenotando online ricevi subito il <strong>10% di sconto</strong> sul listino ufficiale.
+              Tutte le sedute sono eseguite personalmente da <strong>Federica Cesiano</strong> presso il nostro salone di Napoli. Prenotando online ricevi subito il <strong>10% di sconto</strong> sul listino ufficiale.
             </p>
           </div>
 
@@ -429,7 +429,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                       Sessione Pomeriggio
                     </span>
                     <span className="text-xs text-[#1F1B24]/70 font-medium">
-                      Pausa pranzo boutique (13:30 – 15:30)
+                      Pausa pranzo salone (13:30 – 15:30)
                     </span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -536,7 +536,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
               Dati di Contatto per l&apos;Appuntamento
             </h2>
             <p className="text-xs text-[#1F1B24]/70">
-              Il tuo recapito telefonico verrà utilizzato per inviarti il promemoria dell&apos;appuntamento su WhatsApp e i dettagli per raggiungerci in boutique.
+              Il tuo recapito telefonico verrà utilizzato per inviarti il promemoria dell&apos;appuntamento su WhatsApp e i dettagli per raggiungerci in salone.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -650,7 +650,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
               <div className="mt-2 flex flex-wrap gap-4 text-xs text-[#1F1B24]/70">
                 <span>📅 <strong>Data:</strong> {selectedDate}</span>
                 <span>⏰ <strong>Orario:</strong> {selectedSlot}</span>
-                <span>📍 <strong>Luogo:</strong> Boutique Napoli, Via dei Pellegrini 28/29</span>
+                <span>📍 <strong>Luogo:</strong> Salone Napoli, Via dei Pellegrini 28/29</span>
                 <span>👤 <strong>Cliente:</strong> {customer.name} {customer.surname}</span>
               </div>
             </div>
@@ -658,7 +658,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
             {/* Financial Transparency Box */}
             <div className="bg-[#FAF7FC] p-5 rounded-2xl border border-[#D8C2E7]/40 space-y-3">
               <div className="flex justify-between text-sm text-[#1F1B24]/70">
-                <span>Prezzo di listino in boutique:</span>
+                <span>Prezzo di listino in salone:</span>
                 <span className="line-through">€{selectedService.priceList.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm text-[#5E1788] font-semibold">
@@ -678,7 +678,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                   <div>
                     <span>Quota di conferma da versare ora (20%):</span>
                     <span className="block text-xs font-normal text-neutral-600 mt-0.5">
-                      Blocca definitivamente l&apos;orario in boutique
+                      Blocca definitivamente l&apos;orario in salone
                     </span>
                   </div>
                   <span className="text-lg font-serif font-bold text-[#5E1788]">
@@ -738,7 +738,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                 className="mt-0.5 rounded text-[#5E1788] focus:ring-[#5E1788]"
               />
               <span>
-                Accetto i termini di prenotazione e confermo che verserò il saldo di <strong>€{selectedService.balanceAmount.toFixed(2)}</strong> direttamente in boutique.
+                Accetto i termini di prenotazione e confermo che verserò il saldo di <strong>€{selectedService.balanceAmount.toFixed(2)}</strong> direttamente in salone.
               </span>
             </label>
 
@@ -780,7 +780,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
               Prenotazione Confermata con Successo!
             </span>
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#1F1B24] mt-1">
-              Ti aspettiamo in Boutique
+              Ti aspettiamo in Salone
             </h2>
             <p className="text-xs text-[#1F1B24]/70 mt-2">
               Abbiamo registrato il tuo acconto di <strong>€{confirmedBooking.pricing.depositPaid.toFixed(2)}</strong>. Riceverai un promemoria automatico prima dell&apos;appuntamento.
@@ -813,7 +813,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
               <span className="font-semibold text-[#1F1B24]">Via dei Pellegrini 28/29, Napoli</span>
             </div>
             <div className="flex justify-between border-t border-[#D8C2E7]/30 pt-2 font-bold text-sm">
-              <span className="text-[#1F1B24]">Saldo Residuo in Boutique:</span>
+              <span className="text-[#1F1B24]">Saldo Residuo in Salone:</span>
               <span className="text-[#5E1788]">
                 €{confirmedBooking.pricing.balanceDue.toFixed(2)}
               </span>

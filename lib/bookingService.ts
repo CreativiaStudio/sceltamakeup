@@ -11,12 +11,29 @@ import { SERVICES, OPERATORS } from "@/data/services";
 // Standard solo-worker slots (Outside store counter hours)
 // Store opening hours: 09:30 - 13:30 / 16:30 - 20:00
 // Dedicated makeup slots: Lunch break (13:30 - 15:30) & Evening (20:00 - 21:30)
-const DEFAULT_SOLO_WORKER_SLOTS = [
+export const DEFAULT_SOLO_WORKER_SLOTS = [
   "13:30",
   "14:15",
   "15:00",
   "20:00",
   "20:45",
+];
+
+// Agenda boutique full-day slots (09:30 - 20:30)
+export const AGENDA_BOUTIQUE_SLOTS = [
+  "09:30",
+  "10:30",
+  "11:30",
+  "12:30",
+  "13:30",
+  "14:15",
+  "15:00",
+  "16:30",
+  "17:30",
+  "18:30",
+  "19:30",
+  "20:00",
+  "20:30",
 ];
 
 const STORAGE_APPOINTMENTS_KEY = "scelta_makeup_appointments_v1";
@@ -81,6 +98,35 @@ const INITIAL_DEMO_APPOINTMENTS: Appointment[] = [
     status: "confirmed",
     paymentMethodDeposit: "apple_pay",
     createdAt: new Date(Date.now() - 172800000).toISOString(),
+  },
+  {
+    id: "app-demo-3",
+    bookingCode: "SC-260906-CB33",
+    serviceId: "srv-beauty-mesofill",
+    serviceName: "Trattamento Viso Rigenerante Meso-Fill (Cabina)",
+    channel: "beauty",
+    operatorId: "op-beauty-cabina",
+    operatorName: "Futura Collega / Cabina Estetica",
+    durationMinutes: 60,
+    date: new Date().toISOString().split("T")[0], // Today
+    time: "11:30",
+    customer: {
+      name: "Serena",
+      surname: "Maggiulli",
+      phone: "+39 333 998 7766",
+      email: "serena.maggiulli@example.com",
+      notes: "Trattamento cabina privata viso rigenerante e distensivo.",
+    },
+    pricing: {
+      priceList: 70.0,
+      discountOnline: 7.0,
+      priceOnline: 63.0,
+      depositPaid: 12.6,
+      balanceDue: 50.4,
+    },
+    status: "confirmed",
+    paymentMethodDeposit: "stripe_card",
+    createdAt: new Date(Date.now() - 43200000).toISOString(),
   },
 ];
 
@@ -175,17 +221,67 @@ export function getAvailableSlots(dateStr: string): TimeSlot[] {
   });
 }
 
+export interface AgendaSlotDetails {
+  time: string;
+  appointments: Appointment[];
+  isBlocked: boolean;
+}
+
+export function getAgendaSlots(
+  dateStr: string,
+  operatorId?: string
+): AgendaSlotDetails[] {
+  const allAppointments = getStoredAppointments().filter(
+    (a) => a.date === dateStr && a.status !== "cancelled"
+  );
+  const filteredAppointments =
+    !operatorId || operatorId === "all"
+      ? allAppointments
+      : allAppointments.filter((a) => a.operatorId === operatorId);
+
+  const blockedMap = getStoredBlockedSlots();
+  const blockedForDate = blockedMap[dateStr] || [];
+
+  const allTimesSet = new Set<string>([
+    ...AGENDA_BOUTIQUE_SLOTS,
+    ...filteredAppointments.map((a) => a.time),
+  ]);
+  const sortedTimes = Array.from(allTimesSet).sort();
+
+  return sortedTimes.map((time) => {
+    const slotAppointments = filteredAppointments.filter((a) => a.time === time);
+    const isBlocked = blockedForDate.includes(time);
+
+    return {
+      time,
+      appointments: slotAppointments,
+      isBlocked,
+    };
+  });
+}
+
 export function createAppointment(data: {
   serviceId: string;
   date: string;
   time: string;
   customer: CustomerData;
   paymentMethodDeposit?: "stripe_card" | "apple_pay" | "google_pay";
+  operatorId?: string;
 }): Appointment {
   const service = getServiceById(data.serviceId);
   if (!service) throw new Error("Servizio non trovato");
 
-  const operator = OPERATORS.find((o) => o.channel === service.channel && o.active) || OPERATORS[0];
+  let operator = OPERATORS[0];
+  if (data.operatorId) {
+    const found = OPERATORS.find((o) => o.id === data.operatorId);
+    if (found) {
+      operator = found;
+    } else {
+      operator = OPERATORS.find((o) => o.channel === service.channel && o.active) || OPERATORS[0];
+    }
+  } else {
+    operator = OPERATORS.find((o) => o.channel === service.channel && o.active) || OPERATORS[0];
+  }
 
   const now = new Date();
   const codeSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();

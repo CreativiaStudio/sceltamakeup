@@ -37,7 +37,7 @@ export default function AtelierBanner() {
 
               {/* Story */}
               <p className="text-sm sm:text-base text-neutral-300 font-light leading-relaxed max-w-xl">
-                Dalla consulenza armocromatica al trucco cerimonia ad alta definizione: vivi un&apos;esperienza esclusiva con <strong>Federica Cesiano</strong> nella nostra boutique di <strong>Via dei Pellegrini 28/29, Napoli</strong>. Solo cosmetici professionali Diego dalla Palma e Cipria Makeup.
+                Dalla consulenza armocromatica al trucco cerimonia ad alta definizione: vivi un&apos;esperienza esclusiva con <strong>Federica Cesiano</strong> nel nostro salone di <strong>Via dei Pellegrini 28/29, Napoli</strong>. Solo cosmetici professionali Diego dalla Palma e Cipria Makeup.
               </p>
 
               {/* Special Offer Highlight Card */}
@@ -59,7 +59,7 @@ export default function AtelierBanner() {
                       -10% di Sconto Immediato su tutte le prenotazioni online
                     </p>
                     <p className="text-xs text-neutral-300 font-light mt-0.5">
-                      Versi solo il 20% di acconto per bloccare la data, il saldo comodamente in boutique dopo la seduta.
+                      Versi solo il 20% di acconto per bloccare la data, il saldo comodamente in salone dopo la seduta.
                     </p>
                   </div>
                 </div>
@@ -117,7 +117,7 @@ export default function AtelierBanner() {
                       <MapPin className="h-4 w-4" />
                     </div>
                     <div className="text-xs">
-                      <p className="font-semibold text-white">Boutique & Atelier Fisico</p>
+                      <p className="font-semibold text-white">Salone & Atelier Fisico</p>
                       <p className="text-neutral-300 font-light">Via dei Pellegrini 28/29, Napoli</p>
                     </div>
                   </div>

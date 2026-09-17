@@ -295,7 +295,7 @@ export default function CrmTable() {
 
                           <a
                             href={`https://wa.me/${customer.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-                              `Ciao ${customer.name}! Ti scriviamo dalla boutique Scelta Makeup di Napoli (Via dei Pellegrini 28/29).`
+                              `Ciao ${customer.name}! Ti scriviamo dal salone Scelta Makeup di Napoli (Via dei Pellegrini 28/29).`
                             )}`}
                             target="_blank"
                             rel="noreferrer"

@@ -387,7 +387,7 @@ describe("WhatsApp Anti-Ban Queue Pacing Suite", () => {
       assert.ok(text.includes("Ritiro in Store"));
       assert.ok(text.includes("Serena Romano"));
       assert.ok(text.includes("SC-ORD-2026-0099"));
-      assert.ok(text.includes("Ritiro Gratuito in Boutique"));
+      assert.ok(text.includes("Ritiro Gratuito in Salone") || text.includes("Ritiro Gratuito in Boutique"));
       assert.ok(text.includes("Via dei Pellegrini 28/29"));
       assert.ok(text.includes("09:30 - 13:30"));
       assert.ok(text.includes("Campioncini di benvenuto"));

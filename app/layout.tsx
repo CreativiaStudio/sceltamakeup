@@ -26,12 +26,12 @@ export const metadata: Metadata = {
     template: "%s | Scelta Makeup",
   },
   description:
-    "Boutique ufficiale di alta cosmesi e atelier di bellezza a Napoli (Via dei Pellegrini 28/29). Rivenditore autorizzato Diego della Palma Milano e Cipria Makeup. Spedizione gratuita da 49€, campioncini omaggio e consulenza make-up personalizzata.",
+    "Salone ufficiale di alta cosmesi e atelier di bellezza a Napoli (Via dei Pellegrini 28/29). Rivenditore autorizzato Diego della Palma Milano e Cipria Makeup. Spedizione gratuita da 49€, campioncini omaggio e consulenza make-up personalizzata.",
   keywords: [
     "Scelta Makeup",
     "Diego della Palma Napoli",
     "Cipria Makeup",
-    "Boutique bellezza Napoli",
+    "Salone bellezza Napoli",
     "Via dei Pellegrini 28",
     "rossetto geisha matte",
     "fondotinta lifting glow",
