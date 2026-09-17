@@ -11,12 +11,18 @@ import {
   X,
   Save,
   Tag,
+  CreditCard,
+  Banknote,
+  Printer,
+  ShoppingBag,
+  Loader2,
 } from "lucide-react";
 import rawCatalog from "@/data/catalog.json";
 import { Product, ProductCategory } from "@/types/product";
 import {
   getAdminStoreState,
   updateProductDetails,
+  createAdminOrder,
 } from "@/lib/adminStore";
 
 interface QuickScanBarcodeModalProps {
@@ -41,6 +47,10 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const [currentStock, setCurrentStock] = useState<number>(0);
   const [isStockUpdating, setIsStockUpdating] = useState(false);
   const [successToast, setSuccessToast] = useState<string | null>(null);
+
+  // In-Store Fast Checkout State
+  const [checkoutPaymentMethod, setCheckoutPaymentMethod] = useState<"card" | "cash">("card");
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   // Quick Registration Form for Unrecognized Barcode
   const [newProdName, setNewProdName] = useState("");
@@ -202,6 +212,90 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       setIsStockUpdating(false);
       setSuccessToast(null);
     }, 1800);
+  };
+
+  // 1-Click Fast In-Store Checkout & Fiscal Receipt Print to Cassa RT
+  const handleInstantCheckout = async () => {
+    if (!matchedProduct || !matchedProduct.variants) return;
+    const v = matchedProduct.variants[matchedVariantIndex];
+    const price = v?.price ?? matchedProduct.price;
+    const itemDesc = (matchedProduct.name + (v?.name && v.name !== "Standard" ? ` ${v.name}` : "")).slice(0, 22);
+
+    setIsCheckingOut(true);
+
+    try {
+      // 1. Decrement stock
+      const newQty = Math.max(0, currentStock - 1);
+      setCurrentStock(newQty);
+      const updatedVariants = [...matchedProduct.variants];
+      updatedVariants[matchedVariantIndex] = {
+        ...v,
+        stock: newQty,
+        inStock: newQty > 0,
+      };
+
+      updateProductDetails(matchedProduct.id, {
+        variants: updatedVariants,
+        stock: updatedVariants.reduce((sum, item) => sum + (item.stock || 0), 0),
+        inStock: newQty > 0,
+      });
+
+      // 2. Record order in store
+      createAdminOrder({
+        customerName: "Cliente al Banco",
+        customerEmail: "banco@sceltamakeup.it",
+        customerPhone: "Vendita Diretta Boutique",
+        total: price,
+        status: "completed",
+        fulfillmentType: "store_pickup",
+        items: [
+          {
+            productId: matchedProduct.id,
+            productTitle: matchedProduct.name,
+            variantName: v?.name !== "Standard" ? v?.name : undefined,
+            quantity: 1,
+            price: price,
+            image: v?.image || matchedProduct.images?.[0] || "/brand/logo.png",
+          },
+        ],
+      });
+
+      // 3. Emit SOAP XML to Cassa RT (Epson FP-81II RT on 192.168.68.63)
+      const priceFormatted = price.toFixed(2).replace(".", ",");
+      const fiscalReceiptXml = `<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <printerFiscalReceipt>
+      <beginFiscalReceipt operator="1" />
+      <printRecMessage text="SCELTA MAKEUP - BOUTIQUE NAPOLI" />
+      <printRecItem operator="1" description="${itemDesc}" quantity="1" unitPrice="${priceFormatted}" department="1" justification="1" />
+      <printRecSubtotal operator="1" />
+      <printRecTotal operator="1" description="${checkoutPaymentMethod === "card" ? "CARTA" : "CONTANTI"}" payment="${priceFormatted}" paymentType="${checkoutPaymentMethod === "card" ? "1" : "0"}" index="0" />
+      <endFiscalReceipt operator="1" />
+    </printerFiscalReceipt>
+  </soapenv:Body>
+</soapenv:Envelope>`;
+
+      try {
+        await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=10000", {
+          method: "POST",
+          headers: { "Content-Type": "text/xml; charset=utf-8" },
+          body: fiscalReceiptXml,
+        });
+      } catch (hardwareErr) {
+        console.warn("[Cassa RT] Stampa hardware:", hardwareErr);
+      }
+
+      setSuccessToast(`🎉 Vendita completata! Scontrino RT emesso (${checkoutPaymentMethod === "card" ? "myPOS Carta" : "Contanti"}).`);
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 1500);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Errore";
+      alert("Errore durante la vendita: " + msg);
+    } finally {
+      setIsCheckingOut(false);
+    }
   };
 
   // Quick Registration of an Unrecognized Barcode
@@ -419,6 +513,65 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                     <Plus className="w-4 h-4" />
                   </button>
                 </div>
+              </div>
+
+              {/* 1-Click Fast In-Store Checkout & Fiscal Print */}
+              <div className="bg-gradient-to-r from-purple-50 via-white to-pink-50 p-4 rounded-2xl border border-[#D8C2E7]/80 space-y-3 shadow-xs">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#1F1B24] flex items-center gap-1.5">
+                    <ShoppingBag className="w-4 h-4 text-[#5E1788]" />
+                    Incasso Diretto al Banco
+                  </span>
+
+                  {/* Payment Method Selector */}
+                  <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-[#D8C2E7]/60 shadow-2xs">
+                    <button
+                      type="button"
+                      onClick={() => setCheckoutPaymentMethod("card")}
+                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                        checkoutPaymentMethod === "card"
+                          ? "bg-[#5E1788] text-white shadow-xs"
+                          : "text-gray-600 hover:text-[#5E1788]"
+                      }`}
+                    >
+                      <CreditCard className="w-3.5 h-3.5" />
+                      <span>myPOS / Carta</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCheckoutPaymentMethod("cash")}
+                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                        checkoutPaymentMethod === "cash"
+                          ? "bg-[#1F1B24] text-white shadow-xs"
+                          : "text-gray-600 hover:text-[#1F1B24]"
+                      }`}
+                    >
+                      <Banknote className="w-3.5 h-3.5" />
+                      <span>Contanti</span>
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleInstantCheckout}
+                  disabled={isCheckingOut || currentStock <= 0}
+                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#5E1788] to-[#7A3293] hover:from-[#4D1270] hover:to-[#5E1788] text-white font-bold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  {isCheckingOut ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Emissione scontrino in corso...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Printer className="w-4 h-4" />
+                      <span>
+                        Incassa €{(currentVariant?.price ?? matchedProduct.price).toFixed(2)} & Stampa Scontrino RT
+                      </span>
+                    </>
+                  )}
+                </button>
               </div>
 
               {/* Action Buttons */}
