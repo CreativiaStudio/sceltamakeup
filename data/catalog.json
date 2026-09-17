@@ -26774,5 +26774,239 @@
     "stock": 3,
     "inStock": true,
     "image": "/products/eveline-cosmetics-eveline-cosmetics-cica-skin-olio-gel-detergente.jpg"
+  },
+  {
+    "id": "ddp-mf101193",
+    "slug": "rvb-lab-meso-fill-foundation-plump-fill-93-mf101193",
+    "name": "RVB LAB Meso Fill Foundation Plump & Fill 93",
+    "brand": "RVB LAB",
+    "category": "Viso",
+    "description": "Fondotinta trattamento anti-età rimpolpante e levigante tonalità 93. Unisce l'efficacia del make-up perfezionatore al potere della cosmeceutica: con Hyalu Smart™ PGA, acido ialuronico e peptidi botox-like per un effetto filler immediato sulle rughe e linee d'espressione. Coprenza media modulabile, finish naturale luminoso e idratazione a lunga durata fino a 12 ore. Formula senza profumo, adatta anche a pelli sensibili.",
+    "shortDescription": "Fondotinta anti-età rimpolpante ad azione filler immediata con acido ialuronico e peptidi botox-like (Tonalità 93).",
+    "price": 34.9,
+    "originalPrice": 42.5,
+    "originalWholesalePrice": 23.38,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller",
+      "novita"
+    ],
+    "formulaBenefits": "Tecnologia Elasticblur con microsfere di acido ialuronico e Hyalu Smart™ PGA per rimpolpare e uniformare istantaneamente l'incarnato.",
+    "howToUse": "Erogare 1-2 dosi sul dorso della mano e applicare con pennello fondotinta o spugnetta partendo dal centro del viso verso l'esterno.",
+    "inci": "Aqua (Water), Dimethicone, Isododecane, Glycerin, PEG-10 Dimethicone, Sodium Hyaluronate, Polyglutamic Acid, Acetyl Hexapeptide-8, Tocopherol, Phenoxyethanol, Ethylhexylglycerin.",
+    "features": [
+      "Effetto filler immediato su rughe e linee sottili",
+      "Coprenza media modulabile dal finish luminoso naturale",
+      "Idratazione profonda testata fino a 12 ore",
+      "Senza profumo, Nickel tested, ideale per pelli sensibili"
+    ],
+    "images": [
+      "/products/ddp-mf101193-authentic.jpg"
+    ],
+    "shades": [
+      {
+        "id": "var-mf101193",
+        "name": "93 - Beige Medio Caldo",
+        "code": "MF101193",
+        "hex": "#D8A882",
+        "image": "/products/ddp-mf101193-authentic.jpg",
+        "price": 34.9,
+        "inStock": true,
+        "stock": 2
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-mf101193",
+        "name": "93 - Beige Medio Caldo",
+        "sku": "MF101193",
+        "ean": "8023264528648",
+        "colorHex": "#D8A882",
+        "image": "/products/ddp-mf101193-authentic.jpg",
+        "inStock": true,
+        "price": 34.9,
+        "originalWholesalePrice": 23.38,
+        "stock": 2
+      }
+    ],
+    "stock": 2,
+    "inStock": true,
+    "image": "/products/ddp-mf101193-authentic.jpg"
+  },
+  {
+    "id": "ddp-pf00931",
+    "slug": "diego-dalla-palma-icon-time-gold-elixir-siero-30ml-pf00931",
+    "name": "ICON TIME GOLD ELIXIR siero antietà ridensificante 30 ml",
+    "brand": "Diego dalla Palma",
+    "category": "Skincare & Dermo",
+    "description": "Lussuoso siero viso anti-età ridensificante formulato con oro colloidale puro e microcapsule dorate di acido ialuronico. Stimola intensamente la sintesi di nuovo collagene ed elastina grazie al complesso GOLDEN Collagenine e peptidi no-a.g.e.s. Contrasta la perdita di tono, ridensifica i tessuti e leviga visibilmente le rughe profonde, regalando all'incarnato una radiosa luminosità dorata immediata.",
+    "shortDescription": "Lussuoso siero anti-età ridensificante all'oro colloidale e peptidi stimolatori di collagene.",
+    "price": 78,
+    "originalPrice": 92,
+    "originalWholesalePrice": 47.7,
+    "badge": "Iconico",
+    "badges": [
+      "cruelty_free",
+      "iconico",
+      "premium"
+    ],
+    "formulaBenefits": "Oro colloidale puro coniugato con peptidi bioattivi e microcapsule di acido ialuronico che si fondono a contatto con la pelle.",
+    "howToUse": "Agitare bene prima dell'uso. Applicare mattina e sera su viso, collo e décolleté detersi, massaggiando con movimenti circolari fino al completo assorbimento delle microcapsule, prima della crema viso.",
+    "inci": "Aqua (Water), Glycerin, Propanediol, Colloidal Gold, Acetyl Heptapeptide-9, Sodium Hyaluronate, Palmitoyl Tripeptide-5, N-Prolyl Palmitoyl Tripeptide-56 Acetate, Mica, CI 77891 (Titanium Dioxide), CI 77491 (Iron Oxides), Phenoxyethanol, Ethylhexylglycerin.",
+    "features": [
+      "Ridensifica la struttura cutanea e stimola nuovo collagene",
+      "Infusione di oro colloidale puro e microcapsule di acido ialuronico",
+      "Azione anti-glicazione (No-A.G.E.S) contro la degradazione cellulare",
+      "Texture ultra-sensoriale ad assorbimento rapido dal finish radioso"
+    ],
+    "images": [
+      "/products/ddp-pf00931-authentic.jpg"
+    ],
+    "shades": [
+      {
+        "id": "var-pf00931",
+        "name": "30 ML",
+        "code": "PF00931",
+        "hex": "#DFB248",
+        "image": "/products/ddp-pf00931-authentic.jpg",
+        "price": 78,
+        "inStock": true,
+        "stock": 2
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-pf00931",
+        "name": "30 ML",
+        "sku": "PF00931",
+        "ean": "8023264508480",
+        "colorHex": "#DFB248",
+        "image": "/products/ddp-pf00931-authentic.jpg",
+        "inStock": true,
+        "price": 78,
+        "originalWholesalePrice": 47.7,
+        "stock": 2
+      }
+    ],
+    "stock": 2,
+    "inStock": true,
+    "image": "/products/ddp-pf00931-authentic.jpg"
+  },
+  {
+    "id": "ddp-pf01061",
+    "slug": "diego-dalla-palma-icon-time-crema-contorno-occhi-correttiva-15ml-pf01061",
+    "name": "ICON TIME CREMA CONTORNO OCCHI CORRETTIVA 15 ML",
+    "brand": "Diego dalla Palma",
+    "category": "Occhi",
+    "description": "Trattamento intensivo ad azione mirata 3-in-1 per il contorno occhi: corregge rughe, borse e occhiaie. Arricchito con polvere di diamante finissima e speciali pigmenti cromo-correttivi arancio studiati per neutralizzare istantaneamente il colorito bluastro/bruno delle occhiaie. Il complesso peptidico ad alta efficacia stimola il microcircolo perioculare, drenando i liquidi in eccesso e distendendo le zampe di gallina.",
+    "shortDescription": "Trattamento correttivo contorno occhi anti-rughe, anti-borse e anti-occhiaie con polvere di diamante e pigmenti cromo-correttivi.",
+    "price": 48,
+    "originalPrice": 58,
+    "originalWholesalePrice": 30.2,
+    "badge": "Bestseller",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Polvere di diamante micro-illuminante con pigmenti cromo-attivi e complesso drenante botox-like per uno sguardo disteso e riposato.",
+    "howToUse": "Applicare una piccola quantità mattina e sera picchiettando delicatamente con i polpastrelli lungo l'osso perioculare, dall'interno verso l'esterno.",
+    "inci": "Aqua (Water), Caprylic/Capric Triglyceride, Butyrospermum Parkii (Shea) Butter, Cetearyl Alcohol, Diamond Powder, Caffeine, Hesperidin Methyl Chalcone, Palmitoyl Tetrapeptide-7, Dipeptide-2, CI 77891, CI 77492, CI 77491, Phenoxyethanol.",
+    "features": [
+      "Azione correttiva globale: rughe, borse e occhiaie scure",
+      "Pigmenti arancio cromo-correttivi a rilascio ottico immediato",
+      "Polvere di diamante naturale per amplificare la luminosità dello sguardo",
+      "Oftalmologicamente testato, privo di profumo allergenico"
+    ],
+    "images": [
+      "/products/ddp-pf01061-authentic.jpg"
+    ],
+    "shades": [
+      {
+        "id": "var-pf01061",
+        "name": "15 ML",
+        "code": "PF01061",
+        "hex": "#E6C3A2",
+        "image": "/products/ddp-pf01061-authentic.jpg",
+        "price": 48,
+        "inStock": true,
+        "stock": 2
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-pf01061",
+        "name": "15 ML",
+        "sku": "PF01061",
+        "ean": "8023264495605",
+        "colorHex": "#E6C3A2",
+        "image": "/products/ddp-pf01061-authentic.jpg",
+        "inStock": true,
+        "price": 48,
+        "originalWholesalePrice": 30.2,
+        "stock": 2
+      }
+    ],
+    "stock": 2,
+    "inStock": true,
+    "image": "/products/ddp-pf01061-authentic.jpg"
+  },
+  {
+    "id": "ddp-pf07011",
+    "slug": "diego-dalla-palma-metodo-bianco-blend-vitality-profumo-100ml-pf07011",
+    "name": "METODO - BIANCO BLEND VITALITY PROFUMO 100 ML",
+    "brand": "Diego dalla Palma",
+    "category": "Beauty & Accessori",
+    "description": "Fragranza d'autore pura, luminosa ed energizzante creata come coronamento sensoriale del Metodo Diego dalla Palma Professional. Si apre con accordi fruttati frizzanti e briosi, schiudendosi in un cuore fresco di mughetto selvatico e petali bianchi, adagiati su un fondo persistente di muschi avvolgenti e legni vellutati. Un'esperienza olfattiva che diffonde vitalità, ottimismo e armonia quotidiana.",
+    "shortDescription": "Fragranza d'autore pura e vivace con note fruttate briose, mughetto bianco e fondo muschiato.",
+    "price": 44,
+    "originalPrice": 52,
+    "originalWholesalePrice": 26.5,
+    "badge": "Edizione Speciale",
+    "badges": [
+      "cruelty_free",
+      "novita"
+    ],
+    "formulaBenefits": "Piramide olfattiva ad alta persistenza con oli essenziali e note fresche ad azione tonificante sui sensi.",
+    "howToUse": "Vaporizzare sui punti di pulsazione (polsi, collo, dietro le orecchie) per prolungare la scia per tutta la giornata.",
+    "inci": "Alcohol Denat., Parfum (Fragrance), Aqua (Water), Limonene, Linalool, Hydroxycitronellal, Citronellol, Geraniol, Citral, BHT.",
+    "features": [
+      "Fragranza esclusiva professionale per il benessere dei sensi",
+      "Testa fruttata frizzante, cuore floreale di mughetto, fondo muschiato caldo",
+      "Elegante flacone in vetro satinato bianco con erogatore di precisione",
+      "Formulato e prodotto in Italia"
+    ],
+    "images": [
+      "/products/ddp-pf07011-authentic.jpg"
+    ],
+    "shades": [
+      {
+        "id": "var-pf07011",
+        "name": "100 ML",
+        "code": "PF07011",
+        "hex": "#F5F5F7",
+        "image": "/products/ddp-pf07011-authentic.jpg",
+        "price": 44,
+        "inStock": true,
+        "stock": 1
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-pf07011",
+        "name": "100 ML",
+        "sku": "PF07011",
+        "ean": "8023264527535",
+        "colorHex": "#F5F5F7",
+        "image": "/products/ddp-pf07011-authentic.jpg",
+        "inStock": true,
+        "price": 44,
+        "originalWholesalePrice": 26.5,
+        "stock": 1
+      }
+    ],
+    "stock": 1,
+    "inStock": true,
+    "image": "/products/ddp-pf07011-authentic.jpg"
   }
 ]
