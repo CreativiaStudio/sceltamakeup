@@ -84,7 +84,12 @@ export default function NewManualOrderModal({
       p.name.toLowerCase().includes(q) ||
       p.brand.toLowerCase().includes(q) ||
       p.category.toLowerCase().includes(q) ||
-      p.variants?.some((v) => v.sku.toLowerCase().includes(q) || v.name.toLowerCase().includes(q))
+      p.variants?.some(
+        (v) =>
+          v.sku.toLowerCase().includes(q) ||
+          v.name.toLowerCase().includes(q) ||
+          (v.ean && v.ean.includes(q))
+      )
     ).slice(0, 10);
   }, [searchCatalogQuery]);
 
