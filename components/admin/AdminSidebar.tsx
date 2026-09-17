@@ -12,7 +12,6 @@ import {
   Radio,
   BarChart3,
   ExternalLink,
-  RotateCcw,
   Sparkles,
   X,
   Store,
@@ -26,7 +25,6 @@ interface AdminSidebarProps {
   isOpenMobile: boolean;
   onCloseMobile: () => void;
   kpis?: AdminKpiSummary;
-  onFactoryReset?: () => void;
 }
 
 interface NavItem {
@@ -44,7 +42,6 @@ export default function AdminSidebar({
   isOpenMobile,
   onCloseMobile,
   kpis,
-  onFactoryReset,
 }: AdminSidebarProps) {
   const navItems: NavItem[] = [
     {
@@ -234,27 +231,6 @@ export default function AdminSidebar({
             </div>
             <ExternalLink className="w-3.5 h-3.5 opacity-70" />
           </Link>
-
-          {/* Factory Reset Action */}
-          {onFactoryReset && (
-            <button
-              type="button"
-              onClick={() => {
-                if (
-                  window.confirm(
-                    "Vuoi ripristinare tutti i dati demo dell'amministrazione (stock 341 prodotti, ordini iniziali, clienti CRM) allo stato di fabbrica originale?"
-                  )
-                ) {
-                  onFactoryReset();
-                }
-              }}
-              className="w-full flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-[11px] text-[#D8C2E7]/80 hover:text-rose-200 hover:bg-rose-950/40 border border-transparent hover:border-rose-800/40 transition-colors"
-              title="Reimposta lo store mock ai 341 prodotti e ordini iniziali"
-            >
-              <RotateCcw className="w-3 h-3 text-[#D462A6]" />
-              <span>Ripristina Dati Fabbrica</span>
-            </button>
-          )}
 
           {/* Physical Address */}
           <div className="pt-1 text-[10px] text-center text-[#D8C2E7]/60">

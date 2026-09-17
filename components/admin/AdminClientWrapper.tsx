@@ -20,7 +20,6 @@ import { AdminTab } from "@/types/admin";
 import {
   getAdminKpis,
   getAdminOrders,
-  resetAdminStoreToDefaults,
   AdminKpiSummary,
   SceltaAdminOrder,
 } from "@/lib/adminStore";
@@ -72,11 +71,6 @@ export default function AdminClientWrapper() {
     };
   }, [refreshData]);
 
-  const handleFactoryReset = () => {
-    resetAdminStoreToDefaults();
-    refreshData();
-  };
-
   const getTabTitle = (tab: AdminTab) => {
     switch (tab) {
       case "panoramica":
@@ -109,7 +103,6 @@ export default function AdminClientWrapper() {
         isOpenMobile={isMobileSidebarOpen}
         onCloseMobile={() => setIsMobileSidebarOpen(false)}
         kpis={kpis}
-        onFactoryReset={handleFactoryReset}
       />
 
       {/* Main Content Workspace */}
