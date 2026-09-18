@@ -1,10 +1,54 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, Calendar, ArrowRight, CheckCircle2, ShieldCheck, MapPin } from "lucide-react";
+import { Sparkles, Calendar, ArrowRight, CheckCircle2, ShieldCheck, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
+
+const atelierSlides = [
+  {
+    src: "/atelier/atelier-federica-sessione-1.webp",
+    alt: "Federica Cesiano all'opera - Make-up artist Scelta Makeup Napoli",
+    title: "Federica Cesiano",
+    subtitle: "Sfumature & Make-up Occhi",
+    badge: "In Salone"
+  },
+  {
+    src: "/atelier/atelier-federica-sessione-2.webp",
+    alt: "Applicazione trucco professionale in cabina trucco Scelta Makeup",
+    title: "Federica Cesiano",
+    subtitle: "Base Viso & Contouring Sartoriale",
+    badge: "In Cabina"
+  },
+  {
+    src: "/atelier/atelier-federica-sessione-3.webp",
+    alt: "Risultato make-up cerimonia e beauty Scelta Makeup Napoli",
+    title: "Look Finito",
+    subtitle: "Make-up Alta Definizione & Senza Filtri",
+    badge: "Risultato"
+  }
+];
 
 export default function AtelierBanner() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % atelierSlides.length);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  const handlePrev = () => {
+    setCurrentSlide((prev) => (prev === 0 ? atelierSlides.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentSlide((prev) => (prev + 1) % atelierSlides.length);
+  };
+
   return (
     <section className="py-12 sm:py-16 bg-[#FAF7FC]/70 border-b border-[#D8C2E7]/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -98,30 +142,103 @@ export default function AtelierBanner() {
 
             </div>
 
-            {/* Right Visual Column */}
-            <div className="lg:col-span-5 relative">
-              <div className="relative aspect-[4/3] sm:aspect-[16/11] lg:aspect-[4/5] rounded-2xl overflow-hidden border border-white/20 shadow-2xl">
-                <Image
-                  src="/brand/negozio-fisico.png"
-                  alt="Atelier Cabina Trucco Scelta Makeup Napoli"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                  className="object-cover object-center transition-transform duration-700 hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1F1B24]/80 via-transparent to-transparent" />
+            {/* Right Visual Column: Interactive Atelier Storytelling Carousel */}
+            <div 
+              className="lg:col-span-5 relative"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+            >
+              <div className="relative aspect-[3/4] sm:aspect-[4/5] rounded-3xl overflow-hidden border-2 border-white/20 shadow-2xl bg-neutral-950 group">
                 
-                {/* Floating Overlay Badge */}
-                <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-black/60 backdrop-blur-md border border-white/15 text-white">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-lg bg-[#5E1788] text-white shrink-0">
-                      <MapPin className="h-4 w-4" />
-                    </div>
-                    <div className="text-xs">
-                      <p className="font-semibold text-white">Salone & Atelier Fisico</p>
-                      <p className="text-neutral-300 font-light">Via dei Pellegrini 28/29, Napoli</p>
+                {/* Image Slides with Crossfade */}
+                {atelierSlides.map((slide, idx) => (
+                  <div
+                    key={slide.src}
+                    className={`absolute inset-0 transition-opacity duration-700 ${
+                      idx === currentSlide ? "opacity-100 z-10 scale-100" : "opacity-0 z-0 pointer-events-none scale-105"
+                    }`}
+                  >
+                    <Image
+                      src={slide.src}
+                      alt={slide.alt}
+                      fill
+                      priority={idx === 0}
+                      sizes="(max-width: 1024px) 100vw, 40vw"
+                      className="object-cover object-center"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1F1B24]/90 via-transparent to-black/20" />
+                  </div>
+                ))}
+
+                {/* Top Badge: Dynamic Slide Context */}
+                <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-black/60 backdrop-blur-md text-[#D8C2E7] border border-white/20 shadow-sm flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#D462A6] animate-pulse" />
+                    {atelierSlides[currentSlide].badge}
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/15 backdrop-blur-md text-white border border-white/10">
+                    Foto {currentSlide + 1} di {atelierSlides.length}
+                  </span>
+                </div>
+
+                {/* Prev/Next Navigation Controls */}
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/50 hover:bg-black/80 backdrop-blur-md text-white border border-white/20 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-all hover:scale-110 active:scale-95"
+                  aria-label="Foto precedente"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/50 hover:bg-black/80 backdrop-blur-md text-white border border-white/20 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-all hover:scale-110 active:scale-95"
+                  aria-label="Foto successiva"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+
+                {/* Bottom Overlay: Slide Info & Salon Location */}
+                <div className="absolute bottom-3 left-3 right-3 z-20 space-y-2">
+                  
+                  {/* Slide Title / Context Pill */}
+                  <div className="p-3 sm:p-3.5 rounded-2xl bg-black/65 backdrop-blur-md border border-white/15 text-white shadow-xl">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-xs font-bold text-[#D8C2E7]">
+                          {atelierSlides[currentSlide].title}
+                        </p>
+                        <p className="text-xs text-neutral-200 font-light mt-0.5">
+                          {atelierSlides[currentSlide].subtitle}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <MapPin className="h-3.5 w-3.5 text-[#D462A6]" />
+                        <span className="text-[11px] text-neutral-300">Napoli</span>
+                      </div>
                     </div>
                   </div>
+
+                  {/* Thumbnail / Dot Selector Pills */}
+                  <div className="flex items-center justify-center gap-2 pt-0.5">
+                    {atelierSlides.map((_, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setCurrentSlide(idx)}
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          idx === currentSlide
+                            ? "w-8 bg-gradient-to-r from-[#D462A6] to-[#D8C2E7]"
+                            : "w-2 bg-white/40 hover:bg-white/70"
+                        }`}
+                        aria-label={`Vai alla foto ${idx + 1}`}
+                      />
+                    ))}
+                  </div>
+
                 </div>
+
               </div>
             </div>
 
