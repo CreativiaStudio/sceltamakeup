@@ -100,9 +100,7 @@ export async function POST(req: NextRequest) {
       currency: "eur",
       line_items: lineItems,
       customer_email: customer.email,
-      // Quando non viene specificato payment_method_types, Stripe Checkout
-      // attiva automaticamente tutti i metodi abilitati sulla dashboard:
-      // Carte, Klarna, PayPal, Apple Pay e Google Pay.
+      payment_method_types: ["card", "klarna", "paypal"],
       metadata: {
         orderCustomer: `${customer.nome} ${customer.cognome}`.trim(),
         deliveryMethod,
