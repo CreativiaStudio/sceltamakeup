@@ -216,7 +216,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="object-cover object-top transition-transform duration-700 hover:scale-105"
+                  className="object-cover object-center transition-transform duration-700 hover:scale-105"
                 />
                 
                 {/* Overlay Vignette */}
