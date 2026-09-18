@@ -152,7 +152,7 @@ describe("Luxury Resend Transactional Email & Financial Invariants Suite", () =>
       assert.ok(courierEmail.html.includes("€49.00"));
       assert.ok(courierEmail.html.includes("€4.90"));
       assert.ok(courierEmail.html.includes("€53.90"));
-      assert.ok(courierEmail.html.includes("campioncini") && courierEmail.html.includes("omaggio"));
+      assert.ok(courierEmail.html.includes("Packaging Esclusivo") && courierEmail.html.includes("protetta"));
 
       // 2. Boutique Pickup variant
       const sampleBoutiqueOrder: Order = {

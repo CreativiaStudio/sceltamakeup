@@ -159,7 +159,7 @@ export default function CheckoutSuccessClient() {
               <strong>Totale pagato:</strong> €{order.total.toFixed(2)}
             </p>
             <p>
-              <strong>Campioncini inclusi:</strong> 2 Campioncini di alta gamma omaggio
+              <strong>Packaging:</strong> Confezione protetta con cura artigianale
             </p>
           </div>
         )}

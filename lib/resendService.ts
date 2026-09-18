@@ -599,14 +599,14 @@ export function renderOrderPlacedEmail(order: Order): EmailRenderOutput {
                   </p>
                 </div>
 
-                <!-- LUXURY COMPLIMENTARY SAMPLES CALLOUT -->
+                <!-- LUXURY PACKAGING & CARE CALLOUT -->
                 <div style="background: linear-gradient(135deg, #FFF9FB 0%, #FAF1F7 100%); border: 1px solid #F3CFE3; border-radius: 14px; padding: 16px; margin-bottom: 24px; text-align: center;">
-                  <span style="font-size: 14px;">🎁</span>
+                  <span style="font-size: 14px;">✨</span>
                   <span style="font-size: 12px; font-weight: 700; color: ${BRAND_PALETTE.mauveRose}; text-transform: uppercase; letter-spacing: 0.8px; margin-left: 6px;">
-                    Campioncini di Benvenuto Inclusi
+                    Packaging Esclusivo & Cura Artigianale
                   </span>
                   <p style="margin: 6px 0 0 0; font-size: 12px; color: #725064; line-height: 1.5;">
-                    Abbiamo inserito per te <strong>2 campioncini cosmetici di alta gamma in omaggio</strong> all'interno del tuo pacchetto profumato.
+                    Il tuo ordine viene preparato a mano nel nostro Atelier con <strong>confezione sigillata, protetta e profumata</strong>.
                   </p>
                 </div>
 

@@ -238,7 +238,7 @@ export default function OrderPrintModal({
                 <span>Note per il Banco & Confezionamento:</span>
               </div>
               <p className="text-gray-600 leading-relaxed">
-                Includere nella scatola o shopper elegante <strong>n. 2 campioncini omaggio</strong> di alta profumeria/cosmesi e il bigliettino istituzionale Scelta Makeup con i ringraziamenti di Federica Cesiano.
+                Includere nella scatola o shopper elegante la <strong>confezione protetta con sigillo</strong> e il bigliettino istituzionale Scelta Makeup con i ringraziamenti di Federica Cesiano.
               </p>
               <div className="text-[11px] text-emerald-700 font-medium flex items-center gap-1 pt-1">
                 <CheckCircle2 className="w-3.5 h-3.5" />

@@ -579,7 +579,7 @@ export default function ProductDetailClient({
                   </span>
                   <span className="flex items-center gap-1">
                     <Sparkles className="h-3.5 w-3.5 text-[#D462A6]" />
-                    2 Campioncini Omaggio
+                    Formula Professionale
                   </span>
                   <span className="flex items-center gap-1">
                     <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />

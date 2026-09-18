@@ -373,7 +373,7 @@ export default function ShippingTable() {
                     </div>
                     <div className="text-[11px] text-gray-500 flex items-center gap-1">
                       <Sparkles className="w-3 h-3 text-[#D462A6]" />
-                      <span>Includere campioncini e biglietto profumato</span>
+                      <span>Includere sigillo di garanzia e biglietto profumato</span>
                     </div>
                   </div>
 

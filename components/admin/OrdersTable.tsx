@@ -477,8 +477,8 @@ export default function OrdersTable() {
                                 </div>
 
                                 <div className="p-3 bg-purple-50/50 rounded-xl border border-purple-100 flex items-center justify-between text-xs">
-                                  <span className="text-gray-600">Campioncini omaggio di lusso:</span>
-                                  <span className="font-semibold text-[#5E1788]">Inclusi nella confezione</span>
+                                  <span className="text-gray-600">Packaging protetto con sigillo:</span>
+                                  <span className="font-semibold text-[#5E1788]">Verificato & Confezionato</span>
                                 </div>
                               </div>
 

@@ -644,7 +644,7 @@ export default function NotificationQueueTab() {
                   </span>
                 </div>
                 <p className="text-[11px] text-gray-500 leading-tight">
-                  Accoda notifica ordine cosmetico con 2 campioncini omaggio inclusi.
+                  Accoda notifica ordine cosmetico con confezione protetta e tracciamento.
                 </p>
               </button>
 
@@ -930,7 +930,7 @@ export default function NotificationQueueTab() {
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
-            🛍️ Ordine E-Commerce & Campioncini
+            🛍️ Ordine E-Commerce & Confezionamento
           </button>
         </div>
 

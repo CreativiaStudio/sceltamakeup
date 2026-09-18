@@ -4,6 +4,7 @@ import CategoryStoryCircles from "@/components/CategoryStoryCircles";
 import BestsellerCarousel from "@/components/BestsellerCarousel";
 import AtelierBanner from "@/components/AtelierBanner";
 import CuratedProductGrid from "@/components/CuratedProductGrid";
+import VideoShowcaseSection from "@/components/VideoShowcaseSection";
 import BoutiqueSection from "@/components/BoutiqueSection";
 import { getAllProducts } from "@/lib/catalog";
 
@@ -45,7 +46,10 @@ export default async function HomePage() {
         <CuratedProductGrid initialProducts={products} limit={12} />
       </Suspense>
 
-      {/* 6. Physical Boutique Section: Via dei Pellegrini 28/29, Napoli */}
+      {/* 6. Beauty in Motion: Interactive Video Masterclass Showcase */}
+      <VideoShowcaseSection />
+
+      {/* 7. Physical Boutique Photo Gallery: Via dei Pellegrini 28/29, Napoli */}
       <BoutiqueSection />
     </div>
   );

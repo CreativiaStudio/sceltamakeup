@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, Truck, Store, ShieldCheck, HeartHandshake, ArrowRight, Calendar } from "lucide-react";
+import { Sparkles, Truck, Store, ShieldCheck, HeartHandshake, ArrowRight, Calendar, Play } from "lucide-react";
 
 export interface HeroSectionProps {
   variant?: "split" | "fullwidth";
@@ -17,6 +17,14 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
     }
   };
 
+  const scrollToVideoMasterclass = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const el = document.getElementById("video-masterclass");
+    if (el) {
+      e.preventDefault();
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   // Full-width Cinematic Variant (Reversible Fallback)
   if (variant === "fullwidth") {
     return (
@@ -24,13 +32,12 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
         {/* Background Atmosphere */}
         <div className="absolute inset-0 -z-10 opacity-20 pointer-events-none">
           <Image
-            src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1600&q=85"
-            alt="Scelta Makeup Atmosphere"
+            src="/brand/hero-makeup-model.webp"
+            alt="Make-up model Scelta Makeup - Bellezza Autentica"
             fill
             priority
-            unoptimized
             sizes="100vw"
-            className="object-cover object-center mix-blend-overlay"
+            className="object-cover object-top mix-blend-overlay"
           />
         </div>
         <div className="absolute top-0 right-1/3 -z-10 h-96 w-96 rounded-full bg-[#D462A6]/20 blur-3xl pointer-events-none" />
@@ -40,7 +47,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
           {/* Overline Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-[#D8C2E7]/40 text-[#D8C2E7] text-xs font-semibold tracking-wider uppercase shadow-xs mb-6">
             <Sparkles className="h-3.5 w-3.5 text-[#D462A6]" />
-            <span>Alta Cosmesi & Atelier di Bellezza • Napoli</span>
+            <span>Alta Cosmesi Professionale • Spedizione 24/48h in tutta Italia</span>
           </div>
 
           {/* Title */}
@@ -53,7 +60,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
 
           {/* Payoff */}
           <p className="text-base sm:text-xl text-neutral-200 max-w-2xl mx-auto font-light leading-relaxed mb-8">
-            La purezza formulativa Diego dalla Palma e la maestria professionale Cipria Makeup selezionate per esaltare la tua bellezza naturale a Napoli.
+            La purezza formulativa Diego dalla Palma e la maestria professionale Cipria Makeup selezionate per esaltare la tua bellezza naturale. Spedizione gratuita da €49 con consegna 24/48h in tutta Italia e salone fisico di proprietà come garanzia di professionalità.
           </p>
 
           {/* Dual CTAs */}
@@ -77,13 +84,24 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
                 -10% Online
               </span>
             </Link>
+
+            <a
+              href="#video-masterclass"
+              onClick={scrollToVideoMasterclass}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-[#5E1788] font-medium text-sm tracking-wider uppercase shadow-xl hover:bg-[#FAF7FC] hover:scale-[1.02] active:scale-98 transition-all group"
+            >
+              <span className="relative flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-[#5E1788] to-[#D462A6]">
+                <Play className="h-3 w-3 text-white fill-white ml-px" />
+              </span>
+              <span>Guarda Video Tutorial</span>
+            </a>
           </div>
 
           {/* Salone Presence */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs text-neutral-200 mb-12">
             <Store className="h-4 w-4 text-[#D8C2E7]" />
-            <span className="font-semibold text-white">Salone Ufficiale:</span>
-            <span>Via dei Pellegrini 28/29, Napoli Centro</span>
+            <span className="font-semibold text-white">Salone Fisico Ufficiale:</span>
+            <span>Via dei Pellegrini 28/29, Napoli • Garanzia di professionalità e consulenza dal vivo</span>
           </div>
 
           {/* Trust Bar */}
@@ -93,7 +111,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
                 <Truck className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="text-xs sm:text-sm font-semibold text-white">Spedizione Gratuita</h4>
+                <h4 className="text-xs sm:text-sm font-semibold text-white">Spedizione Gratuita 24/48h</h4>
                 <p className="text-xs text-neutral-300">Da €49 in tutta Italia</p>
               </div>
             </div>
@@ -146,7 +164,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
             {/* Overline Badge */}
             <div className="inline-flex items-center gap-2 self-center lg:self-start px-4 py-1.5 rounded-full bg-[#FAF7FC] border border-[#D8C2E7]/70 text-[#5E1788] text-xs font-semibold tracking-wider uppercase shadow-xs">
               <Sparkles className="h-3.5 w-3.5 text-[#D462A6]" />
-              <span>ALTA COSMESI & ATELIER DI BELLEZZA • NAPOLI</span>
+              <span>BOUTIQUE UFFICIALE & ALTA COSMESI PROFESSIONALE</span>
             </div>
 
             {/* Editorial Title */}
@@ -159,7 +177,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
 
             {/* Payoff */}
             <p className="text-base sm:text-lg text-neutral-600 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
-              La purezza formulativa Diego dalla Palma e la maestria professionale Cipria Makeup selezionate per esaltare la tua bellezza naturale a Napoli.
+              La purezza formulativa Diego dalla Palma Milano e l&apos;eccellenza Cipria Make Up: collezioni esclusive per esaltare la tua bellezza autentica, con spedizione rapida in tutta Italia e atelier a Napoli.
             </p>
 
             {/* Dual CTAs */}
@@ -183,13 +201,35 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
                   -10% Online
                 </span>
               </Link>
+
+              <a
+                href="#video-masterclass"
+                onClick={scrollToVideoMasterclass}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-[#1F1B24] text-white font-medium text-sm tracking-wider uppercase shadow-lg shadow-[#1F1B24]/25 hover:bg-[#5E1788] hover:scale-[1.02] active:scale-98 transition-all group"
+              >
+                <span className="relative flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-[#7A3293] to-[#D462A6] shadow-inner">
+                  <Play className="h-3 w-3 text-white fill-white ml-px" />
+                </span>
+                <span>Guarda Video Tutorial</span>
+              </a>
             </div>
 
-            {/* Floating Salone Official Badge */}
-            <div className="pt-3 flex items-center justify-center lg:justify-start gap-2.5 text-xs text-neutral-700">
-              <Store className="h-4 w-4 text-[#5E1788]" />
-              <span className="font-semibold text-[#1F1B24]">Salone Ufficiale •</span>
-              <span className="text-neutral-600">Via dei Pellegrini 28/29, Napoli</span>
+            {/* E-Commerce Guarantee Row with subtle Atelier mention */}
+            <div className="pt-3 flex flex-wrap items-center justify-center lg:justify-start gap-3.5 text-xs text-neutral-600">
+              <div className="flex items-center gap-1.5 font-medium text-[#5E1788]">
+                <Truck className="h-4 w-4 text-[#D462A6]" />
+                <span>Spedizione Rapida 24/48h</span>
+              </div>
+              <span className="opacity-40">•</span>
+              <div className="flex items-center gap-1.5 font-medium text-[#1F1B24]">
+                <Sparkles className="h-4 w-4 text-amber-500" />
+                <span>100% Cosmesi Originale</span>
+              </div>
+              <span className="opacity-40">•</span>
+              <div className="flex items-center gap-1.5 text-neutral-500">
+                <Store className="h-4 w-4 text-[#7A3293]" />
+                <span>Atelier Napoli (Via dei Pellegrini)</span>
+              </div>
             </div>
 
           </div>
@@ -198,16 +238,15 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
           <div className="lg:col-span-5 relative">
             <div className="relative mx-auto max-w-md lg:max-w-none">
               
-              {/* Main Beauty Portrait Card */}
-              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/90">
+              {/* Main Beauty Portrait Card with Real Makeup Model */}
+              <div className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/90">
                 <Image
-                  src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=85"
-                  alt="Scelta Makeup Bellezza Autentica"
+                  src="/brand/hero-makeup-model.webp"
+                  alt="Make-up Professionale Scelta Makeup - Bellezza Autentica"
                   fill
                   priority
-                  unoptimized
                   sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="object-cover object-center transition-transform duration-700 hover:scale-105"
+                  className="object-cover object-top transition-transform duration-700 hover:scale-105"
                 />
                 
                 {/* Overlay Vignette */}
@@ -238,7 +277,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
                       </div>
                     </div>
                     <Link
-                      href="/prodotti/geisha-matte-liquid-lipstick"
+                      href="/prodotti/diego-dalla-palma-sun-shampoo-doccia-dhc110160"
                       className="shrink-0 px-3.5 py-1.5 rounded-full bg-[#5E1788] text-white text-xs font-semibold hover:bg-[#7A3293] transition-colors shadow-xs"
                     >
                       Dettagli
@@ -247,19 +286,19 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
                 </div>
               </div>
 
-              {/* Floating Top Accent Badge: Salone Napoli */}
+              {/* Floating Top Accent Badge: E-commerce Fast Delivery & Free Samples */}
               <div className="absolute -top-4 -left-4 sm:-top-6 sm:-left-6 p-3.5 sm:p-4 rounded-2xl bg-white/95 backdrop-blur-md shadow-xl border border-[#D8C2E7]/70 hidden sm:flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#FAF7FC] flex items-center justify-center text-[#5E1788]">
-                  <Store className="h-5 w-5 text-[#5E1788]" />
+                  <Truck className="h-5 w-5 text-[#5E1788]" />
                 </div>
                 <div className="text-left">
                   <p className="text-xs tracking-wider uppercase font-bold text-[#7A3293]">
-                    Salone Ufficiale
+                    Spedizione Gratuita
                   </p>
                   <p className="text-xs font-semibold text-[#1F1B24]">
-                    Via dei Pellegrini 28/29
+                    Da €49 in tutta Italia
                   </p>
-                  <p className="text-xs text-neutral-500 font-light">Napoli Centro</p>
+                  <p className="text-xs text-neutral-500 font-light">Consegna rapida 24/48h</p>
                 </div>
               </div>
 

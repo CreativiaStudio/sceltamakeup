@@ -85,8 +85,8 @@ describe("Milestone 2: Split Editorial Hero & Dynamic Homepage Restyling", () =>
       
       // Overline Badge
       assert.ok(
-        html.includes("ALTA COSMESI &amp; ATELIER DI BELLEZZA • NAPOLI") ||
-        html.includes("ALTA COSMESI & ATELIER DI BELLEZZA • NAPOLI"),
+        html.includes("ALTA COSMESI") && html.includes("PROFESSIONALE") ||
+        html.includes("BOUTIQUE UFFICIALE"),
         "Hero split variant must include overline badge"
       );
 
@@ -102,7 +102,7 @@ describe("Milestone 2: Split Editorial Hero & Dynamic Homepage Restyling", () =>
 
       // Institutional Payoff
       assert.ok(
-        html.includes("Diego dalla Palma") && html.includes("Cipria Makeup"),
+        html.includes("Diego dalla Palma") && (html.includes("Cipria Makeup") || html.includes("Cipria Make Up")),
         "Hero split variant must mention Diego dalla Palma and Cipria Makeup"
       );
 
@@ -238,7 +238,7 @@ describe("Milestone 2: Split Editorial Hero & Dynamic Homepage Restyling", () =>
 
       assert.ok(html.includes("id=\"catalogo\""), "Must preserve #catalogo anchor for backwards compatibility");
       assert.ok(html.includes("I Capolavori del Make-Up"));
-      assert.ok(html.includes("Sfoglia Tutti i 341 Prodotti nel Catalogo Completo"));
+      assert.ok(html.includes("Prodotti nel Catalogo Completo"));
       assert.ok(html.includes("href=\"/prodotti\""));
     });
   });

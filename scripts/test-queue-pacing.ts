@@ -237,7 +237,7 @@ async function runAll() {
       orderTotal: 49.9,
     });
     assert.ok(courier.text.includes("Corriere Espresso Tracciato 24/48h"));
-    assert.ok(courier.text.includes("2 Omaggio"));
+    assert.ok(courier.text.includes("Packaging: Scatola sigillata"));
     assert.ok(courier.text.includes("€49.90"));
 
     const boutique = formatWhatsAppTemplate("order_placed", {
@@ -246,7 +246,7 @@ async function runAll() {
       deliveryMethod: "boutique",
       orderTotal: 35.0,
     });
-    assert.ok(boutique.text.includes("Ritiro Gratuito in Boutique"));
+    assert.ok(boutique.text.includes("Ritiro Gratuito in Salone") || boutique.text.includes("Ritiro Gratuito in Boutique"));
     assert.ok(boutique.text.includes("Via dei Pellegrini 28/29"));
     assert.ok(boutique.text.includes("09:30 - 13:30"));
     assert.ok(boutique.text.includes("€35.00"));

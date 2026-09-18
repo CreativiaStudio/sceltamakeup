@@ -372,7 +372,7 @@ describe("WhatsApp Anti-Ban Queue Pacing Suite", () => {
       assert.ok(text.includes("Corriere Espresso Tracciato 24/48h"));
       assert.ok(text.includes("Corso Umberto I 50"));
       assert.ok(text.includes("80138"));
-      assert.ok(text.includes("2 Omaggio"));
+      assert.ok(text.includes("Packaging: Scatola sigillata"));
       assert.ok(text.includes("€49.90"));
     });
 
@@ -390,7 +390,7 @@ describe("WhatsApp Anti-Ban Queue Pacing Suite", () => {
       assert.ok(text.includes("Ritiro Gratuito in Salone") || text.includes("Ritiro Gratuito in Boutique"));
       assert.ok(text.includes("Via dei Pellegrini 28/29"));
       assert.ok(text.includes("09:30 - 13:30"));
-      assert.ok(text.includes("Campioncini di benvenuto"));
+      assert.ok(text.includes("Packaging: Confezione curata"));
       assert.ok(text.includes("€35.00"));
     });
   });

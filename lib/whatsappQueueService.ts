@@ -188,7 +188,7 @@ ${itemsListFormatted}
 📍 *Ritiro Gratuito in Salone:*
 • Sede: ${STORE_ADDRESS}
 • Orari di apertura: Lun - Sab 09:30 - 13:30 / 16:30 - 20:00
-• Campioncini di benvenuto: Inclusi nel tuo pacchetto ✨
+• Packaging: Confezione curata e profumata ✨
 💰 *Totale Pagato:* €${orderTotal.toFixed(2)}
 
 Ti avviseremo con un messaggio non appena il tuo pacchetto sarà pronto al banco.
@@ -209,7 +209,7 @@ ${itemsListFormatted}
 📦 *Riepilogo Spedizione:*
 • Modalità: Corriere Espresso Tracciato 24/48h
 • Spedizione a: ${shippingAddress}, ${shippingCity} (${shippingCap})
-• Campioncini Alta Gamma: 2 Omaggio inclusi nel pacchetto ✨
+• Packaging: Scatola sigillata e protetta con cura artigianale ✨
 💰 *Totale Ordine:* €${orderTotal.toFixed(2)}
 
 Riceverai a breve una notifica con il codice di tracciamento non appena il corriere prenderà in carico la tua scatola profumata.
@@ -328,7 +328,7 @@ const INITIAL_DEMO_HISTORY: QueuedWhatsAppMessage[] = [
     recipientPhone: "+39 349 765 4321",
     recipientName: "Giulia Moretti",
     templateType: "order_placed",
-    messageText: `✨ *SCELTA MAKEUP — Il tuo ordine cosmetico è confermato!* ✨\n\nCara *Giulia Moretti*,\ngrazie per aver scelto Scelta Makeup! Ordine #SC-ORD-2026-0001 confermato con corriere espresso tracciato 24/48h e 2 omaggi inclusi ✨.\n\n*Federica Cesiano — Scelta Makeup*`,
+    messageText: `✨ *SCELTA MAKEUP — Il tuo ordine cosmetico è confermato!* ✨\n\nCara *Giulia Moretti*,\ngrazie per aver scelto Scelta Makeup! Ordine #SC-ORD-2026-0001 confermato con corriere espresso tracciato 24/48h e packaging protetto ✨.\n\n*Federica Cesiano — Scelta Makeup*`,
     checksum: "sha256_demo_e5f6g7h8",
     scheduledAt: new Date(Date.now() - 3600000 * 1).toISOString(),
     sentAt: new Date(Date.now() - 3600000 * 1 + 34000).toISOString(),

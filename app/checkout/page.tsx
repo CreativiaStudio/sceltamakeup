@@ -212,7 +212,7 @@ export default function CheckoutPage() {
               <strong>Totale pagato:</strong> €{(confirmedOrder ? confirmedOrder.total : total).toFixed(2)}
             </p>
             <p>
-              <strong>Campioncini inclusi:</strong> 2 Campioncini di alta gamma omaggio
+              <strong>Packaging:</strong> Confezione protetta con cura artigianale
             </p>
           </div>
 
@@ -517,7 +517,7 @@ export default function CheckoutPage() {
               </div>
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-[#D462A6] shrink-0" />
-                <span>2 Campioncini di profumeria e makeup in omaggio</span>
+                <span>Packaging curato con sigillo di autenticità</span>
               </div>
             </div>
           </div>

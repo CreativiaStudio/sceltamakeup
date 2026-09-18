@@ -226,7 +226,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Sparkles className="h-3.5 w-3.5 text-neutral-500" />
-                <span>Campioncini Omaggio</span>
+                <span>Packaging Curato & Protetto</span>
               </li>
               <li className="flex items-center gap-2">
                 <Heart className="h-3.5 w-3.5 text-neutral-500" />
