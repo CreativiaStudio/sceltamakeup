@@ -73,7 +73,7 @@ export default function BoutiqueSection() {
                     Indirizzo
                   </h4>
                   <p className="text-sm font-semibold text-[#1F1B24]">
-                    Via dei Pellegrini 28/29, 80138 Napoli (NA)
+                    Via dei Pellegrini 28/29, 80132 Napoli (NA)
                   </p>
                   <p className="text-xs text-neutral-500">
                     Disponibile il servizio <strong>Ritiro Gratuito in Negozio</strong>

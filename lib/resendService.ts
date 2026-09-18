@@ -10,7 +10,8 @@ import {
 const STORAGE_EMAILS_KEY = "scelta_makeup_dispatched_emails_v1";
 const STORE_NAME = "Scelta Makeup Salone";
 const STORE_ADDRESS = "Via dei Pellegrini 28/29, 80132 Napoli (NA)";
-const OFFICIAL_FROM_EMAIL = "Scelta Makeup <onboarding@resend.dev>";
+const OFFICIAL_FROM_EMAIL =
+  process.env.RESEND_FROM_EMAIL || "Scelta Makeup <onboarding@resend.dev>";
 
 // Official Brand Palette
 export const BRAND_PALETTE = {

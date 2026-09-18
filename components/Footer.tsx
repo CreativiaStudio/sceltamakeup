@@ -138,7 +138,7 @@ export default function Footer() {
             <ul className="space-y-2.5 text-xs text-neutral-300 font-light">
               <li className="flex items-start gap-2.5">
                 <MapPin className="h-4 w-4 text-[#D462A6] shrink-0 mt-0.5" />
-                <span>Via dei Pellegrini 28/29, 80138 Napoli (NA)</span>
+                <span>Via dei Pellegrini 28/29, 80132 Napoli (NA)</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="h-4 w-4 text-[#D462A6] shrink-0" />

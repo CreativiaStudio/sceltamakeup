@@ -7,7 +7,7 @@ import {
 } from "@/types/notification";
 
 const STORAGE_QUEUE_KEY = "scelta_makeup_whatsapp_queue_v1";
-const STORE_PHONE = "+39 3XX XXXXXXX"; // In attivazione
+const STORE_PHONE = "+39 379 337 0322";
 const STORE_ADDRESS = "Via dei Pellegrini 28/29, 80132 Napoli";
 
 // Anti-Ban Human Pacing Jitter: Strictly between 20 and 45 seconds

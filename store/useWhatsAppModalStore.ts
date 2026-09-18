@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 interface WhatsAppModalState {
   isOpen: boolean;
@@ -10,14 +11,12 @@ interface WhatsAppModalState {
 
 export const useWhatsAppModalStore = create<WhatsAppModalState>((set) => ({
   isOpen: false,
-  prefilledMessage: "Salve, vorrei informazioni sui prodotti Scelta Makeup",
+  prefilledMessage: "Salve Federica, vorrei assistenza su Scelta Makeup",
   sourceContext: undefined,
-  openModal: (message, sourceContext) =>
-    set({
-      isOpen: true,
-      prefilledMessage:
-        message || "Salve, vorrei informazioni sui prodotti Scelta Makeup",
-      sourceContext,
-    }),
+  openModal: (message) => {
+    if (typeof window !== "undefined") {
+      window.open(buildWhatsAppUrl(message), "_blank", "noopener,noreferrer");
+    }
+  },
   closeModal: () => set({ isOpen: false }),
 }));

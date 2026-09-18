@@ -270,7 +270,7 @@ async function runAll() {
       { raw: "+39 (348) 123-4567", expected: "+393481234567" },
       { raw: "393481234567", expected: "+393481234567" },
       { raw: "+33 612 345 678", expected: "+33612345678" },
-      { raw: "", expected: "+39 3XX XXXXXXX" },
+      { raw: "", expected: "+39 379 337 0322" },
     ];
 
     for (const f of formats) {

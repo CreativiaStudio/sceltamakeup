@@ -235,8 +235,8 @@ describe("Adversarial Storefront Regression & CRM LTV Verification Suite", () =>
         "RootLayout must declare <CartDrawer />"
       );
       assert.ok(
-        rootContent.includes("<WhatsAppDemoModal"),
-        "RootLayout must declare <WhatsAppDemoModal />"
+        rootContent.includes("<WhatsAppFloatingButton") || rootContent.includes("<WhatsAppDemoModal"),
+        "RootLayout must declare <WhatsAppFloatingButton />"
       );
 
       // app/admin/layout.tsx verification

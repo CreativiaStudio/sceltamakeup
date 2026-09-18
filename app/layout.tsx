@@ -5,7 +5,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
-import WhatsAppDemoModal from "@/components/WhatsAppDemoModal";
+import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -79,7 +79,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
         <CartDrawer />
-        <WhatsAppDemoModal />
+        <WhatsAppFloatingButton />
       </body>
     </html>
   );

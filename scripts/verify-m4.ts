@@ -27,10 +27,10 @@ console.log("   ✓ 500 iterations of calculateJitter strictly between 20s and 4
 console.log("2. Verifying Queue State & Enqueue Functionality...");
 const stateBefore = getWhatsAppQueueState();
 assert(stateBefore.sessionStatus === "open", "Initial session status should be open");
-assert(stateBefore.connectedNumber === "+39 3XX XXXXXXX", "Connected number matches boutique phone placeholder");
+assert(stateBefore.connectedNumber === "+39 379 337 0322", "Connected number matches boutique WhatsApp number");
 
 const testMsg = enqueueWhatsAppMessage({
-  recipientPhone: "+39 3XX XXXXXXX",
+  recipientPhone: "+39 379 337 0322",
   recipientName: "Federica Cesiano",
   templateType: "booking_confirmation",
   context: {

@@ -16,7 +16,7 @@ import BrandLogo from "@/components/BrandLogo";
 import SearchOverlay from "@/components/SearchOverlay";
 import MegaMenu from "@/components/MegaMenu";
 import { useCartStore } from "@/store/useCartStore";
-import { useWhatsAppModalStore } from "@/store/useWhatsAppModalStore";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { CategoryKey } from "@/types/product";
 import { useIsMounted } from "@/lib/useIsMounted";
 import { catalog } from "@/lib/catalog";
@@ -37,7 +37,6 @@ function HeaderContent() {
 
   const totalItems = useCartStore((state) => state.getTotalItems());
   const openCart = useCartStore((state) => state.openCart);
-  const openWhatsAppModal = useWhatsAppModalStore((state) => state.openModal);
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -136,14 +135,15 @@ function HeaderContent() {
           Spedizione Gratuita da <strong>€49</strong>
         </span>
         <span className="opacity-40">|</span>
-        <button
-          type="button"
-          onClick={() => openWhatsAppModal("Salve, vorrei informazioni sui prodotti o assistenza per un ordine")}
+        <a
+          href={buildWhatsAppUrl("Salve Federica, vorrei informazioni sui prodotti o assistenza per un ordine")}
+          target="_blank"
+          rel="noopener noreferrer"
           className="hidden md:inline-flex items-center gap-1.5 hover:text-[#D8C2E7] transition-colors cursor-pointer"
         >
           <Phone className="h-3 w-3" />
           <span>Assistenza WhatsApp</span>
-        </button>
+        </a>
         <span className="opacity-40 hidden md:inline">|</span>
         <a
           href="#boutique"
@@ -327,17 +327,16 @@ function HeaderContent() {
                 <MapPin className="h-4 w-4 text-[#D462A6]" />
                 <span>Salone Napoli: Via dei Pellegrini 28/29</span>
               </Link>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  openWhatsAppModal("Salve, vorrei assistenza dal team Scelta Makeup");
-                }}
+              <a
+                href={buildWhatsAppUrl("Salve Federica, vorrei assistenza dal team Scelta Makeup")}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="w-full flex items-center gap-3 text-sm text-neutral-700 font-medium p-2 rounded-lg hover:bg-[#FAF7FC] text-left cursor-pointer"
               >
                 <Phone className="h-4 w-4 text-[#5E1788]" />
-                <span>Assistenza WhatsApp</span>
-              </button>
+                <span>Assistenza WhatsApp (Federica)</span>
+              </a>
             </div>
           </div>
         )}

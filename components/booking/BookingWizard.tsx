@@ -26,7 +26,7 @@ import {
 } from "@/lib/bookingService";
 import { enqueueWhatsAppMessage } from "@/lib/whatsappQueueService";
 import { sendBookingConfirmationEmail } from "@/lib/resendService";
-import { useWhatsAppModalStore } from "@/store/useWhatsAppModalStore";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import {
   VisaLogo,
   MastercardLogo,
@@ -63,7 +63,6 @@ interface BookingWizardProps {
 }
 
 export default function BookingWizard({ preselectedServiceId }: BookingWizardProps) {
-  const openWhatsAppModal = useWhatsAppModalStore((state) => state.openModal);
   const services = useMemo(() => getServices("makeup"), []);
 
   const [selectedService, setSelectedService] = useState<Service | null>(() => {
@@ -924,19 +923,17 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
-            <button
-              type="button"
-              onClick={() =>
-                openWhatsAppModal(
-                  `Salve Federica, ho appena prenotato il servizio "${confirmedBooking.serviceName}" per il ${confirmedBooking.date} alle ${confirmedBooking.time} (Codice: ${confirmedBooking.bookingCode}).`,
-                  `Prenotazione #${confirmedBooking.bookingCode}`
-                )
-              }
+            <a
+              href={buildWhatsAppUrl(
+                `Salve Federica, ho appena prenotato il servizio "${confirmedBooking.serviceName}" per il ${confirmedBooking.date} alle ${confirmedBooking.time} (Codice: ${confirmedBooking.bookingCode}).`
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex-1 py-3 px-4 rounded-xl bg-[#25D366] text-white text-xs font-bold hover:bg-[#20bd5a] transition-all flex items-center justify-center gap-2 shadow-md shadow-[#25D366]/20 cursor-pointer"
             >
               <MessageCircle className="w-4 h-4" />
-              Scrivici su WhatsApp
-            </button>
+              Scrivici su WhatsApp (+39 379 337 0322)
+            </a>
             <Link
               href="/"
               className="flex-1 py-3 px-4 rounded-xl bg-[#FAF7FC] border border-[#D8C2E7]/60 text-xs font-bold text-[#5E1788] hover:bg-[#D8C2E7]/20 transition-all flex items-center justify-center gap-2"
