@@ -9,14 +9,14 @@ import {
 import { SERVICES, OPERATORS } from "@/data/services";
 
 // Standard solo-worker slots (Outside store counter hours)
-// Store opening hours: 09:30 - 13:30 / 16:30 - 20:00
-// Dedicated makeup slots: Lunch break (13:30 - 15:30) & Evening (20:00 - 21:30)
+// Store opening hours: 09:30 - 14:00 / 16:00 - 19:30
+// Dedicated makeup slots: Lunch break (14:00 - 16:00) & Evening (19:30 - 21:00)
 export const DEFAULT_SOLO_WORKER_SLOTS = [
-  "13:30",
-  "14:15",
-  "15:00",
-  "20:00",
-  "20:45",
+  "14:00",
+  "14:45",
+  "15:30",
+  "19:30",
+  "20:15",
 ];
 
 // Agenda boutique full-day slots (09:30 - 20:30)

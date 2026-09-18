@@ -131,7 +131,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
 
   // Split Editorial Variant (Default)
   return (
-    <section className="relative overflow-hidden bg-brand-soft pt-6 sm:pt-10 pb-16 lg:pb-24 border-b border-[#D8C2E7]/30">
+    <section className="relative overflow-hidden bg-brand-soft pt-6 sm:pt-10 pb-12 lg:pb-16 border-b border-[#D8C2E7]/30">
       {/* Subtle Background Glow Orbs */}
       <div className="absolute top-0 right-1/4 -z-10 h-96 w-96 rounded-full bg-purple-200/40 blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 left-10 -z-10 h-72 w-72 rounded-full bg-pink-100/50 blur-3xl pointer-events-none" />
@@ -209,7 +209,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
             <div className="relative mx-auto max-w-md lg:max-w-none">
               
               {/* Main Beauty Portrait Card with Real Makeup Model */}
-              <div className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/90">
+              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/90">
                 <Image
                   src="/brand/hero-makeup-model.webp"
                   alt="Make-up Professionale Scelta Makeup - Bellezza Autentica"

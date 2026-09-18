@@ -28,46 +28,43 @@ const BOUTIQUE_GALLERY: BoutiquePhoto[] = [
     src: "/boutique/salone-postazioni-makeup-frontale.webp",
     alt: "Postazioni make-up professionali del salone Scelta Makeup a Napoli con specchi retroilluminati",
     title: "Postazioni Make-up Professionali",
-    description: "Specchi retroilluminati a luce neutra e poltrone ergonomiche",
+    description: "Specchiere d'autore con luce neutra calibrata e poltrone ergonomiche per sedute trucco",
   },
   {
     src: "/boutique/salone-salottino-attesa-panoramico.webp",
     alt: "Salottino d'attesa della boutique Scelta Makeup con poltrone in velluto rosa cipria",
-    title: "Salottino d'Attesa & Relax",
-    description: "Poltrone a conchiglia in velluto rosa cipria e accoglienza riservata",
+    title: "Salottino d'Attesa & Welcome Lounge",
+    description: "Poltrone a conchiglia in velluto rosa cipria e accoglienza riservata in salone",
   },
   {
-    src: "/boutique/salone-postazioni-trucco-specchi.webp",
-    alt: "Specchiere d'autore dell'atelier Scelta Makeup per consulenze trucco individuali",
-    title: "Specchiere d'Autore",
-    description:
-      "Atelier studiato nei minimi dettagli per consulenze trucco e lezioni individuali",
+    src: "/boutique/salone-area-diego-dalla-palma-rvb.webp",
+    alt: "Espositore ufficiale Diego dalla Palma Professional e RVB LAB Make Up",
+    title: "Corner Diego dalla Palma & RVB LAB",
+    description: "Tutta la linea cosmetica professionale, trattamenti viso-corpo e make-up alta definizione",
   },
   {
-    src: "/boutique/salone-prospettiva-area-retail.webp",
-    alt: "Area espositiva retail con catalogo Diego dalla Palma e Cipria Make Up in prova",
-    title: "Area Espositiva Diego dalla Palma & Cipria",
-    description: "Tutto il catalogo make-up e skincare disponibile per prova e acquisto",
+    src: "/boutique/salone-espositori-cipria-makeup.webp",
+    alt: "Espositori make-up completi Cipria Milano con tester viso occhi e labbra",
+    title: "Espositori Make-up Cipria",
+    description: "Collezioni complete viso, occhi, labbra e pennelli professionali disponibili in prova",
   },
   {
-    src: "/boutique/salone-lounge-poltrone-cipria.webp",
-    alt: "Atelier bellezza e make-up con lounge in tonalità cipria del salone Scelta Makeup",
-    title: "Atelier Bellezza & Make-up",
-    description: "Uno spazio confortevole ed esclusivo per esaltare la tua bellezza",
+    src: "/boutique/salone-espositori-pierre-rene-eveline.webp",
+    alt: "Espositore Pierre René Professional ed Eveline Cosmetics in boutique",
+    title: "Corner Pierre René & Eveline",
+    description: "Palette occhi, polveri viso vellutate e prodotti skincare per ogni esigenza",
   },
   {
     src: "/boutique/salone-panoramica-boutique-completa.webp",
     alt: "Panoramica completa del salone e boutique Scelta Makeup con illuminazione LED diffusa",
     title: "Panoramica Salone & Boutique",
-    description:
-      "Illuminazione LED diffusa specifica per la resa cromatica ottimale del trucco",
+    description: "Uno spazio moderno ed elegante studiato per la resa cromatica ottimale del trucco",
   },
   {
-    src: "/boutique/salone-lounge-vista-esterna.webp",
-    alt: "Lounge con vista esterna su Via dei Pellegrini nel cuore di Napoli",
-    title: "Comfort & Accoglienza a Napoli",
-    description:
-      "Nel cuore della città, atmosfera calda e riservata in Via dei Pellegrini",
+    src: "/boutique/salone-prospettiva-boutique-retail.webp",
+    alt: "Prospettiva dell'area retail ed espositiva della boutique Scelta Makeup",
+    title: "Area Espositiva & Prova Collezioni",
+    description: "Ambiente accogliente nel cuore di Napoli per scoprire e testare dal vivo le novità beauty",
   },
 ];
 
@@ -229,7 +226,7 @@ export default function BoutiqueSection() {
                     Orari di Apertura
                   </h4>
                   <p className="text-sm font-semibold text-[#1F1B24]">
-                    Lunedì – Sabato: 09:30 – 13:30 / 16:30 – 20:00
+                    Lunedì – Sabato: 09:30 – 14:00 / 16:00 – 19:30
                   </p>
                   <p className="text-xs text-neutral-500">Domenica: Chiuso</p>
                 </div>

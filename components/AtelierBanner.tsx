@@ -8,24 +8,21 @@ import { Sparkles, Calendar, ArrowRight, CheckCircle2, ShieldCheck, MapPin, Chev
 const atelierSlides = [
   {
     src: "/atelier/atelier-federica-sessione-1.webp",
-    alt: "Federica Cesiano all'opera - Make-up artist Scelta Makeup Napoli",
+    alt: "Federica Cesiano - Make-up Cerimonia & Sfumature Occhi",
     title: "Federica Cesiano",
-    subtitle: "Sfumature & Make-up Occhi",
-    badge: "In Salone"
+    treatment: "Make-up Cerimonia & Sfumature Occhi"
   },
   {
     src: "/atelier/atelier-federica-sessione-2.webp",
-    alt: "Applicazione trucco professionale in cabina trucco Scelta Makeup",
+    alt: "Federica Cesiano - Base Viso & Contouring Sartoriale",
     title: "Federica Cesiano",
-    subtitle: "Base Viso & Contouring Sartoriale",
-    badge: "In Cabina"
+    treatment: "Base Viso & Contouring Sartoriale"
   },
   {
     src: "/atelier/atelier-federica-sessione-3.webp",
-    alt: "Risultato make-up cerimonia e beauty Scelta Makeup Napoli",
-    title: "Look Finito",
-    subtitle: "Make-up Alta Definizione & Senza Filtri",
-    badge: "Risultato"
+    alt: "Federica Cesiano - Make-up Fotografico Alta Definizione",
+    title: "Federica Cesiano",
+    treatment: "Make-up Fotografico & Beauty"
   }
 ];
 
@@ -170,14 +167,10 @@ export default function AtelierBanner() {
                   </div>
                 ))}
 
-                {/* Top Badge: Dynamic Slide Context */}
+                {/* Top Slide Counter */}
                 <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-black/60 backdrop-blur-md text-[#D8C2E7] border border-white/20 shadow-sm flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-[#D462A6] animate-pulse" />
-                    {atelierSlides[currentSlide].badge}
-                  </span>
-                  <span className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/15 backdrop-blur-md text-white border border-white/10">
-                    Foto {currentSlide + 1} di {atelierSlides.length}
+                  <span className="px-3 py-1 rounded-full text-[11px] font-medium bg-black/60 backdrop-blur-md text-white/90 border border-white/15 shadow-sm">
+                    {currentSlide + 1} / {atelierSlides.length}
                   </span>
                 </div>
 
@@ -210,7 +203,7 @@ export default function AtelierBanner() {
                           {atelierSlides[currentSlide].title}
                         </p>
                         <p className="text-xs text-neutral-200 font-light mt-0.5">
-                          {atelierSlides[currentSlide].subtitle}
+                          {atelierSlides[currentSlide].treatment}
                         </p>
                       </div>
                       <div className="flex items-center gap-1.5 shrink-0">

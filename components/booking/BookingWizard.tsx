@@ -470,7 +470,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
             <div className="flex items-start gap-2.5">
               <ShieldCheck className="w-5 h-5 text-[#5E1788] shrink-0 mt-0.5" />
               <div className="text-xs text-[#1F1B24]/80 leading-relaxed">
-                <strong>Orari dedicati in esclusiva:</strong> Per garantirti la massima attenzione senza interruzioni di vendita al banco, gli appuntamenti trucco si svolgono in fasce dedicate (pausa pranzo 13:30 – 15:30 e fascia serale dopo le 20:00).
+                <strong>Orari dedicati in esclusiva:</strong> Per garantirti la massima attenzione senza interruzioni di vendita al banco, gli appuntamenti trucco si svolgono in fasce dedicate (pausa pranzo 14:00 – 16:00 e fascia serale dopo le 19:30).
               </div>
             </div>
           </div>
@@ -490,7 +490,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                       Sessione Pomeriggio
                     </span>
                     <span className="text-xs text-[#1F1B24]/70 font-medium">
-                      Pausa pranzo salone (13:30 – 15:30)
+                      Pausa pranzo salone (14:00 – 16:00)
                     </span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -529,7 +529,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                       Sessione Serale
                     </span>
                     <span className="text-xs text-[#1F1B24]/70 font-medium">
-                      Atelier esclusivo post-chiusura (dalle 20:00)
+                      Atelier esclusivo post-chiusura (dalle 19:30)
                     </span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
