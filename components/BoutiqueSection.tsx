@@ -86,9 +86,10 @@ export default function BoutiqueSection() {
       className="py-16 sm:py-24 bg-[#FAF7FC] border-t border-[#D8C2E7]/40 relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
 
-          <div className="lg:col-span-7 space-y-4">
+          {/* Left Column: Taller Photo Gallery Viewer (aspect-[4/5] to preserve vertical salon shots) */}
+          <div className="lg:col-span-6 space-y-4">
 
             <div className="flex items-center justify-between gap-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#D8C2E7]/70 text-[#5E1788] text-xs font-semibold tracking-wider uppercase shadow-xs">
@@ -100,7 +101,7 @@ export default function BoutiqueSection() {
               </span>
             </div>
 
-            <div className="relative aspect-[16/10] rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-[#1F1B24] select-none">
+            <div className="relative aspect-[4/5] sm:aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-[#1F1B24] select-none">
               {BOUTIQUE_GALLERY.map((photo, index) => (
                 <Image
                   key={photo.src}
@@ -108,14 +109,14 @@ export default function BoutiqueSection() {
                   alt={photo.alt}
                   fill
                   priority={index === 0}
-                  sizes="(max-width: 1024px) 100vw, 58vw"
-                  className={`object-cover transition-opacity duration-700 ease-out ${
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className={`object-cover object-center transition-opacity duration-700 ease-out ${
                     index === activeIndex ? "opacity-100" : "opacity-0"
                   }`}
                 />
               ))}
 
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1F1B24]/80 via-[#1F1B24]/10 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1F1B24]/85 via-[#1F1B24]/15 to-transparent pointer-events-none" />
 
               <div className="absolute top-4 left-4">
                 <span className="px-3.5 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-white/95 text-[#5E1788] shadow-sm backdrop-blur-xs">
@@ -154,7 +155,8 @@ export default function BoutiqueSection() {
               </div>
             </div>
 
-            <div className="flex gap-3 overflow-x-auto pb-2 pt-1 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {/* Vertical-friendly Thumbnail Strip */}
+            <div className="flex gap-2.5 sm:gap-3 overflow-x-auto pb-2 pt-1 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {BOUTIQUE_GALLERY.map((photo, index) => (
                 <button
                   key={photo.src}
@@ -162,7 +164,7 @@ export default function BoutiqueSection() {
                   onClick={() => setActiveIndex(index)}
                   aria-label={`Vedi foto ${index + 1}: ${photo.title}`}
                   aria-current={index === activeIndex}
-                  className={`relative w-24 h-16 sm:w-28 sm:h-20 shrink-0 rounded-xl overflow-hidden border-2 snap-start transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D462A6] ${
+                  className={`relative w-16 h-20 sm:w-20 sm:h-24 shrink-0 rounded-xl overflow-hidden border-2 snap-start transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D462A6] ${
                     index === activeIndex
                       ? "border-[#5E1788] shadow-[0_0_0_2px_rgba(197,155,39,0.45)] scale-[1.03]"
                       : "border-transparent opacity-60 hover:opacity-100 hover:border-[#D8C2E7]"
@@ -172,8 +174,8 @@ export default function BoutiqueSection() {
                     src={photo.src}
                     alt={photo.alt}
                     fill
-                    sizes="(max-width: 1024px) 110px, 120px"
-                    className="object-cover"
+                    sizes="(max-width: 1024px) 70px, 90px"
+                    className="object-cover object-center"
                   />
                 </button>
               ))}
@@ -181,7 +183,7 @@ export default function BoutiqueSection() {
 
           </div>
 
-          <div className="lg:col-span-5 space-y-6 text-[#1F1B24]">
+          <div className="lg:col-span-6 space-y-6 text-[#1F1B24]">
 
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#D8C2E7]/70 text-[#7A3293] text-xs font-semibold tracking-wider uppercase">
               <Sparkles className="h-3.5 w-3.5 text-[#D462A6]" />

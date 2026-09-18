@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, Truck, Store, ShieldCheck, HeartHandshake, ArrowRight, Calendar, Play } from "lucide-react";
+import { Sparkles, Truck, Store, ShieldCheck, HeartHandshake, ArrowRight, Calendar } from "lucide-react";
 
 export interface HeroSectionProps {
   variant?: "split" | "fullwidth";
@@ -11,14 +11,6 @@ export interface HeroSectionProps {
 export default function HeroSection({ variant = "split" }: HeroSectionProps) {
   const scrollToBestseller = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const el = document.getElementById("bestseller");
-    if (el) {
-      e.preventDefault();
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const scrollToVideoMasterclass = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const el = document.getElementById("video-masterclass");
     if (el) {
       e.preventDefault();
       el.scrollIntoView({ behavior: "smooth" });
@@ -84,17 +76,6 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
                 -10% Online
               </span>
             </Link>
-
-            <a
-              href="#video-masterclass"
-              onClick={scrollToVideoMasterclass}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-[#5E1788] font-medium text-sm tracking-wider uppercase shadow-xl hover:bg-[#FAF7FC] hover:scale-[1.02] active:scale-98 transition-all group"
-            >
-              <span className="relative flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-[#5E1788] to-[#D462A6]">
-                <Play className="h-3 w-3 text-white fill-white ml-px" />
-              </span>
-              <span>Guarda Video Tutorial</span>
-            </a>
           </div>
 
           {/* Salone Presence */}
@@ -201,17 +182,6 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
                   -10% Online
                 </span>
               </Link>
-
-              <a
-                href="#video-masterclass"
-                onClick={scrollToVideoMasterclass}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-[#1F1B24] text-white font-medium text-sm tracking-wider uppercase shadow-lg shadow-[#1F1B24]/25 hover:bg-[#5E1788] hover:scale-[1.02] active:scale-98 transition-all group"
-              >
-                <span className="relative flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-[#7A3293] to-[#D462A6] shadow-inner">
-                  <Play className="h-3 w-3 text-white fill-white ml-px" />
-                </span>
-                <span>Guarda Video Tutorial</span>
-              </a>
             </div>
 
             {/* E-Commerce Guarantee Row with subtle Atelier mention */}
