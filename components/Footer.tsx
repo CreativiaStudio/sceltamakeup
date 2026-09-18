@@ -16,7 +16,6 @@ import {
   Heart,
 } from "lucide-react";
 
-import { useWhatsAppModalStore } from "@/store/useWhatsAppModalStore";
 import {
   VisaLogo,
   MastercardLogo,
@@ -33,7 +32,6 @@ export default function Footer() {
   const pathname = usePathname();
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const openWhatsAppModal = useWhatsAppModalStore((state) => state.openModal);
 
   if (pathname?.startsWith("/admin")) {
     return null;
@@ -144,13 +142,14 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="h-4 w-4 text-[#D462A6] shrink-0" />
-                <button
-                  type="button"
-                  onClick={() => openWhatsAppModal("Salve, vorrei informazioni sui prodotti o servizi del salone", "Footer Info")}
-                  className="hover:text-white transition-colors cursor-pointer text-left"
+                <a
+                  href="https://wa.me/393793370322?text=Salve%20Federica,%20vorrei%20informazioni%20sui%20prodotti%20o%20servizi%20del%20salone"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors cursor-pointer"
                 >
-                  WhatsApp: In attivazione (Demo)
-                </button>
+                  WhatsApp: +39 379 337 0322 (Federica)
+                </a>
               </li>
               <li className="flex items-start gap-2.5">
                 <Clock className="h-4 w-4 text-[#D462A6] shrink-0 mt-0.5" />

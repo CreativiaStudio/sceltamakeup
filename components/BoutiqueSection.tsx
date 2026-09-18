@@ -2,10 +2,9 @@
 
 import Image from "next/image";
 import { MapPin, Clock, Phone, Sparkles, Navigation, HeartHandshake, MessageCircle } from "lucide-react";
-import { useWhatsAppModalStore } from "@/store/useWhatsAppModalStore";
+import { WHATSAPP_DISPLAY_NUMBER, buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export default function BoutiqueSection() {
-  const openWhatsAppModal = useWhatsAppModalStore((state) => state.openModal);
   return (
     <section id="boutique" className="py-16 sm:py-24 bg-[#FAF7FC] border-t border-[#D8C2E7]/40 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -107,16 +106,14 @@ export default function BoutiqueSection() {
                   <h4 className="text-xs tracking-wider uppercase font-semibold text-neutral-400">
                     Telefono & WhatsApp
                   </h4>
-                  <button
-                    type="button"
-                    onClick={() => openWhatsAppModal("Salve, vorrei informazioni sui prodotti o servizi Scelta Makeup", "Salone Napoli")}
-                    className="text-sm font-semibold text-[#5E1788] hover:underline text-left cursor-pointer flex items-center gap-1.5"
+                  <a
+                    href={buildWhatsAppUrl("Salve, vorrei informazioni sui prodotti o servizi Scelta Makeup")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-semibold text-[#5E1788] hover:underline text-left cursor-pointer"
                   >
-                    <span>Numero in attivazione al lancio</span>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-[#FAF7FC] text-[#7A3293] border border-[#D8C2E7]/50 font-medium">
-                      Demo
-                    </span>
-                  </button>
+                    {WHATSAPP_DISPLAY_NUMBER} (Federica)
+                  </a>
                   <p className="text-xs text-neutral-500">
                     Contattaci per appuntamenti make-up e informazioni
                   </p>
@@ -135,14 +132,15 @@ export default function BoutiqueSection() {
                 <span>Ottieni Indicazioni</span>
               </a>
 
-              <button
-                type="button"
-                onClick={() => openWhatsAppModal("Salve, vorrei informazioni sui prodotti Scelta Makeup", "Salone Napoli")}
+              <a
+                href={buildWhatsAppUrl("Salve, vorrei informazioni sui prodotti Scelta Makeup")}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-600 text-white text-xs font-semibold tracking-wider uppercase hover:bg-emerald-700 transition-colors cursor-pointer shadow-md shadow-emerald-700/20"
               >
                 <MessageCircle className="h-4 w-4" />
-                <span>Scrivici su WhatsApp (Demo)</span>
-              </button>
+                <span>Scrivici su WhatsApp</span>
+              </a>
             </div>
 
           </div>

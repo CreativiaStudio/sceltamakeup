@@ -935,7 +935,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
               className="flex-1 py-3 px-4 rounded-xl bg-[#25D366] text-white text-xs font-bold hover:bg-[#20bd5a] transition-all flex items-center justify-center gap-2 shadow-md shadow-[#25D366]/20 cursor-pointer"
             >
               <MessageCircle className="w-4 h-4" />
-              Scrivici su WhatsApp (Demo)
+              Scrivici su WhatsApp
             </button>
             <Link
               href="/"

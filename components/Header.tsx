@@ -336,7 +336,7 @@ function HeaderContent() {
                 className="w-full flex items-center gap-3 text-sm text-neutral-700 font-medium p-2 rounded-lg hover:bg-[#FAF7FC] text-left cursor-pointer"
               >
                 <Phone className="h-4 w-4 text-[#5E1788]" />
-                <span>Assistenza WhatsApp (Demo)</span>
+                <span>Assistenza WhatsApp</span>
               </button>
             </div>
           </div>
