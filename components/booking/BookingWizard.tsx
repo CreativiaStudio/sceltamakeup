@@ -778,7 +778,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                   Metodo di Pagamento Acconto (€{selectedService.depositAmount.toFixed(2)})
                 </span>
                 <span className="text-xs text-green-700 bg-green-50 px-2.5 py-1 rounded-full font-semibold border border-green-200/60">
-                  Crittografia SSL 256-bit Stripe
+                  Crittografia & Pagamento Protetto
                 </span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">

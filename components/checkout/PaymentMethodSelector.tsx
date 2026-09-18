@@ -403,7 +403,7 @@ export default function PaymentMethodSelector({
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
           <span>
-            Pagamenti protetti con crittografia bancaria <strong>Stripe SSL 256-bit</strong>
+            Pagamenti protetti con <strong>crittografia bancaria certificata</strong>
           </span>
         </div>
         <span className="text-[#5E1788] font-medium hidden sm:inline">

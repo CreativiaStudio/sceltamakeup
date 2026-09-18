@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import BrandLogo from "@/components/BrandLogo";
@@ -45,9 +46,22 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-gradient-to-b from-[#1F1B24] via-[#17141A] to-[#120F16] text-white pt-16 pb-12 border-t border-[#D8C2E7]/20 overflow-hidden">
-      {/* Subtle Purple Reflection Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-[#5E1788]/15 blur-3xl pointer-events-none rounded-full" />
+    <footer className="relative bg-gradient-to-b from-[#1F1B24] via-[#17141A] to-[#120F16] text-white pt-16 pb-16 border-t border-[#D8C2E7]/20 overflow-hidden">
+      {/* Subtle Atmospheric Boutique Background Overlay */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.07] mix-blend-luminosity overflow-hidden">
+        <Image
+          src="/boutique/salone-panoramica-boutique-completa.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover object-center scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1F1B24]/90 via-[#17141A]/95 to-[#120F16]" />
+      </div>
+
+      {/* Subtle Purple & Orchid Glow Orbs */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-[#5E1788]/20 blur-3xl pointer-events-none rounded-full" />
+      <div className="absolute bottom-10 right-1/4 w-80 h-80 bg-[#D462A6]/10 blur-3xl pointer-events-none rounded-full" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -241,7 +255,7 @@ export default function Footer() {
         <div className="py-6 border-t border-neutral-800/80 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-xs text-neutral-400">
             <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0" />
-            <span>Pagamenti Protetti & Crittografati SSL 256-bit Stripe</span>
+            <span>Pagamenti Protetti & Crittografati</span>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap justify-center">
@@ -257,8 +271,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright, Cassa Link & Creativia Studio Credits */}
-        <div className="pt-8 mt-8 border-t border-neutral-800 text-xs text-neutral-500 flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* Bottom Bar: Copyright, Cassa Link & Creativia Studio Credits with desktop clearance for floating WhatsApp pill */}
+        <div className="pt-8 mt-8 border-t border-neutral-800 text-xs text-neutral-500 flex flex-col sm:flex-row items-center justify-between gap-4 lg:pr-64">
           <p>© {new Date().getFullYear()} Scelta Makeup. Tutti i diritti riservati. P.IVA e Dati Societari registrati a Napoli.</p>
           <div className="flex items-center gap-4">
             <Link

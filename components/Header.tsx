@@ -144,14 +144,6 @@ function HeaderContent() {
           <Phone className="h-3 w-3" />
           <span>Assistenza WhatsApp</span>
         </a>
-        <span className="opacity-40 hidden md:inline">|</span>
-        <a
-          href="#boutique"
-          className="inline-flex items-center gap-1 text-[#D8C2E7] hover:underline"
-        >
-          <MapPin className="h-3 w-3" />
-          Salone Napoli: Via dei Pellegrini 28/29
-        </a>
       </div>
 
       {/* Main Sticky Navigation Bar (Pins cleanly at top: 0, slims to h-14 when scrolled) */}
@@ -217,30 +209,17 @@ function HeaderContent() {
                 <Search className="h-4 w-4" />
               </button>
 
-              {/* Prenota Make-Up Button */}
+              {/* Prenota Consulenza Button */}
               <Link
                 href="/prenota"
                 className={`hidden md:flex items-center gap-1.5 font-bold text-white bg-gradient-to-r from-[#7A3293] to-[#D462A6] hover:opacity-95 rounded-full shadow-xs shadow-[#7A3293]/20 transition-all ${
                   isScrolled
-                    ? "px-3 py-1.5 text-xs"
-                    : "px-3.5 py-1.5 text-xs"
+                    ? "px-3.5 py-1.5 text-xs"
+                    : "px-4 py-2 text-xs"
                 }`}
               >
-                <Sparkles className="h-3 w-3 text-amber-300 animate-pulse" />
-                <span>Prenota (-10%)</span>
-              </Link>
-
-              {/* Boutique Quick Link */}
-              <Link
-                href="#boutique"
-                className={`hidden sm:flex items-center gap-1.5 font-medium text-[#7A3293] hover:text-[#5E1788] rounded-full border border-[#D8C2E7]/60 hover:bg-[#FAF7FC] transition-colors ${
-                  isScrolled
-                    ? "px-2.5 py-1 text-xs"
-                    : "px-3 py-1.5 text-xs"
-                }`}
-              >
-                <MapPin className="h-3.5 w-3.5 text-[#D462A6]" />
-                <span className="hidden md:inline">Salone</span> Napoli
+                <Sparkles className="h-3.5 w-3.5 text-amber-300" />
+                <span>Prenota una Consulenza</span>
               </Link>
 
               {/* Reactive Cart Button */}
@@ -307,7 +286,7 @@ function HeaderContent() {
                 className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-[#5E1788] via-[#7A3293] to-[#D462A6] text-white font-bold text-sm shadow-md"
               >
                 <Sparkles className="w-4 h-4 text-amber-300" />
-                <span>Prenota Make-Up (-10% Online)</span>
+                <span>Prenota una Consulenza</span>
               </Link>
               <Link
                 href="/servizi"
@@ -319,14 +298,6 @@ function HeaderContent() {
             </div>
 
             <div className="pt-4 border-t border-neutral-100 space-y-3">
-              <Link
-                href="#boutique"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-3 text-sm text-[#7A3293] font-medium p-2 rounded-lg hover:bg-[#FAF7FC]"
-              >
-                <MapPin className="h-4 w-4 text-[#D462A6]" />
-                <span>Salone Napoli: Via dei Pellegrini 28/29</span>
-              </Link>
               <a
                 href={buildWhatsAppUrl("Salve Federica, vorrei assistenza dal team Scelta Makeup")}
                 target="_blank"
@@ -372,11 +343,11 @@ function HeaderContent() {
             );
           })}
           <Link
-            href="/servizi"
+            href="/prenota"
             className="px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-200 cursor-pointer bg-[#D462A6]/15 text-[#5E1788] hover:bg-[#5E1788] hover:text-white flex items-center gap-1 border border-[#D462A6]/30"
           >
             <Sparkles className="w-3 h-3 text-[#D462A6]" />
-            Atelier Make-Up (-10%)
+            Prenota una Consulenza
           </Link>
         </div>
 

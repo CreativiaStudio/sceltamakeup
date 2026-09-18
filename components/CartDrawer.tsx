@@ -275,7 +275,7 @@ export default function CartDrawer() {
             <div className="flex items-center justify-center gap-4 text-[10px] text-neutral-500 pt-1">
               <span className="flex items-center gap-1">
                 <ShieldCheck className="h-3 w-3 text-emerald-600" />
-                Pagamenti Protetti SSL
+                Pagamenti Protetti & Sicuri
               </span>
               <span>•</span>
               <span className="flex items-center gap-1">
