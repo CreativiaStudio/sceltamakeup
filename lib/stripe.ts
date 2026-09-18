@@ -1,6 +1,8 @@
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
+const apiKey =
+  process.env.STRIPE_SECRET_KEY ||
+  "sk_test_placeholder_for_nextjs_build_evaluation";
 
-export { stripe };
+export const stripe = new Stripe(apiKey);
 export default stripe;
