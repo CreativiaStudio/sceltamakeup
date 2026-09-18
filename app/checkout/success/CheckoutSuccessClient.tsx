@@ -17,13 +17,12 @@ export default function CheckoutSuccessClient() {
   const sessionId = searchParams.get("session_id");
   const clearCart = useCartStore((state) => state.clearCart);
 
-  const [status, setStatus] = useState<VerifyStatus>("loading");
+  const [status, setStatus] = useState<VerifyStatus>(sessionId ? "loading" : "error");
   const [order, setOrder] = useState<Order | null>(null);
   const processedRef = useRef(false);
 
   useEffect(() => {
     if (!sessionId) {
-      setStatus("error");
       return;
     }
     if (processedRef.current) return;

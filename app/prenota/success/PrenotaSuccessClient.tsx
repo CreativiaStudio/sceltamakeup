@@ -25,13 +25,12 @@ export default function PrenotaSuccessClient() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
 
-  const [status, setStatus] = useState<VerifyStatus>("loading");
+  const [status, setStatus] = useState<VerifyStatus>(sessionId ? "loading" : "error");
   const [appointment, setAppointment] = useState<Appointment | null>(null);
   const processedRef = useRef(false);
 
   useEffect(() => {
     if (!sessionId) {
-      setStatus("error");
       return;
     }
     if (processedRef.current) return;
