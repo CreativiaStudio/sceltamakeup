@@ -17,6 +17,17 @@ import {
 } from "lucide-react";
 
 import { useWhatsAppModalStore } from "@/store/useWhatsAppModalStore";
+import {
+  VisaLogo,
+  MastercardLogo,
+  AmexLogo,
+  PostePayLogo,
+  ApplePayLogo,
+  GooglePayLogo,
+  KlarnaLogo,
+  PayPalLogo,
+  ScalapayLogo,
+} from "@/components/ui/PaymentLogos";
 
 export default function Footer() {
   const pathname = usePathname();
@@ -225,6 +236,26 @@ export default function Footer() {
             </ul>
           </div>
 
+        </div>
+
+        {/* Payment Methods & Secure Badges Row */}
+        <div className="py-6 border-t border-neutral-800/80 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2 text-xs text-neutral-400">
+            <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0" />
+            <span>Pagamenti Protetti & Crittografati SSL 256-bit Stripe</span>
+          </div>
+
+          <div className="flex items-center gap-2 flex-wrap justify-center">
+            <VisaLogo className="h-6 w-9" />
+            <MastercardLogo className="h-6 w-9" />
+            <AmexLogo className="h-6 w-9" />
+            <PostePayLogo className="h-6 w-9" />
+            <ApplePayLogo className="h-6 w-10" />
+            <GooglePayLogo className="h-6 w-10" />
+            <KlarnaLogo className="h-6 w-11" />
+            <PayPalLogo className="h-6 w-11" />
+            <ScalapayLogo className="h-6 w-11" />
+          </div>
         </div>
 
         {/* Bottom Bar: Copyright, Cassa Link & Creativia Studio Credits */}

@@ -21,6 +21,7 @@ import { Order, OrderItem, PaymentMethod } from "@/types/order";
 import { createOrder, savePendingOrder } from "@/lib/orderService";
 import { enqueueWhatsAppMessage } from "@/lib/whatsappQueueService";
 import { sendOrderPlacedEmail } from "@/lib/resendService";
+import PaymentMethodSelector from "@/components/checkout/PaymentMethodSelector";
 
 export default function CheckoutPage() {
   const mounted = useIsMounted();
@@ -423,176 +424,12 @@ export default function CheckoutPage() {
               </div>
 
               {/* Payment Methods */}
-              <div>
-                <h2 className="font-serif text-xl font-bold text-[#1F1B24] mb-3">
-                  3. Metodo di Pagamento
-                </h2>
-                <div className="space-y-2.5">
-                  <label
-                    className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
-                      paymentMethod === "card"
-                        ? "border-[#5E1788] bg-purple-50/50 ring-2 ring-[#5E1788]/20"
-                        : "border-neutral-200 hover:border-purple-300"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="radio"
-                        name="payment"
-                        checked={paymentMethod === "card"}
-                        onChange={() => setPaymentMethod("card")}
-                        className="text-[#5E1788] focus:ring-[#5E1788]"
-                      />
-                      <div>
-                        <span className="text-sm font-semibold text-neutral-800">
-                          Carta di Credito o Debito
-                        </span>
-                        <span className="block text-xs text-neutral-500">
-                          Visa, Mastercard, Maestro, Amex, PostePay
-                        </span>
-                      </div>
-                    </div>
-                    <CreditCard className="h-5 w-5 text-[#5E1788]" />
-                  </label>
-
-                  <label
-                    className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
-                      paymentMethod === "apple_pay" || paymentMethod === "google_pay"
-                        ? "border-[#5E1788] bg-purple-50/50 ring-2 ring-[#5E1788]/20"
-                        : "border-neutral-200 hover:border-purple-300"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="radio"
-                        name="payment"
-                        checked={paymentMethod === "apple_pay" || paymentMethod === "google_pay"}
-                        onChange={() => setPaymentMethod("apple_pay")}
-                        className="text-[#5E1788] focus:ring-[#5E1788]"
-                      />
-                      <div>
-                        <span className="text-sm font-semibold text-neutral-800">
-                          Apple Pay & Google Pay
-                        </span>
-                        <span className="block text-xs text-neutral-500">
-                          Paga in 1 click dal tuo dispositivo
-                        </span>
-                      </div>
-                    </div>
-                    <Smartphone className="h-5 w-5 text-[#5E1788]" />
-                  </label>
-
-                  <label
-                    className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
-                      paymentMethod === "klarna"
-                        ? "border-[#5E1788] bg-purple-50/50 ring-2 ring-[#5E1788]/20"
-                        : "border-neutral-200 hover:border-purple-300"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="radio"
-                        name="payment"
-                        checked={paymentMethod === "klarna"}
-                        onChange={() => setPaymentMethod("klarna")}
-                        className="text-[#5E1788] focus:ring-[#5E1788]"
-                      />
-                      <div>
-                        <span className="text-sm font-semibold text-neutral-800">Klarna</span>
-                        <span className="block text-xs text-neutral-500">
-                          Paga in 3 rate a tasso zero
-                        </span>
-                      </div>
-                    </div>
-                    <span className="text-xs font-bold text-pink-600 bg-pink-50 px-2 py-0.5 rounded">
-                      Klarna.
-                    </span>
-                  </label>
-
-                  <label
-                    className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
-                      paymentMethod === "paypal"
-                        ? "border-[#5E1788] bg-purple-50/50 ring-2 ring-[#5E1788]/20"
-                        : "border-neutral-200 hover:border-purple-300"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="radio"
-                        name="payment"
-                        checked={paymentMethod === "paypal"}
-                        onChange={() => setPaymentMethod("paypal")}
-                        className="text-[#5E1788] focus:ring-[#5E1788]"
-                      />
-                      <div>
-                        <span className="text-sm font-semibold text-neutral-800">PayPal</span>
-                        <span className="block text-xs text-neutral-500">
-                          Paga con il tuo conto PayPal o in 3 rate
-                        </span>
-                      </div>
-                    </div>
-                    <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">
-                      PayPal
-                    </span>
-                  </label>
-
-                  <label
-                    className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
-                      paymentMethod === "scalapay"
-                        ? "border-[#5E1788] bg-purple-50/50 ring-2 ring-[#5E1788]/20"
-                        : "border-neutral-200 hover:border-purple-300"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="radio"
-                        name="payment"
-                        checked={paymentMethod === "scalapay"}
-                        onChange={() => setPaymentMethod("scalapay")}
-                        className="text-[#5E1788] focus:ring-[#5E1788]"
-                      />
-                      <div>
-                        <span className="text-sm font-semibold text-neutral-800">Scalapay</span>
-                        <span className="block text-xs text-neutral-500">
-                          Paga in 3 rate senza interessi
-                        </span>
-                      </div>
-                    </div>
-                    <span className="text-xs font-bold text-[#5E1788] bg-purple-50 px-2 py-0.5 rounded">
-                      Scalapay
-                    </span>
-                  </label>
-
-                  {deliveryMethod === "boutique" && (
-                    <label
-                      className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
-                        paymentMethod === "boutique"
-                          ? "border-[#5E1788] bg-purple-50/50 ring-2 ring-[#5E1788]/20"
-                          : "border-neutral-200 hover:border-purple-300"
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="radio"
-                          name="payment"
-                          checked={paymentMethod === "boutique"}
-                          onChange={() => setPaymentMethod("boutique")}
-                          className="text-[#5E1788] focus:ring-[#5E1788]"
-                        />
-                        <div>
-                          <span className="text-sm font-semibold text-neutral-800">
-                            Paga al Ritiro in Boutique a Napoli
-                          </span>
-                          <span className="block text-xs text-emerald-600">
-                            Pagamento alla consegna • Via dei Pellegrini 28/29
-                          </span>
-                        </div>
-                      </div>
-                      <Store className="h-5 w-5 text-emerald-600" />
-                    </label>
-                  )}
-                </div>
-              </div>
+              <PaymentMethodSelector
+                selectedMethod={paymentMethod}
+                onSelectMethod={setPaymentMethod}
+                deliveryMethod={deliveryMethod}
+                total={total}
+              />
 
               {/* Submit CTA */}
               <button

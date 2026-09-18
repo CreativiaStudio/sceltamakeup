@@ -27,6 +27,15 @@ import {
 import { enqueueWhatsAppMessage } from "@/lib/whatsappQueueService";
 import { sendBookingConfirmationEmail } from "@/lib/resendService";
 import { useWhatsAppModalStore } from "@/store/useWhatsAppModalStore";
+import {
+  VisaLogo,
+  MastercardLogo,
+  ApplePayLogo,
+  GooglePayLogo,
+  KlarnaLogo,
+  PayPalLogo,
+  ScalapayLogo,
+} from "@/components/ui/PaymentLogos";
 
 type DepositMethod =
   | "stripe_card"
@@ -781,27 +790,43 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                       key={method.value}
                       type="button"
                       onClick={() => setDepositMethod(method.value)}
-                      className={`text-left p-3 rounded-lg border transition-all cursor-pointer ${
+                      className={`text-left p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-2 ${
                         isSelected
-                          ? "border-[#5E1788] bg-white ring-2 ring-[#5E1788]/20"
+                          ? "border-[#5E1788] bg-white ring-2 ring-[#5E1788]/20 shadow-xs"
                           : "border-[#D8C2E7]/50 bg-white hover:border-[#5E1788]"
                       }`}
                     >
-                      <span className="flex items-center gap-2 text-xs font-bold text-[#1F1B24]">
-                        <span
-                          className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center shrink-0 ${
-                            isSelected ? "border-[#5E1788]" : "border-neutral-300"
-                          }`}
-                        >
-                          {isSelected && (
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#5E1788]" />
-                          )}
+                      <div className="flex-1 min-w-0">
+                        <span className="flex items-center gap-2 text-xs font-bold text-[#1F1B24]">
+                          <span
+                            className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center shrink-0 ${
+                              isSelected ? "border-[#5E1788]" : "border-neutral-300"
+                            }`}
+                          >
+                            {isSelected && (
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#5E1788]" />
+                            )}
+                          </span>
+                          {method.label}
                         </span>
-                        {method.label}
-                      </span>
-                      <span className="block text-[11px] text-[#1F1B24]/60 mt-0.5 pl-6">
-                        {method.subtitle}
-                      </span>
+                        <span className="block text-[11px] text-[#1F1B24]/60 mt-0.5 pl-5 truncate">
+                          {method.subtitle}
+                        </span>
+                      </div>
+
+                      <div className="shrink-0">
+                        {method.value === "stripe_card" && (
+                          <div className="flex gap-1">
+                            <VisaLogo className="h-5 w-7" />
+                            <MastercardLogo className="h-5 w-7" />
+                          </div>
+                        )}
+                        {method.value === "apple_pay" && <ApplePayLogo className="h-5 w-8" />}
+                        {method.value === "google_pay" && <GooglePayLogo className="h-5 w-8" />}
+                        {method.value === "klarna" && <KlarnaLogo className="h-5 w-9" />}
+                        {method.value === "paypal" && <PayPalLogo className="h-5 w-9" />}
+                        {method.value === "scalapay" && <ScalapayLogo className="h-5 w-9" />}
+                      </div>
                     </button>
                   );
                 })}
