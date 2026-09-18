@@ -100,7 +100,6 @@ export async function POST(req: NextRequest) {
       currency: "eur",
       line_items: lineItems,
       customer_email: customer.email,
-      payment_method_types: ["card", "klarna", "paypal"],
       metadata: {
         orderCustomer: `${customer.nome} ${customer.cognome}`.trim(),
         deliveryMethod,

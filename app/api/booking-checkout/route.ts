@@ -63,7 +63,6 @@ export async function POST(req: NextRequest) {
         },
       ],
       customer_email: customer.email,
-      payment_method_types: ["card", "klarna", "paypal"],
       metadata: {
         serviceId,
         serviceName,
