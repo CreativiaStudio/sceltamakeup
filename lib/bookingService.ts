@@ -265,7 +265,13 @@ export function createAppointment(data: {
   date: string;
   time: string;
   customer: CustomerData;
-  paymentMethodDeposit?: "stripe_card" | "apple_pay" | "google_pay";
+  paymentMethodDeposit?:
+    | "stripe_card"
+    | "apple_pay"
+    | "google_pay"
+    | "klarna"
+    | "paypal"
+    | "scalapay";
   operatorId?: string;
 }): Appointment {
   const service = getServiceById(data.serviceId);

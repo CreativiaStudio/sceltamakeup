@@ -12,12 +12,13 @@ import {
   Lock,
   ArrowLeft,
   Sparkles,
+  Smartphone,
 } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 
 import { useIsMounted } from "@/lib/useIsMounted";
-import { Order, OrderItem } from "@/types/order";
-import { createOrder } from "@/lib/orderService";
+import { Order, OrderItem, PaymentMethod } from "@/types/order";
+import { createOrder, savePendingOrder } from "@/lib/orderService";
 import { enqueueWhatsAppMessage } from "@/lib/whatsappQueueService";
 import { sendOrderPlacedEmail } from "@/lib/resendService";
 
@@ -29,7 +30,7 @@ export default function CheckoutPage() {
   const clearCart = useCartStore((state) => state.clearCart);
 
   const [deliveryMethod, setDeliveryMethod] = useState<"shipping" | "boutique">("shipping");
-  const [paymentMethod, setPaymentMethod] = useState<"card" | "klarna" | "boutique">("card");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [confirmedOrder, setConfirmedOrder] = useState<Order | null>(null);
@@ -56,81 +57,127 @@ export default function CheckoutPage() {
       : 4.90;
   const total = subtotal + shippingCost;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const buildOrderInput = () => {
+    const orderItems: OrderItem[] = items.map((item) => ({
+      id: item.id,
+      productId: item.productId,
+      slug: item.slug,
+      name: item.name,
+      brand: item.brand,
+      price: item.price,
+      quantity: item.quantity,
+      shade: item.shade,
+      image: item.image,
+    }));
+
+    return {
+      customer: {
+        nome: formData.nome,
+        cognome: formData.cognome,
+        email: formData.email,
+        telefono: formData.telefono,
+        indirizzo: formData.indirizzo,
+        citta: formData.citta,
+        cap: formData.cap,
+        note: formData.note,
+      },
+      items: orderItems,
+      deliveryMethod,
+      paymentMethod,
+      subtotal,
+      shippingCost,
+      total,
+      sampleIncluded: true,
+    };
+  };
+
+  const notifyOrder = (order: Order) => {
+    try {
+      const itemsListFormatted = order.items
+        .map((i) => `• ${i.name}${i.shade ? ` (${i.shade.name})` : ""} x${i.quantity}`)
+        .join("\n");
+
+      enqueueWhatsAppMessage({
+        recipientPhone: order.customer.telefono,
+        recipientName: `${order.customer.nome} ${order.customer.cognome}`,
+        templateType: "order_placed",
+        context: {
+          customerName: `${order.customer.nome} ${order.customer.cognome}`,
+          orderNumber: order.orderNumber,
+          deliveryMethod: order.deliveryMethod,
+          itemsListFormatted,
+          orderTotal: order.total,
+          shippingAddress: order.customer.indirizzo || "",
+          shippingCity: order.customer.citta || "",
+          shippingCap: order.customer.cap || "",
+        },
+      });
+
+      sendOrderPlacedEmail(order).catch((emailErr) => {
+        console.warn("Failed to dispatch order placed email:", emailErr);
+      });
+    } catch (notifErr) {
+      console.warn("Failed to enqueue notifications for order:", notifErr);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
+
+    const orderInput = buildOrderInput();
+
+    if (paymentMethod === "boutique") {
       try {
-        const orderItems: OrderItem[] = items.map((item) => ({
-          id: item.id,
-          productId: item.productId,
-          slug: item.slug,
-          name: item.name,
-          brand: item.brand,
-          price: item.price,
-          quantity: item.quantity,
-          shade: item.shade,
-          image: item.image,
-        }));
-
-        const createdOrder = createOrder({
-          customer: {
-            nome: formData.nome,
-            cognome: formData.cognome,
-            email: formData.email,
-            telefono: formData.telefono,
-            indirizzo: formData.indirizzo,
-            citta: formData.citta,
-            cap: formData.cap,
-            note: formData.note,
-          },
-          items: orderItems,
-          deliveryMethod,
-          paymentMethod,
-          subtotal,
-          shippingCost,
-          total,
-          sampleIncluded: true,
-        });
-
+        const createdOrder = createOrder(orderInput);
         setConfirmedOrder(createdOrder);
-
-        // Safely trigger WhatsApp queue & Resend email notifications
-        try {
-          const itemsListFormatted = createdOrder.items
-            .map((i) => `• ${i.name}${i.shade ? ` (${i.shade.name})` : ""} x${i.quantity}`)
-            .join("\n");
-
-          enqueueWhatsAppMessage({
-            recipientPhone: createdOrder.customer.telefono,
-            recipientName: `${createdOrder.customer.nome} ${createdOrder.customer.cognome}`,
-            templateType: "order_placed",
-            context: {
-              customerName: `${createdOrder.customer.nome} ${createdOrder.customer.cognome}`,
-              orderNumber: createdOrder.orderNumber,
-              deliveryMethod: createdOrder.deliveryMethod,
-              itemsListFormatted,
-              orderTotal: createdOrder.total,
-              shippingAddress: createdOrder.customer.indirizzo || "",
-              shippingCity: createdOrder.customer.citta || "",
-              shippingCap: createdOrder.customer.cap || "",
-            },
-          });
-
-          sendOrderPlacedEmail(createdOrder).catch((emailErr) => {
-            console.warn("Failed to dispatch order placed email:", emailErr);
-          });
-        } catch (notifErr) {
-          console.warn("Failed to enqueue notifications for order:", notifErr);
-        }
-      } catch (orderErr) {
-        console.error("Failed to create order:", orderErr);
-      } finally {
-        setIsSubmitting(false);
+        notifyOrder(createdOrder);
         setIsSuccess(true);
         clearCart();
+      } catch (orderErr) {
+        console.error("Failed to create order:", orderErr);
+        alert("Errore durante la creazione dell'ordine. Riprova.");
+      } finally {
+        setIsSubmitting(false);
       }
-    }, 1500);
+      return;
+    }
+
+    try {
+      savePendingOrder(orderInput);
+
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: orderInput.items.map((i) => ({
+            name: i.name,
+            price: i.price,
+            quantity: i.quantity,
+            image: i.image,
+            shade: i.shade?.name,
+          })),
+          customer: orderInput.customer,
+          deliveryMethod: orderInput.deliveryMethod,
+          paymentMethod: orderInput.paymentMethod,
+          shippingCost: orderInput.shippingCost,
+          total: orderInput.total,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.url) {
+        throw new Error(data.error || "Impossibile avviare il pagamento");
+      }
+
+      window.location.href = data.url;
+    } catch (err) {
+      console.error("Checkout error:", err);
+      const message = err instanceof Error ? err.message : "Errore sconosciuto";
+      alert("Errore durante l'avvio del pagamento: " + message);
+      setIsSubmitting(false);
+    }
   };
 
   if (isSuccess) {
@@ -381,7 +428,13 @@ export default function CheckoutPage() {
                   3. Metodo di Pagamento
                 </h2>
                 <div className="space-y-2.5">
-                  <label className="flex items-center justify-between p-3.5 rounded-xl border border-neutral-200 hover:border-purple-300 cursor-pointer">
+                  <label
+                    className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
+                      paymentMethod === "card"
+                        ? "border-[#5E1788] bg-purple-50/50 ring-2 ring-[#5E1788]/20"
+                        : "border-neutral-200 hover:border-purple-300"
+                    }`}
+                  >
                     <div className="flex items-center gap-3">
                       <input
                         type="radio"
@@ -390,14 +443,52 @@ export default function CheckoutPage() {
                         onChange={() => setPaymentMethod("card")}
                         className="text-[#5E1788] focus:ring-[#5E1788]"
                       />
-                      <span className="text-sm font-medium text-neutral-800">
-                        Carta di Credito / Debito (Stripe Protetta)
-                      </span>
+                      <div>
+                        <span className="text-sm font-semibold text-neutral-800">
+                          Carta di Credito o Debito
+                        </span>
+                        <span className="block text-xs text-neutral-500">
+                          Visa, Mastercard, Maestro, Amex, PostePay
+                        </span>
+                      </div>
                     </div>
-                    <CreditCard className="h-5 w-5 text-neutral-400" />
+                    <CreditCard className="h-5 w-5 text-[#5E1788]" />
                   </label>
 
-                  <label className="flex items-center justify-between p-3.5 rounded-xl border border-neutral-200 hover:border-purple-300 cursor-pointer">
+                  <label
+                    className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
+                      paymentMethod === "apple_pay" || paymentMethod === "google_pay"
+                        ? "border-[#5E1788] bg-purple-50/50 ring-2 ring-[#5E1788]/20"
+                        : "border-neutral-200 hover:border-purple-300"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="radio"
+                        name="payment"
+                        checked={paymentMethod === "apple_pay" || paymentMethod === "google_pay"}
+                        onChange={() => setPaymentMethod("apple_pay")}
+                        className="text-[#5E1788] focus:ring-[#5E1788]"
+                      />
+                      <div>
+                        <span className="text-sm font-semibold text-neutral-800">
+                          Apple Pay & Google Pay
+                        </span>
+                        <span className="block text-xs text-neutral-500">
+                          Paga in 1 click dal tuo dispositivo
+                        </span>
+                      </div>
+                    </div>
+                    <Smartphone className="h-5 w-5 text-[#5E1788]" />
+                  </label>
+
+                  <label
+                    className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
+                      paymentMethod === "klarna"
+                        ? "border-[#5E1788] bg-purple-50/50 ring-2 ring-[#5E1788]/20"
+                        : "border-neutral-200 hover:border-purple-300"
+                    }`}
+                  >
                     <div className="flex items-center gap-3">
                       <input
                         type="radio"
@@ -406,17 +497,80 @@ export default function CheckoutPage() {
                         onChange={() => setPaymentMethod("klarna")}
                         className="text-[#5E1788] focus:ring-[#5E1788]"
                       />
-                      <span className="text-sm font-medium text-neutral-800">
-                        Klarna — Paga in 3 rate a tasso zero
-                      </span>
+                      <div>
+                        <span className="text-sm font-semibold text-neutral-800">Klarna</span>
+                        <span className="block text-xs text-neutral-500">
+                          Paga in 3 rate a tasso zero
+                        </span>
+                      </div>
                     </div>
                     <span className="text-xs font-bold text-pink-600 bg-pink-50 px-2 py-0.5 rounded">
                       Klarna.
                     </span>
                   </label>
 
+                  <label
+                    className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
+                      paymentMethod === "paypal"
+                        ? "border-[#5E1788] bg-purple-50/50 ring-2 ring-[#5E1788]/20"
+                        : "border-neutral-200 hover:border-purple-300"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="radio"
+                        name="payment"
+                        checked={paymentMethod === "paypal"}
+                        onChange={() => setPaymentMethod("paypal")}
+                        className="text-[#5E1788] focus:ring-[#5E1788]"
+                      />
+                      <div>
+                        <span className="text-sm font-semibold text-neutral-800">PayPal</span>
+                        <span className="block text-xs text-neutral-500">
+                          Paga con il tuo conto PayPal o in 3 rate
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">
+                      PayPal
+                    </span>
+                  </label>
+
+                  <label
+                    className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
+                      paymentMethod === "scalapay"
+                        ? "border-[#5E1788] bg-purple-50/50 ring-2 ring-[#5E1788]/20"
+                        : "border-neutral-200 hover:border-purple-300"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="radio"
+                        name="payment"
+                        checked={paymentMethod === "scalapay"}
+                        onChange={() => setPaymentMethod("scalapay")}
+                        className="text-[#5E1788] focus:ring-[#5E1788]"
+                      />
+                      <div>
+                        <span className="text-sm font-semibold text-neutral-800">Scalapay</span>
+                        <span className="block text-xs text-neutral-500">
+                          Paga in 3 rate senza interessi
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-xs font-bold text-[#5E1788] bg-purple-50 px-2 py-0.5 rounded">
+                      Scalapay
+                    </span>
+                  </label>
+
                   {deliveryMethod === "boutique" && (
-                    <label className="flex items-center justify-between p-3.5 rounded-xl border border-neutral-200 hover:border-purple-300 cursor-pointer">
+                    <label
+                      className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
+                        paymentMethod === "boutique"
+                          ? "border-[#5E1788] bg-purple-50/50 ring-2 ring-[#5E1788]/20"
+                          : "border-neutral-200 hover:border-purple-300"
+                      }`}
+                    >
                       <div className="flex items-center gap-3">
                         <input
                           type="radio"
@@ -425,11 +579,16 @@ export default function CheckoutPage() {
                           onChange={() => setPaymentMethod("boutique")}
                           className="text-[#5E1788] focus:ring-[#5E1788]"
                         />
-                        <span className="text-sm font-medium text-neutral-800">
-                          Paga direttamente al Ritiro in Salone a Napoli
-                        </span>
+                        <div>
+                          <span className="text-sm font-semibold text-neutral-800">
+                            Paga al Ritiro in Boutique a Napoli
+                          </span>
+                          <span className="block text-xs text-emerald-600">
+                            Pagamento alla consegna • Via dei Pellegrini 28/29
+                          </span>
+                        </div>
                       </div>
-                      <Store className="h-5 w-5 text-neutral-400" />
+                      <Store className="h-5 w-5 text-emerald-600" />
                     </label>
                   )}
                 </div>
@@ -445,7 +604,9 @@ export default function CheckoutPage() {
                 <span>
                   {isSubmitting
                     ? "Elaborazione ordine..."
-                    : `Conferma Ordine • €${total.toFixed(2)}`}
+                    : paymentMethod === "boutique"
+                    ? `Conferma Ordine • €${total.toFixed(2)}`
+                    : `Paga Ora • €${total.toFixed(2)}`}
                 </span>
               </button>
             </form>

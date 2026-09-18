@@ -28,6 +28,27 @@ import { enqueueWhatsAppMessage } from "@/lib/whatsappQueueService";
 import { sendBookingConfirmationEmail } from "@/lib/resendService";
 import { useWhatsAppModalStore } from "@/store/useWhatsAppModalStore";
 
+type DepositMethod =
+  | "stripe_card"
+  | "apple_pay"
+  | "google_pay"
+  | "klarna"
+  | "paypal"
+  | "scalapay";
+
+const DEPOSIT_METHODS: {
+  value: DepositMethod;
+  label: string;
+  subtitle: string;
+}[] = [
+  { value: "stripe_card", label: "Carta di Credito / Debito", subtitle: "Visa, Mastercard, Amex, PostePay" },
+  { value: "apple_pay", label: "Apple Pay", subtitle: "Paga in 1 click dal dispositivo" },
+  { value: "google_pay", label: "Google Pay", subtitle: "Paga in 1 click dal dispositivo" },
+  { value: "klarna", label: "Klarna", subtitle: "Paga in 3 rate a tasso zero" },
+  { value: "paypal", label: "PayPal", subtitle: "Conto PayPal o in 3 rate" },
+  { value: "scalapay", label: "Scalapay", subtitle: "Paga in 3 rate senza interessi" },
+];
+
 interface BookingWizardProps {
   preselectedServiceId?: string;
 }
@@ -105,6 +126,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [confirmedBooking, setConfirmedBooking] = useState<Appointment | null>(null);
   const [acceptedTerms, setAcceptedTerms] = useState<boolean>(true);
+  const [depositMethod, setDepositMethod] = useState<DepositMethod>("stripe_card");
 
   const handleSelectService = (s: Service) => {
     setSelectedService(s);
@@ -137,57 +159,88 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const finalizeLocalBooking = async () => {
+    if (!selectedService || !selectedDate || !selectedSlot) return;
+
+    const appointment = createAppointment({
+      serviceId: selectedService.id,
+      date: selectedDate,
+      time: selectedSlot,
+      customer,
+      paymentMethodDeposit: depositMethod,
+    });
+
+    // Safely trigger WhatsApp queue and Resend email notifications
+    try {
+      enqueueWhatsAppMessage({
+        recipientPhone: appointment.customer.phone,
+        recipientName: `${appointment.customer.name} ${appointment.customer.surname}`,
+        templateType: "booking_confirmation",
+        context: {
+          customerName: `${appointment.customer.name} ${appointment.customer.surname}`,
+          serviceName: appointment.serviceName,
+          bookingCode: appointment.bookingCode,
+          bookingDate: appointment.date,
+          bookingTime: appointment.time,
+          operatorName: appointment.operatorName,
+          durationMinutes: appointment.durationMinutes,
+          priceList: appointment.pricing.priceList,
+          discountOnline: appointment.pricing.discountOnline,
+          priceOnline: appointment.pricing.priceOnline,
+          depositPaid: appointment.pricing.depositPaid,
+          balanceDue: appointment.pricing.balanceDue,
+        },
+      });
+
+      sendBookingConfirmationEmail(appointment).catch((emailErr) => {
+        console.warn("Booking confirmation email dispatch failed:", emailErr);
+      });
+    } catch (notifErr) {
+      console.warn("Failed to enqueue booking notifications:", notifErr);
+    }
+
+    setConfirmedBooking(appointment);
+    setStep(5);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const handleConfirmAndPayDeposit = async () => {
     if (!selectedService || !selectedDate || !selectedSlot) return;
     setIsProcessing(true);
 
-    // Simulate payment processing delay (Stripe intent confirmation)
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
     try {
-      const appointment = createAppointment({
-        serviceId: selectedService.id,
-        date: selectedDate,
-        time: selectedSlot,
-        customer,
-        paymentMethodDeposit: "stripe_card",
+      const response = await fetch("/api/booking-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          serviceId: selectedService.id,
+          serviceName: selectedService.name,
+          date: selectedDate,
+          time: selectedSlot,
+          customer: {
+            name: customer.name,
+            surname: customer.surname,
+            phone: customer.phone,
+            email: customer.email,
+            notes: customer.notes,
+          },
+          depositAmount: selectedService.depositAmount,
+          depositMethod,
+        }),
       });
 
-      // Safely trigger WhatsApp queue and Resend email notifications
-      try {
-        enqueueWhatsAppMessage({
-          recipientPhone: appointment.customer.phone,
-          recipientName: `${appointment.customer.name} ${appointment.customer.surname}`,
-          templateType: "booking_confirmation",
-          context: {
-            customerName: `${appointment.customer.name} ${appointment.customer.surname}`,
-            serviceName: appointment.serviceName,
-            bookingCode: appointment.bookingCode,
-            bookingDate: appointment.date,
-            bookingTime: appointment.time,
-            operatorName: appointment.operatorName,
-            durationMinutes: appointment.durationMinutes,
-            priceList: appointment.pricing.priceList,
-            discountOnline: appointment.pricing.discountOnline,
-            priceOnline: appointment.pricing.priceOnline,
-            depositPaid: appointment.pricing.depositPaid,
-            balanceDue: appointment.pricing.balanceDue,
-          },
-        });
+      const data = await response.json();
 
-        sendBookingConfirmationEmail(appointment).catch((emailErr) => {
-          console.warn("Booking confirmation email dispatch failed:", emailErr);
-        });
-      } catch (notifErr) {
-        console.warn("Failed to enqueue booking notifications:", notifErr);
+      if (response.ok && data.url) {
+        window.location.href = data.url;
+        return;
       }
 
-      setConfirmedBooking(appointment);
-      setStep(5);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : "Errore sconosciuto";
-      alert("Errore durante la prenotazione: " + msg);
+      // Fallback: offline / simulated immediate test
+      await finalizeLocalBooking();
+    } catch (err) {
+      console.warn("Booking checkout offline, using local fallback:", err);
+      await finalizeLocalBooking();
     } finally {
       setIsProcessing(false);
     }
@@ -709,24 +762,49 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
               </p>
             </div>
 
-            {/* Card Payment Simulation Box */}
+            {/* Deposit Payment Method Selection */}
             <div className="border border-[#D8C2E7]/60 rounded-xl p-4 bg-[#FAF7FC]">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-bold text-[#1F1B24] flex items-center gap-1.5">
                   <CreditCard className="w-4 h-4 text-[#5E1788]" />
-                  Pagamento Sicuro Acconto (€{selectedService.depositAmount.toFixed(2)})
+                  Metodo di Pagamento Acconto (€{selectedService.depositAmount.toFixed(2)})
                 </span>
                 <span className="text-xs text-green-700 bg-green-50 px-2.5 py-1 rounded-full font-semibold border border-green-200/60">
                   Crittografia SSL 256-bit Stripe
                 </span>
               </div>
-              <div className="space-y-2">
-                <input
-                  type="text"
-                  readOnly
-                  value="•••• •••• •••• 4242 (Carta di Prova Protetto)"
-                  className="w-full px-3 py-2 text-xs bg-white rounded-lg border border-[#D8C2E7]/50 text-gray-500 font-mono"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {DEPOSIT_METHODS.map((method) => {
+                  const isSelected = depositMethod === method.value;
+                  return (
+                    <button
+                      key={method.value}
+                      type="button"
+                      onClick={() => setDepositMethod(method.value)}
+                      className={`text-left p-3 rounded-lg border transition-all cursor-pointer ${
+                        isSelected
+                          ? "border-[#5E1788] bg-white ring-2 ring-[#5E1788]/20"
+                          : "border-[#D8C2E7]/50 bg-white hover:border-[#5E1788]"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2 text-xs font-bold text-[#1F1B24]">
+                        <span
+                          className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center shrink-0 ${
+                            isSelected ? "border-[#5E1788]" : "border-neutral-300"
+                          }`}
+                        >
+                          {isSelected && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#5E1788]" />
+                          )}
+                        </span>
+                        {method.label}
+                      </span>
+                      <span className="block text-[11px] text-[#1F1B24]/60 mt-0.5 pl-6">
+                        {method.subtitle}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 

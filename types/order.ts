@@ -1,5 +1,12 @@
 export type DeliveryMethod = "shipping" | "boutique";
-export type PaymentMethod = "card" | "klarna" | "boutique";
+export type PaymentMethod =
+  | "card"
+  | "apple_pay"
+  | "google_pay"
+  | "klarna"
+  | "paypal"
+  | "scalapay"
+  | "boutique";
 export type OrderStatus =
   | "confirmed"
   | "processing"

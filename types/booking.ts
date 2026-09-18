@@ -74,7 +74,13 @@ export interface Appointment {
   customer: CustomerData;
   pricing: BookingPricing;
   status: AppointmentStatus;
-  paymentMethodDeposit: "stripe_card" | "apple_pay" | "google_pay";
+  paymentMethodDeposit:
+    | "stripe_card"
+    | "apple_pay"
+    | "google_pay"
+    | "klarna"
+    | "paypal"
+    | "scalapay";
   paymentMethodBalance?: "mypos_card" | "cash";
   cassaReceiptPrinted?: boolean;
   cassaReceiptNumber?: string;

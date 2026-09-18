@@ -196,6 +196,39 @@ export function createOrder(data: CreateOrderInput): Order {
   return newOrder;
 }
 
+const STORAGE_PENDING_ORDER_KEY = "scelta_makeup_pending_order_v1";
+
+export function savePendingOrder(data: CreateOrderInput): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(STORAGE_PENDING_ORDER_KEY, JSON.stringify(data));
+  } catch (error) {
+    console.error("Failed to save pending order draft:", error);
+  }
+}
+
+export function getPendingOrder(): CreateOrderInput | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(STORAGE_PENDING_ORDER_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && Array.isArray(parsed.items) ? (parsed as CreateOrderInput) : null;
+  } catch (error) {
+    console.error("Failed to load pending order draft:", error);
+    return null;
+  }
+}
+
+export function clearPendingOrder(): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(STORAGE_PENDING_ORDER_KEY);
+  } catch (error) {
+    console.error("Failed to clear pending order draft:", error);
+  }
+}
+
 export function updateOrderStatus(
   orderId: string,
   status: OrderStatus,
