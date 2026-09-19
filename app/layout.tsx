@@ -50,15 +50,32 @@ export const metadata: Metadata = {
     siteName: "Scelta Makeup",
     title: "Scelta Makeup — L'eleganza di essere autentica",
     description:
-      "Atelier di bellezza e cosmesi professionale. Diego della Palma, Cipria Makeup e formule esclusive.",
+      "Atelier di bellezza e cosmesi professionale a Napoli. Rivenditore autorizzato Diego della Palma Milano e Cipria Make Up. Spedizioni 24/48h gratuite da 49€.",
     images: [
       {
-        url: "/brand/logo.png",
-        width: 600,
-        height: 600,
-        alt: "Scelta Makeup Napoli",
+        url: "https://www.sceltamakeup.it/brand/og-image.jpg",
+        secureUrl: "https://www.sceltamakeup.it/brand/og-image.jpg",
+        width: 1200,
+        height: 630,
+        type: "image/jpeg",
+        alt: "Scelta Makeup — Boutique & Alta Cosmesi Napoli",
+      },
+      {
+        url: "https://www.sceltamakeup.it/brand/og-square.jpg",
+        secureUrl: "https://www.sceltamakeup.it/brand/og-square.jpg",
+        width: 800,
+        height: 800,
+        type: "image/jpeg",
+        alt: "Scelta Makeup Napoli Logo",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Scelta Makeup — L'eleganza di essere autentica",
+    description:
+      "Boutique ufficiale di alta cosmesi ed e-commerce nazionale. Diego della Palma Milano e Cipria Make Up. Spedizioni rapide in tutta Italia.",
+    images: ["https://www.sceltamakeup.it/brand/og-image.jpg"],
   },
 };
 
