@@ -271,15 +271,42 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Legal & Privacy Links Row */}
+        <div className="pt-6 border-t border-neutral-800/60 flex flex-wrap items-center justify-center sm:justify-start gap-x-6 gap-y-2 text-[11px] text-neutral-400">
+          <Link href="/privacy-policy" className="hover:text-white transition-colors">
+            Privacy Policy
+          </Link>
+          <span className="text-neutral-700">•</span>
+          <Link href="/cookie-policy" className="hover:text-white transition-colors">
+            Cookie Policy
+          </Link>
+          <span className="text-neutral-700">•</span>
+          <Link href="/termini-e-condizioni" className="hover:text-white transition-colors">
+            Termini e Condizioni
+          </Link>
+          <span className="text-neutral-700">•</span>
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("open_cookie_preferences"));
+              }
+            }}
+            className="hover:text-[#D462A6] text-neutral-400 transition-colors underline decoration-dotted cursor-pointer"
+          >
+            Preferenze Cookie
+          </button>
+        </div>
+
         {/* Bottom Bar: Copyright, Cassa Link & Creativia Studio Credits with desktop clearance for floating WhatsApp pill */}
-        <div className="pt-8 mt-8 border-t border-neutral-800 text-xs text-neutral-500 flex flex-col sm:flex-row items-center justify-between gap-4 lg:pr-64">
-          <p>© {new Date().getFullYear()} Scelta Makeup. Tutti i diritti riservati. P.IVA e Dati Societari registrati a Napoli.</p>
+        <div className="pt-6 mt-4 border-t border-neutral-800/40 text-xs text-neutral-500 flex flex-col sm:flex-row items-center justify-between gap-4 lg:pr-64">
+          <p>© {new Date().getFullYear()} Scelta Makeup di Cesiano Federica. Tutti i diritti riservati.</p>
           <div className="flex items-center gap-4">
             <Link
               href="/admin/appuntamenti"
               className="hover:text-[#D8C2E7] transition-colors underline decoration-dotted text-xs"
             >
-              Cassa & Appuntamenti Store
+              Cassa &amp; Cockpit Store
             </Link>
             <span className="opacity-30">|</span>
             <div className="flex items-center gap-1.5 text-neutral-400 text-xs">

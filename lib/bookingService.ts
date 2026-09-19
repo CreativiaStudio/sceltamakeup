@@ -36,99 +36,11 @@ export const AGENDA_BOUTIQUE_SLOTS = [
   "20:30",
 ];
 
-const STORAGE_APPOINTMENTS_KEY = "scelta_makeup_appointments_v1";
+const STORAGE_APPOINTMENTS_KEY = "scelta_makeup_appointments_v2";
 const STORAGE_BLOCKED_SLOTS_KEY = "scelta_makeup_blocked_slots_v1";
 
-// Initial realistic appointments for demo
-const INITIAL_DEMO_APPOINTMENTS: Appointment[] = [
-  {
-    id: "app-demo-1",
-    bookingCode: "SC-260906-FC11",
-    serviceId: "srv-makeup-cerimonia",
-    serviceName: "Make-up Evento & Cerimonia",
-    channel: "makeup",
-    operatorId: "op-federica-cesiano",
-    operatorName: "Federica Cesiano",
-    durationMinutes: 60,
-    date: new Date().toISOString().split("T")[0], // Today
-    time: "13:30",
-    customer: {
-      name: "Chiara",
-      surname: "Rossi",
-      phone: "+39 333 456 7890",
-      email: "chiara.rossi@example.com",
-      notes: "Matrimonio della sorella nel tardo pomeriggio, trucco sui toni del malva.",
-    },
-    pricing: {
-      priceList: 50.0,
-      discountOnline: 5.0,
-      priceOnline: 45.0,
-      depositPaid: 9.0,
-      balanceDue: 36.0,
-    },
-    status: "confirmed",
-    paymentMethodDeposit: "stripe_card",
-    createdAt: new Date(Date.now() - 86400000).toISOString(),
-  },
-  {
-    id: "app-demo-2",
-    bookingCode: "SC-260906-MR24",
-    serviceId: "srv-makeup-giorno",
-    serviceName: "Make-up Giorno & Glow Naturale",
-    channel: "makeup",
-    operatorId: "op-federica-cesiano",
-    operatorName: "Federica Cesiano",
-    durationMinutes: 45,
-    date: new Date().toISOString().split("T")[0], // Today
-    time: "20:00",
-    customer: {
-      name: "Valeria",
-      surname: "Esposito",
-      phone: "+39 347 112 2334",
-      email: "valeria.esposito@example.com",
-      notes: "Pelle sensibile con tendenza a secchezza.",
-    },
-    pricing: {
-      priceList: 35.0,
-      discountOnline: 3.5,
-      priceOnline: 31.5,
-      depositPaid: 6.3,
-      balanceDue: 25.2,
-    },
-    status: "confirmed",
-    paymentMethodDeposit: "apple_pay",
-    createdAt: new Date(Date.now() - 172800000).toISOString(),
-  },
-  {
-    id: "app-demo-3",
-    bookingCode: "SC-260906-CB33",
-    serviceId: "srv-beauty-mesofill",
-    serviceName: "Trattamento Viso Rigenerante Meso-Fill (Cabina)",
-    channel: "beauty",
-    operatorId: "op-beauty-cabina",
-    operatorName: "Futura Collega / Cabina Estetica",
-    durationMinutes: 60,
-    date: new Date().toISOString().split("T")[0], // Today
-    time: "11:30",
-    customer: {
-      name: "Serena",
-      surname: "Maggiulli",
-      phone: "+39 333 998 7766",
-      email: "serena.maggiulli@example.com",
-      notes: "Trattamento cabina privata viso rigenerante e distensivo.",
-    },
-    pricing: {
-      priceList: 70.0,
-      discountOnline: 7.0,
-      priceOnline: 63.0,
-      depositPaid: 12.6,
-      balanceDue: 50.4,
-    },
-    status: "confirmed",
-    paymentMethodDeposit: "stripe_card",
-    createdAt: new Date(Date.now() - 43200000).toISOString(),
-  },
-];
+// Clean production state: zero fake demo appointments
+const INITIAL_DEMO_APPOINTMENTS: Appointment[] = [];
 
 export function getServices(channel?: ServiceChannel): Service[] {
   if (!channel) return SERVICES.filter((s) => s.active);

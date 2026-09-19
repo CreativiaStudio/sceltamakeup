@@ -6,6 +6,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
+import CookieBanner from "@/components/CookieBanner";
+import VisitTrackerClient from "@/components/VisitTrackerClient";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -97,6 +99,8 @@ export default function RootLayout({
         <Footer />
         <CartDrawer />
         <WhatsAppFloatingButton />
+        <CookieBanner />
+        <VisitTrackerClient />
       </body>
     </html>
   );

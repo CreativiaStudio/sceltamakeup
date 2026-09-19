@@ -59,102 +59,12 @@ export const OFFICIAL_TRACKING_CONFIG: TrackingConfig = {
   eventDeduplicationEnabled: true,
 };
 
-const STORAGE_KEY = "scelta_makeup_pixel_event_logs_v1";
+const STORAGE_KEY = "scelta_makeup_pixel_event_logs_v2";
 
 /**
- * Initial realistic seed events for demonstration and telemetry audit
+ * Initial seed events - clean production state
  */
-export const INITIAL_SEED_EVENTS: TrackingEventRecord[] = [
-  {
-    id: "evt-seed-1",
-    timestamp: new Date(Date.now() - 1000 * 60 * 18).toISOString(),
-    eventName: "page_view",
-    destinations: ["ga4", "gtm", "meta_pixel"],
-    payload: {
-      page_title: "Scelta Makeup • Atelier di Bellezza & Alta Cosmesi Napoli",
-      page_location: "https://sceltamakeup.it/",
-      user_agent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)",
-    },
-    status: "delivered",
-    responseStatus: 200,
-    emqScore: 9.1,
-  },
-  {
-    id: "evt-seed-2",
-    timestamp: new Date(Date.now() - 1000 * 60 * 12).toISOString(),
-    eventName: "view_item",
-    destinations: ["ga4", "gtm", "meta_pixel", "meta_capi"],
-    payload: {
-      currency: "EUR",
-      value: 24.5,
-      items: [
-        {
-          item_id: "diego-dalla-palma-rossetto-iconico",
-          item_name: "Rossetto Iconico Diego dalla Palma",
-          item_brand: "Diego dalla Palma",
-          item_category: "Labbra",
-          price: 24.5,
-          quantity: 1,
-        },
-      ],
-    },
-    status: "delivered",
-    responseStatus: 200,
-    emqScore: 8.8,
-  },
-  {
-    id: "evt-seed-3",
-    timestamp: new Date(Date.now() - 1000 * 60 * 8).toISOString(),
-    eventName: "add_to_cart",
-    destinations: ["ga4", "gtm", "meta_pixel", "meta_capi"],
-    payload: {
-      currency: "EUR",
-      value: 24.5,
-      items: [
-        {
-          item_id: "diego-dalla-palma-rossetto-iconico-var-01",
-          item_name: "Rossetto Iconico Diego dalla Palma",
-          item_variant: "01 Rosso Rubino",
-          price: 24.5,
-          quantity: 1,
-        },
-      ],
-    },
-    status: "delivered",
-    responseStatus: 200,
-    emqScore: 9.0,
-  },
-  {
-    id: "evt-seed-4",
-    timestamp: new Date(Date.now() - 1000 * 60 * 4).toISOString(),
-    eventName: "purchase",
-    destinations: ["ga4", "gtm", "meta_pixel", "meta_capi"],
-    payload: {
-      transaction_id: "SC-ORD-2026-0001",
-      currency: "EUR",
-      value: 60.5,
-      shipping: 0.0,
-      tax: 10.91,
-      items: [
-        {
-          item_id: "diego-dalla-palma-rossetto-iconico",
-          item_name: "Rossetto Iconico Diego dalla Palma",
-          price: 24.5,
-          quantity: 1,
-        },
-        {
-          item_id: "rvb-lab-fondotinta-antieta",
-          item_name: "Fondotinta Anti-Età Effetto Seta",
-          price: 36.0,
-          quantity: 1,
-        },
-      ],
-    },
-    status: "delivered",
-    responseStatus: 200,
-    emqScore: 9.2,
-  },
-];
+export const INITIAL_SEED_EVENTS: TrackingEventRecord[] = [];
 
 let inMemoryEvents: TrackingEventRecord[] = [...INITIAL_SEED_EVENTS];
 

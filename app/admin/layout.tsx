@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import AdminAuthGuard from "@/components/admin/AdminAuthGuard";
 
 export const metadata: Metadata = {
   title: "Admin Cockpit | Scelta Makeup",
@@ -10,5 +11,9 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="admin-root-scope min-h-screen bg-[#FAF7FC]">{children}</div>;
+  return (
+    <div className="admin-root-scope min-h-screen bg-[#FAF7FC]">
+      <AdminAuthGuard>{children}</AdminAuthGuard>
+    </div>
+  );
 }
