@@ -16,6 +16,8 @@ import {
   Printer,
   ShoppingBag,
   Loader2,
+  Coins,
+  Unlock,
 } from "lucide-react";
 import rawCatalog from "@/data/catalog.json";
 import { Product, ProductCategory } from "@/types/product";
@@ -49,7 +51,8 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const [successToast, setSuccessToast] = useState<string | null>(null);
 
   // In-Store Fast Checkout State
-  const [checkoutPaymentMethod, setCheckoutPaymentMethod] = useState<"card" | "cash">("card");
+  const [checkoutPaymentMethod, setCheckoutPaymentMethod] = useState<"card" | "cash">("cash");
+  const [cashTendered, setCashTendered] = useState<string>("");
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   // Quick Registration Form for Unrecognized Barcode
@@ -145,12 +148,15 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       if (match) {
         setMatchedProduct(match.product);
         setMatchedVariantIndex(match.variantIndex);
+        const itemPrice = (match.product.variants?.[match.variantIndex]?.price ?? match.product.price) || 1.0;
+        setCashTendered(itemPrice.toFixed(2));
       } else {
         setMatchedProduct(null);
         setMatchedVariantIndex(0);
         setNewProdName("");
         setNewProdPrice("11.90");
         setNewProdStock("3");
+        setCashTendered("11.90");
       }
 
       setIsOpen(true);
@@ -158,6 +164,38 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     },
     [findProductByBarcode]
   );
+
+  // Dedicated 1-Click Physical Drawer Kick
+  const handleOpenCashDrawerOnly = useCallback(async () => {
+    const drawerKickXml = `<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <openDrawer />
+  </soapenv:Body>
+</soapenv:Envelope>`;
+    try {
+      await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=5000", {
+        method: "POST",
+        headers: { "Content-Type": "text/xml; charset=utf-8" },
+        body: drawerKickXml,
+      });
+      setSuccessToast("🔓 Cassetto portamonete aperto con successo!");
+    } catch (err) {
+      console.warn("[Cassa RT] Apertura cassetto:", err);
+      setSuccessToast("Comando apertura inviato alla cassa RT.");
+    }
+  }, []);
+
+  // Custom Event Listener to trigger drawer opening from anywhere
+  useEffect(() => {
+    const handleDrawerEvent = () => {
+      handleOpenCashDrawerOnly();
+    };
+    window.addEventListener("open_cash_drawer", handleDrawerEvent);
+    return () => {
+      window.removeEventListener("open_cash_drawer", handleDrawerEvent);
+    };
+  }, [handleOpenCashDrawerOnly]);
 
   // Custom Event Listener to trigger modal from admin header or buttons
   useEffect(() => {
@@ -261,6 +299,10 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     const price = v?.price ?? matchedProduct.price;
     const itemDesc = (matchedProduct.name + (v?.name && v.name !== "Standard" ? ` ${v.name}` : "")).slice(0, 22);
 
+    const cashNum = parseFloat(cashTendered.replace(",", ".")) || price;
+    const effectivePayment = checkoutPaymentMethod === "cash" && cashNum >= price ? cashNum : price;
+    const change = Math.max(0, effectivePayment - price);
+
     setIsCheckingOut(true);
 
     try {
@@ -301,15 +343,16 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       });
 
       // 3. Emit SOAP XML to Cassa RT (Epson FP-81II RT on 192.168.68.63)
-      // NOTE: XML standard requires PERIOD (.) for decimal numbers (e.g. 1.00), NEVER comma (1,00)!
+      // When effectivePayment > price, Epson RT automatically computes and prints RESTO!
       const priceFormatted = price.toFixed(2);
+      const paymentFormatted = effectivePayment.toFixed(2);
       const fiscalReceiptXml = `<?xml version="1.0" encoding="utf-8"?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
   <soapenv:Body>
     <printerFiscalReceipt>
       <beginFiscalReceipt operator="1" />
       <printRecItem operator="1" description="${itemDesc}" quantity="1" unitPrice="${priceFormatted}" department="1" />
-      <printRecTotal operator="1" description="${checkoutPaymentMethod === "card" ? "CARTA" : "CONTANTI"}" payment="${priceFormatted}" />
+      <printRecTotal operator="1" description="${checkoutPaymentMethod === "card" ? "CARTA" : "CONTANTI"}" payment="${paymentFormatted}" paymentType="${checkoutPaymentMethod === "card" ? "1" : "0"}" />
       <endFiscalReceipt operator="1" />
     </printerFiscalReceipt>
   </soapenv:Body>
@@ -321,14 +364,37 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
           headers: { "Content-Type": "text/xml; charset=utf-8" },
           body: fiscalReceiptXml,
         });
+
+        // 4. For cash payments, trigger physical cash drawer opening
+        if (checkoutPaymentMethod === "cash") {
+          const drawerKickXml = `<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <openDrawer />
+  </soapenv:Body>
+</soapenv:Envelope>`;
+          try {
+            await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=5000", {
+              method: "POST",
+              headers: { "Content-Type": "text/xml; charset=utf-8" },
+              body: drawerKickXml,
+            });
+          } catch (dErr) {
+            console.warn("[Cassa RT] Trigger apertura cassetto:", dErr);
+          }
+        }
       } catch (hardwareErr) {
         console.warn("[Cassa RT] Stampa hardware:", hardwareErr);
       }
 
-      setSuccessToast(`🎉 Vendita completata! Scontrino RT emesso (${checkoutPaymentMethod === "card" ? "myPOS Carta" : "Contanti"}).`);
+      setSuccessToast(
+        checkoutPaymentMethod === "cash" && change > 0
+          ? `🎉 Incassato €${effectivePayment.toFixed(2)} — RESTO DA DARE: €${change.toFixed(2)} (Cassetto Aperto)`
+          : `🎉 Vendita completata! Scontrino RT emesso (${checkoutPaymentMethod === "card" ? "myPOS Carta" : "Contanti - Cassetto Aperto"}).`
+      );
       setTimeout(() => {
         setIsOpen(false);
-      }, 1500);
+      }, 3000);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Errore";
       alert("Errore durante la vendita: " + msg);
@@ -434,6 +500,9 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   if (!isOpen) return null;
 
   const currentVariant = matchedProduct?.variants?.[matchedVariantIndex];
+  const currentPrice = (currentVariant?.price ?? matchedProduct?.price) || 1.0;
+  const cashNum = parseFloat(cashTendered.replace(",", ".")) || currentPrice;
+  const changeDue = Math.max(0, cashNum - currentPrice);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
@@ -660,22 +729,112 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                   </div>
                 </div>
 
+                {/* Cash & Change Calculator Section */}
+                {checkoutPaymentMethod === "cash" && (
+                  <div className="p-3.5 bg-emerald-50/90 border border-emerald-200 rounded-2xl space-y-3 animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-emerald-950 flex items-center gap-1.5">
+                        <Coins className="w-4 h-4 text-emerald-700" />
+                        <span>Calcolo Resto al Banco</span>
+                      </span>
+                      <span className="text-xs font-semibold text-emerald-800">
+                        Totale: <strong>€{currentPrice.toFixed(2)}</strong>
+                      </span>
+                    </div>
+
+                    {/* Quick Preset Buttons for Common Banknotes */}
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span className="text-[11px] font-semibold text-emerald-900 mr-1">Banconota:</span>
+                      {[
+                        { label: `Esatto (€${currentPrice.toFixed(2)})`, val: currentPrice },
+                        { label: "€5", val: 5 },
+                        { label: "€10", val: 10 },
+                        { label: "€20", val: 20 },
+                        { label: "€50", val: 50 },
+                      ].map((preset) => (
+                        <button
+                          key={preset.label}
+                          type="button"
+                          onClick={() => setCashTendered(preset.val.toFixed(2))}
+                          className={`px-2.5 py-1 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                            cashNum === preset.val
+                              ? "bg-emerald-700 text-white border-emerald-800 shadow-xs scale-105"
+                              : "bg-white text-emerald-900 border-emerald-300 hover:bg-emerald-100"
+                          }`}
+                        >
+                          {preset.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Custom Input & Live Change Display */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center pt-1">
+                      <div>
+                        <label className="block text-[11px] font-bold text-emerald-950 mb-1">
+                          Contante Ricevuto (€)
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            value={cashTendered}
+                            onChange={(e) => setCashTendered(e.target.value)}
+                            placeholder="es. 10.00"
+                            className="w-full pl-7 pr-3 py-2 bg-white rounded-xl border border-emerald-300 text-sm font-bold text-emerald-950 focus:outline-none focus:border-emerald-600 shadow-2xs"
+                          />
+                          <span className="absolute left-2.5 top-2 text-xs font-bold text-emerald-700">€</span>
+                        </div>
+                      </div>
+
+                      <div
+                        className={`p-2.5 rounded-xl border flex flex-col justify-center ${
+                          cashNum < currentPrice
+                            ? "bg-rose-50 border-rose-200 text-rose-800"
+                            : "bg-white border-emerald-300 text-emerald-900 shadow-xs"
+                        }`}
+                      >
+                        <span className="text-[10px] uppercase tracking-wider font-bold opacity-75">
+                          {cashNum < currentPrice ? "Importo Mancante" : "Resto da Consegnare"}
+                        </span>
+                        <span
+                          className={`text-xl sm:text-2xl font-mono font-extrabold ${
+                            cashNum < currentPrice ? "text-rose-600" : "text-emerald-700"
+                          }`}
+                        >
+                          {cashNum < currentPrice
+                            ? `- €${(currentPrice - cashNum).toFixed(2)}`
+                            : `€${changeDue.toFixed(2)}`}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <button
                   type="button"
                   onClick={handleInstantCheckout}
                   disabled={isCheckingOut || currentStock <= 0}
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#5E1788] to-[#7A3293] hover:from-[#4D1270] hover:to-[#5E1788] text-white font-bold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  className={`w-full py-3.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer ${
+                    checkoutPaymentMethod === "cash"
+                      ? "bg-gradient-to-r from-emerald-600 to-[#5E1788] hover:from-emerald-700 hover:to-[#4D1270] text-white"
+                      : "bg-gradient-to-r from-[#5E1788] to-[#7A3293] hover:from-[#4D1270] hover:to-[#5E1788] text-white"
+                  }`}
                 >
                   {isCheckingOut ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Emissione scontrino in corso...</span>
+                      <span>Emissione scontrino e apertura cassa...</span>
                     </>
                   ) : (
                     <>
                       <Printer className="w-4 h-4" />
                       <span>
-                        Incassa €{(currentVariant?.price ?? matchedProduct.price).toFixed(2)} & Stampa Scontrino RT
+                        {checkoutPaymentMethod === "cash"
+                          ? cashNum > currentPrice
+                            ? `Incassa €${cashNum.toFixed(2)} (Resto: €${changeDue.toFixed(2)}) & Apri Cassetto RT`
+                            : `Incassa €${currentPrice.toFixed(2)} & Apri Cassetto RT`
+                          : `Incassa €${currentPrice.toFixed(2)} & Stampa Scontrino RT`}
                       </span>
                     </>
                   )}
@@ -683,21 +842,33 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-between gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={handleVoidOpenReceipt}
-                  className="px-3 py-2 rounded-xl bg-amber-50 border border-amber-300 hover:bg-amber-100 text-amber-800 text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
-                  title="Annulla lo scontrino rimasto aperto e sblocca la cassa"
-                >
-                  <AlertCircle className="w-3.5 h-3.5 text-amber-600" />
-                  <span>Sblocca / Annulla Scontrino Aperto</span>
-                </button>
+              <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={handleOpenCashDrawerOnly}
+                    className="px-3 py-2 rounded-xl bg-purple-50 border border-purple-200 hover:bg-purple-100 text-[#5E1788] text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                    title="Invia impulso alla porta cassetto della cassa Epson"
+                  >
+                    <Unlock className="w-3.5 h-3.5 text-[#5E1788]" />
+                    <span>Apri Solo Cassetto</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleVoidOpenReceipt}
+                    className="px-3 py-2 rounded-xl bg-amber-50 border border-amber-300 hover:bg-amber-100 text-amber-800 text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
+                    title="Annulla lo scontrino rimasto aperto e sblocca la cassa"
+                  >
+                    <AlertCircle className="w-3.5 h-3.5 text-amber-600" />
+                    <span className="hidden sm:inline">Sblocca Cassa</span>
+                  </button>
+                </div>
 
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="px-5 py-2.5 rounded-xl border border-[#D8C2E7] text-gray-700 text-xs font-bold hover:bg-gray-50 transition-colors"
+                  className="px-5 py-2 rounded-xl border border-[#D8C2E7] text-gray-700 text-xs font-bold hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   Chiudi (Esc)
                 </button>

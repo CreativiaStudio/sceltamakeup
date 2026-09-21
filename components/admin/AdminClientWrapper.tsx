@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   Printer,
   Barcode,
+  Unlock,
 } from "lucide-react";
 import AdminSidebar from "./AdminSidebar";
 import DashboardHome from "./DashboardHome";
@@ -175,6 +176,19 @@ export default function AdminClientWrapper() {
             >
               <Barcode className="w-3.5 h-3.5" />
               <span>Barcode / Cassa</span>
+            </button>
+
+            {/* Quick Open Drawer Trigger */}
+            <button
+              type="button"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent("open_cash_drawer"));
+              }}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition-all shadow-2xs cursor-pointer active:scale-95"
+              title="Invia impulso elettrico alla cassa Epson per aprire il cassetto rendiresto"
+            >
+              <Unlock className="w-3.5 h-3.5 text-emerald-600" />
+              <span className="hidden md:inline">Apri Cassetto</span>
             </button>
 
             {/* Quick Public Link */}
