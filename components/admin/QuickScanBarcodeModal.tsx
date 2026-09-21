@@ -301,16 +301,15 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       });
 
       // 3. Emit SOAP XML to Cassa RT (Epson FP-81II RT on 192.168.68.63)
-      const priceFormatted = price.toFixed(2).replace(".", ",");
+      // NOTE: XML standard requires PERIOD (.) for decimal numbers (e.g. 1.00), NEVER comma (1,00)!
+      const priceFormatted = price.toFixed(2);
       const fiscalReceiptXml = `<?xml version="1.0" encoding="utf-8"?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
   <soapenv:Body>
     <printerFiscalReceipt>
       <beginFiscalReceipt operator="1" />
-      <printRecMessage text="SCELTA MAKEUP - BOUTIQUE NAPOLI" />
-      <printRecItem operator="1" description="${itemDesc}" quantity="1" unitPrice="${priceFormatted}" department="1" justification="1" />
-      <printRecSubtotal operator="1" />
-      <printRecTotal operator="1" description="${checkoutPaymentMethod === "card" ? "CARTA" : "CONTANTI"}" payment="${priceFormatted}" paymentType="${checkoutPaymentMethod === "card" ? "1" : "0"}" index="0" />
+      <printRecItem operator="1" description="${itemDesc}" quantity="1" unitPrice="${priceFormatted}" department="1" />
+      <printRecTotal operator="1" description="${checkoutPaymentMethod === "card" ? "CARTA" : "CONTANTI"}" payment="${priceFormatted}" />
       <endFiscalReceipt operator="1" />
     </printerFiscalReceipt>
   </soapenv:Body>
@@ -333,6 +332,34 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Errore";
       alert("Errore durante la vendita: " + msg);
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
+
+  // Void / Cancel any open stuck receipt on the physical Epson RT
+  const handleVoidOpenReceipt = async () => {
+    setIsCheckingOut(true);
+    const voidXml = `<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <printerFiscalReceipt>
+      <printRecVoid operator="1" />
+      <endFiscalReceipt operator="1" />
+    </printerFiscalReceipt>
+  </soapenv:Body>
+</soapenv:Envelope>`;
+
+    try {
+      await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=10000", {
+        method: "POST",
+        headers: { "Content-Type": "text/xml; charset=utf-8" },
+        body: voidXml,
+      });
+      setSuccessToast("✅ Comando inviato! La cassa ha annullato lo scontrino aperto.");
+    } catch (err) {
+      console.warn("[Cassa RT] Annullamento scontrino:", err);
+      setSuccessToast("Comando inviato. Se la cassa non risponde, premi ANNULLA/STORNO sulla tastiera della cassa.");
     } finally {
       setIsCheckingOut(false);
     }
@@ -656,7 +683,17 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-end gap-3 pt-2">
+              <div className="flex items-center justify-between gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={handleVoidOpenReceipt}
+                  className="px-3 py-2 rounded-xl bg-amber-50 border border-amber-300 hover:bg-amber-100 text-amber-800 text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
+                  title="Annulla lo scontrino rimasto aperto e sblocca la cassa"
+                >
+                  <AlertCircle className="w-3.5 h-3.5 text-amber-600" />
+                  <span>Sblocca / Annulla Scontrino Aperto</span>
+                </button>
+
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}

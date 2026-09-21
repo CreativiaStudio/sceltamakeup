@@ -281,10 +281,8 @@ export function markAppointmentPaid(
   <soapenv:Body>
     <printerFiscalReceipt>
       <beginFiscalReceipt operator="1" />
-      <printRecMessage text="SCELTA MAKEUP - BOUTIQUE NAPOLI" />
-      <printRecItem operator="1" description="${app.serviceName.slice(0, 22)}" quantity="1" unitPrice="${app.pricing.priceOnline.toFixed(2).replace('.', ',')}" department="1" justification="1" />
-      <printRecSubtotal operator="1" />
-      <printRecTotal operator="1" description="${method === "mypos_card" ? "CARTA" : "CONTANTI"}" payment="${app.pricing.balanceDue.toFixed(2).replace('.', ',')}" paymentType="${method === "mypos_card" ? "1" : "0"}" index="0" />
+      <printRecItem operator="1" description="${app.serviceName.slice(0, 22)}" quantity="1" unitPrice="${app.pricing.balanceDue.toFixed(2)}" department="1" />
+      <printRecTotal operator="1" description="${method === "mypos_card" ? "CARTA" : "CONTANTI"}" payment="${app.pricing.balanceDue.toFixed(2)}" />
       <endFiscalReceipt operator="1" />
     </printerFiscalReceipt>
   </soapenv:Body>
