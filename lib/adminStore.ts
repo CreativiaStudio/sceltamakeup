@@ -17,7 +17,7 @@
 import rawCatalog from "@/data/catalog.json";
 import { Product } from "@/types/product";
 
-export const STORAGE_ADMIN_STORE_KEY = "scelta_makeup_admin_store_v4";
+export const STORAGE_ADMIN_STORE_KEY = "scelta_makeup_admin_store_v5";
 
 // ------------------------------------------------------------------------------
 // Interface Contracts (PROJECT.md)
@@ -213,6 +213,7 @@ export function getAdminStoreState(): SceltaAdminStoreState {
     localStorage.removeItem("scelta_makeup_admin_store_v1");
     localStorage.removeItem("scelta_makeup_admin_store_v2");
     localStorage.removeItem("scelta_makeup_admin_store_v3");
+    localStorage.removeItem("scelta_makeup_admin_store_v4");
 
     const raw = localStorage.getItem(STORAGE_ADMIN_STORE_KEY);
     if (!raw) {

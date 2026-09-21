@@ -6,7 +6,6 @@ import {
   Menu,
   ExternalLink,
   ShieldCheck,
-  Printer,
   Barcode,
   Unlock,
 } from "lucide-react";
@@ -148,27 +147,12 @@ export default function AdminClientWrapper() {
               <span>DDL Supabase 9 Tabelle</span>
             </div>
 
-            {/* 1-Click Test Scontrino 1€ Button */}
-            <button
-              type="button"
-              onClick={() => {
-                window.dispatchEvent(
-                  new CustomEvent("open_quick_scan_modal", { detail: "8000000000015" })
-                );
-              }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-purple-700 to-[#5E1788] text-white text-xs font-bold shadow-xs hover:shadow-md hover:opacity-95 active:scale-[0.98] transition-all cursor-pointer"
-              title="Collaudo Ufficiale: Prova Stampa Scontrino 1€ (Epson FP-81II RT)"
-            >
-              <Printer className="w-3.5 h-3.5 text-[#D462A6]" />
-              <span>Prova Scontrino 1€</span>
-            </button>
-
             {/* Quick Barcode Scanner Modal Trigger */}
             <button
               type="button"
               onClick={() => {
                 window.dispatchEvent(
-                  new CustomEvent("open_quick_scan_modal", { detail: "TEST01" })
+                  new CustomEvent("open_quick_scan_modal", { detail: "" })
                 );
               }}
               className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#5E1788] border border-purple-200 text-xs font-semibold transition-colors cursor-pointer"

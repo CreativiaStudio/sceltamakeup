@@ -1,57 +1,5 @@
 [
   {
-    "id": "test-scontrino-1euro",
-    "slug": "prova-stampa-scontrino-test-1euro",
-    "name": "PROVA STAMPA SCONTRINO (Test 1€)",
-    "brand": "Scelta Makeup",
-    "category": "Beauty & Accessori",
-    "description": "Prodotto di prova ufficiale per collaudo ed emissione scontrino fiscale da 1,00 € su registratore telematico Epson FP-81II RT.",
-    "shortDescription": "Articolo di test da 1,00 € per collaudo cassa RT con la cliente.",
-    "price": 1,
-    "originalPrice": 1,
-    "originalWholesalePrice": 0.5,
-    "badge": "Test Cassa",
-    "badges": [
-      "test_cassa"
-    ],
-    "formulaBenefits": "Collaudo hardware registratore telematico boutique Napoli.",
-    "howToUse": "Scansione con pistola barcode o digitazione codice TEST01.",
-    "inci": "Articolo di test fiscale.",
-    "features": [
-      "Test emissione scontrino fiscale",
-      "Cassa RT Epson FP-81II",
-      "Importo test 1,00 €"
-    ],
-    "images": [
-      "/brand/logo.png"
-    ],
-    "shades": [
-      {
-        "id": "var-test-scontrino-1euro",
-        "name": "Tariffa Test 1€",
-        "code": "TEST01",
-        "hex": "#5E1788",
-        "image": "/brand/logo.png",
-        "price": 1,
-        "inStock": true,
-        "stock": 999
-      }
-    ],
-    "variants": [
-      {
-        "id": "var-test-scontrino-1euro",
-        "name": "Tariffa Test 1€",
-        "sku": "TEST01",
-        "ean": "8000000000015",
-        "price": 1,
-        "inStock": true,
-        "stock": 999
-      }
-    ],
-    "stock": 999,
-    "inStock": true
-  },
-  {
     "id": "ddp-dhc110160",
     "slug": "diego-dalla-palma-sun-shampoo-doccia-dhc110160",
     "name": "SUN SHAMPOO doccia",

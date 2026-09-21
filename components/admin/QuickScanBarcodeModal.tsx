@@ -70,19 +70,6 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     if (!clean) return null;
     const cleanUpper = clean.toUpperCase();
 
-    // Fast-path shortcut for official test receipt product (TEST01 / 8000000000015)
-    if (
-      cleanUpper === "TEST01" ||
-      cleanUpper === "TEST" ||
-      clean === "8000000000015" ||
-      cleanUpper === "TEST-SCONTRINO-1EURO"
-    ) {
-      const testProd = ALL_PRODUCTS.find((p) => p.id === "test-scontrino-1euro");
-      if (testProd) {
-        return { product: testProd, variantIndex: 0 };
-      }
-    }
-
     const state = getAdminStoreState();
     const overrides = state.productOverrides || {};
 
@@ -201,8 +188,12 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   useEffect(() => {
     const handleCustomOpen = (e: Event) => {
       const customEv = e as CustomEvent<string>;
-      const code = customEv.detail || "8000000000015";
-      handleBarcodeScanned(code);
+      const code = customEv.detail;
+      if (code) {
+        handleBarcodeScanned(code);
+      } else {
+        setIsOpen(true);
+      }
     };
     window.addEventListener("open_quick_scan_modal", handleCustomOpen);
     return () => {
@@ -216,10 +207,10 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     let lastKeyTime = 0;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Direct Keyboard Shortcuts: F2 or Ctrl+B opens test product immediately
+      // Direct Keyboard Shortcuts: F2 or Ctrl+B opens barcode scanner cockpit
       if (e.key === "F2" || (e.ctrlKey && e.key.toLowerCase() === "b")) {
         e.preventDefault();
-        handleBarcodeScanned("8000000000015");
+        setIsOpen(true);
         return;
       }
 
@@ -562,7 +553,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                   }
                 }
               }}
-              placeholder="Digita codice o barcode (es. 8000000000015 o TEST01)..."
+              placeholder="Digita o cerca per codice a barre (EAN / SKU)..."
               className="flex-1 px-3 py-1.5 text-xs bg-white rounded-xl border border-[#D8C2E7]/60 text-[#1F1B24] placeholder-gray-400 focus:outline-none focus:border-[#5E1788]"
             />
             <button
@@ -575,17 +566,6 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
               className="px-3 py-1.5 bg-[#5E1788] text-white text-xs font-bold rounded-xl hover:bg-[#4D1270] transition-colors shrink-0"
             >
               Cerca
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setManualSearchInput("8000000000015");
-                handleBarcodeScanned("8000000000015");
-              }}
-              className="px-2.5 py-1.5 bg-purple-100 text-[#5E1788] text-xs font-bold rounded-xl hover:bg-purple-200 transition-colors shrink-0"
-              title="Carica articolo di prova stampa scontrino 1€"
-            >
-              🧪 Prova 1€
             </button>
           </div>
 

@@ -15,7 +15,6 @@ import {
   Sparkles,
   X,
   Store,
-  Printer,
 } from "lucide-react";
 import { AdminTab } from "@/types/admin";
 import { AdminKpiSummary } from "@/lib/adminStore";
@@ -220,20 +219,6 @@ export default function AdminSidebar({
 
         {/* Footer Actions */}
         <div className="p-3.5 border-t border-[#7A3293]/80 bg-[#531478]/80 space-y-2">
-          {/* Quick Cassa RT Test Button */}
-          <button
-            type="button"
-            onClick={() => {
-              window.dispatchEvent(
-                new CustomEvent("open_quick_scan_modal", { detail: "8000000000015" })
-              );
-            }}
-            className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 text-xs font-bold transition-all shadow-sm cursor-pointer active:scale-95"
-          >
-            <Printer className="w-4 h-4 text-[#D462A6]" />
-            <span>🧾 Prova Scontrino 1€</span>
-          </button>
-
           {/* Public Store Link */}
           <Link
             href="/"

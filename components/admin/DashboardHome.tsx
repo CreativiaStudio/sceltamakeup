@@ -17,8 +17,6 @@ import {
   Clock,
   Sparkles,
   CheckCircle2,
-  Printer,
-  Barcode,
 } from "lucide-react";
 import { AdminKpiSummary, SceltaAdminOrder } from "@/lib/adminStore";
 import { AdminTab } from "@/types/admin";
@@ -102,46 +100,6 @@ export default function DashboardHome({
           >
             <ShoppingCart className="w-4 h-4" />
             <span>Nuovi Ordini</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Cassa RT & Quick Barcode Test Action Banner */}
-      <div className="bg-gradient-to-r from-purple-50 via-white to-pink-50 rounded-2xl p-4 sm:p-5 border-2 border-purple-200/80 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-[#5E1788] text-white flex items-center justify-center shrink-0 shadow-md">
-            <Printer className="w-6 h-6 text-[#D462A6]" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-[#5E1788] uppercase tracking-wider">
-                Collaudo Cassa RT Epson FP-81II (192.168.68.63)
-              </span>
-              <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
-                1,00 € Fiscale
-              </span>
-            </div>
-            <h2 className="text-base font-bold text-[#1F1B24] mt-0.5">
-              Prova Ufficiale di Stampa Scontrino con la Cliente
-            </h2>
-            <p className="text-xs text-gray-600 mt-0.5">
-              Codice EAN: <code className="font-mono font-bold text-[#5E1788] bg-white px-1.5 py-0.5 rounded border border-purple-200">8000000000015</code> oppure SKU: <code className="font-mono font-bold text-[#5E1788] bg-white px-1.5 py-0.5 rounded border border-purple-200">TEST01</code>
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2.5 shrink-0">
-          <button
-            type="button"
-            onClick={() => {
-              window.dispatchEvent(
-                new CustomEvent("open_quick_scan_modal", { detail: "8000000000015" })
-              );
-            }}
-            className="px-5 py-3 rounded-xl bg-gradient-to-r from-[#5E1788] to-[#7A3293] hover:from-[#4D1270] hover:to-[#5E1788] text-white text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer active:scale-95"
-          >
-            <Printer className="w-4 h-4 text-[#D462A6]" />
-            <span>🧾 Apri Cassa & Stampa Scontrino (1€)</span>
           </button>
         </div>
       </div>
