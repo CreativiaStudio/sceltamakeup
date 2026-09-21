@@ -59,11 +59,26 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const [newProdPrice, setNewProdPrice] = useState("11.90");
   const [newProdStock, setNewProdStock] = useState("3");
   const [isSavingNew, setIsSavingNew] = useState(false);
+  const [manualSearchInput, setManualSearchInput] = useState("");
 
   // Lookup function for barcode in catalog and store overrides
   const findProductByBarcode = useCallback((barcode: string) => {
     const clean = barcode.trim();
     if (!clean) return null;
+    const cleanUpper = clean.toUpperCase();
+
+    // Fast-path shortcut for official test receipt product (TEST01 / 8000000000015)
+    if (
+      cleanUpper === "TEST01" ||
+      cleanUpper === "TEST" ||
+      clean === "8000000000015" ||
+      cleanUpper === "TEST-SCONTRINO-1EURO"
+    ) {
+      const testProd = ALL_PRODUCTS.find((p) => p.id === "test-scontrino-1euro");
+      if (testProd) {
+        return { product: testProd, variantIndex: 0 };
+      }
+    }
 
     const state = getAdminStoreState();
     const overrides = state.productOverrides || {};
@@ -72,7 +87,9 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     for (const [prodId, override] of Object.entries(overrides)) {
       if (override.variants) {
         const vIdx = override.variants.findIndex(
-          (v) => (v.ean && v.ean.trim() === clean) || (v.sku && v.sku.trim() === clean)
+          (v) =>
+            (v.ean && v.ean.trim().toUpperCase() === cleanUpper) ||
+            (v.sku && v.sku.trim().toUpperCase() === cleanUpper)
         );
         if (vIdx !== -1) {
           const baseProd = ALL_PRODUCTS.find((p) => p.id === prodId);
@@ -87,7 +104,9 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     for (const product of ALL_PRODUCTS) {
       if (product.variants) {
         const vIdx = product.variants.findIndex(
-          (v) => (v.ean && v.ean.trim() === clean) || (v.sku && v.sku.trim() === clean)
+          (v) =>
+            (v.ean && v.ean.trim().toUpperCase() === cleanUpper) ||
+            (v.sku && v.sku.trim().toUpperCase() === cleanUpper)
         );
         if (vIdx !== -1) {
           const override = overrides[product.id];
@@ -114,11 +133,11 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     }
   }, [matchedProduct, matchedVariantIndex]);
 
-  // Handle Barcode Scan from any hardware reader
+  // Handle Barcode Scan from any hardware reader or manual trigger
   const handleBarcodeScanned = useCallback(
     (code: string) => {
       const cleanCode = code.trim();
-      if (!cleanCode || cleanCode.length < 4) return;
+      if (!cleanCode || cleanCode.length < 3) return;
 
       setScannedBarcode(cleanCode);
       const match = findProductByBarcode(cleanCode);
@@ -139,6 +158,19 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     },
     [findProductByBarcode]
   );
+
+  // Custom Event Listener to trigger modal from admin header or buttons
+  useEffect(() => {
+    const handleCustomOpen = (e: Event) => {
+      const customEv = e as CustomEvent<string>;
+      const code = customEv.detail || "8000000000015";
+      handleBarcodeScanned(code);
+    };
+    window.addEventListener("open_quick_scan_modal", handleCustomOpen);
+    return () => {
+      window.removeEventListener("open_quick_scan_modal", handleCustomOpen);
+    };
+  }, [handleBarcodeScanned]);
 
   // Global Keydown Listener for Hardware Barcode Scanners
   useEffect(() => {
@@ -411,6 +443,47 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
               <span>{successToast}</span>
             </div>
           )}
+
+          {/* Quick Barcode / SKU Switcher or Manual Typing */}
+          <div className="flex items-center gap-2 bg-[#FAF7FC] p-2 rounded-2xl border border-[#D8C2E7]/70">
+            <input
+              type="text"
+              value={manualSearchInput}
+              onChange={(e) => setManualSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  if (manualSearchInput.trim()) {
+                    handleBarcodeScanned(manualSearchInput.trim());
+                  }
+                }
+              }}
+              placeholder="Digita codice o barcode (es. 8000000000015 o TEST01)..."
+              className="flex-1 px-3 py-1.5 text-xs bg-white rounded-xl border border-[#D8C2E7]/60 text-[#1F1B24] placeholder-gray-400 focus:outline-none focus:border-[#5E1788]"
+            />
+            <button
+              type="button"
+              onClick={() => {
+                if (manualSearchInput.trim()) {
+                  handleBarcodeScanned(manualSearchInput.trim());
+                }
+              }}
+              className="px-3 py-1.5 bg-[#5E1788] text-white text-xs font-bold rounded-xl hover:bg-[#4D1270] transition-colors shrink-0"
+            >
+              Cerca
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setManualSearchInput("8000000000015");
+                handleBarcodeScanned("8000000000015");
+              }}
+              className="px-2.5 py-1.5 bg-purple-100 text-[#5E1788] text-xs font-bold rounded-xl hover:bg-purple-200 transition-colors shrink-0"
+              title="Carica articolo di prova stampa scontrino 1€"
+            >
+              🧪 Prova 1€
+            </button>
+          </div>
 
           {matchedProduct ? (
             /* FOUND PRODUCT CARD */
