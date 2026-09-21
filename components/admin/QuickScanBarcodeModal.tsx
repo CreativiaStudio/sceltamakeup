@@ -172,27 +172,35 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     };
   }, [handleBarcodeScanned]);
 
-  // Global Keydown Listener for Hardware Barcode Scanners
+  // Global Keydown Listener for Hardware Barcode Scanners & Keyboard Shortcuts
   useEffect(() => {
     let buffer = "";
     let lastKeyTime = 0;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Direct Keyboard Shortcuts: F2 or Ctrl+B opens test product immediately
+      if (e.key === "F2" || (e.ctrlKey && e.key.toLowerCase() === "b")) {
+        e.preventDefault();
+        handleBarcodeScanned("8000000000015");
+        return;
+      }
+
       const target = e.target as HTMLElement | null;
       const isInput = target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA");
+      if (isInput) return; // Don't intercept when user is typing in form inputs
 
       const currentTime = Date.now();
       const timeDiff = currentTime - lastKeyTime;
       lastKeyTime = currentTime;
 
-      // Scanners type fast (< 60ms between characters)
-      if (timeDiff > 120 && buffer.length > 0) {
+      // Allow both hardware scanners (< 60ms) and human keyboard typing (< 600ms)
+      if (timeDiff > 600 && buffer.length > 0) {
         buffer = "";
       }
 
       if (e.key === "Enter") {
-        if (buffer.length >= 6) {
-          // Hardware scanner detected!
+        if (buffer.length >= 4) {
+          // Hardware scanner or typed code detected!
           e.preventDefault();
           e.stopPropagation();
           const scanned = buffer;
