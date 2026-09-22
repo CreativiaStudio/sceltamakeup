@@ -153,8 +153,14 @@ export default function ProductCatalogTable() {
 
     return productsWithOverrides.filter((product) => {
       // Brand filter
-      if (selectedBrand !== "Tutti" && product.brand !== selectedBrand) {
-        return false;
+      if (selectedBrand !== "Tutti") {
+        const matchesBrand =
+          product.brand === selectedBrand ||
+          (selectedBrand === "Diego dalla Palma" && product.brand.toLowerCase().includes("diego dalla palma")) ||
+          (selectedBrand === "RVB LAB" && product.brand.toLowerCase().includes("rvb lab"));
+        if (!matchesBrand) {
+          return false;
+        }
       }
 
       // Category filter

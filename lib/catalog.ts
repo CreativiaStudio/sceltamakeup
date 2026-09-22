@@ -47,7 +47,11 @@ export async function getProductsByCategory(category: ProductCategory): Promise<
  * Filtra i prodotti per marchio ufficiale
  */
 export async function getProductsByBrand(brand: ProductBrand | string): Promise<Product[]> {
-  return catalog.filter(p => p.brand === brand);
+  return catalog.filter(p => 
+    p.brand === brand ||
+    (brand === "Diego dalla Palma" && p.brand.toLowerCase().includes("diego dalla palma")) ||
+    (brand === "RVB LAB" && p.brand.toLowerCase().includes("rvb lab"))
+  );
 }
 
 /**

@@ -37,10 +37,10 @@ const HTTP_HEADERS = {
  * 1. REGOLE DI MARCHIO (Cosmetica S.r.l.)
  * -------------------------------------------------------------------------- */
 function brandFor(sku) {
-  if (/^MF/i.test(sku)) return "RVB LAB The Make Up";
+  if (/^MF/i.test(sku)) return "RVB LAB";
   if (/^DHC/i.test(sku)) return "Diego dalla Palma";
-  if (/^PF/i.test(sku)) return "Diego dalla Palma Professional";
-  return "Diego dalla Palma Professional";
+  if (/^PF/i.test(sku)) return "Diego dalla Palma";
+  return "Diego dalla Palma";
 }
 
 /* ----------------------------------------------------------------------------
