@@ -268,6 +268,14 @@ CREATE TABLE IF NOT EXISTS scelta_notification_logs (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- 2.11 Tabella Override Catalogo Centralizzato Cloud (Multi-Device Real-Time)
+-- Singola riga singleton contenente productOverrides + variantStocks come JSONB.
+CREATE TABLE IF NOT EXISTS scelta_catalog_overrides (
+    id TEXT PRIMARY KEY DEFAULT 'singleton',
+    data JSONB NOT NULL DEFAULT '{}'::jsonb,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 -- ------------------------------------------------------------------------------
 -- 3. TRIGGER AUTOMATICI PER UPDATED_AT
 -- ------------------------------------------------------------------------------
@@ -300,6 +308,11 @@ CREATE TRIGGER trg_scelta_orders_updated_at
 DROP TRIGGER IF EXISTS trg_scelta_appointments_updated_at ON scelta_appointments;
 CREATE TRIGGER trg_scelta_appointments_updated_at
     BEFORE UPDATE ON scelta_appointments
+    FOR EACH ROW EXECUTE FUNCTION scelta_set_updated_at();
+
+DROP TRIGGER IF EXISTS trg_scelta_catalog_overrides_updated_at ON scelta_catalog_overrides;
+CREATE TRIGGER trg_scelta_catalog_overrides_updated_at
+    BEFORE UPDATE ON scelta_catalog_overrides
     FOR EACH ROW EXECUTE FUNCTION scelta_set_updated_at();
 
 -- ------------------------------------------------------------------------------
@@ -485,6 +498,7 @@ ALTER TABLE scelta_order_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE scelta_appointments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE scelta_blocked_slots ENABLE ROW LEVEL SECURITY;
 ALTER TABLE scelta_notification_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE scelta_catalog_overrides ENABLE ROW LEVEL SECURITY;
 
 -- Politiche Catalogo (Lettura Pubblica, Gestione Staff)
 DROP POLICY IF EXISTS "Public can view scelta_products" ON scelta_products;
@@ -592,5 +606,12 @@ CREATE POLICY "Staff full access on scelta_blocked_slots"
 DROP POLICY IF EXISTS "Staff full access on scelta_notification_logs" ON scelta_notification_logs;
 CREATE POLICY "Staff full access on scelta_notification_logs"
     ON scelta_notification_logs FOR ALL
+    TO authenticated, service_role
+    USING (true) WITH CHECK (true);
+
+-- Politica Override Catalogo Centralizzato (Solo Staff & Service Role)
+DROP POLICY IF EXISTS "Staff full access on scelta_catalog_overrides" ON scelta_catalog_overrides;
+CREATE POLICY "Staff full access on scelta_catalog_overrides"
+    ON scelta_catalog_overrides FOR ALL
     TO authenticated, service_role
     USING (true) WITH CHECK (true);

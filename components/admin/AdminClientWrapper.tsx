@@ -23,6 +23,7 @@ import { AdminTab } from "@/types/admin";
 import {
   getAdminKpis,
   getAdminOrders,
+  useAdminCatalogSync,
   AdminKpiSummary,
   SceltaAdminOrder,
 } from "@/lib/adminStore";
@@ -41,6 +42,9 @@ const VALID_TABS: AdminTab[] = [
 export default function AdminClientWrapper() {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // Real-time multi-device cloud sync of catalog overrides & giacenze.
+  useAdminCatalogSync();
 
   // Derive active tab directly from URL query param with fallback to panoramica
   const queryTab = searchParams.get("tab") as AdminTab | null;

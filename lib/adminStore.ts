@@ -14,10 +14,15 @@
  * Zero network calls to external databases, zero shared state with any external project.
  */
 
+import { useEffect } from "react";
 import rawCatalog from "@/data/catalog.json";
 import { Product } from "@/types/product";
 
-export const STORAGE_ADMIN_STORE_KEY = "scelta_makeup_admin_store_v5";
+export const STORAGE_ADMIN_STORE_KEY = "scelta_makeup_admin_store_v6";
+
+// Centralized cloud catalog endpoints (real-time multi-device sync)
+const CATALOG_OVERRIDES_API = "/api/catalog/overrides";
+const CATALOG_STOCK_API = "/api/catalog/stock";
 
 // ------------------------------------------------------------------------------
 // Interface Contracts (PROJECT.md)
@@ -177,7 +182,7 @@ export function generateInitialCustomers(): SceltaCrmCustomer[] {
  */
 export function getDefaultAdminStoreState(): SceltaAdminStoreState {
   return {
-    version: 2,
+    version: 3,
     variantStocks: generateInitialVariantStocks(),
     productOverrides: {},
     orders: generateInitialOrders(),
@@ -214,6 +219,7 @@ export function getAdminStoreState(): SceltaAdminStoreState {
     localStorage.removeItem("scelta_makeup_admin_store_v2");
     localStorage.removeItem("scelta_makeup_admin_store_v3");
     localStorage.removeItem("scelta_makeup_admin_store_v4");
+    localStorage.removeItem("scelta_makeup_admin_store_v5");
 
     const raw = localStorage.getItem(STORAGE_ADMIN_STORE_KEY);
     if (!raw) {
@@ -223,7 +229,7 @@ export function getAdminStoreState(): SceltaAdminStoreState {
     }
 
     const parsed = JSON.parse(raw);
-    if (!parsed || typeof parsed !== "object" || !parsed.variantStocks || (parsed.version || 0) < 2) {
+    if (!parsed || typeof parsed !== "object" || !parsed.variantStocks || (parsed.version || 0) < 3) {
       const defaultState = getDefaultAdminStoreState();
       saveAdminStoreState(defaultState);
       return defaultState;
@@ -233,12 +239,12 @@ export function getAdminStoreState(): SceltaAdminStoreState {
       parsed.productOverrides = {};
     }
 
-    // Auto-heal variant stock images, EANs, and sync any new variants from catalog
+    // Auto-heal variant stock images, EANs, prices, and sync any new variants from catalog
     if (parsed.variantStocks && typeof parsed.variantStocks === "object") {
       const products = rawCatalog as Product[];
       const overrides = (parsed.productOverrides || {}) as Record<string, Partial<Product>>;
 
-      // 1. Sync existing variant stocks (image, EAN, SKU)
+      // 1. Sync existing variant stocks (image, EAN, SKU, price, names)
       for (const vStock of Object.values(parsed.variantStocks as Record<string, SceltaVariantStock>)) {
         if (!vStock || !vStock.productId) continue;
         const prod = products.find(p => p.id === vStock.productId);
@@ -251,6 +257,22 @@ export function getAdminStoreState(): SceltaAdminStoreState {
             }
             if (freshVariant.sku && vStock.sku !== freshVariant.sku && !overrides[prod.id]?.variants) {
               vStock.sku = freshVariant.sku;
+            }
+            // Sync price and names from catalog if not overridden
+            if (freshVariant.price !== undefined && !overrides[prod.id]?.variants && !overrides[prod.id]?.price) {
+              vStock.price = freshVariant.price;
+            }
+            if (freshVariant.name && !overrides[prod.id]?.variants) {
+              vStock.name = freshVariant.name;
+            }
+            if (prod.name && !overrides[prod.id]?.name) {
+              vStock.productName = prod.name;
+            }
+            if (prod.brand && !overrides[prod.id]?.brand) {
+              vStock.brand = prod.brand;
+            }
+            if (prod.category && !overrides[prod.id]?.category) {
+              vStock.category = prod.category;
             }
             // Sync image if not custom overridden
             if (!overrides[vStock.productId]?.images || (overrides[vStock.productId]?.images?.length ?? 0) === 0) {
@@ -315,6 +337,112 @@ export function saveAdminStoreState(state: SceltaAdminStoreState): boolean {
     console.error("[SceltaAdminStore] Error writing to localStorage:", err?.name, err?.message);
     return false;
   }
+}
+
+// ------------------------------------------------------------------------------
+// Cloud Synchronization Engine (Real-Time Multi-Device Centralized Catalog)
+// ------------------------------------------------------------------------------
+
+/**
+ * Fire-and-forget POST to a Next.js API route. Never throws and never blocks the
+ * caller: the optimistic local update always wins, and network failures are
+ * silently ignored so the point-of-sale keeps working even when offline.
+ */
+function postCatalogUpdate(path: string, body: unknown): void {
+  if (typeof window === "undefined") return;
+  try {
+    fetch(path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }).catch(() => {
+      /* Offline: local optimistic state remains the source of truth */
+    });
+  } catch {
+    /* Ignore network/hardware errors during background sync */
+  }
+}
+
+/**
+ * Fetches the centralized catalog overrides from the cloud and reconciles them
+ * into the local admin store (productOverrides + variantStocks). Local cache is
+ * always authoritative for instant 0ms rendering; this runs in the background.
+ * Returns true when a successful reconciliation occurred.
+ */
+export async function syncAdminStoreFromCloud(): Promise<boolean> {
+  if (typeof window === "undefined") return false;
+
+  try {
+    const res = await fetch(CATALOG_OVERRIDES_API, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!res.ok) return false;
+
+    const payload = (await res.json()) as {
+      success?: boolean;
+      productOverrides?: Record<string, Partial<Product>>;
+      variantStocks?: Record<string, SceltaVariantStock>;
+    };
+    if (!payload || !payload.success) return false;
+
+    const state = getAdminStoreState();
+    let changed = false;
+
+    if (payload.productOverrides && typeof payload.productOverrides === "object") {
+      const mergedOverrides: Record<string, Partial<Product>> = {
+        ...(state.productOverrides || {}),
+        ...payload.productOverrides,
+      };
+      if (JSON.stringify(mergedOverrides) !== JSON.stringify(state.productOverrides || {})) {
+        state.productOverrides = mergedOverrides;
+        changed = true;
+      }
+    }
+
+    if (payload.variantStocks && typeof payload.variantStocks === "object") {
+      const mergedStocks: Record<string, SceltaVariantStock> = {
+        ...(state.variantStocks || {}),
+        ...payload.variantStocks,
+      };
+      if (JSON.stringify(mergedStocks) !== JSON.stringify(state.variantStocks || {})) {
+        state.variantStocks = mergedStocks;
+        changed = true;
+      }
+    }
+
+    if (changed) {
+      saveAdminStoreState(state);
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * React hook: synchronizes the local admin store with the centralized cloud
+ * catalog on mount, then keeps it fresh via a light polling interval and on tab
+ * focus. Reconciliation is idempotent, so it is safe to call from multiple
+ * components.
+ */
+export function useAdminCatalogSync(intervalMs = 5000): void {
+  useEffect(() => {
+    const runSync = () => {
+      void syncAdminStoreFromCloud();
+    };
+
+    runSync();
+
+    const interval = setInterval(runSync, intervalMs);
+    const onFocus = () => runSync();
+    window.addEventListener("focus", onFocus);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("focus", onFocus);
+    };
+  }, [intervalMs]);
 }
 
 // ------------------------------------------------------------------------------
@@ -388,6 +516,15 @@ export function updateVariantStockCount(variantId: string, quantity: number): Sc
 
   state.variantStocks[variantId] = updated;
   saveAdminStoreState(state);
+
+  // Real-time cloud sync of the giacenza scarico/carico (e.g. vendita al banco).
+  postCatalogUpdate(CATALOG_STOCK_API, {
+    variantId,
+    delta: safeQuantity - (existing?.stockQuantity ?? 0),
+    newQuantity: safeQuantity,
+    variantStock: updated,
+  });
+
   return updated;
 }
 
@@ -431,6 +568,13 @@ export function updateVariantPrice(variantId: string, price: number): SceltaVari
 
   state.variantStocks[variantId] = updated;
   saveAdminStoreState(state);
+
+  // Sync variant price to the centralized cloud giacenze record.
+  postCatalogUpdate(CATALOG_STOCK_API, {
+    variantId,
+    variantStock: updated,
+  });
+
   return updated;
 }
 
@@ -563,6 +707,21 @@ export function updateProductDetails(
   }
 
   const isSaved = saveAdminStoreState(state);
+
+  // Synchronize the affected variant giacenze + product override to the cloud so
+  // every device (admin remote + point-of-sale laptop) stays aligned in real-time.
+  const affectedStocks: Record<string, SceltaVariantStock> = {};
+  for (const [varId, vStock] of Object.entries(state.variantStocks)) {
+    if (vStock.productId === productId) {
+      affectedStocks[varId] = vStock;
+    }
+  }
+  postCatalogUpdate(CATALOG_OVERRIDES_API, {
+    productId,
+    updates: merged,
+    variantStocks: affectedStocks,
+  });
+
   if (!isSaved) {
     return {
       ...merged,
