@@ -67,6 +67,57 @@ export default function ProductEditorModal({
   );
 }
 
+function compressImage(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      if (!dataUrl) {
+        reject(new Error("File vuoto"));
+        return;
+      }
+      const img = new window.Image();
+      img.onload = () => {
+        const maxDim = 800;
+        let width = img.width;
+        let height = img.height;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          resolve(dataUrl);
+          return;
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+        try {
+          const webpData = canvas.toDataURL("image/webp", 0.85);
+          if (webpData.startsWith("data:image/webp")) {
+            resolve(webpData);
+            return;
+          }
+        } catch {
+          // fallback
+        }
+        resolve(canvas.toDataURL("image/jpeg", 0.85));
+      };
+      img.onerror = () => reject(new Error("Errore nel caricamento del file immagine"));
+      img.src = dataUrl;
+    };
+    reader.onerror = () => reject(new Error("Errore nella lettura del file"));
+    reader.readAsDataURL(file);
+  });
+}
+
 function ProductEditorModalDialog({
   product,
   onClose,
@@ -115,6 +166,8 @@ function ProductEditorModalDialog({
   const [newImageUrl, setNewImageUrl] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [isProcessingImage, setIsProcessingImage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Handlers for Photos Tab
   const handleAddImageUrl = () => {
@@ -127,22 +180,25 @@ function ProductEditorModalDialog({
     setNewImageUrl("");
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const result = event.target?.result as string;
-      if (result) {
-        setFormData((prev) => ({
-          ...prev,
-          images: [result, ...prev.images], // Add at start or end
-        }));
-      }
-    };
-    reader.readAsDataURL(file);
-    e.target.value = "";
+    setIsProcessingImage(true);
+    setErrorMessage(null);
+    try {
+      const compressedDataUrl = await compressImage(file);
+      setFormData((prev) => ({
+        ...prev,
+        images: [compressedDataUrl, ...prev.images],
+      }));
+    } catch (err) {
+      console.error("Errore caricamento immagine:", err);
+      setErrorMessage("Impossibile elaborare il file immagine. Prova con un formato PNG, JPG o WebP.");
+    } finally {
+      setIsProcessingImage(false);
+      e.target.value = "";
+    }
   };
 
   const handleSetPrimaryImage = (index: number) => {
@@ -228,6 +284,7 @@ function ProductEditorModalDialog({
   // Submit and save
   const handleSaveAll = () => {
     setIsSaving(true);
+    setErrorMessage(null);
 
     // Build shades list matching variants for backward compatibility with frontend
     const updatedShades: Shade[] = formData.variants.map((v, i) => ({
@@ -256,7 +313,12 @@ function ProductEditorModalDialog({
       shades: updatedShades,
     };
 
-    updateProductDetails(product.id, updates);
+    const res = updateProductDetails(product.id, updates) as Partial<Product> & { error?: string };
+    if (res && res.error) {
+      setIsSaving(false);
+      setErrorMessage(res.error);
+      return;
+    }
 
     setIsSaving(false);
     setSaveSuccess(true);
@@ -376,6 +438,13 @@ function ProductEditorModalDialog({
 
                 {/* Upload & Add URL Controls */}
                 <div className="md:col-span-8 space-y-4">
+                  {errorMessage && (
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
+
                   <div className="p-4 bg-purple-50/60 rounded-2xl border border-purple-100 space-y-3">
                     <div className="text-xs font-bold text-[#5E1788] flex items-center gap-1.5">
                       <Sparkles className="w-4 h-4 text-[#D462A6]" />
@@ -383,14 +452,17 @@ function ProductEditorModalDialog({
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {/* File Upload (DataURL / Base64) */}
-                      <label className="flex flex-col items-center justify-center p-3 border-2 border-dashed border-purple-300 hover:border-[#5E1788] bg-white rounded-xl cursor-pointer transition-colors text-center group">
-                        <Upload className="w-5 h-5 text-[#5E1788] group-hover:scale-110 transition-transform mb-1" />
-                        <span className="text-xs font-semibold text-gray-700">Carica File Immagine</span>
-                        <span className="text-[10px] text-gray-400">PNG, JPG, WebP (Base64)</span>
+                      {/* File Upload (WebP Auto-Compressed) */}
+                      <label className={`flex flex-col items-center justify-center p-3 border-2 border-dashed ${isProcessingImage ? 'border-purple-400 bg-purple-50/50' : 'border-purple-300 hover:border-[#5E1788] bg-white'} rounded-xl cursor-pointer transition-colors text-center group`}>
+                        <Upload className={`w-5 h-5 ${isProcessingImage ? 'text-[#D462A6] animate-bounce' : 'text-[#5E1788] group-hover:scale-110'} transition-transform mb-1`} />
+                        <span className="text-xs font-semibold text-gray-700">
+                          {isProcessingImage ? "Compressione WebP..." : "Carica File Immagine"}
+                        </span>
+                        <span className="text-[10px] text-gray-400">WebP, PNG, JPG (Auto-ottimizzato)</span>
                         <input
                           type="file"
                           accept="image/*"
+                          disabled={isProcessingImage}
                           onChange={handleFileUpload}
                           className="hidden"
                         />
@@ -841,10 +913,15 @@ function ProductEditorModalDialog({
         {/* Modal Footer */}
         <div className="p-4 sm:p-5 border-t border-gray-200 bg-gray-50 flex items-center justify-between shrink-0">
           <div className="text-xs text-gray-500">
-            {saveSuccess ? (
+            {errorMessage ? (
+              <span className="text-red-600 font-semibold flex items-center gap-1.5">
+                <AlertTriangle className="w-4 h-4 text-red-500 shrink-0" />
+                {errorMessage}
+              </span>
+            ) : saveSuccess ? (
               <span className="text-emerald-700 font-semibold flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                Modifiche salvate atomiche con successo!
+                Modifiche salvate con successo!
               </span>
             ) : (
               <span>Le modifiche si riflettono all&apos;istante sia in admin che sul frontend.</span>

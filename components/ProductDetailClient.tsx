@@ -52,6 +52,12 @@ export default function ProductDetailClient({
           shades: override.shades || prev.shades,
           images: override.images || prev.images,
         }));
+        if (override.images && override.images.length > 0) {
+          setActiveImage(override.images[0]);
+        }
+        if (override.shades && override.shades.length > 0) {
+          setSelectedShade(override.shades[0]);
+        }
       } else {
         setProduct(initialProduct);
       }
@@ -136,6 +142,14 @@ export default function ProductDetailClient({
   };
 
   const handleImageError = (imgSrc: string) => {
+    // If a .jpg failed, try loading the corresponding .webp version if available
+    if (imgSrc.endsWith(".jpg")) {
+      const webpCandidate = imgSrc.replace(/\.jpg$/, ".webp");
+      if (!failedImages[webpCandidate]) {
+        setActiveImage(webpCandidate);
+        return;
+      }
+    }
     setFailedImages((prev) => ({ ...prev, [imgSrc]: true }));
   };
 

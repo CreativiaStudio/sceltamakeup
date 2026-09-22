@@ -234,10 +234,16 @@ export function getAdminStoreState(): SceltaAdminStoreState {
     }
 
     // Auto-heal variant stock images against verified catalog to purge any stale client cache
+    // Preserves custom user overrides if images or product details were edited
     if (parsed.variantStocks && typeof parsed.variantStocks === "object") {
       const products = rawCatalog as Product[];
+      const overrides = (parsed.productOverrides || {}) as Record<string, Partial<Product>>;
       for (const vStock of Object.values(parsed.variantStocks as Record<string, SceltaVariantStock>)) {
         if (!vStock || !vStock.productId) continue;
+        // If product has custom overrides with images, preserve user's custom images!
+        if (overrides[vStock.productId]?.images && (overrides[vStock.productId]?.images?.length ?? 0) > 0) {
+          continue;
+        }
         const prod = products.find(p => p.id === vStock.productId);
         if (prod) {
           const freshVariant = prod.variants?.find(v => v.id === vStock.variantId);
@@ -257,19 +263,22 @@ export function getAdminStoreState(): SceltaAdminStoreState {
   }
 }
 
-export function saveAdminStoreState(state: SceltaAdminStoreState): void {
+export function saveAdminStoreState(state: SceltaAdminStoreState): boolean {
   memoryAdminStore = state;
 
   if (typeof window === "undefined") {
-    return;
+    return true;
   }
 
   try {
     localStorage.setItem(STORAGE_ADMIN_STORE_KEY, JSON.stringify(state));
     // Emit notification event for any listening reactive React components
     window.dispatchEvent(new CustomEvent("scelta_admin_store_updated", { detail: { timestamp: Date.now() } }));
-  } catch (error) {
-    console.error("[SceltaAdminStore] Error writing to localStorage:", error);
+    return true;
+  } catch (error: unknown) {
+    const err = error as { name?: string; message?: string };
+    console.error("[SceltaAdminStore] Error writing to localStorage:", err?.name, err?.message);
+    return false;
   }
 }
 
@@ -440,7 +449,7 @@ export function getProductOverride(idOrSlug: string): Partial<Product> | undefin
 export function updateProductDetails(
   productId: string,
   updates: Partial<Product>
-): Partial<Product> {
+): Partial<Product> & { error?: string } {
   const state = getAdminStoreState();
   if (!state.productOverrides) {
     state.productOverrides = {};
@@ -518,7 +527,13 @@ export function updateProductDetails(
     }
   }
 
-  saveAdminStoreState(state);
+  const isSaved = saveAdminStoreState(state);
+  if (!isSaved) {
+    return {
+      ...merged,
+      error: "Memoria del browser esaurita (QuotaExceeded). L'immagine caricata è troppo pesante.",
+    };
+  }
   return merged;
 }
 
