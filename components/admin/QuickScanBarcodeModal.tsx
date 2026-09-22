@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import {
   Barcode,
@@ -18,6 +18,11 @@ import {
   Loader2,
   Coins,
   Unlock,
+  Camera,
+  Pencil,
+  Check,
+  BadgePercent,
+  Link as LinkIcon,
 } from "lucide-react";
 import rawCatalog from "@/data/catalog.json";
 import { Product, ProductCategory } from "@/types/product";
@@ -41,6 +46,79 @@ interface QuickScanBarcodeModalProps {
 
 const ALL_PRODUCTS = rawCatalog as Product[];
 
+type DiscountMode = "none" | "percent" | "amount";
+
+/**
+ * Computes the absolute discount amount (in €) to subtract from a base price,
+ * clamped to the base price itself so the final total never goes negative.
+ */
+function computeDiscountAmount(
+  basePrice: number,
+  mode: DiscountMode,
+  percent: number,
+  amount: number
+): number {
+  if (!basePrice || basePrice <= 0 || mode === "none") return 0;
+  let d = 0;
+  if (mode === "percent") d = basePrice * ((percent || 0) / 100);
+  else if (mode === "amount") d = amount || 0;
+  if (!isFinite(d) || d < 0) d = 0;
+  return Math.min(d, basePrice);
+}
+
+/**
+ * Reads an image File and returns a resized base64 data URL (max edge = maxSize),
+ * keeping localStorage / cloud payloads small and safe for the QuotaExceeded limit.
+ */
+function fileToResizedDataUrl(file: File, maxSize = 600): Promise<string> {
+  return new Promise((resolve, reject) => {
+    if (typeof window === "undefined") {
+      reject(new Error("Browser non disponibile"));
+      return;
+    }
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("Lettura del file non riuscita"));
+    reader.onload = () => {
+      const rawSrc = reader.result as string;
+      const img = new window.Image();
+      img.onerror = () => reject(new Error("Formato immagine non valido"));
+      img.onload = () => {
+        try {
+          let width = img.naturalWidth || img.width;
+          let height = img.naturalHeight || img.height;
+          if (!width || !height) {
+            resolve(rawSrc);
+            return;
+          }
+          if (width > maxSize || height > maxSize) {
+            if (width >= height) {
+              height = Math.round((height * maxSize) / width);
+              width = maxSize;
+            } else {
+              width = Math.round((width * maxSize) / height);
+              height = maxSize;
+            }
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            resolve(rawSrc);
+            return;
+          }
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL("image/jpeg", 0.85));
+        } catch {
+          resolve(rawSrc);
+        }
+      };
+      img.src = rawSrc;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scannedBarcode, setScannedBarcode] = useState<string>("");
@@ -63,6 +141,25 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const [newProdStock, setNewProdStock] = useState("3");
   const [isSavingNew, setIsSavingNew] = useState(false);
   const [manualSearchInput, setManualSearchInput] = useState("");
+
+  // Photo Editing (product / variant image)
+  const photoInputRef = useRef<HTMLInputElement>(null);
+  const [isUpdatingPhoto, setIsUpdatingPhoto] = useState(false);
+  const [showUrlInput, setShowUrlInput] = useState(false);
+  const [imageUrlInput, setImageUrlInput] = useState("");
+
+  // Inline Base List Price Editing
+  const [isEditingPrice, setIsEditingPrice] = useState(false);
+  const [priceEditValue, setPriceEditValue] = useState("");
+  const [isUpdatingPrice, setIsUpdatingPrice] = useState(false);
+
+  // Estemporaneous Counter Discount (current sale only)
+  const [discountMode, setDiscountMode] = useState<DiscountMode>("none");
+  const [discountPercent, setDiscountPercent] = useState(0);
+  const [discountAmount, setDiscountAmount] = useState(0);
+  const [customPercent, setCustomPercent] = useState("");
+  const [customAmount, setCustomAmount] = useState("");
+  const [customFinal, setCustomFinal] = useState("");
 
   // Lookup function for barcode in catalog and store overrides
   const findProductByBarcode = useCallback((barcode: string) => {
@@ -175,6 +272,17 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         setNewProdStock("3");
         setCashTendered("11.90");
       }
+
+      // Reset any in-progress photo / price / discount editing for the new scan
+      setIsEditingPrice(false);
+      setShowUrlInput(false);
+      setImageUrlInput("");
+      setDiscountMode("none");
+      setDiscountPercent(0);
+      setDiscountAmount(0);
+      setCustomPercent("");
+      setCustomAmount("");
+      setCustomFinal("");
 
       setIsOpen(true);
       setSuccessToast(null);
@@ -317,7 +425,10 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const handleInstantCheckout = async () => {
     if (!matchedProduct || !matchedProduct.variants) return;
     const v = matchedProduct.variants[matchedVariantIndex];
-    const price = v?.price ?? matchedProduct.price;
+    const basePrice = v?.price ?? matchedProduct.price;
+    // The final unit price is the net amount actually paid after the counter discount
+    const discountApplied = computeDiscountAmount(basePrice, discountMode, discountPercent, discountAmount);
+    const price = Math.max(0, Math.round((basePrice - discountApplied) * 100) / 100);
     const itemDesc = (matchedProduct.name + (v?.name && v.name !== "Standard" ? ` ${v.name}` : "")).slice(0, 22);
 
     const cashNum = parseFloat(cashTendered.replace(",", ".")) || price;
@@ -521,9 +632,198 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   if (!isOpen) return null;
 
   const currentVariant = matchedProduct?.variants?.[matchedVariantIndex];
-  const currentPrice = (currentVariant?.price ?? matchedProduct?.price) || 1.0;
-  const cashNum = parseFloat(cashTendered.replace(",", ".")) || currentPrice;
-  const changeDue = Math.max(0, cashNum - currentPrice);
+  // Original catalog list price (before any counter discount)
+  const baseListPrice = (currentVariant?.price ?? matchedProduct?.price) || 1.0;
+  const discountAmountValue = computeDiscountAmount(
+    baseListPrice,
+    discountMode,
+    discountPercent,
+    discountAmount
+  );
+  // Final discounted total that drives the whole cash-drawer logic below
+  const finalTotal = Math.max(0, Math.round((baseListPrice - discountAmountValue) * 100) / 100);
+  const hasDiscount = discountAmountValue > 0.001;
+  const effectiveDiscountPercent = baseListPrice > 0 ? (discountAmountValue / baseListPrice) * 100 : 0;
+  const cashNum = parseFloat(cashTendered.replace(",", ".")) || finalTotal;
+  const changeDue = Math.max(0, cashNum - finalTotal);
+  const thumbSrc = currentVariant?.image || matchedProduct?.images?.[0] || "/brand/logo.png";
+  const thumbIsExternal = thumbSrc.startsWith("data:") || thumbSrc.startsWith("http");
+
+  // ---------------------------------------------------------------------------
+  // 1. Photo editing handlers
+  // ---------------------------------------------------------------------------
+  const applyNewImage = (imgSrc: string) => {
+    if (!matchedProduct || !imgSrc) return;
+
+    const updatedVariants = matchedProduct.variants ? [...matchedProduct.variants] : [];
+    if (updatedVariants[matchedVariantIndex]) {
+      updatedVariants[matchedVariantIndex] = {
+        ...updatedVariants[matchedVariantIndex],
+        image: imgSrc,
+      };
+    }
+
+    const updatedImages = [...(matchedProduct.images || [])];
+    if (updatedImages.length === 0) {
+      updatedImages.push(imgSrc);
+    } else if (matchedVariantIndex === 0 || updatedVariants.length <= 1) {
+      updatedImages[0] = imgSrc;
+    }
+
+    const result = updateProductDetails(matchedProduct.id, {
+      ...(updatedVariants.length ? { variants: updatedVariants } : {}),
+      images: updatedImages,
+    });
+
+    if (result && (result as { error?: string }).error) {
+      setSuccessToast((result as { error?: string }).error || "Errore durante il salvataggio della foto.");
+      return;
+    }
+
+    setMatchedProduct({
+      ...matchedProduct,
+      variants: updatedVariants.length ? updatedVariants : matchedProduct.variants,
+      images: updatedImages,
+    });
+    setSuccessToast("Foto aggiornata con successo!");
+    setTimeout(() => setSuccessToast(null), 2400);
+  };
+
+  const handlePhotoFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !matchedProduct) return;
+    setIsUpdatingPhoto(true);
+    try {
+      const dataUrl = await fileToResizedDataUrl(file, 600);
+      applyNewImage(dataUrl);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Errore";
+      setSuccessToast("Impossibile caricare l'immagine: " + msg);
+    } finally {
+      setIsUpdatingPhoto(false);
+      if (photoInputRef.current) photoInputRef.current.value = "";
+    }
+  };
+
+  const handleSaveImageUrl = () => {
+    const url = imageUrlInput.trim();
+    if (!url) return;
+    applyNewImage(url);
+    setImageUrlInput("");
+    setShowUrlInput(false);
+  };
+
+  // ---------------------------------------------------------------------------
+  // 2. Base list price editing handlers
+  // ---------------------------------------------------------------------------
+  const startEditPrice = () => {
+    setPriceEditValue(baseListPrice.toFixed(2));
+    setIsEditingPrice(true);
+  };
+
+  const savePriceEdit = () => {
+    if (!matchedProduct) return;
+    const newPrice = parseFloat(priceEditValue.replace(",", "."));
+    if (isNaN(newPrice) || newPrice < 0) {
+      setIsEditingPrice(false);
+      return;
+    }
+    const rounded = Math.round(newPrice * 100) / 100;
+    setIsUpdatingPrice(true);
+
+    const updatedVariants = matchedProduct.variants ? [...matchedProduct.variants] : [];
+    const updates: Partial<Product> = { price: rounded };
+    if (updatedVariants[matchedVariantIndex]) {
+      updatedVariants[matchedVariantIndex] = {
+        ...updatedVariants[matchedVariantIndex],
+        price: rounded,
+      };
+      updates.variants = updatedVariants;
+    }
+
+    const result = updateProductDetails(matchedProduct.id, updates);
+    if (result && (result as { error?: string }).error) {
+      setSuccessToast((result as { error?: string }).error || "Errore durante il salvataggio del prezzo.");
+      setIsUpdatingPrice(false);
+      setIsEditingPrice(false);
+      return;
+    }
+
+    setMatchedProduct({
+      ...matchedProduct,
+      price: rounded,
+      variants: updatedVariants.length ? updatedVariants : matchedProduct.variants,
+    });
+    setCashTendered(rounded.toFixed(2));
+    setIsEditingPrice(false);
+    setIsUpdatingPrice(false);
+    setSuccessToast(`Prezzo di listino aggiornato: €${rounded.toFixed(2)}`);
+    setTimeout(() => setSuccessToast(null), 2600);
+  };
+
+  // ---------------------------------------------------------------------------
+  // 3. Counter discount handlers
+  // ---------------------------------------------------------------------------
+  const applyDiscount = (mode: DiscountMode, percent: number, amount: number) => {
+    setDiscountMode(mode);
+    setDiscountPercent(percent);
+    setDiscountAmount(amount);
+    const d = computeDiscountAmount(baseListPrice, mode, percent, amount);
+    const newTotal = Math.max(0, Math.round((baseListPrice - d) * 100) / 100);
+    setCashTendered(newTotal.toFixed(2));
+  };
+
+  const setPillDiscount = (pct: number) => {
+    if (pct <= 0) {
+      setCustomPercent("");
+      setCustomAmount("");
+      setCustomFinal("");
+      applyDiscount("none", 0, 0);
+    } else {
+      setCustomPercent(String(pct));
+      setCustomAmount("");
+      setCustomFinal("");
+      applyDiscount("percent", pct, 0);
+    }
+  };
+
+  const onCustomPercent = (val: string) => {
+    setCustomPercent(val);
+    setCustomAmount("");
+    setCustomFinal("");
+    const n = parseFloat(val.replace(",", "."));
+    if (!isNaN(n) && n > 0) applyDiscount("percent", Math.min(100, n), 0);
+    else applyDiscount("none", 0, 0);
+  };
+
+  const onCustomAmount = (val: string) => {
+    setCustomAmount(val);
+    setCustomPercent("");
+    setCustomFinal("");
+    const n = parseFloat(val.replace(",", "."));
+    if (!isNaN(n) && n > 0) applyDiscount("amount", 0, n);
+    else applyDiscount("none", 0, 0);
+  };
+
+  const onCustomFinal = (val: string) => {
+    setCustomFinal(val);
+    setCustomPercent("");
+    setCustomAmount("");
+    const n = parseFloat(val.replace(",", "."));
+    if (!isNaN(n) && n >= 0) {
+      const amt = Math.max(0, Math.round((baseListPrice - n) * 100) / 100);
+      applyDiscount("amount", 0, amt);
+    } else {
+      applyDiscount("none", 0, 0);
+    }
+  };
+
+  const clearDiscount = () => {
+    setCustomPercent("");
+    setCustomAmount("");
+    setCustomFinal("");
+    applyDiscount("none", 0, 0);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
@@ -603,18 +903,77 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
             /* FOUND PRODUCT CARD */
             <div className="space-y-6">
               <div className="flex gap-5 items-start">
-                {/* Product Thumbnail */}
-                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-[#FAF7FC] border border-[#D8C2E7]/60 overflow-hidden relative shrink-0 shadow-inner flex items-center justify-center">
-                  <Image
-                    src={
-                      currentVariant?.image ||
-                      matchedProduct.images?.[0] ||
-                      "/brand/logo.png"
-                    }
-                    alt={matchedProduct.name}
-                    fill
-                    sizes="112px"
-                    className="object-contain p-2"
+                {/* Product Thumbnail + Photo Editing Controls */}
+                <div className="flex flex-col items-center gap-1.5 shrink-0">
+                  <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-[#FAF7FC] border border-[#D8C2E7]/60 overflow-hidden shadow-inner flex items-center justify-center">
+                    {thumbIsExternal ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={thumbSrc}
+                        alt={matchedProduct.name}
+                        className="w-full h-full object-contain p-2"
+                      />
+                    ) : (
+                      <Image
+                        src={thumbSrc}
+                        alt={matchedProduct.name}
+                        fill
+                        sizes="112px"
+                        className="object-contain p-2"
+                      />
+                    )}
+
+                    {isUpdatingPhoto && (
+                      <div className="absolute inset-0 bg-white/70 backdrop-blur-[1px] flex items-center justify-center">
+                        <Loader2 className="w-6 h-6 animate-spin text-[#5E1788]" />
+                      </div>
+                    )}
+
+                    {/* Camera quick-trigger overlay */}
+                    <button
+                      type="button"
+                      onClick={() => photoInputRef.current?.click()}
+                      disabled={isUpdatingPhoto}
+                      className="absolute bottom-1 right-1 w-8 h-8 rounded-full bg-[#5E1788]/95 hover:bg-[#4D1270] text-white flex items-center justify-center shadow-md transition-all border-2 border-white disabled:opacity-50"
+                      title="Carica una nuova foto dal dispositivo"
+                    >
+                      <Camera className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  {/* Compact photo actions */}
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => photoInputRef.current?.click()}
+                      disabled={isUpdatingPhoto}
+                      className="px-2 py-1 rounded-lg bg-purple-50 border border-purple-200 hover:bg-purple-100 text-[#5E1788] text-[10px] font-bold transition-colors flex items-center gap-1 disabled:opacity-50"
+                      title="Cambia foto dal dispositivo"
+                    >
+                      <Camera className="w-3 h-3" />
+                      <span>Foto</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowUrlInput((s) => !s)}
+                      className={`px-2 py-1 rounded-lg border text-[10px] font-bold transition-colors flex items-center gap-1 ${
+                        showUrlInput
+                          ? "bg-[#D462A6] border-[#D462A6] text-white"
+                          : "bg-[#FAF7FC] border-[#D8C2E7] hover:bg-pink-50 text-[#D462A6]"
+                      }`}
+                      title="Inserisci o incolla un URL immagine"
+                    >
+                      <LinkIcon className="w-3 h-3" />
+                      <span>URL</span>
+                    </button>
+                  </div>
+
+                  <input
+                    ref={photoInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handlePhotoFileSelected}
                   />
                 </div>
 
@@ -640,18 +999,112 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                     </div>
                   )}
 
-                  <div className="pt-1 flex items-baseline gap-3">
-                    <span className="text-2xl font-mono font-bold text-[#5E1788]">
-                      €{(currentVariant?.price ?? matchedProduct.price).toFixed(2)}
-                    </span>
-                    {matchedProduct.originalPrice && (
-                      <span className="text-sm line-through text-gray-400 font-mono">
-                        €{matchedProduct.originalPrice.toFixed(2)}
-                      </span>
+                  {/* Base List Price + Inline Editing */}
+                  <div className="pt-1 flex items-center gap-2.5 flex-wrap">
+                    {isEditingPrice ? (
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xl font-mono font-bold text-[#5E1788]">€</span>
+                        <input
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          value={priceEditValue}
+                          onChange={(e) => setPriceEditValue(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              savePriceEdit();
+                            } else if (e.key === "Escape") {
+                              e.preventDefault();
+                              setIsEditingPrice(false);
+                            }
+                          }}
+                          autoFocus
+                          className="w-24 px-2 py-1 rounded-lg border border-[#5E1788] text-xl font-mono font-bold text-[#5E1788] focus:outline-none focus:ring-2 focus:ring-[#D8C2E7]"
+                        />
+                        <button
+                          type="button"
+                          onClick={savePriceEdit}
+                          disabled={isUpdatingPrice}
+                          className="w-8 h-8 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition-colors disabled:opacity-50"
+                          title="Salva prezzo di listino"
+                        >
+                          {isUpdatingPrice ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <Check className="w-4 h-4" />
+                          )}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setIsEditingPrice(false)}
+                          className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center transition-colors"
+                          title="Annulla modifica prezzo"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <span className="text-2xl font-mono font-bold text-[#5E1788]">
+                          €{baseListPrice.toFixed(2)}
+                        </span>
+                        {matchedProduct.originalPrice && (
+                          <span className="text-sm line-through text-gray-400 font-mono">
+                            €{matchedProduct.originalPrice.toFixed(2)}
+                          </span>
+                        )}
+                        <button
+                          type="button"
+                          onClick={startEditPrice}
+                          className="px-2 py-1 rounded-lg bg-[#FAF7FC] border border-[#D8C2E7] hover:bg-purple-50 text-[#5E1788] text-[10px] font-bold transition-colors flex items-center gap-1"
+                          title="Modifica il prezzo di listino a catalogo"
+                        >
+                          <Pencil className="w-3 h-3" />
+                          <span>Modifica listino</span>
+                        </button>
+                      </>
                     )}
                   </div>
                 </div>
               </div>
+
+              {/* Optional Image URL input */}
+              {showUrlInput && (
+                <div className="flex items-center gap-2 bg-[#FAF7FC] p-2 rounded-2xl border border-[#D8C2E7]/70 animate-in fade-in duration-150">
+                  <LinkIcon className="w-4 h-4 text-[#D462A6] shrink-0 ml-1" />
+                  <input
+                    type="text"
+                    value={imageUrlInput}
+                    onChange={(e) => setImageUrlInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleSaveImageUrl();
+                      }
+                    }}
+                    placeholder="Incolla URL immagine (https://...) e premi Applica"
+                    className="flex-1 px-3 py-1.5 text-xs bg-white rounded-xl border border-[#D8C2E7]/60 text-[#1F1B24] placeholder-gray-400 focus:outline-none focus:border-[#D462A6]"
+                    autoFocus
+                  />
+                  <button
+                    type="button"
+                    onClick={handleSaveImageUrl}
+                    disabled={!imageUrlInput.trim() || isUpdatingPhoto}
+                    className="px-3 py-1.5 bg-[#D462A6] text-white text-xs font-bold rounded-xl hover:bg-[#C15294] transition-colors shrink-0 disabled:opacity-50"
+                  >
+                    Applica
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowUrlInput(false)}
+                    className="w-8 h-8 rounded-xl bg-white border border-[#D8C2E7] text-gray-500 hover:bg-gray-50 flex items-center justify-center shrink-0"
+                    title="Chiudi"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
 
               {/* Stock and Real-Time Adjustment Bar */}
               <div className="bg-[#FAF7FC] p-4 rounded-2xl border border-[#D8C2E7]/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -702,6 +1155,131 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                 </div>
               </div>
 
+              {/* Estemporaneous Counter Discount */}
+              <div className="bg-gradient-to-r from-[#FAF7FC] via-white to-[#F7EFFA] p-4 rounded-2xl border border-[#D8C2E7]/80 space-y-3 shadow-xs">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#1F1B24] flex items-center gap-1.5">
+                    <BadgePercent className="w-4 h-4 text-[#D462A6]" />
+                    Sconto al Banco
+                    <span className="text-[10px] font-semibold text-gray-400 hidden sm:inline">
+                      (estemporaneo — solo questa vendita)
+                    </span>
+                  </span>
+                  {hasDiscount && (
+                    <button
+                      type="button"
+                      onClick={clearDiscount}
+                      className="text-[10px] font-bold text-gray-500 hover:text-rose-600 flex items-center gap-1 transition-colors"
+                      title="Azzera lo sconto"
+                    >
+                      <X className="w-3 h-3" />
+                      <span>Azzera</span>
+                    </button>
+                  )}
+                </div>
+
+                {/* Quick percentage pills */}
+                <div className="flex flex-wrap gap-1.5">
+                  {[0, 5, 10, 15, 20, 30, 50].map((pct) => {
+                    const active =
+                      pct === 0
+                        ? discountMode === "none"
+                        : discountMode === "percent" && Math.round(discountPercent) === pct;
+                    return (
+                      <button
+                        key={pct}
+                        type="button"
+                        onClick={() => setPillDiscount(pct)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all cursor-pointer ${
+                          active
+                            ? "bg-[#5E1788] text-white border-[#5E1788] shadow-xs scale-105"
+                            : "bg-white text-[#5E1788] border-[#D8C2E7] hover:bg-purple-50"
+                        }`}
+                      >
+                        {pct === 0 ? "Nessuno" : `-${pct}%`}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Custom discount inputs */}
+                <div className="grid grid-cols-3 gap-2">
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-500 mb-0.5 uppercase tracking-wide">
+                      Sconto %
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      step="1"
+                      value={customPercent}
+                      onChange={(e) => onCustomPercent(e.target.value)}
+                      placeholder="es. 25"
+                      className="w-full px-2.5 py-1.5 rounded-xl border border-[#D8C2E7] text-xs font-mono font-bold text-[#5E1788] focus:outline-none focus:border-[#5E1788] bg-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-500 mb-0.5 uppercase tracking-wide">
+                      Sconto €
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={customAmount}
+                      onChange={(e) => onCustomAmount(e.target.value)}
+                      placeholder="es. 2.00"
+                      className="w-full px-2.5 py-1.5 rounded-xl border border-[#D8C2E7] text-xs font-mono font-bold text-[#5E1788] focus:outline-none focus:border-[#5E1788] bg-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-500 mb-0.5 uppercase tracking-wide">
+                      Prezzo finale €
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={customFinal}
+                      onChange={(e) => onCustomFinal(e.target.value)}
+                      placeholder={baseListPrice.toFixed(2)}
+                      className="w-full px-2.5 py-1.5 rounded-xl border border-[#D8C2E7] text-xs font-mono font-bold text-[#5E1788] focus:outline-none focus:border-[#5E1788] bg-white"
+                    />
+                  </div>
+                </div>
+
+                {/* Discount summary */}
+                <div className="p-3 rounded-xl bg-white border border-[#D8C2E7]/70 space-y-1.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-gray-500 font-semibold">Prezzo listino</span>
+                    <span
+                      className={`font-mono font-bold ${
+                        hasDiscount ? "line-through text-gray-400" : "text-[#1F1B24]"
+                      }`}
+                    >
+                      €{baseListPrice.toFixed(2)}
+                    </span>
+                  </div>
+                  {hasDiscount && (
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-gray-500 font-semibold">Sconto applicato</span>
+                      <span className="font-mono font-bold text-rose-600">
+                        -€{discountAmountValue.toFixed(2)} (-{effectiveDiscountPercent.toFixed(0)}%)
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between pt-1.5 border-t border-[#D8C2E7]/60">
+                    <span className="text-[11px] font-bold text-[#1F1B24] uppercase tracking-wide">
+                      Totale Finale Scontato
+                    </span>
+                    <span className="text-2xl font-mono font-extrabold text-[#5E1788]">
+                      €{finalTotal.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
               {/* 1-Click Fast In-Store Checkout & Fiscal Print */}
               <div className="bg-gradient-to-r from-purple-50 via-white to-pink-50 p-4 rounded-2xl border border-[#D8C2E7]/80 space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
@@ -748,7 +1326,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                         <span>Calcolo Resto al Banco</span>
                       </span>
                       <span className="text-xs font-semibold text-emerald-800">
-                        Totale: <strong>€{currentPrice.toFixed(2)}</strong>
+                        Totale: <strong>€{finalTotal.toFixed(2)}</strong>
                       </span>
                     </div>
 
@@ -756,7 +1334,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                     <div className="flex flex-wrap items-center gap-1.5">
                       <span className="text-[11px] font-semibold text-emerald-900 mr-1">Banconota:</span>
                       {[
-                        { label: `Esatto (€${currentPrice.toFixed(2)})`, val: currentPrice },
+                        { label: `Esatto (€${finalTotal.toFixed(2)})`, val: finalTotal },
                         { label: "€5", val: 5 },
                         { label: "€10", val: 10 },
                         { label: "€20", val: 20 },
@@ -799,21 +1377,21 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
 
                       <div
                         className={`p-2.5 rounded-xl border flex flex-col justify-center ${
-                          cashNum < currentPrice
+                          cashNum < finalTotal
                             ? "bg-rose-50 border-rose-200 text-rose-800"
                             : "bg-white border-emerald-300 text-emerald-900 shadow-xs"
                         }`}
                       >
                         <span className="text-[10px] uppercase tracking-wider font-bold opacity-75">
-                          {cashNum < currentPrice ? "Importo Mancante" : "Resto da Consegnare"}
+                          {cashNum < finalTotal ? "Importo Mancante" : "Resto da Consegnare"}
                         </span>
                         <span
                           className={`text-xl sm:text-2xl font-mono font-extrabold ${
-                            cashNum < currentPrice ? "text-rose-600" : "text-emerald-700"
+                            cashNum < finalTotal ? "text-rose-600" : "text-emerald-700"
                           }`}
                         >
-                          {cashNum < currentPrice
-                            ? `- €${(currentPrice - cashNum).toFixed(2)}`
+                          {cashNum < finalTotal
+                            ? `- €${(finalTotal - cashNum).toFixed(2)}`
                             : `€${changeDue.toFixed(2)}`}
                         </span>
                       </div>
@@ -841,10 +1419,10 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                       <Printer className="w-4 h-4" />
                       <span>
                         {checkoutPaymentMethod === "cash"
-                          ? cashNum > currentPrice
+                          ? cashNum > finalTotal
                             ? `Incassa €${cashNum.toFixed(2)} (Resto: €${changeDue.toFixed(2)}) & Apri Cassetto RT`
-                            : `Incassa €${currentPrice.toFixed(2)} & Apri Cassetto RT`
-                          : `Incassa €${currentPrice.toFixed(2)} & Stampa Scontrino RT`}
+                            : `Incassa €${finalTotal.toFixed(2)} & Apri Cassetto RT`
+                          : `Incassa €${finalTotal.toFixed(2)} & Stampa Scontrino RT`}
                       </span>
                     </>
                   )}
