@@ -23,6 +23,7 @@ import {
   getServices,
   getAvailableSlots,
   createAppointment,
+  isStoreClosedOnDate,
 } from "@/lib/bookingService";
 import { enqueueWhatsAppMessage } from "@/lib/whatsappQueueService";
 import { sendBookingConfirmationEmail } from "@/lib/resendService";
@@ -93,17 +94,30 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
       d.setDate(now.getDate() + i);
       const dayOfWeek = d.getDay();
       const dateStr = d.toISOString().split("T")[0];
+      const isClosed = isStoreClosedOnDate(dateStr);
       dates.push({
         dateStr,
         label: `${d.getDate()} ${monthNames[d.getMonth()]}`,
         dayName: dayNames[dayOfWeek],
         isToday: i === 0,
+        isClosed,
       });
     }
     return dates;
   }, []);
 
-  const [selectedDate, setSelectedDate] = useState<string>(() => new Date().toISOString().split("T")[0]);
+  const [selectedDate, setSelectedDate] = useState<string>(() => {
+    const d = new Date();
+    for (let i = 0; i < 7; i++) {
+      const candidate = new Date(d);
+      candidate.setDate(d.getDate() + i);
+      const candidateStr = candidate.toISOString().split("T")[0];
+      if (!isStoreClosedOnDate(candidateStr)) {
+        return candidateStr;
+      }
+    }
+    return d.toISOString().split("T")[0];
+  });
   const [selectedSlot, setSelectedSlot] = useState<string>("");
 
   const dateScrollRef = useRef<HTMLDivElement>(null);
@@ -431,16 +445,23 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                   <button
                     key={item.dateStr}
                     type="button"
-                    onClick={() => handleDateSelect(item.dateStr)}
-                    className={`shrink-0 flex flex-col items-center justify-center w-20 py-3 px-2 rounded-xl border text-center transition-all cursor-pointer ${
-                      isSelected
-                        ? "bg-gradient-to-br from-[#5E1788] via-[#7B2CBF] to-[#5E1788] text-white shadow-lg shadow-[#5E1788]/25 border-transparent"
-                        : "bg-white text-[#1F1B24] border-[#D8C2E7]/50 hover:border-[#5E1788] hover:shadow-xs"
+                    disabled={item.isClosed}
+                    onClick={() => !item.isClosed && handleDateSelect(item.dateStr)}
+                    className={`shrink-0 flex flex-col items-center justify-center w-20 py-3 px-2 rounded-xl border text-center transition-all ${
+                      item.isClosed
+                        ? "bg-neutral-100/80 text-neutral-400 border-neutral-200/80 cursor-not-allowed opacity-60"
+                        : isSelected
+                        ? "bg-gradient-to-br from-[#5E1788] via-[#7B2CBF] to-[#5E1788] text-white shadow-lg shadow-[#5E1788]/25 border-transparent cursor-pointer"
+                        : "bg-white text-[#1F1B24] border-[#D8C2E7]/50 hover:border-[#5E1788] hover:shadow-xs cursor-pointer"
                     }`}
                   >
                     <span
                       className={`text-xs font-semibold uppercase ${
-                        isSelected ? "text-[#E9D8FD]" : "text-[#1F1B24]/70"
+                        item.isClosed
+                          ? "text-neutral-400"
+                          : isSelected
+                          ? "text-[#E9D8FD]"
+                          : "text-[#1F1B24]/70"
                       }`}
                     >
                       {item.dayName}
@@ -448,7 +469,11 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                     <span className="text-sm font-bold mt-0.5">
                       {item.label}
                     </span>
-                    {item.isToday && (
+                    {item.isClosed ? (
+                      <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full mt-1 bg-neutral-200/70 text-neutral-500">
+                        Chiuso
+                      </span>
+                    ) : item.isToday ? (
                       <span
                         className={`text-xs font-semibold px-2 py-0.5 rounded-full mt-1 ${
                           isSelected
@@ -458,7 +483,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                       >
                         Oggi
                       </span>
-                    )}
+                    ) : null}
                   </button>
                 );
               })}
@@ -482,6 +507,18 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
             </label>
 
             <div className="space-y-4">
+              {afternoonSlots.length === 0 && eveningSlots.length === 0 && (
+                <div className="bg-amber-50/80 border border-amber-200/80 rounded-2xl p-6 text-center text-amber-900 space-y-2">
+                  <CalendarIcon className="w-8 h-8 text-amber-600 mx-auto opacity-80" />
+                  <h3 className="font-serif font-bold text-base">
+                    Salone Chiuso di Domenica e Lunedì
+                  </h3>
+                  <p className="text-xs text-amber-800 max-w-md mx-auto leading-relaxed">
+                    La boutique e i servizi trucco personalizzati sono attivi dal <strong>Martedì al Sabato</strong> (09:30–14:00 / 16:00–19:30). Seleziona un giorno da martedì a sabato nella barra in alto per scegliere l&apos;orario.
+                  </p>
+                </div>
+              )}
+
               {/* Sessione Pomeriggio */}
               {afternoonSlots.length > 0 && (
                 <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#D8C2E7]/50 shadow-xs">

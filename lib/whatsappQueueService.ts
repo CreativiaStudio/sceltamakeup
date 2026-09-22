@@ -187,7 +187,7 @@ ${itemsListFormatted}
 
 📍 *Ritiro Gratuito in Salone:*
 • Sede: ${STORE_ADDRESS}
-• Orari di apertura: Lun - Sab 09:30 - 13:30 / 16:30 - 20:00
+• Orari di apertura: Mar - Sab 09:30 - 14:00 / 16:00 - 19:30 (Lun e Dom Chiuso)
 • Packaging: Confezione curata e profumata ✨
 💰 *Totale Pagato:* €${orderTotal.toFixed(2)}
 

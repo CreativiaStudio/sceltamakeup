@@ -9,7 +9,7 @@ import {
 import { SERVICES, OPERATORS } from "@/data/services";
 
 // Standard solo-worker slots (Outside store counter hours)
-// Store opening hours: 09:30 - 14:00 / 16:00 - 19:30
+// Store opening hours: Martedì – Sabato: 09:30 - 14:00 / 16:00 - 19:30 (Lunedì e Domenica Chiuso)
 // Dedicated makeup slots: Lunch break (14:00 - 16:00) & Evening (19:30 - 21:00)
 export const DEFAULT_SOLO_WORKER_SLOTS = [
   "14:00",
@@ -18,6 +18,19 @@ export const DEFAULT_SOLO_WORKER_SLOTS = [
   "19:30",
   "20:15",
 ];
+
+export function isStoreClosedOnDate(dateStr: string): boolean {
+  if (!dateStr) return false;
+  const parts = dateStr.split("-").map(Number);
+  if (parts.length === 3) {
+    const d = new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0);
+    const day = d.getDay();
+    return day === 0 || day === 1; // 0 = Domenica, 1 = Lunedì
+  }
+  const d = new Date(dateStr + "T12:00:00");
+  const day = d.getDay();
+  return day === 0 || day === 1;
+}
 
 // Agenda boutique full-day slots (09:30 - 20:30)
 export const AGENDA_BOUTIQUE_SLOTS = [
@@ -108,6 +121,10 @@ function saveStoredBlockedSlots(map: Record<string, string[]>) {
 }
 
 export function getAvailableSlots(dateStr: string): TimeSlot[] {
+  if (isStoreClosedOnDate(dateStr)) {
+    return [];
+  }
+
   const appointments = getStoredAppointments().filter(
     (a) => a.date === dateStr && a.status !== "cancelled"
   );

@@ -551,7 +551,7 @@ export function renderOrderPlacedEmail(order: Order): EmailRenderOutput {
       </div>
       <div style="font-size: 13px; color: #4F4656; line-height: 1.6;">
         <strong>Sede:</strong> Scelta Makeup, Via dei Pellegrini 28/29, 80132 Napoli<br/>
-        <strong>Orari al pubblico:</strong> Lunedì – Sabato: 09:30 - 13:30 / 16:30 - 20:00<br/>
+        <strong>Orari al pubblico:</strong> Martedì – Sabato: 09:30 – 14:00 / 16:00 – 19:30 (Lunedì e Domenica: Chiuso)<br/>
         Riceverai un messaggio non appena il tuo pacchetto profumato sarà confezionato e pronto al banco.
       </div>
     </div>

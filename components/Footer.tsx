@@ -168,8 +168,8 @@ export default function Footer() {
               <li className="flex items-start gap-2.5">
                 <Clock className="h-4 w-4 text-[#D462A6] shrink-0 mt-0.5" />
                 <span>
-                  Lunedì – Sabato: 09:30 – 14:00 / 16:00 – 19:30 <br />
-                  <span className="text-neutral-500">Domenica Chiuso</span>
+                  Martedì – Sabato: 09:30 – 14:00 / 16:00 – 19:30 <br />
+                  <span className="text-neutral-500">Lunedì e Domenica: Chiuso</span>
                 </span>
               </li>
               <li className="flex items-center gap-2.5">

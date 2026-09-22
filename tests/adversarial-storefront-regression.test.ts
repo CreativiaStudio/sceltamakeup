@@ -844,15 +844,20 @@ describe("Adversarial Storefront Regression & CRM LTV Verification Suite", () =>
     });
 
     it("4.5 should verify toggleSlotBlock return value and slot availability logic", () => {
-      const today = new Date().toISOString().split("T")[0];
-      const initialSlots = getAvailableSlots(today);
-      assert.ok(initialSlots.length > 0, "Initial slots must exist for today");
+      // Pick next open business day (Tuesday to Saturday)
+      const d = new Date();
+      while (d.getDay() === 0 || d.getDay() === 1) {
+        d.setDate(d.getDate() + 1);
+      }
+      const testDate = d.toISOString().split("T")[0];
+      const initialSlots = getAvailableSlots(testDate);
+      assert.ok(initialSlots.length > 0, "Initial slots must exist for open business day");
 
       const testSlot = initialSlots[0];
       const testTime = testSlot.time;
 
       // Execute toggleSlotBlock
-      const isBlockedFirst = toggleSlotBlock(today, testTime);
+      const isBlockedFirst = toggleSlotBlock(testDate, testTime);
       assert.strictEqual(
         typeof isBlockedFirst,
         "boolean",
@@ -860,12 +865,19 @@ describe("Adversarial Storefront Regression & CRM LTV Verification Suite", () =>
       );
 
       // Toggle a second time: must invert
-      const isBlockedSecond = toggleSlotBlock(today, testTime);
+      const isBlockedSecond = toggleSlotBlock(testDate, testTime);
       assert.strictEqual(
         isBlockedSecond,
         !isBlockedFirst,
         "Second toggle must invert blocked state"
       );
+    });
+
+    it("4.6 should return 0 slots for closed days (Sunday & Monday)", () => {
+      // 2026-09-20 is Sunday, 2026-09-21 is Monday, 2026-09-22 is Tuesday
+      assert.strictEqual(getAvailableSlots("2026-09-20").length, 0, "Sunday must have 0 slots");
+      assert.strictEqual(getAvailableSlots("2026-09-21").length, 0, "Monday must have 0 slots");
+      assert.ok(getAvailableSlots("2026-09-22").length > 0, "Tuesday must have available slots");
     });
   });
 });

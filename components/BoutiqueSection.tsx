@@ -226,9 +226,9 @@ export default function BoutiqueSection() {
                     Orari di Apertura
                   </h4>
                   <p className="text-sm font-semibold text-[#1F1B24]">
-                    Lunedì – Sabato: 09:30 – 14:00 / 16:00 – 19:30
+                    Martedì – Sabato: 09:30 – 14:00 / 16:00 – 19:30
                   </p>
-                  <p className="text-xs text-neutral-500">Domenica: Chiuso</p>
+                  <p className="text-xs text-neutral-500">Lunedì e Domenica: Chiuso</p>
                 </div>
               </div>
 
