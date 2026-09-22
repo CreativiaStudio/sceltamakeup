@@ -828,24 +828,24 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div
-        className="bg-white rounded-3xl shadow-2xl border border-[#D8C2E7]/80 w-full max-w-xl overflow-hidden animate-in zoom-in-95 duration-200"
+        className="bg-white rounded-3xl shadow-2xl border border-[#D8C2E7]/80 w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Modal Top Header */}
-        <div className="bg-gradient-to-r from-[#1F1B24] via-[#352542] to-[#5E1788] text-white p-5 flex items-center justify-between">
+        {/* Modal Top Header (Compact) */}
+        <div className="bg-gradient-to-r from-[#1F1B24] via-[#352542] to-[#5E1788] text-white px-5 py-3 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
-              <Barcode className="w-5 h-5 text-[#D462A6]" />
+            <div className="w-8 h-8 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+              <Barcode className="w-4 h-4 text-[#D462A6]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-                <span className="text-xs font-mono font-bold tracking-wider uppercase text-emerald-300">
-                  Scansione Pistola Rilevata
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-emerald-300">
+                  Scansione Barcode Cassa
                 </span>
               </div>
-              <h3 className="font-mono text-base font-bold text-white tracking-widest mt-0.5">
-                {scannedBarcode}
+              <h3 className="font-mono text-sm sm:text-base font-bold text-white tracking-wider leading-none">
+                {scannedBarcode || "Attesa scansione..."}
               </h3>
             </div>
           </div>
@@ -853,24 +853,24 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
           <button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/80 hover:text-white transition-colors"
+            className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/80 hover:text-white transition-colors cursor-pointer"
             title="Chiudi finestra (Esc)"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Modal Body */}
-        <div className="p-6 space-y-6">
+        {/* Top Controls: Toast & Search bar (Compact shrink-0) */}
+        <div className="px-5 pt-3 pb-1 shrink-0 space-y-2">
           {successToast && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-2xl text-xs font-semibold text-emerald-800 flex items-center gap-2">
+            <div className="p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-semibold text-emerald-800 flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
               <span>{successToast}</span>
             </div>
           )}
 
           {/* Quick Barcode / SKU Switcher or Manual Typing */}
-          <div className="flex items-center gap-2 bg-[#FAF7FC] p-2 rounded-2xl border border-[#D8C2E7]/70">
+          <div className="flex items-center gap-2 bg-[#FAF7FC] p-1.5 rounded-xl border border-[#D8C2E7]/70">
             <input
               type="text"
               value={manualSearchInput}
@@ -884,7 +884,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                 }
               }}
               placeholder="Digita o cerca per codice a barre (EAN / SKU)..."
-              className="flex-1 px-3 py-1.5 text-xs bg-white rounded-xl border border-[#D8C2E7]/60 text-[#1F1B24] placeholder-gray-400 focus:outline-none focus:border-[#5E1788]"
+              className="flex-1 px-3 py-1 text-xs bg-white rounded-lg border border-[#D8C2E7]/60 text-[#1F1B24] placeholder-gray-400 focus:outline-none focus:border-[#5E1788]"
             />
             <button
               type="button"
@@ -893,228 +893,233 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                   handleBarcodeScanned(manualSearchInput.trim());
                 }
               }}
-              className="px-3 py-1.5 bg-[#5E1788] text-white text-xs font-bold rounded-xl hover:bg-[#4D1270] transition-colors shrink-0"
+              className="px-3 py-1 bg-[#5E1788] text-white text-xs font-bold rounded-lg hover:bg-[#4D1270] transition-colors shrink-0 cursor-pointer"
             >
               Cerca
             </button>
           </div>
+        </div>
 
+        {/* Modal Scrollable Body */}
+        <div className="px-5 pb-5 pt-1 flex-1 overflow-y-auto">
           {matchedProduct ? (
-            /* FOUND PRODUCT CARD */
-            <div className="space-y-6">
-              <div className="flex gap-5 items-start">
-                {/* Product Thumbnail + Photo Editing Controls */}
-                <div className="flex flex-col items-center gap-1.5 shrink-0">
-                  <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-[#FAF7FC] border border-[#D8C2E7]/60 overflow-hidden shadow-inner flex items-center justify-center">
-                    {thumbIsExternal ? (
-                      /* eslint-disable-next-line @next/next/no-img-element */
-                      <img
-                        src={thumbSrc}
-                        alt={matchedProduct.name}
-                        className="w-full h-full object-contain p-2"
-                      />
-                    ) : (
-                      <Image
-                        src={thumbSrc}
-                        alt={matchedProduct.name}
-                        fill
-                        sizes="112px"
-                        className="object-contain p-2"
-                      />
-                    )}
+            /* FOUND PRODUCT: TWO-COLUMN COCKPIT GRID ON DESKTOP */
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start pt-1">
+              {/* ========================================================= */}
+              {/* COLONNA SINISTRA: Prodotto, Foto, Giacenza & Sconto (7/12) */}
+              {/* ========================================================= */}
+              <div className="lg:col-span-7 space-y-3">
+                {/* 1. Scheda Prodotto Compatta */}
+                <div className="bg-[#FAF7FC] p-3.5 rounded-2xl border border-[#D8C2E7]/70 space-y-2.5">
+                  <div className="flex gap-3.5 items-start">
+                    {/* Thumbnail + Photo Editing */}
+                    <div className="flex flex-col items-center gap-1 shrink-0">
+                      <div className="relative w-20 h-20 sm:w-22 sm:h-22 rounded-xl bg-white border border-[#D8C2E7]/60 overflow-hidden shadow-2xs flex items-center justify-center">
+                        {thumbIsExternal ? (
+                          /* eslint-disable-next-line @next/next/no-img-element */
+                          <img
+                            src={thumbSrc}
+                            alt={matchedProduct.name}
+                            className="w-full h-full object-contain p-1.5"
+                          />
+                        ) : (
+                          <Image
+                            src={thumbSrc}
+                            alt={matchedProduct.name}
+                            fill
+                            sizes="88px"
+                            className="object-contain p-1.5"
+                          />
+                        )}
 
-                    {isUpdatingPhoto && (
-                      <div className="absolute inset-0 bg-white/70 backdrop-blur-[1px] flex items-center justify-center">
-                        <Loader2 className="w-6 h-6 animate-spin text-[#5E1788]" />
+                        {isUpdatingPhoto && (
+                          <div className="absolute inset-0 bg-white/70 backdrop-blur-[1px] flex items-center justify-center">
+                            <Loader2 className="w-5 h-5 animate-spin text-[#5E1788]" />
+                          </div>
+                        )}
+
+                        {/* Camera Overlay */}
+                        <button
+                          type="button"
+                          onClick={() => photoInputRef.current?.click()}
+                          disabled={isUpdatingPhoto}
+                          className="absolute bottom-1 right-1 w-6 h-6 rounded-full bg-[#5E1788]/95 hover:bg-[#4D1270] text-white flex items-center justify-center shadow-xs transition-all border border-white disabled:opacity-50 cursor-pointer"
+                          title="Carica foto dal PC/dispositivo"
+                        >
+                          <Camera className="w-3 h-3" />
+                        </button>
                       </div>
-                    )}
 
-                    {/* Camera quick-trigger overlay */}
-                    <button
-                      type="button"
-                      onClick={() => photoInputRef.current?.click()}
-                      disabled={isUpdatingPhoto}
-                      className="absolute bottom-1 right-1 w-8 h-8 rounded-full bg-[#5E1788]/95 hover:bg-[#4D1270] text-white flex items-center justify-center shadow-md transition-all border-2 border-white disabled:opacity-50"
-                      title="Carica una nuova foto dal dispositivo"
-                    >
-                      <Camera className="w-4 h-4" />
-                    </button>
+                      {/* Photo triggers */}
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => photoInputRef.current?.click()}
+                          disabled={isUpdatingPhoto}
+                          className="px-1.5 py-0.5 rounded-md bg-purple-50 border border-purple-200 hover:bg-purple-100 text-[#5E1788] text-[9px] font-bold transition-colors flex items-center gap-1 disabled:opacity-50 cursor-pointer"
+                          title="Carica foto dal PC"
+                        >
+                          <Camera className="w-2.5 h-2.5" />
+                          <span>Foto</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setShowUrlInput((s) => !s)}
+                          className={`px-1.5 py-0.5 rounded-md border text-[9px] font-bold transition-colors flex items-center gap-1 cursor-pointer ${
+                            showUrlInput
+                              ? "bg-[#D462A6] border-[#D462A6] text-white"
+                              : "bg-white border-[#D8C2E7] hover:bg-pink-50 text-[#D462A6]"
+                          }`}
+                          title="Inserisci URL immagine"
+                        >
+                          <LinkIcon className="w-2.5 h-2.5" />
+                          <span>URL</span>
+                        </button>
+                      </div>
+
+                      <input
+                        ref={photoInputRef}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handlePhotoFileSelected}
+                      />
+                    </div>
+
+                    {/* Titles, Brand, Price */}
+                    <div className="flex-1 min-w-0 space-y-1">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="px-2 py-0.5 rounded-full bg-purple-100 text-[#5E1788] text-[9px] font-bold uppercase tracking-wider">
+                          {matchedProduct.brand}
+                        </span>
+                        <span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-[9px] font-semibold">
+                          {matchedProduct.category}
+                        </span>
+                      </div>
+
+                      <h2 className="font-serif text-base sm:text-lg font-bold text-[#1F1B24] leading-snug line-clamp-2">
+                        {matchedProduct.name}
+                      </h2>
+
+                      {currentVariant && currentVariant.name && currentVariant.name !== "Standard" && (
+                        <div className="text-[11px] font-semibold text-[#D462A6] flex items-center gap-1">
+                          <Tag className="w-3 h-3" />
+                          <span className="truncate">Formato: {currentVariant.name}</span>
+                        </div>
+                      )}
+
+                      {/* Base Price + Inline Edit */}
+                      <div className="pt-0.5 flex items-center gap-2 flex-wrap">
+                        {isEditingPrice ? (
+                          <div className="flex items-center gap-1">
+                            <span className="text-lg font-mono font-bold text-[#5E1788]">€</span>
+                            <input
+                              type="number"
+                              step="0.01"
+                              min="0"
+                              value={priceEditValue}
+                              onChange={(e) => setPriceEditValue(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  e.preventDefault();
+                                  savePriceEdit();
+                                } else if (e.key === "Escape") {
+                                  e.preventDefault();
+                                  setIsEditingPrice(false);
+                                }
+                              }}
+                              autoFocus
+                              className="w-20 px-1.5 py-0.5 rounded border border-[#5E1788] text-base font-mono font-bold text-[#5E1788] focus:outline-none"
+                            />
+                            <button
+                              type="button"
+                              onClick={savePriceEdit}
+                              disabled={isUpdatingPrice}
+                              className="w-6 h-6 rounded bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition-colors disabled:opacity-50 cursor-pointer"
+                              title="Salva prezzo"
+                            >
+                              {isUpdatingPrice ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setIsEditingPrice(false)}
+                              className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center transition-colors cursor-pointer"
+                              title="Annulla"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ) : (
+                          <>
+                            <span className="text-xl font-mono font-bold text-[#5E1788]">
+                              €{baseListPrice.toFixed(2)}
+                            </span>
+                            {matchedProduct.originalPrice && (
+                              <span className="text-xs line-through text-gray-400 font-mono">
+                                €{matchedProduct.originalPrice.toFixed(2)}
+                              </span>
+                            )}
+                            <button
+                              type="button"
+                              onClick={startEditPrice}
+                              className="px-1.5 py-0.5 rounded bg-white border border-[#D8C2E7] hover:bg-purple-50 text-[#5E1788] text-[9px] font-bold transition-colors flex items-center gap-1 cursor-pointer"
+                              title="Modifica prezzo di listino"
+                            >
+                              <Pencil className="w-2.5 h-2.5" />
+                              <span>Modifica listino</span>
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Compact photo actions */}
-                  <div className="flex items-center gap-1">
-                    <button
-                      type="button"
-                      onClick={() => photoInputRef.current?.click()}
-                      disabled={isUpdatingPhoto}
-                      className="px-2 py-1 rounded-lg bg-purple-50 border border-purple-200 hover:bg-purple-100 text-[#5E1788] text-[10px] font-bold transition-colors flex items-center gap-1 disabled:opacity-50"
-                      title="Cambia foto dal dispositivo"
-                    >
-                      <Camera className="w-3 h-3" />
-                      <span>Foto</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setShowUrlInput((s) => !s)}
-                      className={`px-2 py-1 rounded-lg border text-[10px] font-bold transition-colors flex items-center gap-1 ${
-                        showUrlInput
-                          ? "bg-[#D462A6] border-[#D462A6] text-white"
-                          : "bg-[#FAF7FC] border-[#D8C2E7] hover:bg-pink-50 text-[#D462A6]"
-                      }`}
-                      title="Inserisci o incolla un URL immagine"
-                    >
-                      <LinkIcon className="w-3 h-3" />
-                      <span>URL</span>
-                    </button>
-                  </div>
-
-                  <input
-                    ref={photoInputRef}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handlePhotoFileSelected}
-                  />
-                </div>
-
-                {/* Info and Titles */}
-                <div className="flex-1 min-w-0 space-y-1.5">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full bg-purple-100 text-[#5E1788] text-[10px] font-bold uppercase tracking-wider">
-                      {matchedProduct.brand}
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-700 text-[10px] font-semibold">
-                      {matchedProduct.category}
-                    </span>
-                  </div>
-
-                  <h2 className="font-serif text-lg sm:text-xl font-bold text-[#1F1B24] leading-snug">
-                    {matchedProduct.name}
-                  </h2>
-
-                  {currentVariant && currentVariant.name && currentVariant.name !== "Standard" && (
-                    <div className="text-xs font-semibold text-[#D462A6] flex items-center gap-1.5 pt-0.5">
-                      <Tag className="w-3.5 h-3.5" />
-                      <span>Tonalità / Formato: {currentVariant.name}</span>
+                  {/* Optional Image URL input */}
+                  {showUrlInput && (
+                    <div className="flex items-center gap-1.5 bg-white p-1.5 rounded-xl border border-[#D8C2E7] animate-in fade-in duration-150">
+                      <LinkIcon className="w-3 h-3 text-[#D462A6] shrink-0 ml-1" />
+                      <input
+                        type="text"
+                        value={imageUrlInput}
+                        onChange={(e) => setImageUrlInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            handleSaveImageUrl();
+                          }
+                        }}
+                        placeholder="Incolla URL immagine (https://...)"
+                        className="flex-1 px-2 py-1 text-xs bg-gray-50 rounded-lg border border-gray-200 text-[#1F1B24] placeholder-gray-400 focus:outline-none focus:border-[#D462A6]"
+                        autoFocus
+                      />
+                      <button
+                        type="button"
+                        onClick={handleSaveImageUrl}
+                        disabled={!imageUrlInput.trim() || isUpdatingPhoto}
+                        className="px-2.5 py-1 bg-[#D462A6] text-white text-[10px] font-bold rounded-lg hover:bg-[#C15294] transition-colors shrink-0 disabled:opacity-50 cursor-pointer"
+                      >
+                        Applica
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowUrlInput(false)}
+                        className="w-6 h-6 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-200 flex items-center justify-center shrink-0 cursor-pointer"
+                        title="Chiudi"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
                     </div>
                   )}
-
-                  {/* Base List Price + Inline Editing */}
-                  <div className="pt-1 flex items-center gap-2.5 flex-wrap">
-                    {isEditingPrice ? (
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xl font-mono font-bold text-[#5E1788]">€</span>
-                        <input
-                          type="number"
-                          step="0.01"
-                          min="0"
-                          value={priceEditValue}
-                          onChange={(e) => setPriceEditValue(e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              e.preventDefault();
-                              savePriceEdit();
-                            } else if (e.key === "Escape") {
-                              e.preventDefault();
-                              setIsEditingPrice(false);
-                            }
-                          }}
-                          autoFocus
-                          className="w-24 px-2 py-1 rounded-lg border border-[#5E1788] text-xl font-mono font-bold text-[#5E1788] focus:outline-none focus:ring-2 focus:ring-[#D8C2E7]"
-                        />
-                        <button
-                          type="button"
-                          onClick={savePriceEdit}
-                          disabled={isUpdatingPrice}
-                          className="w-8 h-8 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition-colors disabled:opacity-50"
-                          title="Salva prezzo di listino"
-                        >
-                          {isUpdatingPrice ? (
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                          ) : (
-                            <Check className="w-4 h-4" />
-                          )}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setIsEditingPrice(false)}
-                          className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center transition-colors"
-                          title="Annulla modifica prezzo"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-                    ) : (
-                      <>
-                        <span className="text-2xl font-mono font-bold text-[#5E1788]">
-                          €{baseListPrice.toFixed(2)}
-                        </span>
-                        {matchedProduct.originalPrice && (
-                          <span className="text-sm line-through text-gray-400 font-mono">
-                            €{matchedProduct.originalPrice.toFixed(2)}
-                          </span>
-                        )}
-                        <button
-                          type="button"
-                          onClick={startEditPrice}
-                          className="px-2 py-1 rounded-lg bg-[#FAF7FC] border border-[#D8C2E7] hover:bg-purple-50 text-[#5E1788] text-[10px] font-bold transition-colors flex items-center gap-1"
-                          title="Modifica il prezzo di listino a catalogo"
-                        >
-                          <Pencil className="w-3 h-3" />
-                          <span>Modifica listino</span>
-                        </button>
-                      </>
-                    )}
-                  </div>
                 </div>
-              </div>
 
-              {/* Optional Image URL input */}
-              {showUrlInput && (
-                <div className="flex items-center gap-2 bg-[#FAF7FC] p-2 rounded-2xl border border-[#D8C2E7]/70 animate-in fade-in duration-150">
-                  <LinkIcon className="w-4 h-4 text-[#D462A6] shrink-0 ml-1" />
-                  <input
-                    type="text"
-                    value={imageUrlInput}
-                    onChange={(e) => setImageUrlInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        handleSaveImageUrl();
-                      }
-                    }}
-                    placeholder="Incolla URL immagine (https://...) e premi Applica"
-                    className="flex-1 px-3 py-1.5 text-xs bg-white rounded-xl border border-[#D8C2E7]/60 text-[#1F1B24] placeholder-gray-400 focus:outline-none focus:border-[#D462A6]"
-                    autoFocus
-                  />
-                  <button
-                    type="button"
-                    onClick={handleSaveImageUrl}
-                    disabled={!imageUrlInput.trim() || isUpdatingPhoto}
-                    className="px-3 py-1.5 bg-[#D462A6] text-white text-xs font-bold rounded-xl hover:bg-[#C15294] transition-colors shrink-0 disabled:opacity-50"
-                  >
-                    Applica
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowUrlInput(false)}
-                    className="w-8 h-8 rounded-xl bg-white border border-[#D8C2E7] text-gray-500 hover:bg-gray-50 flex items-center justify-center shrink-0"
-                    title="Chiudi"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              )}
-
-              {/* Stock and Real-Time Adjustment Bar */}
-              <div className="bg-[#FAF7FC] p-4 rounded-2xl border border-[#D8C2E7]/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <span className="text-[11px] font-bold text-[#1F1B24]/60 uppercase tracking-wider block">
-                    Giacenza a Banco Salone
-                  </span>
-                  <div className="flex items-center gap-2 mt-0.5">
+                {/* 2. Giacenza Bar (Ultra Compact) */}
+                <div className="bg-[#FAF7FC] px-3.5 py-2 rounded-2xl border border-[#D8C2E7]/60 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold text-[#1F1B24]/60 uppercase tracking-wider">
+                      Giacenza Salone:
+                    </span>
                     <span
-                      className={`w-3 h-3 rounded-full ${
+                      className={`w-2.5 h-2.5 rounded-full ${
                         currentStock > 4
                           ? "bg-emerald-500"
                           : currentStock > 0
@@ -1122,344 +1127,342 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                           : "bg-rose-500"
                       }`}
                     />
-                    <span className="text-lg font-mono font-bold text-[#1F1B24]">
+                    <span className="text-sm font-mono font-bold text-[#1F1B24]">
                       {currentStock} {currentStock === 1 ? "pezzo" : "pezzi"}
                     </span>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-[10px] text-gray-500 hidden sm:inline">
                       ({currentStock > 4 ? "Disponibile" : currentStock > 0 ? "Scorta Bassa" : "Esaurito"})
                     </span>
                   </div>
-                </div>
 
-                {/* 1-Click Fast Stock Increment / Decrement */}
-                <div className="flex items-center gap-2 self-end sm:self-center">
-                  <span className="text-xs font-semibold text-gray-600 mr-1">Regola:</span>
-                  <button
-                    type="button"
-                    onClick={() => handleAdjustStock(-1)}
-                    disabled={currentStock <= 0 || isStockUpdating}
-                    className="w-9 h-9 rounded-xl bg-white border border-[#D8C2E7] hover:bg-rose-50 hover:border-rose-300 text-rose-700 font-bold flex items-center justify-center transition-all shadow-xs disabled:opacity-40"
-                    title="Diminuisci giacenza (-1)"
-                  >
-                    <Minus className="w-4 h-4" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleAdjustStock(+1)}
-                    disabled={isStockUpdating}
-                    className="w-9 h-9 rounded-xl bg-white border border-[#D8C2E7] hover:bg-emerald-50 hover:border-emerald-300 text-emerald-700 font-bold flex items-center justify-center transition-all shadow-xs"
-                    title="Aumenta giacenza (+1)"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Estemporaneous Counter Discount */}
-              <div className="bg-gradient-to-r from-[#FAF7FC] via-white to-[#F7EFFA] p-4 rounded-2xl border border-[#D8C2E7]/80 space-y-3 shadow-xs">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-[#1F1B24] flex items-center gap-1.5">
-                    <BadgePercent className="w-4 h-4 text-[#D462A6]" />
-                    Sconto al Banco
-                    <span className="text-[10px] font-semibold text-gray-400 hidden sm:inline">
-                      (estemporaneo — solo questa vendita)
-                    </span>
-                  </span>
-                  {hasDiscount && (
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-semibold text-gray-500">Regola:</span>
                     <button
                       type="button"
-                      onClick={clearDiscount}
-                      className="text-[10px] font-bold text-gray-500 hover:text-rose-600 flex items-center gap-1 transition-colors"
-                      title="Azzera lo sconto"
+                      onClick={() => handleAdjustStock(-1)}
+                      disabled={currentStock <= 0 || isStockUpdating}
+                      className="w-7 h-7 rounded-lg bg-white border border-[#D8C2E7] hover:bg-rose-50 text-rose-700 font-bold flex items-center justify-center transition-all disabled:opacity-40 cursor-pointer shadow-2xs"
+                      title="Diminuisci giacenza (-1)"
                     >
-                      <X className="w-3 h-3" />
-                      <span>Azzera</span>
+                      <Minus className="w-3 h-3" />
                     </button>
-                  )}
-                </div>
-
-                {/* Quick percentage pills */}
-                <div className="flex flex-wrap gap-1.5">
-                  {[0, 5, 10, 15, 20, 30, 50].map((pct) => {
-                    const active =
-                      pct === 0
-                        ? discountMode === "none"
-                        : discountMode === "percent" && Math.round(discountPercent) === pct;
-                    return (
-                      <button
-                        key={pct}
-                        type="button"
-                        onClick={() => setPillDiscount(pct)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all cursor-pointer ${
-                          active
-                            ? "bg-[#5E1788] text-white border-[#5E1788] shadow-xs scale-105"
-                            : "bg-white text-[#5E1788] border-[#D8C2E7] hover:bg-purple-50"
-                        }`}
-                      >
-                        {pct === 0 ? "Nessuno" : `-${pct}%`}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Custom discount inputs */}
-                <div className="grid grid-cols-3 gap-2">
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-500 mb-0.5 uppercase tracking-wide">
-                      Sconto %
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      max="100"
-                      step="1"
-                      value={customPercent}
-                      onChange={(e) => onCustomPercent(e.target.value)}
-                      placeholder="es. 25"
-                      className="w-full px-2.5 py-1.5 rounded-xl border border-[#D8C2E7] text-xs font-mono font-bold text-[#5E1788] focus:outline-none focus:border-[#5E1788] bg-white"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-500 mb-0.5 uppercase tracking-wide">
-                      Sconto €
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={customAmount}
-                      onChange={(e) => onCustomAmount(e.target.value)}
-                      placeholder="es. 2.00"
-                      className="w-full px-2.5 py-1.5 rounded-xl border border-[#D8C2E7] text-xs font-mono font-bold text-[#5E1788] focus:outline-none focus:border-[#5E1788] bg-white"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-500 mb-0.5 uppercase tracking-wide">
-                      Prezzo finale €
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={customFinal}
-                      onChange={(e) => onCustomFinal(e.target.value)}
-                      placeholder={baseListPrice.toFixed(2)}
-                      className="w-full px-2.5 py-1.5 rounded-xl border border-[#D8C2E7] text-xs font-mono font-bold text-[#5E1788] focus:outline-none focus:border-[#5E1788] bg-white"
-                    />
-                  </div>
-                </div>
-
-                {/* Discount summary */}
-                <div className="p-3 rounded-xl bg-white border border-[#D8C2E7]/70 space-y-1.5">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-500 font-semibold">Prezzo listino</span>
-                    <span
-                      className={`font-mono font-bold ${
-                        hasDiscount ? "line-through text-gray-400" : "text-[#1F1B24]"
-                      }`}
+                    <button
+                      type="button"
+                      onClick={() => handleAdjustStock(+1)}
+                      disabled={isStockUpdating}
+                      className="w-7 h-7 rounded-lg bg-white border border-[#D8C2E7] hover:bg-emerald-50 text-emerald-700 font-bold flex items-center justify-center transition-all cursor-pointer shadow-2xs"
+                      title="Aumenta giacenza (+1)"
                     >
-                      €{baseListPrice.toFixed(2)}
-                    </span>
+                      <Plus className="w-3 h-3" />
+                    </button>
                   </div>
-                  {hasDiscount && (
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-gray-500 font-semibold">Sconto applicato</span>
-                      <span className="font-mono font-bold text-rose-600">
-                        -€{discountAmountValue.toFixed(2)} (-{effectiveDiscountPercent.toFixed(0)}%)
+                </div>
+
+                {/* 3. Sconto al Banco (Estemporaneo) */}
+                <div className="bg-gradient-to-r from-[#FAF7FC] via-white to-[#F7EFFA] p-3.5 rounded-2xl border border-[#D8C2E7]/80 space-y-2.5 shadow-2xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#1F1B24] flex items-center gap-1.5">
+                      <BadgePercent className="w-3.5 h-3.5 text-[#D462A6]" />
+                      Sconto al Banco
+                      <span className="text-[10px] font-semibold text-gray-400 hidden sm:inline">
+                        (solo vendita corrente)
+                      </span>
+                    </span>
+                    {hasDiscount && (
+                      <button
+                        type="button"
+                        onClick={clearDiscount}
+                        className="text-[10px] font-bold text-gray-500 hover:text-rose-600 flex items-center gap-1 transition-colors cursor-pointer"
+                        title="Azzera lo sconto"
+                      >
+                        <X className="w-3 h-3" />
+                        <span>Azzera</span>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Pills */}
+                  <div className="flex flex-wrap gap-1">
+                    {[0, 5, 10, 15, 20, 30, 50].map((pct) => {
+                      const active =
+                        pct === 0
+                          ? discountMode === "none"
+                          : discountMode === "percent" && Math.round(discountPercent) === pct;
+                      return (
+                        <button
+                          key={pct}
+                          type="button"
+                          onClick={() => setPillDiscount(pct)}
+                          className={`px-2.5 py-1 rounded-full text-[11px] font-bold border transition-all cursor-pointer ${
+                            active
+                              ? "bg-[#5E1788] text-white border-[#5E1788] shadow-2xs scale-105"
+                              : "bg-white text-[#5E1788] border-[#D8C2E7] hover:bg-purple-50"
+                          }`}
+                        >
+                          {pct === 0 ? "Nessuno" : `-${pct}%`}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Custom discount inputs */}
+                  <div className="grid grid-cols-3 gap-2 pt-0.5">
+                    <div>
+                      <label className="block text-[9px] font-bold text-gray-500 uppercase tracking-wide">
+                        Sconto %
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value={customPercent}
+                        onChange={(e) => onCustomPercent(e.target.value)}
+                        placeholder="es. 25"
+                        className="w-full px-2 py-1 rounded-lg border border-[#D8C2E7] text-xs font-mono font-bold text-[#5E1788] focus:outline-none focus:border-[#5E1788] bg-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[9px] font-bold text-gray-500 uppercase tracking-wide">
+                        Sconto €
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={customAmount}
+                        onChange={(e) => onCustomAmount(e.target.value)}
+                        placeholder="es. 2.00"
+                        className="w-full px-2 py-1 rounded-lg border border-[#D8C2E7] text-xs font-mono font-bold text-[#5E1788] focus:outline-none focus:border-[#5E1788] bg-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[9px] font-bold text-gray-500 uppercase tracking-wide">
+                        Prezzo finale €
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={customFinal}
+                        onChange={(e) => onCustomFinal(e.target.value)}
+                        placeholder={baseListPrice.toFixed(2)}
+                        className="w-full px-2 py-1 rounded-lg border border-[#D8C2E7] text-xs font-mono font-bold text-[#5E1788] focus:outline-none focus:border-[#5E1788] bg-white"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Summary */}
+                  <div className="px-3 py-2 rounded-xl bg-white border border-[#D8C2E7]/70 flex items-center justify-between">
+                    <div>
+                      <div className="text-[10px] text-gray-500">
+                        Prezzo listino:{" "}
+                        <span className={hasDiscount ? "line-through text-gray-400" : "font-bold text-[#1F1B24]"}>
+                          €{baseListPrice.toFixed(2)}
+                        </span>
+                        {hasDiscount && (
+                          <span className="font-bold text-rose-600 ml-1.5">
+                            -€{discountAmountValue.toFixed(2)} (-{effectiveDiscountPercent.toFixed(0)}%)
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-[10px] font-bold text-[#1F1B24] uppercase tracking-wide">
+                        Totale Netto:
                       </span>
                     </div>
-                  )}
-                  <div className="flex items-center justify-between pt-1.5 border-t border-[#D8C2E7]/60">
-                    <span className="text-[11px] font-bold text-[#1F1B24] uppercase tracking-wide">
-                      Totale Finale Scontato
-                    </span>
-                    <span className="text-2xl font-mono font-extrabold text-[#5E1788]">
+                    <span className="text-xl font-mono font-extrabold text-[#5E1788]">
                       €{finalTotal.toFixed(2)}
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* 1-Click Fast In-Store Checkout & Fiscal Print */}
-              <div className="bg-gradient-to-r from-purple-50 via-white to-pink-50 p-4 rounded-2xl border border-[#D8C2E7]/80 space-y-3 shadow-xs">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-[#1F1B24] flex items-center gap-1.5">
-                    <ShoppingBag className="w-4 h-4 text-[#5E1788]" />
-                    Incasso Diretto al Banco
-                  </span>
+              {/* ========================================================= */}
+              {/* COLONNA DESTRA: Incasso, Resto, Scontrino & Azioni (5/12) */}
+              {/* ========================================================= */}
+              <div className="lg:col-span-5 space-y-3 flex flex-col justify-between">
+                {/* 1-Click Fast In-Store Checkout & Fiscal Print */}
+                <div className="bg-gradient-to-r from-purple-50 via-white to-pink-50 p-3.5 rounded-2xl border border-[#D8C2E7]/80 space-y-3 shadow-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#1F1B24] flex items-center gap-1.5">
+                      <ShoppingBag className="w-4 h-4 text-[#5E1788]" />
+                      Incasso Diretto
+                    </span>
 
-                  {/* Payment Method Selector */}
-                  <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-[#D8C2E7]/60 shadow-2xs">
-                    <button
-                      type="button"
-                      onClick={() => setCheckoutPaymentMethod("card")}
-                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                        checkoutPaymentMethod === "card"
-                          ? "bg-[#5E1788] text-white shadow-xs"
-                          : "text-gray-600 hover:text-[#5E1788]"
-                      }`}
-                    >
-                      <CreditCard className="w-3.5 h-3.5" />
-                      <span>myPOS / Carta</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setCheckoutPaymentMethod("cash")}
-                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                        checkoutPaymentMethod === "cash"
-                          ? "bg-[#1F1B24] text-white shadow-xs"
-                          : "text-gray-600 hover:text-[#1F1B24]"
-                      }`}
-                    >
-                      <Banknote className="w-3.5 h-3.5" />
-                      <span>Contanti</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Cash & Change Calculator Section */}
-                {checkoutPaymentMethod === "cash" && (
-                  <div className="p-3.5 bg-emerald-50/90 border border-emerald-200 rounded-2xl space-y-3 animate-in fade-in duration-150">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-emerald-950 flex items-center gap-1.5">
-                        <Coins className="w-4 h-4 text-emerald-700" />
-                        <span>Calcolo Resto al Banco</span>
-                      </span>
-                      <span className="text-xs font-semibold text-emerald-800">
-                        Totale: <strong>€{finalTotal.toFixed(2)}</strong>
-                      </span>
-                    </div>
-
-                    {/* Quick Preset Buttons for Common Banknotes */}
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <span className="text-[11px] font-semibold text-emerald-900 mr-1">Banconota:</span>
-                      {[
-                        { label: `Esatto (€${finalTotal.toFixed(2)})`, val: finalTotal },
-                        { label: "€5", val: 5 },
-                        { label: "€10", val: 10 },
-                        { label: "€20", val: 20 },
-                        { label: "€50", val: 50 },
-                      ].map((preset) => (
-                        <button
-                          key={preset.label}
-                          type="button"
-                          onClick={() => setCashTendered(preset.val.toFixed(2))}
-                          className={`px-2.5 py-1 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
-                            cashNum === preset.val
-                              ? "bg-emerald-700 text-white border-emerald-800 shadow-xs scale-105"
-                              : "bg-white text-emerald-900 border-emerald-300 hover:bg-emerald-100"
-                          }`}
-                        >
-                          {preset.label}
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Custom Input & Live Change Display */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center pt-1">
-                      <div>
-                        <label className="block text-[11px] font-bold text-emerald-950 mb-1">
-                          Contante Ricevuto (€)
-                        </label>
-                        <div className="relative">
-                          <input
-                            type="number"
-                            step="0.01"
-                            min="0"
-                            value={cashTendered}
-                            onChange={(e) => setCashTendered(e.target.value)}
-                            placeholder="es. 10.00"
-                            className="w-full pl-7 pr-3 py-2 bg-white rounded-xl border border-emerald-300 text-sm font-bold text-emerald-950 focus:outline-none focus:border-emerald-600 shadow-2xs"
-                          />
-                          <span className="absolute left-2.5 top-2 text-xs font-bold text-emerald-700">€</span>
-                        </div>
-                      </div>
-
-                      <div
-                        className={`p-2.5 rounded-xl border flex flex-col justify-center ${
-                          cashNum < finalTotal
-                            ? "bg-rose-50 border-rose-200 text-rose-800"
-                            : "bg-white border-emerald-300 text-emerald-900 shadow-xs"
+                    {/* Payment Method Selector */}
+                    <div className="flex items-center gap-1 bg-white p-0.5 rounded-lg border border-[#D8C2E7]/60 shadow-2xs">
+                      <button
+                        type="button"
+                        onClick={() => setCheckoutPaymentMethod("card")}
+                        className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                          checkoutPaymentMethod === "card"
+                            ? "bg-[#5E1788] text-white shadow-xs"
+                            : "text-gray-600 hover:text-[#5E1788]"
                         }`}
                       >
-                        <span className="text-[10px] uppercase tracking-wider font-bold opacity-75">
-                          {cashNum < finalTotal ? "Importo Mancante" : "Resto da Consegnare"}
-                        </span>
-                        <span
-                          className={`text-xl sm:text-2xl font-mono font-extrabold ${
-                            cashNum < finalTotal ? "text-rose-600" : "text-emerald-700"
-                          }`}
-                        >
-                          {cashNum < finalTotal
-                            ? `- €${(finalTotal - cashNum).toFixed(2)}`
-                            : `€${changeDue.toFixed(2)}`}
-                        </span>
-                      </div>
+                        <CreditCard className="w-3 h-3" />
+                        <span>Carta</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setCheckoutPaymentMethod("cash")}
+                        className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                          checkoutPaymentMethod === "cash"
+                            ? "bg-[#1F1B24] text-white shadow-xs"
+                            : "text-gray-600 hover:text-[#1F1B24]"
+                        }`}
+                      >
+                        <Banknote className="w-3 h-3" />
+                        <span>Contanti</span>
+                      </button>
                     </div>
                   </div>
-                )}
 
-                <button
-                  type="button"
-                  onClick={handleInstantCheckout}
-                  disabled={isCheckingOut || currentStock <= 0}
-                  className={`w-full py-3.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer ${
-                    checkoutPaymentMethod === "cash"
-                      ? "bg-gradient-to-r from-emerald-600 to-[#5E1788] hover:from-emerald-700 hover:to-[#4D1270] text-white"
-                      : "bg-gradient-to-r from-[#5E1788] to-[#7A3293] hover:from-[#4D1270] hover:to-[#5E1788] text-white"
-                  }`}
-                >
-                  {isCheckingOut ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Emissione scontrino e apertura cassa...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Printer className="w-4 h-4" />
-                      <span>
-                        {checkoutPaymentMethod === "cash"
-                          ? cashNum > finalTotal
-                            ? `Incassa €${cashNum.toFixed(2)} (Resto: €${changeDue.toFixed(2)}) & Apri Cassetto RT`
-                            : `Incassa €${finalTotal.toFixed(2)} & Apri Cassetto RT`
-                          : `Incassa €${finalTotal.toFixed(2)} & Stampa Scontrino RT`}
-                      </span>
-                    </>
+                  {/* Cash & Change Calculator Section */}
+                  {checkoutPaymentMethod === "cash" && (
+                    <div className="p-3 bg-emerald-50/90 border border-emerald-200 rounded-xl space-y-2.5 animate-in fade-in duration-150">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-bold text-emerald-950 flex items-center gap-1">
+                          <Coins className="w-3.5 h-3.5 text-emerald-700" />
+                          <span>Calcolo Resto</span>
+                        </span>
+                        <span className="text-[11px] font-semibold text-emerald-800">
+                          Totale: <strong>€{finalTotal.toFixed(2)}</strong>
+                        </span>
+                      </div>
+
+                      {/* Presets */}
+                      <div className="flex flex-wrap items-center gap-1">
+                        <span className="text-[10px] font-semibold text-emerald-900 mr-0.5">Tagli:</span>
+                        {[
+                          { label: `Esatto (€${finalTotal.toFixed(2)})`, val: finalTotal },
+                          { label: "€5", val: 5 },
+                          { label: "€10", val: 10 },
+                          { label: "€20", val: 20 },
+                          { label: "€50", val: 50 },
+                        ].map((preset) => (
+                          <button
+                            key={preset.label}
+                            type="button"
+                            onClick={() => setCashTendered(preset.val.toFixed(2))}
+                            className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border transition-all cursor-pointer ${
+                              cashNum === preset.val
+                                ? "bg-emerald-700 text-white border-emerald-800 shadow-2xs scale-105"
+                                : "bg-white text-emerald-900 border-emerald-300 hover:bg-emerald-100"
+                            }`}
+                          >
+                            {preset.label}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Custom Input & Live Change */}
+                      <div className="grid grid-cols-2 gap-2 items-center pt-0.5">
+                        <div>
+                          <label className="block text-[10px] font-bold text-emerald-950 mb-0.5">
+                            Ricevuto (€)
+                          </label>
+                          <div className="relative">
+                            <input
+                              type="number"
+                              step="0.01"
+                              min="0"
+                              value={cashTendered}
+                              onChange={(e) => setCashTendered(e.target.value)}
+                              placeholder="10.00"
+                              className="w-full pl-6 pr-2 py-1.5 bg-white rounded-lg border border-emerald-300 text-xs font-bold text-emerald-950 focus:outline-none focus:border-emerald-600 shadow-2xs"
+                            />
+                            <span className="absolute left-2 top-1.5 text-xs font-bold text-emerald-700">€</span>
+                          </div>
+                        </div>
+
+                        <div
+                          className={`p-1.5 rounded-lg border flex flex-col justify-center text-center ${
+                            cashNum < finalTotal
+                              ? "bg-rose-50 border-rose-200 text-rose-800"
+                              : "bg-white border-emerald-300 text-emerald-900 shadow-2xs"
+                          }`}
+                        >
+                          <span className="text-[9px] uppercase tracking-wider font-bold opacity-75">
+                            {cashNum < finalTotal ? "Mancano" : "Resto"}
+                          </span>
+                          <span
+                            className={`text-lg font-mono font-extrabold ${
+                              cashNum < finalTotal ? "text-rose-600" : "text-emerald-700"
+                            }`}
+                          >
+                            {cashNum < finalTotal
+                              ? `- €${(finalTotal - cashNum).toFixed(2)}`
+                              : `€${changeDue.toFixed(2)}`}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   )}
-                </button>
-              </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2">
-                <div className="flex items-center gap-2">
+                  {/* Main Checkout Action Button */}
                   <button
                     type="button"
-                    onClick={handleOpenCashDrawerOnly}
-                    className="px-3 py-2 rounded-xl bg-purple-50 border border-purple-200 hover:bg-purple-100 text-[#5E1788] text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
-                    title="Invia impulso alla porta cassetto della cassa Epson"
+                    onClick={handleInstantCheckout}
+                    disabled={isCheckingOut || currentStock <= 0}
+                    className={`w-full py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-98 ${
+                      checkoutPaymentMethod === "cash"
+                        ? "bg-gradient-to-r from-emerald-600 to-[#5E1788] hover:from-emerald-700 hover:to-[#4D1270] text-white"
+                        : "bg-gradient-to-r from-[#5E1788] to-[#7A3293] hover:from-[#4D1270] hover:to-[#5E1788] text-white"
+                    }`}
                   >
-                    <Unlock className="w-3.5 h-3.5 text-[#5E1788]" />
-                    <span>Apri Solo Cassetto</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleVoidOpenReceipt}
-                    className="px-3 py-2 rounded-xl bg-amber-50 border border-amber-300 hover:bg-amber-100 text-amber-800 text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
-                    title="Annulla lo scontrino rimasto aperto e sblocca la cassa"
-                  >
-                    <AlertCircle className="w-3.5 h-3.5 text-amber-600" />
-                    <span className="hidden sm:inline">Sblocca Cassa</span>
+                    {isCheckingOut ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Stampa scontrino in corso...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Printer className="w-4 h-4" />
+                        <span>
+                          {checkoutPaymentMethod === "cash"
+                            ? cashNum > finalTotal
+                              ? `Incassa €${cashNum.toFixed(2)} (Resto: €${changeDue.toFixed(2)})`
+                              : `Incassa €${finalTotal.toFixed(2)} & Apri Cassetto`
+                            : `Incassa €${finalTotal.toFixed(2)} & Stampa Scontrino`}
+                        </span>
+                      </>
+                    )}
                   </button>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setIsOpen(false)}
-                  className="px-5 py-2 rounded-xl border border-[#D8C2E7] text-gray-700 text-xs font-bold hover:bg-gray-50 transition-colors cursor-pointer"
-                >
-                  Chiudi (Esc)
-                </button>
+                {/* Bottom Secondary Actions */}
+                <div className="flex items-center justify-between gap-2 pt-1">
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={handleOpenCashDrawerOnly}
+                      className="px-2.5 py-1.5 rounded-lg bg-purple-50 border border-purple-200 hover:bg-purple-100 text-[#5E1788] text-[11px] font-bold transition-colors flex items-center gap-1 cursor-pointer shadow-2xs"
+                      title="Apri cassetto Epson"
+                    >
+                      <Unlock className="w-3 h-3 text-[#5E1788]" />
+                      <span>Apri Cassetto</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleVoidOpenReceipt}
+                      className="px-2.5 py-1.5 rounded-lg bg-amber-50 border border-amber-300 hover:bg-amber-100 text-amber-800 text-[11px] font-bold transition-colors flex items-center gap-1 cursor-pointer"
+                      title="Annulla scontrino rimasto aperto"
+                    >
+                      <AlertCircle className="w-3 h-3 text-amber-600" />
+                      <span className="hidden sm:inline">Sblocca</span>
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsOpen(false)}
+                    className="px-4 py-1.5 rounded-lg border border-[#D8C2E7] text-gray-700 text-[11px] font-bold hover:bg-gray-50 transition-colors cursor-pointer"
+                  >
+                    Chiudi (Esc)
+                  </button>
+                </div>
               </div>
             </div>
           ) : (
