@@ -233,23 +233,58 @@ export function getAdminStoreState(): SceltaAdminStoreState {
       parsed.productOverrides = {};
     }
 
-    // Auto-heal variant stock images against verified catalog to purge any stale client cache
-    // Preserves custom user overrides if images or product details were edited
+    // Auto-heal variant stock images, EANs, and sync any new variants from catalog
     if (parsed.variantStocks && typeof parsed.variantStocks === "object") {
       const products = rawCatalog as Product[];
       const overrides = (parsed.productOverrides || {}) as Record<string, Partial<Product>>;
+
+      // 1. Sync existing variant stocks (image, EAN, SKU)
       for (const vStock of Object.values(parsed.variantStocks as Record<string, SceltaVariantStock>)) {
         if (!vStock || !vStock.productId) continue;
-        // If product has custom overrides with images, preserve user's custom images!
-        if (overrides[vStock.productId]?.images && (overrides[vStock.productId]?.images?.length ?? 0) > 0) {
-          continue;
-        }
         const prod = products.find(p => p.id === vStock.productId);
         if (prod) {
           const freshVariant = prod.variants?.find(v => v.id === vStock.variantId);
-          const freshImg = freshVariant?.image || (prod.images && prod.images[0]);
-          if (freshImg && vStock.image !== freshImg) {
-            vStock.image = freshImg;
+          if (freshVariant) {
+            // Sync EAN and SKU from catalog if not overridden
+            if (freshVariant.ean && vStock.ean !== freshVariant.ean && !overrides[prod.id]?.variants) {
+              vStock.ean = freshVariant.ean;
+            }
+            if (freshVariant.sku && vStock.sku !== freshVariant.sku && !overrides[prod.id]?.variants) {
+              vStock.sku = freshVariant.sku;
+            }
+            // Sync image if not custom overridden
+            if (!overrides[vStock.productId]?.images || (overrides[vStock.productId]?.images?.length ?? 0) === 0) {
+              const freshImg = freshVariant.image || (prod.images && prod.images[0]);
+              if (freshImg && vStock.image !== freshImg) {
+                vStock.image = freshImg;
+              }
+            }
+          }
+        }
+      }
+
+      // 2. Add any newly defined variants from catalog that are missing in local storage cache
+      for (const prod of products) {
+        if (!prod.variants) continue;
+        for (const v of prod.variants) {
+          if (!parsed.variantStocks[v.id]) {
+            parsed.variantStocks[v.id] = {
+              variantId: v.id,
+              productId: prod.id,
+              sku: v.sku,
+              ean: v.ean || "",
+              name: v.name,
+              colorHex: v.colorHex || undefined,
+              stockQuantity: typeof v.stock === "number" ? v.stock : 0,
+              stockStatus: computeStockStatus(typeof v.stock === "number" ? v.stock : 0),
+              price: v.price !== undefined ? v.price : prod.price,
+              originalWholesalePrice: v.originalWholesalePrice !== undefined ? v.originalWholesalePrice : prod.originalWholesalePrice,
+              productName: prod.name,
+              brand: prod.brand,
+              category: prod.category,
+              image: v.image || (prod.images && prod.images[0]) || "",
+              updatedAt: new Date().toISOString(),
+            };
           }
         }
       }

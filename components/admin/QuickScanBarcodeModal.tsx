@@ -90,7 +90,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       }
     }
 
-    // Search in raw catalog
+    // Search in raw catalog variants & shades
     for (const product of ALL_PRODUCTS) {
       if (product.variants) {
         const vIdx = product.variants.findIndex(
@@ -103,6 +103,36 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
           return {
             product: override ? { ...product, ...override } : product,
             variantIndex: vIdx,
+          };
+        }
+      }
+
+      if (product.shades) {
+        const sIdx = product.shades.findIndex(
+          (s) => s.code && s.code.trim().toUpperCase() === cleanUpper
+        );
+        if (sIdx !== -1) {
+          const override = overrides[product.id];
+          return {
+            product: override ? { ...product, ...override } : product,
+            variantIndex: sIdx,
+          };
+        }
+      }
+    }
+
+    // Search in synchronized variantStocks
+    for (const vStock of Object.values(state.variantStocks || {})) {
+      if (
+        (vStock.ean && vStock.ean.trim().toUpperCase() === cleanUpper) ||
+        (vStock.sku && vStock.sku.trim().toUpperCase() === cleanUpper)
+      ) {
+        const prod = ALL_PRODUCTS.find((p) => p.id === vStock.productId);
+        if (prod) {
+          const vIdx = (prod.variants || []).findIndex((v) => v.id === vStock.variantId);
+          return {
+            product: overrides[prod.id] ? { ...prod, ...overrides[prod.id] } : prod,
+            variantIndex: vIdx >= 0 ? vIdx : 0,
           };
         }
       }

@@ -6992,13 +6992,13 @@
   {
     "id": "ddp-pf01631",
     "slug": "diego-dalla-palma-professional-icon-time-maschera-viso-antieta-pro-collagen-8-pz-pf01631",
-    "name": "Icon Time Maschera Viso Antietà Pro-Collagen 8 pz",
+    "name": "Icon Time Maschera Viso Antietà Pro-Collagen",
     "brand": "Diego dalla Palma",
     "category": "Viso",
-    "description": "Icon Time Maschera Viso Antietà Pro-Collagen 8 pz. Linea antietà professionale con attivi ridensificanti e antiossidanti per una pelle visibilmente più giovane e compatta.",
-    "shortDescription": "Icon Time Maschera Viso Antietà Pro-Collagen 8 pz",
-    "price": 120,
-    "originalWholesalePrice": 18,
+    "description": "Icon Time Pro-Collagen Supermask, maschera viso antietà in biocellulosa imbevuta di siero concentrato a base di collagene e attivi biorivitalizzanti ad azione urto shock.",
+    "shortDescription": "Icon Time Maschera Viso Antietà Pro-Collagen Monouso",
+    "price": 15,
+    "originalWholesalePrice": 2.25,
     "badge": "Iconico",
     "badges": [
       "cruelty_free",
@@ -7018,9 +7018,19 @@
     "shades": [
       {
         "id": "var-pf01631",
-        "name": "Formato Originale",
-        "code": "PF01631",
+        "name": "Maschera Singola",
+        "code": "2PF01631",
         "hex": "#FAF7FC",
+        "image": "/products/ddp-pf01631.webp",
+        "price": 15,
+        "inStock": true,
+        "stock": 16
+      },
+      {
+        "id": "var-pf01631-box",
+        "name": "Cofanetto 8 pz",
+        "code": "PF01631",
+        "hex": "#E5E5E5",
         "image": "/products/ddp-pf01631.webp",
         "price": 120,
         "inStock": true,
@@ -7030,7 +7040,19 @@
     "variants": [
       {
         "id": "var-pf01631",
-        "name": "Formato Originale",
+        "name": "Maschera Singola",
+        "sku": "2PF01631",
+        "ean": "8023264528921",
+        "colorHex": null,
+        "image": "/products/ddp-pf01631.webp",
+        "inStock": true,
+        "price": 15,
+        "originalWholesalePrice": 2.25,
+        "stock": 16
+      },
+      {
+        "id": "var-pf01631-box",
+        "name": "Cofanetto Display 8 pz",
         "sku": "PF01631",
         "ean": "8023264527887",
         "colorHex": null,
@@ -7041,7 +7063,7 @@
         "stock": 2
       }
     ],
-    "stock": 2,
+    "stock": 16,
     "inStock": true,
     "image": "/products/ddp-pf01631.webp"
   },
