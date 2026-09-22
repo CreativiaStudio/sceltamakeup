@@ -253,6 +253,18 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       }
     }
 
+    // Direct match by product ID or slug (e.g. from Test Cassa button on products without EAN)
+    const directProd = ALL_PRODUCTS.find(
+      (p) => p.id.toUpperCase() === cleanUpper || p.slug.toUpperCase() === cleanUpper
+    );
+    if (directProd) {
+      const override = overrides[directProd.id];
+      return {
+        product: override ? { ...directProd, ...override } : directProd,
+        variantIndex: 0,
+      };
+    }
+
     return null;
   }, []);
 
@@ -660,8 +672,6 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     setSuccessToast("✅ Prodotto registrato e associato al codice a barre!");
   };
 
-  if (!isOpen) return null;
-
   const currentVariant = matchedProduct?.variants?.[matchedVariantIndex];
   // Original catalog list price (before any counter discount)
   const baseListPrice = (currentVariant?.price ?? matchedProduct?.price) || 1.0;
@@ -932,6 +942,8 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     setCustomFinal("");
     applyDiscount("none", 0, 0);
   };
+
+  if (!isOpen) return null;
 
   return (
     <div
