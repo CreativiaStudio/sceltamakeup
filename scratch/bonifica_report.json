@@ -1,22 +1,23 @@
 {
-  "generatedAt": "2026-09-22T10:10:18.482Z",
+  "generatedAt": "2026-09-22T10:19:06.168Z",
   "totals": {
     "productsResearched": 86,
-    "productsUpdated": 85,
-    "imagesDownloaded": 85,
+    "productsUpdated": 86,
+    "imagesDownloaded": 86,
     "imagesFailed": 0,
+    "orphanFilesRemoved": 0,
     "catalogTotal": 346,
     "catalogOtherBrandsIntact": 260,
     "catalogDdpProducts": 86
   },
   "pricing": {
     "avgPriceBefore": 49.94,
-    "avgPriceAfter": 42.9,
+    "avgPriceAfter": 42.96,
     "cabinaMarkup": "wholesale * 1.77 (arrotondamento psicologico a euro interi)",
     "cabinaCount": 27
   },
   "brands": {
-    "Diego dalla Palma Professional": 78,
+    "Diego dalla Palma Professional": 79,
     "RVB LAB The Make Up": 4,
     "Diego dalla Palma": 3
   },
@@ -27,10 +28,10 @@
       "newName": "Sun Shampoo Doccia Dopo Sole 250 ml",
       "oldPrice": 22.8,
       "newPrice": 24.5,
+      "oldImage": "/products/ddp-dhc110160-authentic.jpg",
       "newImage": "/products/ddp-dhc110160.webp",
       "type": "retail",
-      "line": "Sun & Hair",
-      "oldImage": "/products/ddp-dhc110160-authentic.jpg"
+      "line": "Sun & Hair"
     },
     {
       "sku": "DHC120160",
@@ -38,10 +39,10 @@
       "newName": "Sun Mask Maschera Dopo Sole Riparatrice 200 ml",
       "oldPrice": 22.8,
       "newPrice": 24.5,
+      "oldImage": "/products/ddp-dhc120160-authentic.jpg",
       "newImage": "/products/ddp-dhc120160.webp",
       "type": "retail",
-      "line": "Sun & Hair",
-      "oldImage": "/products/ddp-dhc120160-authentic.jpg"
+      "line": "Sun & Hair"
     },
     {
       "sku": "DHC120161",
@@ -49,10 +50,10 @@
       "newName": "Sun Oil Olio Spray Protettivo Illuminante",
       "oldPrice": 22.8,
       "newPrice": 24.5,
+      "oldImage": "/products/ddp-dhc120161-authentic.jpg",
       "newImage": "/products/ddp-dhc120161.webp",
       "type": "retail",
-      "line": "Sun & Hair",
-      "oldImage": "/products/ddp-dhc120161-authentic.jpg"
+      "line": "Sun & Hair"
     },
     {
       "sku": "MF106021",
@@ -60,10 +61,10 @@
       "newName": "Delineatore Sopracciglia in Crema 21",
       "oldPrice": 48.3,
       "newPrice": 21.9,
+      "oldImage": "/products/ddp-mf106021.webp",
       "newImage": "/products/ddp-mf106021.webp",
       "type": "retail",
-      "line": "RVB LAB",
-      "oldImage": "/products/ddp-mf106021.webp"
+      "line": "RVB LAB"
     },
     {
       "sku": "MF151002",
@@ -71,10 +72,10 @@
       "newName": "Base Trucco Levigante Rinnovata",
       "oldPrice": 48.3,
       "newPrice": 31.5,
+      "oldImage": "/products/ddp-mf151002.webp",
       "newImage": "/products/ddp-mf151002.webp",
       "type": "retail",
-      "line": "RVB LAB",
-      "oldImage": "/products/ddp-mf151002.webp"
+      "line": "RVB LAB"
     },
     {
       "sku": "MF152001A",
@@ -82,10 +83,10 @@
       "newName": "Struccante Bifasico 125 ml",
       "oldPrice": 48.3,
       "newPrice": 28,
+      "oldImage": "/products/ddp-mf152001a.webp",
       "newImage": "/products/ddp-mf152001a.webp",
       "type": "retail",
-      "line": "RVB LAB",
-      "oldImage": "/products/ddp-mf152001a.webp"
+      "line": "RVB LAB"
     },
     {
       "sku": "PF00855",
@@ -93,10 +94,10 @@
       "newName": "Icon Time Crema Antietà Ridensificante - Formato Cabina Salone",
       "oldPrice": 60.4,
       "newPrice": 39,
+      "oldImage": "/products/ddp-pf00855.webp",
       "newImage": "/products/ddp-pf00855.webp",
       "type": "cabina",
-      "line": "Icon Time",
-      "oldImage": "/products/ddp-pf00855.webp"
+      "line": "Icon Time"
     },
     {
       "sku": "PF00985",
@@ -104,10 +105,10 @@
       "newName": "Icon Time Trattamento Concentrato Ridensificante - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf00985.webp",
       "newImage": "/products/ddp-pf00985.webp",
       "type": "cabina",
-      "line": "Icon Time",
-      "oldImage": "/products/ddp-pf00985.webp"
+      "line": "Icon Time"
     },
     {
       "sku": "PF00995",
@@ -115,10 +116,10 @@
       "newName": "Icon Time Siero Ridensificante Antietà - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf00995.webp",
       "newImage": "/products/ddp-pf00995.webp",
       "type": "cabina",
-      "line": "Icon Time",
-      "oldImage": "/products/ddp-pf00995.webp"
+      "line": "Icon Time"
     },
     {
       "sku": "PF01065",
@@ -126,10 +127,10 @@
       "newName": "Icon Time Crema Contorno Occhi Correttiva - Formato Cabina Salone",
       "oldPrice": 60.4,
       "newPrice": 39,
+      "oldImage": "/products/ddp-pf01065.webp",
       "newImage": "/products/ddp-pf01065.webp",
       "type": "cabina",
-      "line": "Icon Time",
-      "oldImage": "/products/ddp-pf01065.webp"
+      "line": "Icon Time"
     },
     {
       "sku": "PF01181",
@@ -137,10 +138,10 @@
       "newName": "HA HERO Siero Idratazione Profonda 30 ml",
       "oldPrice": 48.3,
       "newPrice": 60,
+      "oldImage": "/products/ddp-pf01181.webp",
       "newImage": "/products/ddp-pf01181.webp",
       "type": "retail",
-      "line": "HA HERO",
-      "oldImage": "/products/ddp-pf01181.webp"
+      "line": "HA HERO"
     },
     {
       "sku": "PF01365",
@@ -148,10 +149,10 @@
       "newName": "HA HERO Lacto-Peeling Patch Maschera - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf01365-authentic.jpg",
       "newImage": "/products/ddp-pf01365.webp",
       "type": "cabina",
-      "line": "HA HERO",
-      "oldImage": "/products/ddp-pf01365-authentic.jpg"
+      "line": "HA HERO"
     },
     {
       "sku": "PF01375",
@@ -159,10 +160,10 @@
       "newName": "HA HERO Siero Fondamentale Idratazione - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf01375-authentic.jpg",
       "newImage": "/products/ddp-pf01375.webp",
       "type": "cabina",
-      "line": "HA HERO",
-      "oldImage": "/products/ddp-pf01375-authentic.jpg"
+      "line": "HA HERO"
     },
     {
       "sku": "PF01385",
@@ -170,10 +171,10 @@
       "newName": "HA HERO Hyalu-Maschera Assorbibile - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf01385-authentic.jpg",
       "newImage": "/products/ddp-pf01385.webp",
       "type": "cabina",
-      "line": "HA HERO",
-      "oldImage": "/products/ddp-pf01385-authentic.jpg"
+      "line": "HA HERO"
     },
     {
       "sku": "PF01395",
@@ -181,10 +182,10 @@
       "newName": "HA HERO Hyalu-Crema Gel Sorgente di Luce - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf01395-authentic.jpg",
       "newImage": "/products/ddp-pf01395.webp",
       "type": "cabina",
-      "line": "HA HERO",
-      "oldImage": "/products/ddp-pf01395-authentic.jpg"
+      "line": "HA HERO"
     },
     {
       "sku": "PF01405",
@@ -192,10 +193,10 @@
       "newName": "HA HERO Contorno Occhi all'Acido Ialuronico - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf01405-authentic.jpg",
       "newImage": "/products/ddp-pf01405.webp",
       "type": "cabina",
-      "line": "HA HERO",
-      "oldImage": "/products/ddp-pf01405-authentic.jpg"
+      "line": "HA HERO"
     },
     {
       "sku": "PF01411",
@@ -203,10 +204,10 @@
       "newName": "HA HERO Contorno Occhi all'Acido Ialuronico 15 ml",
       "oldPrice": 48.3,
       "newPrice": 45,
+      "oldImage": "/products/ddp-pf01411.jpg",
       "newImage": "/products/ddp-pf01411.webp",
       "type": "retail",
-      "line": "HA HERO",
-      "oldImage": "/products/ddp-pf01411.jpg"
+      "line": "HA HERO"
     },
     {
       "sku": "PF01421",
@@ -214,10 +215,10 @@
       "newName": "HA HERO Hyalu-Crema Gel Sorgente di Luce",
       "oldPrice": 48.3,
       "newPrice": 59,
+      "oldImage": "/products/ddp-pf01421.jpg",
       "newImage": "/products/ddp-pf01421.webp",
       "type": "retail",
-      "line": "HA HERO",
-      "oldImage": "/products/ddp-pf01421.jpg"
+      "line": "HA HERO"
     },
     {
       "sku": "PF01431",
@@ -225,10 +226,10 @@
       "newName": "HA HERO Hyalu-Crema Ricca Ultra Nutriente 50 ml",
       "oldPrice": 48.3,
       "newPrice": 65,
+      "oldImage": "/products/ddp-pf01431.jpg",
       "newImage": "/products/ddp-pf01431.webp",
       "type": "retail",
-      "line": "HA HERO",
-      "oldImage": "/products/ddp-pf01431.jpg"
+      "line": "HA HERO"
     },
     {
       "sku": "PF01441",
@@ -236,10 +237,10 @@
       "newName": "HA HERO Trattamento Labbra Riparatore 20 ml",
       "oldPrice": 48.3,
       "newPrice": 29.9,
+      "oldImage": "/products/ddp-pf01441.jpg",
       "newImage": "/products/ddp-pf01441.webp",
       "type": "retail",
-      "line": "HA HERO",
-      "oldImage": "/products/ddp-pf01441.jpg"
+      "line": "HA HERO"
     },
     {
       "sku": "PF01451",
@@ -247,10 +248,10 @@
       "newName": "Cell-Detoxium Struccante Micellare Bifasico 300 ml",
       "oldPrice": 48.3,
       "newPrice": 31,
+      "oldImage": "/products/ddp-pf01451.webp",
       "newImage": "/products/ddp-pf01451.webp",
       "type": "retail",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01451.webp"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01465",
@@ -258,10 +259,10 @@
       "newName": "Cell-Detoxium Latte Detergente Micellare - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf01541.jpg",
       "newImage": "/products/ddp-pf01465.webp",
       "type": "cabina",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01541.jpg"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01485",
@@ -269,10 +270,10 @@
       "newName": "Cell-Detoxium Esfoliante Enzimatico - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf01551.jpg",
       "newImage": "/products/ddp-pf01485.webp",
       "type": "cabina",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01551.jpg"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01495",
@@ -280,10 +281,10 @@
       "newName": "Cell-Detoxium Esfoliante Acido Mandelico - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf01561.jpg",
       "newImage": "/products/ddp-pf01495.webp",
       "type": "cabina",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01561.jpg"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01515",
@@ -291,10 +292,10 @@
       "newName": "Cell-Detoxium Super Estrattore Comedoni - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf01571.jpg",
       "newImage": "/products/ddp-pf01515.webp",
       "type": "cabina",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01571.jpg"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01525",
@@ -302,10 +303,10 @@
       "newName": "Cell-Detoxium Maschera Lenitiva - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf01581.jpg",
       "newImage": "/products/ddp-pf01525.webp",
       "type": "cabina",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01581.jpg"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01535",
@@ -313,10 +314,10 @@
       "newName": "Cell-Detoxium Crema da Massaggio - Formato Cabina Salone",
       "oldPrice": 60.4,
       "newPrice": 39,
+      "oldImage": "/products/ddp-pf01591.jpg",
       "newImage": "/products/ddp-pf01535.webp",
       "type": "cabina",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01591.jpg"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01541",
@@ -324,10 +325,10 @@
       "newName": "Cell-Detoxium Fluido Protezione Giornaliera SPF50 50 ml",
       "oldPrice": 48.3,
       "newPrice": 54,
+      "oldImage": "/products/ddp-pf01541.webp",
       "newImage": "/products/ddp-pf01541.webp",
       "type": "retail",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01541.webp"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01551",
@@ -335,10 +336,10 @@
       "newName": "Cell-Detoxium Latte Detergente Micellare 250 ml",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf01551.webp",
       "newImage": "/products/ddp-pf01551.webp",
       "type": "retail",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01551.webp"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01561",
@@ -346,10 +347,10 @@
       "newName": "Cell-Detoxium Tonico 250 ml",
       "oldPrice": 48.3,
       "newPrice": 31,
+      "oldImage": "/products/ddp-pf01561.webp",
       "newImage": "/products/ddp-pf01561.webp",
       "type": "retail",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01561.webp"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01571",
@@ -357,10 +358,10 @@
       "newName": "Cell-Detoxium Mousse Detergente 150 ml",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf01571.webp",
       "newImage": "/products/ddp-pf01571.webp",
       "type": "retail",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01571.webp"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01581",
@@ -368,10 +369,10 @@
       "newName": "Cell-Detoxium Booster Serum 50 ml",
       "oldPrice": 48.3,
       "newPrice": 65,
+      "oldImage": "/products/ddp-pf01581.webp",
       "newImage": "/products/ddp-pf01581.webp",
       "type": "retail",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01581.webp"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01591",
@@ -379,10 +380,10 @@
       "newName": "Cell-Detoxium Burro Struccante 125 ml",
       "oldPrice": 48.3,
       "newPrice": 49.5,
+      "oldImage": "/products/ddp-pf01591.webp",
       "newImage": "/products/ddp-pf01591.webp",
       "type": "retail",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01591.webp"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01601",
@@ -390,10 +391,10 @@
       "newName": "Cell-Detoxium Gommage Enzimatico 75 ml",
       "oldPrice": 48.3,
       "newPrice": 27,
+      "oldImage": "/products/ddp-pf01601.webp",
       "newImage": "/products/ddp-pf01601.webp",
       "type": "retail",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01601.webp"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01611",
@@ -401,10 +402,10 @@
       "newName": "Cell-Detoxium Maschera Viso Texturizzante 75 ml",
       "oldPrice": 48.3,
       "newPrice": 36,
+      "oldImage": "/products/ddp-pf01611.webp",
       "newImage": "/products/ddp-pf01611.webp",
       "type": "retail",
-      "line": "Cell-Detoxium",
-      "oldImage": "/products/ddp-pf01611.webp"
+      "line": "Cell-Detoxium"
     },
     {
       "sku": "PF01631",
@@ -412,10 +413,10 @@
       "newName": "Icon Time Maschera Viso Antietà Pro-Collagen 8 pz",
       "oldPrice": 48.3,
       "newPrice": 120,
+      "oldImage": "/products/ddp-pf01631.jpg",
       "newImage": "/products/ddp-pf01631.webp",
       "type": "retail",
-      "line": "Icon Time",
-      "oldImage": "/products/ddp-pf01631.jpg"
+      "line": "Icon Time"
     },
     {
       "sku": "PF01645",
@@ -423,10 +424,10 @@
       "newName": "Icon Time Siero Booster di Elastina - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf01631.jpg",
       "newImage": "/products/ddp-pf01645.webp",
       "type": "cabina",
-      "line": "Icon Time",
-      "oldImage": "/products/ddp-pf01631.jpg"
+      "line": "Icon Time"
     },
     {
       "sku": "PF01661",
@@ -434,10 +435,10 @@
       "newName": "Icon Time Radiance Collagen Booster Emulsione Viso Rassodante 50 ml",
       "oldPrice": 48.3,
       "newPrice": 105,
+      "oldImage": "/products/ddp-pf01661.jpg",
       "newImage": "/products/ddp-pf01661.webp",
       "type": "retail",
-      "line": "Icon Time",
-      "oldImage": "/products/ddp-pf01661.jpg"
+      "line": "Icon Time"
     },
     {
       "sku": "PF01671",
@@ -445,10 +446,10 @@
       "newName": "Icon Time Silver Crema Antietà Rivitalizzante 50 ml",
       "oldPrice": 60.4,
       "newPrice": 95,
+      "oldImage": "/products/ddp-pf01671.jpg",
       "newImage": "/products/ddp-pf01671.webp",
       "type": "retail",
-      "line": "Icon Time",
-      "oldImage": "/products/ddp-pf01671.jpg"
+      "line": "Icon Time"
     },
     {
       "sku": "PF01681",
@@ -456,10 +457,10 @@
       "newName": "Icon Time Gold Crema Antietà Ridensificante 50 ml",
       "oldPrice": 60.4,
       "newPrice": 90,
+      "oldImage": "/products/ddp-pf01681.jpg",
       "newImage": "/products/ddp-pf01681.webp",
       "type": "retail",
-      "line": "Icon Time",
-      "oldImage": "/products/ddp-pf01681.jpg"
+      "line": "Icon Time"
     },
     {
       "sku": "PF01691",
@@ -467,10 +468,10 @@
       "newName": "Icon Time Platinum Crema Antietà Rinnovatrice 50 ml",
       "oldPrice": 60.4,
       "newPrice": 95,
+      "oldImage": "/products/ddp-pf01691.jpg",
       "newImage": "/products/ddp-pf01691.webp",
       "type": "retail",
-      "line": "Icon Time",
-      "oldImage": "/products/ddp-pf01691.jpg"
+      "line": "Icon Time"
     },
     {
       "sku": "PF07001",
@@ -478,10 +479,10 @@
       "newName": "Metodo Nero Blend Relax Profumo 100 ml",
       "oldPrice": 48.3,
       "newPrice": 50,
+      "oldImage": "/products/ddp-pf00855.webp",
       "newImage": "/products/ddp-pf07001.webp",
       "type": "retail",
-      "line": "Metodo",
-      "oldImage": "/products/ddp-pf00855.webp"
+      "line": "Metodo"
     },
     {
       "sku": "PF08101",
@@ -489,10 +490,10 @@
       "newName": "Smart Pure Oxy-Active Gel Detergente",
       "oldPrice": 48.3,
       "newPrice": 31.5,
+      "oldImage": "/products/ddp-pf08101.webp",
       "newImage": "/products/ddp-pf08101.webp",
       "type": "retail",
-      "line": "Smart Pure",
-      "oldImage": "/products/ddp-pf08101.webp"
+      "line": "Smart Pure"
     },
     {
       "sku": "PF08111",
@@ -500,10 +501,10 @@
       "newName": "Smart Pure SOS Trattamento Rapido Anti-Imperfezioni",
       "oldPrice": 48.3,
       "newPrice": 43.5,
+      "oldImage": "/products/ddp-pf08111.webp",
       "newImage": "/products/ddp-pf08111.webp",
       "type": "retail",
-      "line": "Smart Pure",
-      "oldImage": "/products/ddp-pf08111.webp"
+      "line": "Smart Pure"
     },
     {
       "sku": "PF08121",
@@ -511,10 +512,10 @@
       "newName": "Smart Pure Pore-Stick Maschera Esfoliante",
       "oldPrice": 48.3,
       "newPrice": 31.5,
+      "oldImage": "/products/ddp-pf08111.webp",
       "newImage": "/products/ddp-pf08121.webp",
       "type": "retail",
-      "line": "Smart Pure",
-      "oldImage": "/products/ddp-pf08111.webp"
+      "line": "Smart Pure"
     },
     {
       "sku": "PF08131",
@@ -522,10 +523,10 @@
       "newName": "Smart Pure Pore Control Siero Concentrato",
       "oldPrice": 48.3,
       "newPrice": 60,
+      "oldImage": "/products/ddp-pf08131.webp",
       "newImage": "/products/ddp-pf08131.webp",
       "type": "retail",
-      "line": "Smart Pure",
-      "oldImage": "/products/ddp-pf08131.webp"
+      "line": "Smart Pure"
     },
     {
       "sku": "PF08141",
@@ -533,10 +534,10 @@
       "newName": "Smart Pure Crema Gel Sebo-Normalizzante",
       "oldPrice": 48.3,
       "newPrice": 43,
+      "oldImage": "/products/ddp-pf08141.webp",
       "newImage": "/products/ddp-pf08141.webp",
       "type": "retail",
-      "line": "Smart Pure",
-      "oldImage": "/products/ddp-pf08141.webp"
+      "line": "Smart Pure"
     },
     {
       "sku": "PF08145",
@@ -544,10 +545,10 @@
       "newName": "Smart Pure Crema Gel Sebo-Normalizzante - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf08145.webp",
       "newImage": "/products/ddp-pf08145.webp",
       "type": "cabina",
-      "line": "Smart Pure",
-      "oldImage": "/products/ddp-pf08145.webp"
+      "line": "Smart Pure"
     },
     {
       "sku": "PF08151",
@@ -555,10 +556,10 @@
       "newName": "Smart Pure Crema Opacizzante Antietà 50 ml",
       "oldPrice": 48.3,
       "newPrice": 66,
+      "oldImage": "/products/ddp-pf08151.webp",
       "newImage": "/products/ddp-pf08151.webp",
       "type": "retail",
-      "line": "Smart Pure",
-      "oldImage": "/products/ddp-pf08151.webp"
+      "line": "Smart Pure"
     },
     {
       "sku": "PF08165",
@@ -566,10 +567,10 @@
       "newName": "Smart Pure Maschera Purificante 200 ml - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf08165.webp",
       "newImage": "/products/ddp-pf08165.webp",
       "type": "cabina",
-      "line": "Smart Pure",
-      "oldImage": "/products/ddp-pf08165.webp"
+      "line": "Smart Pure"
     },
     {
       "sku": "PF58005",
@@ -577,10 +578,10 @@
       "newName": "Sculptorea Peeling Acidi Combinati - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf58005.webp",
       "newImage": "/products/ddp-pf58005.webp",
       "type": "cabina",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58005.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58015",
@@ -588,10 +589,10 @@
       "newName": "Sculptorea Carboxy Attivatore Ossigeno - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf58015.webp",
       "newImage": "/products/ddp-pf58015.webp",
       "type": "cabina",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58015.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58025",
@@ -599,10 +600,10 @@
       "newName": "Sculptorea Benda Termoattiva Cell-Lipo - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf58025.webp",
       "newImage": "/products/ddp-pf58025.webp",
       "type": "cabina",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58025.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58035",
@@ -610,10 +611,10 @@
       "newName": "Sculptorea Concentrato Anticellulite - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf58035.webp",
       "newImage": "/products/ddp-pf58035.webp",
       "type": "cabina",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58035.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58045",
@@ -621,10 +622,10 @@
       "newName": "Sculptorea Concentrato Tonificante - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf58045.webp",
       "newImage": "/products/ddp-pf58045.webp",
       "type": "cabina",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58045.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58055",
@@ -632,10 +633,10 @@
       "newName": "Sculptorea Concentrato Modellante 200 ml - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf58055.webp",
       "newImage": "/products/ddp-pf58055.webp",
       "type": "cabina",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58055.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58065",
@@ -643,10 +644,10 @@
       "newName": "Sculptorea Impacco a Mosaico Azione Drenante - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf58065.webp",
       "newImage": "/products/ddp-pf58065.webp",
       "type": "cabina",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58065.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58075",
@@ -654,10 +655,10 @@
       "newName": "Sculptorea Cell-Lipo Crema da Massaggio - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf58075.webp",
       "newImage": "/products/ddp-pf58075.webp",
       "type": "cabina",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58075.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58085",
@@ -665,10 +666,10 @@
       "newName": "Sculptorea Firm-Dren Olio da Massaggio - Formato Cabina Salone",
       "oldPrice": 48.3,
       "newPrice": 32,
+      "oldImage": "/products/ddp-pf58085.webp",
       "newImage": "/products/ddp-pf58085.webp",
       "type": "cabina",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58085.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58091",
@@ -676,10 +677,10 @@
       "newName": "Sculptorea Thalasso Scrub Drenante",
       "oldPrice": 48.3,
       "newPrice": 65.5,
+      "oldImage": "/products/ddp-pf58091.webp",
       "newImage": "/products/ddp-pf58091.webp",
       "type": "retail",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58091.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58101",
@@ -687,10 +688,10 @@
       "newName": "Sculptorea Hydra-Peel Scrub Rigenerante",
       "oldPrice": 48.3,
       "newPrice": 43.5,
+      "oldImage": "/products/ddp-pf58101.webp",
       "newImage": "/products/ddp-pf58101.webp",
       "type": "retail",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58101.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58111",
@@ -698,10 +699,10 @@
       "newName": "Sculptorea Crema Superidratante 250 ml",
       "oldPrice": 60.4,
       "newPrice": 42,
+      "oldImage": "/products/ddp-pf58111.webp",
       "newImage": "/products/ddp-pf58111.webp",
       "type": "retail",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58111.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58121",
@@ -709,10 +710,10 @@
       "newName": "Sculptorea Burro Corpo Antietà 200 ml",
       "oldPrice": 48.3,
       "newPrice": 70,
+      "oldImage": "/products/ddp-pf58005.webp",
       "newImage": "/products/ddp-pf58121.webp",
       "type": "retail",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58005.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58131",
@@ -720,10 +721,10 @@
       "newName": "Sculptorea Crema Corpo Effetto Lift",
       "oldPrice": 60.4,
       "newPrice": 64.5,
+      "oldImage": "/products/ddp-pf58131.webp",
       "newImage": "/products/ddp-pf58131.webp",
       "type": "retail",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58131.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58141",
@@ -731,10 +732,21 @@
       "newName": "Sculptorea Iceshot Criogel Gambe Leggere",
       "oldPrice": 48.3,
       "newPrice": 40.5,
+      "oldImage": "/products/ddp-pf58141.webp",
       "newImage": "/products/ddp-pf58141.webp",
       "type": "retail",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58141.webp"
+      "line": "Sculptorea"
+    },
+    {
+      "sku": "PF58151",
+      "oldName": "SCULPTOREA POWER MIST concentrato s",
+      "newName": "Sculptorea Power Mist Concentrato Snellente 100 ml",
+      "oldPrice": 48.3,
+      "newPrice": 48,
+      "oldImage": "/products/ddp-pf58151.webp",
+      "newImage": "/products/ddp-pf58151.webp",
+      "type": "retail",
+      "line": "Sculptorea"
     },
     {
       "sku": "PF58161",
@@ -742,10 +754,10 @@
       "newName": "Sculptorea Crema Anticellulite Termoattiva",
       "oldPrice": 60.4,
       "newPrice": 64,
+      "oldImage": "/products/ddp-pf58161.webp",
       "newImage": "/products/ddp-pf58161.webp",
       "type": "retail",
-      "line": "Sculptorea",
-      "oldImage": "/products/ddp-pf58161.webp"
+      "line": "Sculptorea"
     },
     {
       "sku": "PF77001",
@@ -753,10 +765,10 @@
       "newName": "Gel Preparatore e Potenziatore di Abbronzatura 150 ml",
       "oldPrice": 48.3,
       "newPrice": 34,
+      "oldImage": "/products/ddp-pf77001.webp",
       "newImage": "/products/ddp-pf77001.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77001.webp"
+      "line": "Solari"
     },
     {
       "sku": "PF77101",
@@ -764,10 +776,10 @@
       "newName": "Acqua Super Abbronzante Corpo 300 ml",
       "oldPrice": 48.3,
       "newPrice": 34,
+      "oldImage": "/products/ddp-pf77101.webp",
       "newImage": "/products/ddp-pf77101.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77101.webp"
+      "line": "Solari"
     },
     {
       "sku": "PF77121",
@@ -775,10 +787,10 @@
       "newName": "Olio Sublimatore di Abbronzatura Corpo 200 ml",
       "oldPrice": 48.3,
       "newPrice": 31,
+      "oldImage": "/products/ddp-pf77121.webp",
       "newImage": "/products/ddp-pf77121.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77121.webp"
+      "line": "Solari"
     },
     {
       "sku": "PF77201",
@@ -786,10 +798,10 @@
       "newName": "Stick Solare Protezione Invisibile SPF50+ 10 ml",
       "oldPrice": 48.3,
       "newPrice": 27,
+      "oldImage": "/products/ddp-pf77201.webp",
       "newImage": "/products/ddp-pf77201.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77201.webp"
+      "line": "Solari"
     },
     {
       "sku": "PF77211",
@@ -797,10 +809,10 @@
       "newName": "Crema Protettiva Illuminante Antimacchia SPF50 50 ml",
       "oldPrice": 60.4,
       "newPrice": 38,
+      "oldImage": "/products/ddp-pf77211.webp",
       "newImage": "/products/ddp-pf77211.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77211.webp"
+      "line": "Solari"
     },
     {
       "sku": "PF77221",
@@ -808,10 +820,10 @@
       "newName": "Crema Protettiva Abbronzante Antietà Viso SPF50 50 ml",
       "oldPrice": 60.4,
       "newPrice": 38.99,
+      "oldImage": "/products/ddp-pf77221.webp",
       "newImage": "/products/ddp-pf77221.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77221.webp"
+      "line": "Solari"
     },
     {
       "sku": "PF77231",
@@ -819,10 +831,10 @@
       "newName": "Crema Gel Idratante Protettiva Corpo SPF30 150 ml",
       "oldPrice": 60.4,
       "newPrice": 38,
+      "oldImage": "/products/ddp-pf77231.webp",
       "newImage": "/products/ddp-pf77231.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77231.webp"
+      "line": "Solari"
     },
     {
       "sku": "PF77241",
@@ -830,10 +842,10 @@
       "newName": "Crema Gel Idratante Protettiva Corpo SPF50 150 ml",
       "oldPrice": 60.4,
       "newPrice": 39,
+      "oldImage": "/products/ddp-pf77241.webp",
       "newImage": "/products/ddp-pf77241.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77241.webp"
+      "line": "Solari"
     },
     {
       "sku": "PF77521",
@@ -841,10 +853,10 @@
       "newName": "Burro Mousse Doposole Vellutante Illuminante 250 ml",
       "oldPrice": 48.3,
       "newPrice": 39,
+      "oldImage": "/products/ddp-pf77521.webp",
       "newImage": "/products/ddp-pf77521.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77521.webp"
+      "line": "Solari"
     },
     {
       "sku": "PF77531",
@@ -852,10 +864,10 @@
       "newName": "Crema Protettiva Idratante Viso SPF30 50 ml",
       "oldPrice": 60.4,
       "newPrice": 33,
+      "oldImage": "/products/ddp-pf77531.webp",
       "newImage": "/products/ddp-pf77531.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77531.webp"
+      "line": "Solari"
     },
     {
       "sku": "PF77541",
@@ -863,10 +875,10 @@
       "newName": "Crema Gel Protettiva Abbronzante Corpo SPF20 150 ml",
       "oldPrice": 60.4,
       "newPrice": 37,
+      "oldImage": "/products/ddp-pf77541.webp",
       "newImage": "/products/ddp-pf77541.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77541.webp"
+      "line": "Solari"
     },
     {
       "sku": "PF77551",
@@ -874,10 +886,10 @@
       "newName": "Latte Spray Delicato SPF50 150 ml",
       "oldPrice": 48.3,
       "newPrice": 39,
+      "oldImage": "/products/ddp-pf77551.webp",
       "newImage": "/products/ddp-pf77551.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77551.webp"
+      "line": "Solari"
     },
     {
       "sku": "PF77561",
@@ -885,10 +897,10 @@
       "newName": "Balsamo Protettivo Labbra SPF30 10 ml",
       "oldPrice": 48.3,
       "newPrice": 30,
+      "oldImage": "/products/ddp-pf77561.jpg",
       "newImage": "/products/ddp-pf77561.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77561.jpg"
+      "line": "Solari"
     },
     {
       "sku": "PF77571",
@@ -896,10 +908,10 @@
       "newName": "Crema Idratante Protettiva SPF50+",
       "oldPrice": 60.4,
       "newPrice": 48,
+      "oldImage": "/products/ddp-pf77571.jpg",
       "newImage": "/products/ddp-pf77571.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77571.jpg"
+      "line": "Solari"
     },
     {
       "sku": "PF77581",
@@ -907,10 +919,10 @@
       "newName": "Crema Doposole Idratante Viso e Corpo",
       "oldPrice": 60.4,
       "newPrice": 46,
+      "oldImage": "/products/ddp-pf77581.jpg",
       "newImage": "/products/ddp-pf77581.webp",
       "type": "retail",
-      "line": "Solari",
-      "oldImage": "/products/ddp-pf77581.jpg"
+      "line": "Solari"
     },
     {
       "sku": "MF101193",
@@ -918,10 +930,10 @@
       "newName": "Meso Fill Foundation Plump & Fill 93",
       "oldPrice": 34.9,
       "newPrice": 42.5,
+      "oldImage": "/products/ddp-mf101193-authentic.jpg",
       "newImage": "/products/ddp-mf101193.webp",
       "type": "retail",
-      "line": "RVB LAB",
-      "oldImage": "/products/ddp-mf101193-authentic.jpg"
+      "line": "RVB LAB"
     },
     {
       "sku": "PF00931",
@@ -929,10 +941,10 @@
       "newName": "Icon Time Gold Elixir Siero Antietà Ridensificante 30 ml",
       "oldPrice": 78,
       "newPrice": 79.5,
+      "oldImage": "/products/ddp-pf00931-authentic.jpg",
       "newImage": "/products/ddp-pf00931.webp",
       "type": "retail",
-      "line": "Icon Time",
-      "oldImage": "/products/ddp-pf00931-authentic.jpg"
+      "line": "Icon Time"
     },
     {
       "sku": "PF01061",
@@ -940,10 +952,10 @@
       "newName": "Icon Time Crema Contorno Occhi Correttiva 15 ml",
       "oldPrice": 48,
       "newPrice": 46.5,
+      "oldImage": "/products/ddp-pf01061-authentic.jpg",
       "newImage": "/products/ddp-pf01061.webp",
       "type": "retail",
-      "line": "Icon Time",
-      "oldImage": "/products/ddp-pf01061-authentic.jpg"
+      "line": "Icon Time"
     },
     {
       "sku": "PF07011",
@@ -951,16 +963,11 @@
       "newName": "Metodo Bianco Blend Vitality Profumo 100 ml",
       "oldPrice": 44,
       "newPrice": 49,
+      "oldImage": "/products/ddp-pf07011-authentic.jpg",
       "newImage": "/products/ddp-pf07011.webp",
       "type": "retail",
-      "line": "Metodo",
-      "oldImage": "/products/ddp-pf07011-authentic.jpg"
+      "line": "Metodo"
     }
   ],
-  "failures": [
-    {
-      "sku": "PF58151",
-      "error": "prezzo retail mancante"
-    }
-  ]
+  "failures": []
 }

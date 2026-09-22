@@ -171,7 +171,9 @@ const NAMES = {
   PF58065: "Sculptorea Impacco a Mosaico Azione Drenante - Formato Cabina Salone",
   PF58075: "Sculptorea Cell-Lipo Crema da Massaggio - Formato Cabina Salone",
   PF58085: "Sculptorea Firm-Dren Olio da Massaggio - Formato Cabina Salone",
-  PF58151: "Sculptorea Power Mist Concentrato Snellente - Formato Cabina Salone",
+
+  // --- Sculptorea (retail, SKU distributore diverso) ---
+  PF58151: "Sculptorea Power Mist Concentrato Snellente 100 ml",
 };
 
 /* ----------------------------------------------------------------------------
@@ -182,6 +184,8 @@ const PRICE_OVERRIDES = {
   DHC110160: 24.5,
   DHC120160: 24.5,
   MF106021: 21.9,
+  // Retail Sculptorea Power Mist: listino distributore 64€ (FI) -> retail IT (x0.75)
+  PF58151: 48,
 };
 
 /* ----------------------------------------------------------------------------
@@ -196,6 +200,8 @@ const IMAGE_OVERRIDES = {
     "https://cdn.shopify.com/s/files/1/0286/5712/3433/files/DHC120161_0.jpg?v=1684919270",
   MF106021:
     "https://www.salenicemakeup.com/wp-content/uploads/2025/01/Cream_Eyebrow_Liner___01_53074_7434_detail.webp",
+  PF58151:
+    "https://diegodallapalma.fi/wp-content/uploads/2025/04/power-mist-body-spray-concentrate.jpg",
 };
 
 /* ----------------------------------------------------------------------------
@@ -235,7 +241,6 @@ const CABINA_IMAGE = {
   PF58065: "PF58121",
   PF58075: "PF58121",
   PF58085: "PF58121",
-  PF58151: "PF58141",
 };
 
 /* ----------------------------------------------------------------------------
@@ -374,7 +379,6 @@ async function main() {
   const matched = JSON.parse(fs.readFileSync(MATCHED_PATH, "utf8"));
 
   const matchedBySku = new Map(matched.map((m) => [m.sku.toUpperCase(), m]));
-  const catalogById = new Map(catalog.map((p) => [p.id, p]));
   const bySku = new Map();
   for (const p of catalog) {
     const sku = (p.variants && p.variants[0] && p.variants[0].sku) || null;
@@ -434,10 +438,11 @@ async function main() {
     imageJobs.push({ sku, sourceUrl, imgDest });
     changes.push({
       sku,
-      oldName: product.name,
+      oldName: r.currentName,
       newName: name,
-      oldPrice: product.price,
+      oldPrice: r.currentPrice,
       newPrice: price,
+      oldImage: r.currentImage,
       newImage: `/products/ddp-${sku.toLowerCase()}.webp`,
       type: isCabina ? "cabina" : "retail",
       line,
@@ -469,14 +474,13 @@ async function main() {
     if (!product) continue;
     const imagePath = c.newImage;
 
-    const oldImage = product.image;
     product.name = c.newName;
     product.brand = brandFor(c.sku);
     product.price = c.newPrice;
     product.image = imagePath;
     product.images = [imagePath];
     product.description = buildDescription(c.newName, c.sku);
-    product.shortDescription = `${product.name} ${c.line} - ${c.type === "cabina" ? "Formato Cabina Salone" : "Linea Professional"}.`;
+    product.shortDescription = product.name;
     if (product.originalPrice != null) delete product.originalPrice;
     product.slug = slugify(`${product.brand} ${product.name} ${c.sku}`);
 
@@ -492,11 +496,26 @@ async function main() {
         v.price = c.newPrice;
       }
     }
-    c.oldImage = oldImage;
     updated++;
   }
 
   fs.writeFileSync(CATALOG_PATH, JSON.stringify(catalog, null, 2) + "\n", "utf8");
+
+  // --- elimina i vecchi file ddp orfani (jpg corrotti / tabelle di riciclo) ---
+  const referenced = new Set();
+  for (const p of catalog) {
+    if (p.image) referenced.add(p.image);
+    for (const img of p.images || []) referenced.add(img);
+    for (const s of p.shades || []) if (s.image) referenced.add(s.image);
+    for (const v of p.variants || []) if (v.image) referenced.add(v.image);
+  }
+  const orphanedRemoved = [];
+  for (const f of fs.readdirSync(IMAGES_DIR)) {
+    if (!/^ddp-/i.test(f)) continue;
+    if (referenced.has(`/products/${f}`)) continue;
+    fs.unlinkSync(path.join(IMAGES_DIR, f));
+    orphanedRemoved.push(f);
+  }
 
   // --- verifica integrità ---
   const totalAfter = catalog.length;
@@ -515,6 +534,7 @@ async function main() {
       productsUpdated: updated,
       imagesDownloaded: okImages,
       imagesFailed: imageJobs.length - okImages,
+      orphanFilesRemoved: orphanedRemoved.length,
       catalogTotal: totalAfter,
       catalogOtherBrandsIntact: otherBrands,
       catalogDdpProducts: ddpAfter,

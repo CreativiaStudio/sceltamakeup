@@ -6,7 +6,7 @@
     "brand": "Diego dalla Palma",
     "category": "Skincare & Dermo",
     "description": "Sun Shampoo Doccia Dopo Sole 250 ml. Linea Sun & Hair Care per la cura di capelli e corpo dopo l'esposizione al sole.",
-    "shortDescription": "Sun Shampoo Doccia Dopo Sole 250 ml Sun & Hair - Linea Professional.",
+    "shortDescription": "Sun Shampoo Doccia Dopo Sole 250 ml",
     "price": 24.5,
     "originalWholesalePrice": 8.5,
     "badge": "Iconico",
@@ -61,8 +61,8 @@
     "brand": "Diego dalla Palma",
     "category": "Skincare & Dermo",
     "description": "Sun Mask Maschera Dopo Sole Riparatrice 200 ml. Linea Sun & Hair Care per la cura di capelli e corpo dopo l'esposizione al sole.",
-    "shortDescription": "Sun Mask Maschera Dopo Sole Riparatrice 200 ml Sun & Hair - Linea Professional.",
-    "price": 24.5,
+    "shortDescription": "Sun Mask Maschera Dopo Sole Riparatrice 200 ml",
+    "price": 19.9,
     "originalWholesalePrice": 8.5,
     "badge": "Iconico",
     "badges": [
@@ -86,7 +86,7 @@
         "code": "DHC120160",
         "hex": "#FAF7FC",
         "image": "/products/ddp-dhc120160.webp",
-        "price": 24.5,
+        "price": 19.9,
         "inStock": true,
         "stock": 2
       }
@@ -100,7 +100,7 @@
         "colorHex": null,
         "image": "/products/ddp-dhc120160.webp",
         "inStock": true,
-        "price": 24.5,
+        "price": 19.9,
         "originalWholesalePrice": 8.5,
         "stock": 2
       }
@@ -116,8 +116,8 @@
     "brand": "Diego dalla Palma",
     "category": "Viso",
     "description": "Sun Oil Olio Spray Protettivo Illuminante. Linea Sun & Hair Care per la cura di capelli e corpo dopo l'esposizione al sole.",
-    "shortDescription": "Sun Oil Olio Spray Protettivo Illuminante Sun & Hair - Linea Professional.",
-    "price": 24.5,
+    "shortDescription": "Sun Oil Olio Spray Protettivo Illuminante",
+    "price": 23.9,
     "originalWholesalePrice": 8.5,
     "badge": "Iconico",
     "badges": [
@@ -141,7 +141,7 @@
         "code": "DHC120161",
         "hex": "#FAF7FC",
         "image": "/products/ddp-dhc120161.webp",
-        "price": 24.5,
+        "price": 23.9,
         "inStock": true,
         "stock": 2
       }
@@ -155,7 +155,7 @@
         "colorHex": null,
         "image": "/products/ddp-dhc120161.webp",
         "inStock": true,
-        "price": 24.5,
+        "price": 23.9,
         "originalWholesalePrice": 8.5,
         "stock": 2
       }
@@ -1944,10 +1944,10 @@
     "id": "ddp-mf106021",
     "slug": "rvb-lab-the-make-up-delineatore-sopracciglia-in-crema-21-mf106021",
     "name": "Delineatore Sopracciglia in Crema 21",
-    "brand": "RVB LAB",
+    "brand": "RVB LAB The Make Up",
     "category": "Occhi",
     "description": "Delineatore Sopracciglia in Crema 21. Make-up professionale RVB LAB The Make Up, formulato con attivi dermocosmetici e texture ad alta performance.",
-    "shortDescription": "Delineatore Sopracciglia in Crema 21 RVB LAB - Linea Professional.",
+    "shortDescription": "Delineatore Sopracciglia in Crema 21",
     "price": 21.9,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -4404,11 +4404,11 @@
     "id": "ddp-mf151002",
     "slug": "rvb-lab-the-make-up-base-trucco-levigante-rinnovata-mf151002",
     "name": "Base Trucco Levigante Rinnovata",
-    "brand": "RVB LAB",
+    "brand": "RVB LAB The Make Up",
     "category": "Viso",
     "description": "Base Trucco Levigante Rinnovata. Make-up professionale RVB LAB The Make Up, formulato con attivi dermocosmetici e texture ad alta performance.",
-    "shortDescription": "Base Trucco Levigante Rinnovata RVB LAB - Linea Professional.",
-    "price": 31.5,
+    "shortDescription": "Base Trucco Levigante Rinnovata",
+    "price": 26.5,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -4433,7 +4433,7 @@
         "code": "MF151002",
         "hex": "#FAF7FC",
         "image": "/products/ddp-mf151002.webp",
-        "price": 31.5,
+        "price": 26.5,
         "inStock": true,
         "stock": 2
       }
@@ -4447,7 +4447,7 @@
         "colorHex": null,
         "image": "/products/ddp-mf151002.webp",
         "inStock": true,
-        "price": 31.5,
+        "price": 26.5,
         "originalWholesalePrice": 18,
         "stock": 2
       }
@@ -4460,11 +4460,11 @@
     "id": "ddp-mf152001a",
     "slug": "rvb-lab-the-make-up-struccante-bifasico-125-ml-mf152001a",
     "name": "Struccante Bifasico 125 ml",
-    "brand": "RVB LAB",
+    "brand": "RVB LAB The Make Up",
     "category": "Viso",
     "description": "Struccante Bifasico 125 ml. Make-up professionale RVB LAB The Make Up, formulato con attivi dermocosmetici e texture ad alta performance.",
-    "shortDescription": "Struccante Bifasico 125 ml RVB LAB - Linea Professional.",
-    "price": 28,
+    "shortDescription": "Struccante Bifasico 125 ml",
+    "price": 24.5,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -4488,7 +4488,7 @@
         "code": "MF152001A",
         "hex": "#FAF7FC",
         "image": "/products/ddp-mf152001a.webp",
-        "price": 28,
+        "price": 24.5,
         "inStock": true,
         "stock": 1
       }
@@ -4502,7 +4502,7 @@
         "colorHex": null,
         "image": "/products/ddp-mf152001a.webp",
         "inStock": true,
-        "price": 28,
+        "price": 24.5,
         "originalWholesalePrice": 18,
         "stock": 1
       }
@@ -5394,10 +5394,10 @@
     "id": "ddp-pf00855",
     "slug": "diego-dalla-palma-professional-icon-time-crema-antieta-ridensificante-formato-cabina-salone-pf00855",
     "name": "Icon Time Crema Antietà Ridensificante - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Icon Time Crema Antietà Ridensificante - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea antietà professionale con attivi ridensificanti e antiossidanti per una pelle visibilmente più giovane e compatta.",
-    "shortDescription": "Icon Time Crema Antietà Ridensificante - Formato Cabina Salone Icon Time - Formato Cabina Salone.",
+    "shortDescription": "Icon Time Crema Antietà Ridensificante - Formato Cabina Salone",
     "price": 39,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
@@ -5450,10 +5450,10 @@
     "id": "ddp-pf00985",
     "slug": "diego-dalla-palma-professional-icon-time-trattamento-concentrato-ridensificante-formato-cabina-salone-pf00985",
     "name": "Icon Time Trattamento Concentrato Ridensificante - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Icon Time Trattamento Concentrato Ridensificante - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea antietà professionale con attivi ridensificanti e antiossidanti per una pelle visibilmente più giovane e compatta.",
-    "shortDescription": "Icon Time Trattamento Concentrato Ridensificante - Formato Cabina Salone Icon Time - Formato Cabina Salone.",
+    "shortDescription": "Icon Time Trattamento Concentrato Ridensificante - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -5506,10 +5506,10 @@
     "id": "ddp-pf00995",
     "slug": "diego-dalla-palma-professional-icon-time-siero-ridensificante-antieta-formato-cabina-salone-pf00995",
     "name": "Icon Time Siero Ridensificante Antietà - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Icon Time Siero Ridensificante Antietà - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea antietà professionale con attivi ridensificanti e antiossidanti per una pelle visibilmente più giovane e compatta.",
-    "shortDescription": "Icon Time Siero Ridensificante Antietà - Formato Cabina Salone Icon Time - Formato Cabina Salone.",
+    "shortDescription": "Icon Time Siero Ridensificante Antietà - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -5562,10 +5562,10 @@
     "id": "ddp-pf01065",
     "slug": "diego-dalla-palma-professional-icon-time-crema-contorno-occhi-correttiva-formato-cabina-salone-pf01065",
     "name": "Icon Time Crema Contorno Occhi Correttiva - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Icon Time Crema Contorno Occhi Correttiva - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea antietà professionale con attivi ridensificanti e antiossidanti per una pelle visibilmente più giovane e compatta.",
-    "shortDescription": "Icon Time Crema Contorno Occhi Correttiva - Formato Cabina Salone Icon Time - Formato Cabina Salone.",
+    "shortDescription": "Icon Time Crema Contorno Occhi Correttiva - Formato Cabina Salone",
     "price": 39,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
@@ -5618,11 +5618,11 @@
     "id": "ddp-pf01181",
     "slug": "diego-dalla-palma-professional-ha-hero-siero-idratazione-profonda-30-ml-pf01181",
     "name": "HA HERO Siero Idratazione Profonda 30 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "HA HERO Siero Idratazione Profonda 30 ml. Linea professionale all'acido ialuronico a diversi pesi molecolari per un'idratazione profonda e duratura.",
-    "shortDescription": "HA HERO Siero Idratazione Profonda 30 ml HA HERO - Linea Professional.",
-    "price": 60,
+    "shortDescription": "HA HERO Siero Idratazione Profonda 30 ml",
+    "price": 62,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -5646,7 +5646,7 @@
         "code": "PF01181",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf01181.webp",
-        "price": 60,
+        "price": 62,
         "inStock": true,
         "stock": 2
       }
@@ -5660,7 +5660,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf01181.webp",
         "inStock": true,
-        "price": 60,
+        "price": 62,
         "originalWholesalePrice": 18,
         "stock": 2
       }
@@ -5673,10 +5673,10 @@
     "id": "ddp-pf01365",
     "slug": "diego-dalla-palma-professional-ha-hero-lacto-peeling-patch-maschera-formato-cabina-salone-pf01365",
     "name": "HA HERO Lacto-Peeling Patch Maschera - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "HA HERO Lacto-Peeling Patch Maschera - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea professionale all'acido ialuronico a diversi pesi molecolari per un'idratazione profonda e duratura.",
-    "shortDescription": "HA HERO Lacto-Peeling Patch Maschera - Formato Cabina Salone HA HERO - Formato Cabina Salone.",
+    "shortDescription": "HA HERO Lacto-Peeling Patch Maschera - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -5728,10 +5728,10 @@
     "id": "ddp-pf01375",
     "slug": "diego-dalla-palma-professional-ha-hero-siero-fondamentale-idratazione-formato-cabina-salone-pf01375",
     "name": "HA HERO Siero Fondamentale Idratazione - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "HA HERO Siero Fondamentale Idratazione - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea professionale all'acido ialuronico a diversi pesi molecolari per un'idratazione profonda e duratura.",
-    "shortDescription": "HA HERO Siero Fondamentale Idratazione - Formato Cabina Salone HA HERO - Formato Cabina Salone.",
+    "shortDescription": "HA HERO Siero Fondamentale Idratazione - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -5783,10 +5783,10 @@
     "id": "ddp-pf01385",
     "slug": "diego-dalla-palma-professional-ha-hero-hyalu-maschera-assorbibile-formato-cabina-salone-pf01385",
     "name": "HA HERO Hyalu-Maschera Assorbibile - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "HA HERO Hyalu-Maschera Assorbibile - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea professionale all'acido ialuronico a diversi pesi molecolari per un'idratazione profonda e duratura.",
-    "shortDescription": "HA HERO Hyalu-Maschera Assorbibile - Formato Cabina Salone HA HERO - Formato Cabina Salone.",
+    "shortDescription": "HA HERO Hyalu-Maschera Assorbibile - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -5838,10 +5838,10 @@
     "id": "ddp-pf01395",
     "slug": "diego-dalla-palma-professional-ha-hero-hyalu-crema-gel-sorgente-di-luce-formato-cabina-salone-pf01395",
     "name": "HA HERO Hyalu-Crema Gel Sorgente di Luce - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "HA HERO Hyalu-Crema Gel Sorgente di Luce - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea professionale all'acido ialuronico a diversi pesi molecolari per un'idratazione profonda e duratura.",
-    "shortDescription": "HA HERO Hyalu-Crema Gel Sorgente di Luce - Formato Cabina Salone HA HERO - Formato Cabina Salone.",
+    "shortDescription": "HA HERO Hyalu-Crema Gel Sorgente di Luce - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -5893,10 +5893,10 @@
     "id": "ddp-pf01405",
     "slug": "diego-dalla-palma-professional-ha-hero-contorno-occhi-all-acido-ialuronico-formato-cabina-salone-pf01405",
     "name": "HA HERO Contorno Occhi all'Acido Ialuronico - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "HA HERO Contorno Occhi all'Acido Ialuronico - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea professionale all'acido ialuronico a diversi pesi molecolari per un'idratazione profonda e duratura.",
-    "shortDescription": "HA HERO Contorno Occhi all'Acido Ialuronico - Formato Cabina Salone HA HERO - Formato Cabina Salone.",
+    "shortDescription": "HA HERO Contorno Occhi all'Acido Ialuronico - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -5948,11 +5948,11 @@
     "id": "ddp-pf01411",
     "slug": "diego-dalla-palma-professional-ha-hero-contorno-occhi-all-acido-ialuronico-15-ml-pf01411",
     "name": "HA HERO Contorno Occhi all'Acido Ialuronico 15 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "HA HERO Contorno Occhi all'Acido Ialuronico 15 ml. Linea professionale all'acido ialuronico a diversi pesi molecolari per un'idratazione profonda e duratura.",
-    "shortDescription": "HA HERO Contorno Occhi all'Acido Ialuronico 15 ml HA HERO - Linea Professional.",
-    "price": 45,
+    "shortDescription": "HA HERO Contorno Occhi all'Acido Ialuronico 15 ml",
+    "price": 46,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -5976,7 +5976,7 @@
         "code": "PF01411",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf01411.webp",
-        "price": 45,
+        "price": 46,
         "inStock": true,
         "stock": 2
       }
@@ -5990,7 +5990,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf01411.webp",
         "inStock": true,
-        "price": 45,
+        "price": 46,
         "originalWholesalePrice": 18,
         "stock": 2
       }
@@ -6003,11 +6003,11 @@
     "id": "ddp-pf01421",
     "slug": "diego-dalla-palma-professional-ha-hero-hyalu-crema-gel-sorgente-di-luce-pf01421",
     "name": "HA HERO Hyalu-Crema Gel Sorgente di Luce",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "HA HERO Hyalu-Crema Gel Sorgente di Luce. Linea professionale all'acido ialuronico a diversi pesi molecolari per un'idratazione profonda e duratura.",
-    "shortDescription": "HA HERO Hyalu-Crema Gel Sorgente di Luce HA HERO - Linea Professional.",
-    "price": 59,
+    "shortDescription": "HA HERO Hyalu-Crema Gel Sorgente di Luce",
+    "price": 61,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -6031,7 +6031,7 @@
         "code": "PF01421",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf01421.webp",
-        "price": 59,
+        "price": 61,
         "inStock": true,
         "stock": 2
       }
@@ -6045,7 +6045,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf01421.webp",
         "inStock": true,
-        "price": 59,
+        "price": 61,
         "originalWholesalePrice": 18,
         "stock": 2
       }
@@ -6058,11 +6058,11 @@
     "id": "ddp-pf01431",
     "slug": "diego-dalla-palma-professional-ha-hero-hyalu-crema-ricca-ultra-nutriente-50-ml-pf01431",
     "name": "HA HERO Hyalu-Crema Ricca Ultra Nutriente 50 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "HA HERO Hyalu-Crema Ricca Ultra Nutriente 50 ml. Linea professionale all'acido ialuronico a diversi pesi molecolari per un'idratazione profonda e duratura.",
-    "shortDescription": "HA HERO Hyalu-Crema Ricca Ultra Nutriente 50 ml HA HERO - Linea Professional.",
-    "price": 65,
+    "shortDescription": "HA HERO Hyalu-Crema Ricca Ultra Nutriente 50 ml",
+    "price": 67,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -6086,7 +6086,7 @@
         "code": "PF01431",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf01431.webp",
-        "price": 65,
+        "price": 67,
         "inStock": true,
         "stock": 2
       }
@@ -6100,7 +6100,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf01431.webp",
         "inStock": true,
-        "price": 65,
+        "price": 67,
         "originalWholesalePrice": 18,
         "stock": 2
       }
@@ -6113,11 +6113,11 @@
     "id": "ddp-pf01441",
     "slug": "diego-dalla-palma-professional-ha-hero-trattamento-labbra-riparatore-20-ml-pf01441",
     "name": "HA HERO Trattamento Labbra Riparatore 20 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Labbra",
     "description": "HA HERO Trattamento Labbra Riparatore 20 ml. Linea professionale all'acido ialuronico a diversi pesi molecolari per un'idratazione profonda e duratura.",
-    "shortDescription": "HA HERO Trattamento Labbra Riparatore 20 ml HA HERO - Linea Professional.",
-    "price": 29.9,
+    "shortDescription": "HA HERO Trattamento Labbra Riparatore 20 ml",
+    "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -6141,7 +6141,7 @@
         "code": "PF01441",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf01441.webp",
-        "price": 29.9,
+        "price": 32,
         "inStock": true,
         "stock": 2
       }
@@ -6155,7 +6155,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf01441.webp",
         "inStock": true,
-        "price": 29.9,
+        "price": 32,
         "originalWholesalePrice": 18,
         "stock": 2
       }
@@ -6168,11 +6168,11 @@
     "id": "ddp-pf01451",
     "slug": "diego-dalla-palma-professional-cell-detoxium-struccante-micellare-bifasico-300-ml-pf01451",
     "name": "Cell-Detoxium Struccante Micellare Bifasico 300 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Cell-Detoxium Struccante Micellare Bifasico 300 ml. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Struccante Micellare Bifasico 300 ml Cell-Detoxium - Linea Professional.",
-    "price": 31,
+    "shortDescription": "Cell-Detoxium Struccante Micellare Bifasico 300 ml",
+    "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -6196,7 +6196,7 @@
         "code": "PF01451",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf01451.webp",
-        "price": 31,
+        "price": 32,
         "inStock": true,
         "stock": 3
       }
@@ -6210,7 +6210,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf01451.webp",
         "inStock": true,
-        "price": 31,
+        "price": 32,
         "originalWholesalePrice": 18,
         "stock": 3
       }
@@ -6223,10 +6223,10 @@
     "id": "ddp-pf01465",
     "slug": "diego-dalla-palma-professional-cell-detoxium-latte-detergente-micellare-formato-cabina-salone-pf01465",
     "name": "Cell-Detoxium Latte Detergente Micellare - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Cell-Detoxium Latte Detergente Micellare - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Latte Detergente Micellare - Formato Cabina Salone Cell-Detoxium - Formato Cabina Salone.",
+    "shortDescription": "Cell-Detoxium Latte Detergente Micellare - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -6278,10 +6278,10 @@
     "id": "ddp-pf01485",
     "slug": "diego-dalla-palma-professional-cell-detoxium-esfoliante-enzimatico-formato-cabina-salone-pf01485",
     "name": "Cell-Detoxium Esfoliante Enzimatico - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Cell-Detoxium Esfoliante Enzimatico - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Esfoliante Enzimatico - Formato Cabina Salone Cell-Detoxium - Formato Cabina Salone.",
+    "shortDescription": "Cell-Detoxium Esfoliante Enzimatico - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -6333,10 +6333,10 @@
     "id": "ddp-pf01495",
     "slug": "diego-dalla-palma-professional-cell-detoxium-esfoliante-acido-mandelico-formato-cabina-salone-pf01495",
     "name": "Cell-Detoxium Esfoliante Acido Mandelico - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Cell-Detoxium Esfoliante Acido Mandelico - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Esfoliante Acido Mandelico - Formato Cabina Salone Cell-Detoxium - Formato Cabina Salone.",
+    "shortDescription": "Cell-Detoxium Esfoliante Acido Mandelico - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -6388,10 +6388,10 @@
     "id": "ddp-pf01515",
     "slug": "diego-dalla-palma-professional-cell-detoxium-super-estrattore-comedoni-formato-cabina-salone-pf01515",
     "name": "Cell-Detoxium Super Estrattore Comedoni - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Cell-Detoxium Super Estrattore Comedoni - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Super Estrattore Comedoni - Formato Cabina Salone Cell-Detoxium - Formato Cabina Salone.",
+    "shortDescription": "Cell-Detoxium Super Estrattore Comedoni - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -6443,10 +6443,10 @@
     "id": "ddp-pf01525",
     "slug": "diego-dalla-palma-professional-cell-detoxium-maschera-lenitiva-formato-cabina-salone-pf01525",
     "name": "Cell-Detoxium Maschera Lenitiva - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Cell-Detoxium Maschera Lenitiva - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Maschera Lenitiva - Formato Cabina Salone Cell-Detoxium - Formato Cabina Salone.",
+    "shortDescription": "Cell-Detoxium Maschera Lenitiva - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -6498,10 +6498,10 @@
     "id": "ddp-pf01535",
     "slug": "diego-dalla-palma-professional-cell-detoxium-crema-da-massaggio-formato-cabina-salone-pf01535",
     "name": "Cell-Detoxium Crema da Massaggio - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Cell-Detoxium Crema da Massaggio - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Crema da Massaggio - Formato Cabina Salone Cell-Detoxium - Formato Cabina Salone.",
+    "shortDescription": "Cell-Detoxium Crema da Massaggio - Formato Cabina Salone",
     "price": 39,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
@@ -6553,10 +6553,10 @@
     "id": "ddp-pf01541",
     "slug": "diego-dalla-palma-professional-cell-detoxium-fluido-protezione-giornaliera-spf50-50-ml-pf01541",
     "name": "Cell-Detoxium Fluido Protezione Giornaliera SPF50 50 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Cell-Detoxium Fluido Protezione Giornaliera SPF50 50 ml. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Fluido Protezione Giornaliera SPF50 50 ml Cell-Detoxium - Linea Professional.",
+    "shortDescription": "Cell-Detoxium Fluido Protezione Giornaliera SPF50 50 ml",
     "price": 54,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -6608,10 +6608,10 @@
     "id": "ddp-pf01551",
     "slug": "diego-dalla-palma-professional-cell-detoxium-latte-detergente-micellare-250-ml-pf01551",
     "name": "Cell-Detoxium Latte Detergente Micellare 250 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Cell-Detoxium Latte Detergente Micellare 250 ml. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Latte Detergente Micellare 250 ml Cell-Detoxium - Linea Professional.",
+    "shortDescription": "Cell-Detoxium Latte Detergente Micellare 250 ml",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -6663,11 +6663,11 @@
     "id": "ddp-pf01561",
     "slug": "diego-dalla-palma-professional-cell-detoxium-tonico-250-ml-pf01561",
     "name": "Cell-Detoxium Tonico 250 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Cell-Detoxium Tonico 250 ml. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Tonico 250 ml Cell-Detoxium - Linea Professional.",
-    "price": 31,
+    "shortDescription": "Cell-Detoxium Tonico 250 ml",
+    "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -6691,7 +6691,7 @@
         "code": "PF01561",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf01561.webp",
-        "price": 31,
+        "price": 32,
         "inStock": true,
         "stock": 3
       }
@@ -6705,7 +6705,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf01561.webp",
         "inStock": true,
-        "price": 31,
+        "price": 32,
         "originalWholesalePrice": 18,
         "stock": 3
       }
@@ -6718,10 +6718,10 @@
     "id": "ddp-pf01571",
     "slug": "diego-dalla-palma-professional-cell-detoxium-mousse-detergente-150-ml-pf01571",
     "name": "Cell-Detoxium Mousse Detergente 150 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Cell-Detoxium Mousse Detergente 150 ml. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Mousse Detergente 150 ml Cell-Detoxium - Linea Professional.",
+    "shortDescription": "Cell-Detoxium Mousse Detergente 150 ml",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -6773,11 +6773,11 @@
     "id": "ddp-pf01581",
     "slug": "diego-dalla-palma-professional-cell-detoxium-booster-serum-50-ml-pf01581",
     "name": "Cell-Detoxium Booster Serum 50 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Cell-Detoxium Booster Serum 50 ml. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Booster Serum 50 ml Cell-Detoxium - Linea Professional.",
-    "price": 65,
+    "shortDescription": "Cell-Detoxium Booster Serum 50 ml",
+    "price": 67,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -6801,7 +6801,7 @@
         "code": "PF01581",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf01581.webp",
-        "price": 65,
+        "price": 67,
         "inStock": true,
         "stock": 3
       }
@@ -6815,7 +6815,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf01581.webp",
         "inStock": true,
-        "price": 65,
+        "price": 67,
         "originalWholesalePrice": 18,
         "stock": 3
       }
@@ -6828,10 +6828,10 @@
     "id": "ddp-pf01591",
     "slug": "diego-dalla-palma-professional-cell-detoxium-burro-struccante-125-ml-pf01591",
     "name": "Cell-Detoxium Burro Struccante 125 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Cell-Detoxium Burro Struccante 125 ml. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Burro Struccante 125 ml Cell-Detoxium - Linea Professional.",
+    "shortDescription": "Cell-Detoxium Burro Struccante 125 ml",
     "price": 49.5,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -6883,11 +6883,11 @@
     "id": "ddp-pf01601",
     "slug": "diego-dalla-palma-professional-cell-detoxium-gommage-enzimatico-75-ml-pf01601",
     "name": "Cell-Detoxium Gommage Enzimatico 75 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Cell-Detoxium Gommage Enzimatico 75 ml. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Gommage Enzimatico 75 ml Cell-Detoxium - Linea Professional.",
-    "price": 27,
+    "shortDescription": "Cell-Detoxium Gommage Enzimatico 75 ml",
+    "price": 29,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -6911,7 +6911,7 @@
         "code": "PF01601",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf01601.webp",
-        "price": 27,
+        "price": 29,
         "inStock": true,
         "stock": 3
       }
@@ -6925,7 +6925,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf01601.webp",
         "inStock": true,
-        "price": 27,
+        "price": 29,
         "originalWholesalePrice": 18,
         "stock": 3
       }
@@ -6938,11 +6938,11 @@
     "id": "ddp-pf01611",
     "slug": "diego-dalla-palma-professional-cell-detoxium-maschera-viso-texturizzante-75-ml-pf01611",
     "name": "Cell-Detoxium Maschera Viso Texturizzante 75 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Cell-Detoxium Maschera Viso Texturizzante 75 ml. Linea detossinante professionale ad alta concentrazione di attivi tecnologici per una pelle purificata e rigenerata.",
-    "shortDescription": "Cell-Detoxium Maschera Viso Texturizzante 75 ml Cell-Detoxium - Linea Professional.",
-    "price": 36,
+    "shortDescription": "Cell-Detoxium Maschera Viso Texturizzante 75 ml",
+    "price": 37,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -6966,7 +6966,7 @@
         "code": "PF01611",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf01611.webp",
-        "price": 36,
+        "price": 37,
         "inStock": true,
         "stock": 3
       }
@@ -6980,7 +6980,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf01611.webp",
         "inStock": true,
-        "price": 36,
+        "price": 37,
         "originalWholesalePrice": 18,
         "stock": 3
       }
@@ -6993,10 +6993,10 @@
     "id": "ddp-pf01631",
     "slug": "diego-dalla-palma-professional-icon-time-maschera-viso-antieta-pro-collagen-8-pz-pf01631",
     "name": "Icon Time Maschera Viso Antietà Pro-Collagen 8 pz",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Icon Time Maschera Viso Antietà Pro-Collagen 8 pz. Linea antietà professionale con attivi ridensificanti e antiossidanti per una pelle visibilmente più giovane e compatta.",
-    "shortDescription": "Icon Time Maschera Viso Antietà Pro-Collagen 8 pz Icon Time - Linea Professional.",
+    "shortDescription": "Icon Time Maschera Viso Antietà Pro-Collagen 8 pz",
     "price": 120,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -7049,10 +7049,10 @@
     "id": "ddp-pf01645",
     "slug": "diego-dalla-palma-professional-icon-time-siero-booster-di-elastina-formato-cabina-salone-pf01645",
     "name": "Icon Time Siero Booster di Elastina - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Icon Time Siero Booster di Elastina - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea antietà professionale con attivi ridensificanti e antiossidanti per una pelle visibilmente più giovane e compatta.",
-    "shortDescription": "Icon Time Siero Booster di Elastina - Formato Cabina Salone Icon Time - Formato Cabina Salone.",
+    "shortDescription": "Icon Time Siero Booster di Elastina - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -7105,10 +7105,10 @@
     "id": "ddp-pf01661",
     "slug": "diego-dalla-palma-professional-icon-time-radiance-collagen-booster-emulsione-viso-rassodante-50-ml-pf01661",
     "name": "Icon Time Radiance Collagen Booster Emulsione Viso Rassodante 50 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Icon Time Radiance Collagen Booster Emulsione Viso Rassodante 50 ml. Linea antietà professionale con attivi ridensificanti e antiossidanti per una pelle visibilmente più giovane e compatta.",
-    "shortDescription": "Icon Time Radiance Collagen Booster Emulsione Viso Rassodante 50 ml Icon Time - Linea Professional.",
+    "shortDescription": "Icon Time Radiance Collagen Booster Emulsione Viso Rassodante 50 ml",
     "price": 105,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -7161,11 +7161,11 @@
     "id": "ddp-pf01671",
     "slug": "diego-dalla-palma-professional-icon-time-silver-crema-antieta-rivitalizzante-50-ml-pf01671",
     "name": "Icon Time Silver Crema Antietà Rivitalizzante 50 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Icon Time Silver Crema Antietà Rivitalizzante 50 ml. Linea antietà professionale con attivi ridensificanti e antiossidanti per una pelle visibilmente più giovane e compatta.",
-    "shortDescription": "Icon Time Silver Crema Antietà Rivitalizzante 50 ml Icon Time - Linea Professional.",
-    "price": 95,
+    "shortDescription": "Icon Time Silver Crema Antietà Rivitalizzante 50 ml",
+    "price": 85,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
     "badges": [
@@ -7190,7 +7190,7 @@
         "code": "PF01671",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf01671.webp",
-        "price": 95,
+        "price": 85,
         "inStock": true,
         "stock": 2
       }
@@ -7204,7 +7204,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf01671.webp",
         "inStock": true,
-        "price": 95,
+        "price": 85,
         "originalWholesalePrice": 22.5,
         "stock": 2
       }
@@ -7217,10 +7217,10 @@
     "id": "ddp-pf01681",
     "slug": "diego-dalla-palma-professional-icon-time-gold-crema-antieta-ridensificante-50-ml-pf01681",
     "name": "Icon Time Gold Crema Antietà Ridensificante 50 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Icon Time Gold Crema Antietà Ridensificante 50 ml. Linea antietà professionale con attivi ridensificanti e antiossidanti per una pelle visibilmente più giovane e compatta.",
-    "shortDescription": "Icon Time Gold Crema Antietà Ridensificante 50 ml Icon Time - Linea Professional.",
+    "shortDescription": "Icon Time Gold Crema Antietà Ridensificante 50 ml",
     "price": 90,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
@@ -7273,10 +7273,10 @@
     "id": "ddp-pf01691",
     "slug": "diego-dalla-palma-professional-icon-time-platinum-crema-antieta-rinnovatrice-50-ml-pf01691",
     "name": "Icon Time Platinum Crema Antietà Rinnovatrice 50 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Icon Time Platinum Crema Antietà Rinnovatrice 50 ml. Linea antietà professionale con attivi ridensificanti e antiossidanti per una pelle visibilmente più giovane e compatta.",
-    "shortDescription": "Icon Time Platinum Crema Antietà Rinnovatrice 50 ml Icon Time - Linea Professional.",
+    "shortDescription": "Icon Time Platinum Crema Antietà Rinnovatrice 50 ml",
     "price": 95,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
@@ -7329,10 +7329,10 @@
     "id": "ddp-pf07001",
     "slug": "diego-dalla-palma-professional-metodo-nero-blend-relax-profumo-100-ml-pf07001",
     "name": "Metodo Nero Blend Relax Profumo 100 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Metodo Nero Blend Relax Profumo 100 ml. Profumazione di nicchia Diego dalla Palma Professional, blend esclusivi per una firma olfattiva unica.",
-    "shortDescription": "Metodo Nero Blend Relax Profumo 100 ml Metodo - Linea Professional.",
+    "shortDescription": "Metodo Nero Blend Relax Profumo 100 ml",
     "price": 50,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -7384,11 +7384,11 @@
     "id": "ddp-pf08101",
     "slug": "diego-dalla-palma-professional-smart-pure-oxy-active-gel-detergente-pf08101",
     "name": "Smart Pure Oxy-Active Gel Detergente",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Smart Pure Oxy-Active Gel Detergente. Linea purificante professionale studiata per pelli impure e con imperfezioni, con azione sebo-normalizzante.",
-    "shortDescription": "Smart Pure Oxy-Active Gel Detergente Smart Pure - Linea Professional.",
-    "price": 31.5,
+    "shortDescription": "Smart Pure Oxy-Active Gel Detergente",
+    "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -7412,7 +7412,7 @@
         "code": "PF08101",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf08101.webp",
-        "price": 31.5,
+        "price": 32,
         "inStock": true,
         "stock": 4
       }
@@ -7426,7 +7426,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf08101.webp",
         "inStock": true,
-        "price": 31.5,
+        "price": 32,
         "originalWholesalePrice": 18,
         "stock": 4
       }
@@ -7439,11 +7439,11 @@
     "id": "ddp-pf08111",
     "slug": "diego-dalla-palma-professional-smart-pure-sos-trattamento-rapido-anti-imperfezioni-pf08111",
     "name": "Smart Pure SOS Trattamento Rapido Anti-Imperfezioni",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Smart Pure SOS Trattamento Rapido Anti-Imperfezioni. Linea purificante professionale studiata per pelli impure e con imperfezioni, con azione sebo-normalizzante.",
-    "shortDescription": "Smart Pure SOS Trattamento Rapido Anti-Imperfezioni Smart Pure - Linea Professional.",
-    "price": 43.5,
+    "shortDescription": "Smart Pure SOS Trattamento Rapido Anti-Imperfezioni",
+    "price": 40,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -7467,7 +7467,7 @@
         "code": "PF08111",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf08111.webp",
-        "price": 43.5,
+        "price": 40,
         "inStock": true,
         "stock": 4
       }
@@ -7481,7 +7481,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf08111.webp",
         "inStock": true,
-        "price": 43.5,
+        "price": 40,
         "originalWholesalePrice": 18,
         "stock": 4
       }
@@ -7494,11 +7494,11 @@
     "id": "ddp-pf08121",
     "slug": "diego-dalla-palma-professional-smart-pure-pore-stick-maschera-esfoliante-pf08121",
     "name": "Smart Pure Pore-Stick Maschera Esfoliante",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Smart Pure Pore-Stick Maschera Esfoliante. Linea purificante professionale studiata per pelli impure e con imperfezioni, con azione sebo-normalizzante.",
-    "shortDescription": "Smart Pure Pore-Stick Maschera Esfoliante Smart Pure - Linea Professional.",
-    "price": 31.5,
+    "shortDescription": "Smart Pure Pore-Stick Maschera Esfoliante",
+    "price": 28,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -7522,7 +7522,7 @@
         "code": "PF08121",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf08121.webp",
-        "price": 31.5,
+        "price": 28,
         "inStock": true,
         "stock": 4
       }
@@ -7536,7 +7536,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf08121.webp",
         "inStock": true,
-        "price": 31.5,
+        "price": 28,
         "originalWholesalePrice": 18,
         "stock": 4
       }
@@ -7549,11 +7549,11 @@
     "id": "ddp-pf08131",
     "slug": "diego-dalla-palma-professional-smart-pure-pore-control-siero-concentrato-pf08131",
     "name": "Smart Pure Pore Control Siero Concentrato",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Smart Pure Pore Control Siero Concentrato. Linea purificante professionale studiata per pelli impure e con imperfezioni, con azione sebo-normalizzante.",
-    "shortDescription": "Smart Pure Pore Control Siero Concentrato Smart Pure - Linea Professional.",
-    "price": 60,
+    "shortDescription": "Smart Pure Pore Control Siero Concentrato",
+    "price": 55,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -7577,7 +7577,7 @@
         "code": "PF08131",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf08131.webp",
-        "price": 60,
+        "price": 55,
         "inStock": true,
         "stock": 4
       }
@@ -7591,7 +7591,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf08131.webp",
         "inStock": true,
-        "price": 60,
+        "price": 55,
         "originalWholesalePrice": 18,
         "stock": 4
       }
@@ -7604,11 +7604,11 @@
     "id": "ddp-pf08141",
     "slug": "diego-dalla-palma-professional-smart-pure-crema-gel-sebo-normalizzante-pf08141",
     "name": "Smart Pure Crema Gel Sebo-Normalizzante",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Smart Pure Crema Gel Sebo-Normalizzante. Linea purificante professionale studiata per pelli impure e con imperfezioni, con azione sebo-normalizzante.",
-    "shortDescription": "Smart Pure Crema Gel Sebo-Normalizzante Smart Pure - Linea Professional.",
-    "price": 43,
+    "shortDescription": "Smart Pure Crema Gel Sebo-Normalizzante",
+    "price": 36,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -7632,7 +7632,7 @@
         "code": "PF08141",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf08141.webp",
-        "price": 43,
+        "price": 36,
         "inStock": true,
         "stock": 4
       }
@@ -7646,7 +7646,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf08141.webp",
         "inStock": true,
-        "price": 43,
+        "price": 36,
         "originalWholesalePrice": 18,
         "stock": 4
       }
@@ -7659,10 +7659,10 @@
     "id": "ddp-pf08145",
     "slug": "diego-dalla-palma-professional-smart-pure-crema-gel-sebo-normalizzante-formato-cabina-salone-pf08145",
     "name": "Smart Pure Crema Gel Sebo-Normalizzante - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Smart Pure Crema Gel Sebo-Normalizzante - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea purificante professionale studiata per pelli impure e con imperfezioni, con azione sebo-normalizzante.",
-    "shortDescription": "Smart Pure Crema Gel Sebo-Normalizzante - Formato Cabina Salone Smart Pure - Formato Cabina Salone.",
+    "shortDescription": "Smart Pure Crema Gel Sebo-Normalizzante - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -7714,11 +7714,11 @@
     "id": "ddp-pf08151",
     "slug": "diego-dalla-palma-professional-smart-pure-crema-opacizzante-antieta-50-ml-pf08151",
     "name": "Smart Pure Crema Opacizzante Antietà 50 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Smart Pure Crema Opacizzante Antietà 50 ml. Linea purificante professionale studiata per pelli impure e con imperfezioni, con azione sebo-normalizzante.",
-    "shortDescription": "Smart Pure Crema Opacizzante Antietà 50 ml Smart Pure - Linea Professional.",
-    "price": 66,
+    "shortDescription": "Smart Pure Crema Opacizzante Antietà 50 ml",
+    "price": 65,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -7742,7 +7742,7 @@
         "code": "PF08151",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf08151.webp",
-        "price": 66,
+        "price": 65,
         "inStock": true,
         "stock": 4
       }
@@ -7756,7 +7756,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf08151.webp",
         "inStock": true,
-        "price": 66,
+        "price": 65,
         "originalWholesalePrice": 18,
         "stock": 4
       }
@@ -7769,10 +7769,10 @@
     "id": "ddp-pf08165",
     "slug": "diego-dalla-palma-professional-smart-pure-maschera-purificante-200-ml-formato-cabina-salone-pf08165",
     "name": "Smart Pure Maschera Purificante 200 ml - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Smart Pure Maschera Purificante 200 ml - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea purificante professionale studiata per pelli impure e con imperfezioni, con azione sebo-normalizzante.",
-    "shortDescription": "Smart Pure Maschera Purificante 200 ml - Formato Cabina Salone Smart Pure - Formato Cabina Salone.",
+    "shortDescription": "Smart Pure Maschera Purificante 200 ml - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -7824,10 +7824,10 @@
     "id": "ddp-pf58005",
     "slug": "diego-dalla-palma-professional-sculptorea-peeling-acidi-combinati-formato-cabina-salone-pf58005",
     "name": "Sculptorea Peeling Acidi Combinati - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Sculptorea Peeling Acidi Combinati - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Peeling Acidi Combinati - Formato Cabina Salone Sculptorea - Formato Cabina Salone.",
+    "shortDescription": "Sculptorea Peeling Acidi Combinati - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -7879,10 +7879,10 @@
     "id": "ddp-pf58015",
     "slug": "diego-dalla-palma-professional-sculptorea-carboxy-attivatore-ossigeno-formato-cabina-salone-pf58015",
     "name": "Sculptorea Carboxy Attivatore Ossigeno - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Sculptorea Carboxy Attivatore Ossigeno - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Carboxy Attivatore Ossigeno - Formato Cabina Salone Sculptorea - Formato Cabina Salone.",
+    "shortDescription": "Sculptorea Carboxy Attivatore Ossigeno - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -7934,10 +7934,10 @@
     "id": "ddp-pf58025",
     "slug": "diego-dalla-palma-professional-sculptorea-benda-termoattiva-cell-lipo-formato-cabina-salone-pf58025",
     "name": "Sculptorea Benda Termoattiva Cell-Lipo - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Sculptorea Benda Termoattiva Cell-Lipo - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Benda Termoattiva Cell-Lipo - Formato Cabina Salone Sculptorea - Formato Cabina Salone.",
+    "shortDescription": "Sculptorea Benda Termoattiva Cell-Lipo - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -7989,10 +7989,10 @@
     "id": "ddp-pf58035",
     "slug": "diego-dalla-palma-professional-sculptorea-concentrato-anticellulite-formato-cabina-salone-pf58035",
     "name": "Sculptorea Concentrato Anticellulite - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Sculptorea Concentrato Anticellulite - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Concentrato Anticellulite - Formato Cabina Salone Sculptorea - Formato Cabina Salone.",
+    "shortDescription": "Sculptorea Concentrato Anticellulite - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -8044,10 +8044,10 @@
     "id": "ddp-pf58045",
     "slug": "diego-dalla-palma-professional-sculptorea-concentrato-tonificante-formato-cabina-salone-pf58045",
     "name": "Sculptorea Concentrato Tonificante - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Sculptorea Concentrato Tonificante - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Concentrato Tonificante - Formato Cabina Salone Sculptorea - Formato Cabina Salone.",
+    "shortDescription": "Sculptorea Concentrato Tonificante - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -8099,10 +8099,10 @@
     "id": "ddp-pf58055",
     "slug": "diego-dalla-palma-professional-sculptorea-concentrato-modellante-200-ml-formato-cabina-salone-pf58055",
     "name": "Sculptorea Concentrato Modellante 200 ml - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Sculptorea Concentrato Modellante 200 ml - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Concentrato Modellante 200 ml - Formato Cabina Salone Sculptorea - Formato Cabina Salone.",
+    "shortDescription": "Sculptorea Concentrato Modellante 200 ml - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -8154,10 +8154,10 @@
     "id": "ddp-pf58065",
     "slug": "diego-dalla-palma-professional-sculptorea-impacco-a-mosaico-azione-drenante-formato-cabina-salone-pf58065",
     "name": "Sculptorea Impacco a Mosaico Azione Drenante - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Sculptorea Impacco a Mosaico Azione Drenante - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Impacco a Mosaico Azione Drenante - Formato Cabina Salone Sculptorea - Formato Cabina Salone.",
+    "shortDescription": "Sculptorea Impacco a Mosaico Azione Drenante - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -8209,10 +8209,10 @@
     "id": "ddp-pf58075",
     "slug": "diego-dalla-palma-professional-sculptorea-cell-lipo-crema-da-massaggio-formato-cabina-salone-pf58075",
     "name": "Sculptorea Cell-Lipo Crema da Massaggio - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Sculptorea Cell-Lipo Crema da Massaggio - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Cell-Lipo Crema da Massaggio - Formato Cabina Salone Sculptorea - Formato Cabina Salone.",
+    "shortDescription": "Sculptorea Cell-Lipo Crema da Massaggio - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -8264,10 +8264,10 @@
     "id": "ddp-pf58085",
     "slug": "diego-dalla-palma-professional-sculptorea-firm-dren-olio-da-massaggio-formato-cabina-salone-pf58085",
     "name": "Sculptorea Firm-Dren Olio da Massaggio - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Sculptorea Firm-Dren Olio da Massaggio - Formato Cabina Salone, formato professionale cabina per l'uso in salone estetico. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Firm-Dren Olio da Massaggio - Formato Cabina Salone Sculptorea - Formato Cabina Salone.",
+    "shortDescription": "Sculptorea Firm-Dren Olio da Massaggio - Formato Cabina Salone",
     "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -8319,11 +8319,11 @@
     "id": "ddp-pf58091",
     "slug": "diego-dalla-palma-professional-sculptorea-thalasso-scrub-drenante-pf58091",
     "name": "Sculptorea Thalasso Scrub Drenante",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Sculptorea Thalasso Scrub Drenante. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Thalasso Scrub Drenante Sculptorea - Linea Professional.",
-    "price": 65.5,
+    "shortDescription": "Sculptorea Thalasso Scrub Drenante",
+    "price": 57,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -8347,7 +8347,7 @@
         "code": "PF58091",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf58091.webp",
-        "price": 65.5,
+        "price": 57,
         "inStock": true,
         "stock": 3
       }
@@ -8361,7 +8361,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf58091.webp",
         "inStock": true,
-        "price": 65.5,
+        "price": 57,
         "originalWholesalePrice": 18,
         "stock": 3
       }
@@ -8374,11 +8374,11 @@
     "id": "ddp-pf58101",
     "slug": "diego-dalla-palma-professional-sculptorea-hydra-peel-scrub-rigenerante-pf58101",
     "name": "Sculptorea Hydra-Peel Scrub Rigenerante",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Sculptorea Hydra-Peel Scrub Rigenerante. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Hydra-Peel Scrub Rigenerante Sculptorea - Linea Professional.",
-    "price": 43.5,
+    "shortDescription": "Sculptorea Hydra-Peel Scrub Rigenerante",
+    "price": 42,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -8402,7 +8402,7 @@
         "code": "PF58101",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf58101.webp",
-        "price": 43.5,
+        "price": 42,
         "inStock": true,
         "stock": 3
       }
@@ -8416,7 +8416,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf58101.webp",
         "inStock": true,
-        "price": 43.5,
+        "price": 42,
         "originalWholesalePrice": 18,
         "stock": 3
       }
@@ -8429,10 +8429,10 @@
     "id": "ddp-pf58111",
     "slug": "diego-dalla-palma-professional-sculptorea-crema-superidratante-250-ml-pf58111",
     "name": "Sculptorea Crema Superidratante 250 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Sculptorea Crema Superidratante 250 ml. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Crema Superidratante 250 ml Sculptorea - Linea Professional.",
+    "shortDescription": "Sculptorea Crema Superidratante 250 ml",
     "price": 42,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
@@ -8484,11 +8484,11 @@
     "id": "ddp-pf58121",
     "slug": "diego-dalla-palma-professional-sculptorea-burro-corpo-antieta-200-ml-pf58121",
     "name": "Sculptorea Burro Corpo Antietà 200 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Sculptorea Burro Corpo Antietà 200 ml. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Burro Corpo Antietà 200 ml Sculptorea - Linea Professional.",
-    "price": 70,
+    "shortDescription": "Sculptorea Burro Corpo Antietà 200 ml",
+    "price": 68,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -8512,7 +8512,7 @@
         "code": "PF58121",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf58121.webp",
-        "price": 70,
+        "price": 68,
         "inStock": true,
         "stock": 3
       }
@@ -8526,7 +8526,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf58121.webp",
         "inStock": true,
-        "price": 70,
+        "price": 68,
         "originalWholesalePrice": 18,
         "stock": 3
       }
@@ -8539,11 +8539,11 @@
     "id": "ddp-pf58131",
     "slug": "diego-dalla-palma-professional-sculptorea-crema-corpo-effetto-lift-pf58131",
     "name": "Sculptorea Crema Corpo Effetto Lift",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Sculptorea Crema Corpo Effetto Lift. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Crema Corpo Effetto Lift Sculptorea - Linea Professional.",
-    "price": 64.5,
+    "shortDescription": "Sculptorea Crema Corpo Effetto Lift",
+    "price": 58,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
     "badges": [
@@ -8567,7 +8567,7 @@
         "code": "PF58131",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf58131.webp",
-        "price": 64.5,
+        "price": 58,
         "inStock": true,
         "stock": 3
       }
@@ -8581,7 +8581,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf58131.webp",
         "inStock": true,
-        "price": 64.5,
+        "price": 58,
         "originalWholesalePrice": 22.5,
         "stock": 3
       }
@@ -8594,11 +8594,11 @@
     "id": "ddp-pf58141",
     "slug": "diego-dalla-palma-professional-sculptorea-iceshot-criogel-gambe-leggere-pf58141",
     "name": "Sculptorea Iceshot Criogel Gambe Leggere",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Sculptorea Iceshot Criogel Gambe Leggere. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Iceshot Criogel Gambe Leggere Sculptorea - Linea Professional.",
-    "price": 40.5,
+    "shortDescription": "Sculptorea Iceshot Criogel Gambe Leggere",
+    "price": 40,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -8622,7 +8622,7 @@
         "code": "PF58141",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf58141.webp",
-        "price": 40.5,
+        "price": 40,
         "inStock": true,
         "stock": 3
       }
@@ -8636,7 +8636,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf58141.webp",
         "inStock": true,
-        "price": 40.5,
+        "price": 40,
         "originalWholesalePrice": 18,
         "stock": 3
       }
@@ -8647,14 +8647,13 @@
   },
   {
     "id": "ddp-pf58151",
-    "slug": "diego-dalla-palma-sculptorea-power-mist-concentrato-s-pf58151",
-    "name": "Sculptorea Power Mist Concentrato Snellente - Formato Cabina Salone",
-    "brand": "Diego dalla Palma",
+    "slug": "diego-dalla-palma-professional-sculptorea-power-mist-concentrato-snellente-100-ml-pf58151",
+    "name": "Sculptorea Power Mist Concentrato Snellente 100 ml",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
-    "description": "Sculptorea Power Mist Concentrato Snellente - Formato Cabina Salone. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Trattamento professionale intensivo SCULPTOREA POWER MIST concentrato s.",
-    "price": 31,
-    "originalPrice": 55.5,
+    "description": "Sculptorea Power Mist Concentrato Snellente 100 ml. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
+    "shortDescription": "Sculptorea Power Mist Concentrato Snellente 100 ml",
+    "price": 42,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -8678,7 +8677,7 @@
         "code": "PF58151",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf58151.webp",
-        "price": 48.3,
+        "price": 42,
         "inStock": true,
         "stock": 3
       }
@@ -8692,7 +8691,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf58151.webp",
         "inStock": true,
-        "price": 48.3,
+        "price": 42,
         "originalWholesalePrice": 18,
         "stock": 3
       }
@@ -8705,11 +8704,11 @@
     "id": "ddp-pf58161",
     "slug": "diego-dalla-palma-professional-sculptorea-crema-anticellulite-termoattiva-pf58161",
     "name": "Sculptorea Crema Anticellulite Termoattiva",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Sculptorea Crema Anticellulite Termoattiva. Linea corpo rimodellante professionale con azione anticellulite, drenante e tonificante.",
-    "shortDescription": "Sculptorea Crema Anticellulite Termoattiva Sculptorea - Linea Professional.",
-    "price": 64,
+    "shortDescription": "Sculptorea Crema Anticellulite Termoattiva",
+    "price": 58,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
     "badges": [
@@ -8733,7 +8732,7 @@
         "code": "PF58161",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf58161.webp",
-        "price": 64,
+        "price": 58,
         "inStock": true,
         "stock": 3
       }
@@ -8747,7 +8746,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf58161.webp",
         "inStock": true,
-        "price": 64,
+        "price": 58,
         "originalWholesalePrice": 22.5,
         "stock": 3
       }
@@ -8760,11 +8759,11 @@
     "id": "ddp-pf77001",
     "slug": "diego-dalla-palma-professional-gel-preparatore-e-potenziatore-di-abbronzatura-150-ml-pf77001",
     "name": "Gel Preparatore e Potenziatore di Abbronzatura 150 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Gel Preparatore e Potenziatore di Abbronzatura 150 ml. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Gel Preparatore e Potenziatore di Abbronzatura 150 ml Solari - Linea Professional.",
-    "price": 34,
+    "shortDescription": "Gel Preparatore e Potenziatore di Abbronzatura 150 ml",
+    "price": 35,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -8788,7 +8787,7 @@
         "code": "PF77001",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf77001.webp",
-        "price": 34,
+        "price": 35,
         "inStock": true,
         "stock": 2
       }
@@ -8802,7 +8801,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf77001.webp",
         "inStock": true,
-        "price": 34,
+        "price": 35,
         "originalWholesalePrice": 18,
         "stock": 2
       }
@@ -8815,11 +8814,11 @@
     "id": "ddp-pf77101",
     "slug": "diego-dalla-palma-professional-acqua-super-abbronzante-corpo-300-ml-pf77101",
     "name": "Acqua Super Abbronzante Corpo 300 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Acqua Super Abbronzante Corpo 300 ml. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Acqua Super Abbronzante Corpo 300 ml Solari - Linea Professional.",
-    "price": 34,
+    "shortDescription": "Acqua Super Abbronzante Corpo 300 ml",
+    "price": 35,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -8843,7 +8842,7 @@
         "code": "PF77101",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf77101.webp",
-        "price": 34,
+        "price": 35,
         "inStock": true,
         "stock": 2
       }
@@ -8857,7 +8856,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf77101.webp",
         "inStock": true,
-        "price": 34,
+        "price": 35,
         "originalWholesalePrice": 18,
         "stock": 2
       }
@@ -8870,11 +8869,11 @@
     "id": "ddp-pf77121",
     "slug": "diego-dalla-palma-professional-olio-sublimatore-di-abbronzatura-corpo-200-ml-pf77121",
     "name": "Olio Sublimatore di Abbronzatura Corpo 200 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Olio Sublimatore di Abbronzatura Corpo 200 ml. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Olio Sublimatore di Abbronzatura Corpo 200 ml Solari - Linea Professional.",
-    "price": 31,
+    "shortDescription": "Olio Sublimatore di Abbronzatura Corpo 200 ml",
+    "price": 32,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -8898,7 +8897,7 @@
         "code": "PF77121",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf77121.webp",
-        "price": 31,
+        "price": 32,
         "inStock": true,
         "stock": 2
       }
@@ -8912,7 +8911,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf77121.webp",
         "inStock": true,
-        "price": 31,
+        "price": 32,
         "originalWholesalePrice": 18,
         "stock": 2
       }
@@ -8925,11 +8924,11 @@
     "id": "ddp-pf77201",
     "slug": "diego-dalla-palma-professional-stick-solare-protezione-invisibile-spf50-10-ml-pf77201",
     "name": "Stick Solare Protezione Invisibile SPF50+ 10 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Stick Solare Protezione Invisibile SPF50+ 10 ml. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Stick Solare Protezione Invisibile SPF50+ 10 ml Solari - Linea Professional.",
-    "price": 27,
+    "shortDescription": "Stick Solare Protezione Invisibile SPF50+ 10 ml",
+    "price": 29,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -8953,7 +8952,7 @@
         "code": "PF77201",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf77201.webp",
-        "price": 27,
+        "price": 29,
         "inStock": true,
         "stock": 2
       }
@@ -8967,7 +8966,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf77201.webp",
         "inStock": true,
-        "price": 27,
+        "price": 29,
         "originalWholesalePrice": 18,
         "stock": 2
       }
@@ -8980,11 +8979,11 @@
     "id": "ddp-pf77211",
     "slug": "diego-dalla-palma-professional-crema-protettiva-illuminante-antimacchia-spf50-50-ml-pf77211",
     "name": "Crema Protettiva Illuminante Antimacchia SPF50 50 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Crema Protettiva Illuminante Antimacchia SPF50 50 ml. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Crema Protettiva Illuminante Antimacchia SPF50 50 ml Solari - Linea Professional.",
-    "price": 38,
+    "shortDescription": "Crema Protettiva Illuminante Antimacchia SPF50 50 ml",
+    "price": 39,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
     "badges": [
@@ -9008,7 +9007,7 @@
         "code": "PF77211",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf77211.webp",
-        "price": 38,
+        "price": 39,
         "inStock": true,
         "stock": 2
       }
@@ -9022,7 +9021,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf77211.webp",
         "inStock": true,
-        "price": 38,
+        "price": 39,
         "originalWholesalePrice": 22.5,
         "stock": 2
       }
@@ -9035,11 +9034,11 @@
     "id": "ddp-pf77221",
     "slug": "diego-dalla-palma-professional-crema-protettiva-abbronzante-antieta-viso-spf50-50-ml-pf77221",
     "name": "Crema Protettiva Abbronzante Antietà Viso SPF50 50 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Crema Protettiva Abbronzante Antietà Viso SPF50 50 ml. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Crema Protettiva Abbronzante Antietà Viso SPF50 50 ml Solari - Linea Professional.",
-    "price": 38.99,
+    "shortDescription": "Crema Protettiva Abbronzante Antietà Viso SPF50 50 ml",
+    "price": 39,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
     "badges": [
@@ -9063,7 +9062,7 @@
         "code": "PF77221",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf77221.webp",
-        "price": 38.99,
+        "price": 39,
         "inStock": true,
         "stock": 2
       }
@@ -9077,7 +9076,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf77221.webp",
         "inStock": true,
-        "price": 38.99,
+        "price": 39,
         "originalWholesalePrice": 22.5,
         "stock": 2
       }
@@ -9090,11 +9089,11 @@
     "id": "ddp-pf77231",
     "slug": "diego-dalla-palma-professional-crema-gel-idratante-protettiva-corpo-spf30-150-ml-pf77231",
     "name": "Crema Gel Idratante Protettiva Corpo SPF30 150 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Crema Gel Idratante Protettiva Corpo SPF30 150 ml. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Crema Gel Idratante Protettiva Corpo SPF30 150 ml Solari - Linea Professional.",
-    "price": 38,
+    "shortDescription": "Crema Gel Idratante Protettiva Corpo SPF30 150 ml",
+    "price": 39,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
     "badges": [
@@ -9118,7 +9117,7 @@
         "code": "PF77231",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf77231.webp",
-        "price": 38,
+        "price": 39,
         "inStock": true,
         "stock": 2
       }
@@ -9132,7 +9131,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf77231.webp",
         "inStock": true,
-        "price": 38,
+        "price": 39,
         "originalWholesalePrice": 22.5,
         "stock": 2
       }
@@ -9145,11 +9144,11 @@
     "id": "ddp-pf77241",
     "slug": "diego-dalla-palma-professional-crema-gel-idratante-protettiva-corpo-spf50-150-ml-pf77241",
     "name": "Crema Gel Idratante Protettiva Corpo SPF50 150 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Crema Gel Idratante Protettiva Corpo SPF50 150 ml. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Crema Gel Idratante Protettiva Corpo SPF50 150 ml Solari - Linea Professional.",
-    "price": 39,
+    "shortDescription": "Crema Gel Idratante Protettiva Corpo SPF50 150 ml",
+    "price": 40,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
     "badges": [
@@ -9173,7 +9172,7 @@
         "code": "PF77241",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf77241.webp",
-        "price": 39,
+        "price": 40,
         "inStock": true,
         "stock": 2
       }
@@ -9187,7 +9186,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf77241.webp",
         "inStock": true,
-        "price": 39,
+        "price": 40,
         "originalWholesalePrice": 22.5,
         "stock": 2
       }
@@ -9200,11 +9199,11 @@
     "id": "ddp-pf77521",
     "slug": "diego-dalla-palma-professional-burro-mousse-doposole-vellutante-illuminante-250-ml-pf77521",
     "name": "Burro Mousse Doposole Vellutante Illuminante 250 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Burro Mousse Doposole Vellutante Illuminante 250 ml. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Burro Mousse Doposole Vellutante Illuminante 250 ml Solari - Linea Professional.",
-    "price": 39,
+    "shortDescription": "Burro Mousse Doposole Vellutante Illuminante 250 ml",
+    "price": 40,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -9228,7 +9227,7 @@
         "code": "PF77521",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf77521.webp",
-        "price": 39,
+        "price": 40,
         "inStock": true,
         "stock": 2
       }
@@ -9242,7 +9241,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf77521.webp",
         "inStock": true,
-        "price": 39,
+        "price": 40,
         "originalWholesalePrice": 18,
         "stock": 2
       }
@@ -9255,11 +9254,11 @@
     "id": "ddp-pf77531",
     "slug": "diego-dalla-palma-professional-crema-protettiva-idratante-viso-spf30-50-ml-pf77531",
     "name": "Crema Protettiva Idratante Viso SPF30 50 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Crema Protettiva Idratante Viso SPF30 50 ml. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Crema Protettiva Idratante Viso SPF30 50 ml Solari - Linea Professional.",
-    "price": 33,
+    "shortDescription": "Crema Protettiva Idratante Viso SPF30 50 ml",
+    "price": 35,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
     "badges": [
@@ -9283,7 +9282,7 @@
         "code": "PF77531",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf77531.webp",
-        "price": 33,
+        "price": 35,
         "inStock": true,
         "stock": 2
       }
@@ -9297,7 +9296,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf77531.webp",
         "inStock": true,
-        "price": 33,
+        "price": 35,
         "originalWholesalePrice": 22.5,
         "stock": 2
       }
@@ -9310,11 +9309,11 @@
     "id": "ddp-pf77541",
     "slug": "diego-dalla-palma-professional-crema-gel-protettiva-abbronzante-corpo-spf20-150-ml-pf77541",
     "name": "Crema Gel Protettiva Abbronzante Corpo SPF20 150 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Viso",
     "description": "Crema Gel Protettiva Abbronzante Corpo SPF20 150 ml. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Crema Gel Protettiva Abbronzante Corpo SPF20 150 ml Solari - Linea Professional.",
-    "price": 37,
+    "shortDescription": "Crema Gel Protettiva Abbronzante Corpo SPF20 150 ml",
+    "price": 38,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
     "badges": [
@@ -9338,7 +9337,7 @@
         "code": "PF77541",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf77541.webp",
-        "price": 37,
+        "price": 38,
         "inStock": true,
         "stock": 2
       }
@@ -9352,7 +9351,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf77541.webp",
         "inStock": true,
-        "price": 37,
+        "price": 38,
         "originalWholesalePrice": 22.5,
         "stock": 2
       }
@@ -9365,10 +9364,10 @@
     "id": "ddp-pf77551",
     "slug": "diego-dalla-palma-professional-latte-spray-delicato-spf50-150-ml-pf77551",
     "name": "Latte Spray Delicato SPF50 150 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Latte Spray Delicato SPF50 150 ml. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Latte Spray Delicato SPF50 150 ml Solari - Linea Professional.",
+    "shortDescription": "Latte Spray Delicato SPF50 150 ml",
     "price": 39,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
@@ -9420,11 +9419,11 @@
     "id": "ddp-pf77561",
     "slug": "diego-dalla-palma-professional-balsamo-protettivo-labbra-spf30-10-ml-pf77561",
     "name": "Balsamo Protettivo Labbra SPF30 10 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Balsamo Protettivo Labbra SPF30 10 ml. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Balsamo Protettivo Labbra SPF30 10 ml Solari - Linea Professional.",
-    "price": 30,
+    "shortDescription": "Balsamo Protettivo Labbra SPF30 10 ml",
+    "price": 26,
     "originalWholesalePrice": 18,
     "badge": "Iconico",
     "badges": [
@@ -9448,7 +9447,7 @@
         "code": "PF77561",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf77561.webp",
-        "price": 30,
+        "price": 26,
         "inStock": true,
         "stock": 4
       }
@@ -9462,7 +9461,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf77561.webp",
         "inStock": true,
-        "price": 30,
+        "price": 26,
         "originalWholesalePrice": 18,
         "stock": 4
       }
@@ -9475,11 +9474,11 @@
     "id": "ddp-pf77571",
     "slug": "diego-dalla-palma-professional-crema-idratante-protettiva-spf50-pf77571",
     "name": "Crema Idratante Protettiva SPF50+",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Crema Idratante Protettiva SPF50+. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Crema Idratante Protettiva SPF50+ Solari - Linea Professional.",
-    "price": 48,
+    "shortDescription": "Crema Idratante Protettiva SPF50+",
+    "price": 40,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
     "badges": [
@@ -9503,7 +9502,7 @@
         "code": "PF77571",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf77571.webp",
-        "price": 48,
+        "price": 40,
         "inStock": true,
         "stock": 4
       }
@@ -9517,7 +9516,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf77571.webp",
         "inStock": true,
-        "price": 48,
+        "price": 40,
         "originalWholesalePrice": 22.5,
         "stock": 4
       }
@@ -9530,11 +9529,11 @@
     "id": "ddp-pf77581",
     "slug": "diego-dalla-palma-professional-crema-doposole-idratante-viso-e-corpo-pf77581",
     "name": "Crema Doposole Idratante Viso e Corpo",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Crema Doposole Idratante Viso e Corpo. Linea solare professionale per una protezione efficace e un'abbronzatura luminosa e uniforme.",
-    "shortDescription": "Crema Doposole Idratante Viso e Corpo Solari - Linea Professional.",
-    "price": 46,
+    "shortDescription": "Crema Doposole Idratante Viso e Corpo",
+    "price": 38,
     "originalWholesalePrice": 22.5,
     "badge": "Iconico",
     "badges": [
@@ -9558,7 +9557,7 @@
         "code": "PF77581",
         "hex": "#FAF7FC",
         "image": "/products/ddp-pf77581.webp",
-        "price": 46,
+        "price": 38,
         "inStock": true,
         "stock": 4
       }
@@ -9572,7 +9571,7 @@
         "colorHex": null,
         "image": "/products/ddp-pf77581.webp",
         "inStock": true,
-        "price": 46,
+        "price": 38,
         "originalWholesalePrice": 22.5,
         "stock": 4
       }
@@ -26698,10 +26697,10 @@
     "id": "ddp-mf101193",
     "slug": "rvb-lab-the-make-up-meso-fill-foundation-plump-fill-93-mf101193",
     "name": "Meso Fill Foundation Plump & Fill 93",
-    "brand": "RVB LAB",
+    "brand": "RVB LAB The Make Up",
     "category": "Viso",
     "description": "Meso Fill Foundation Plump & Fill 93. Make-up professionale RVB LAB The Make Up, formulato con attivi dermocosmetici e texture ad alta performance.",
-    "shortDescription": "Meso Fill Foundation Plump & Fill 93 RVB LAB - Linea Professional.",
+    "shortDescription": "Meso Fill Foundation Plump & Fill 93",
     "price": 42.5,
     "originalWholesalePrice": 23.38,
     "badge": "Novità",
@@ -26756,11 +26755,11 @@
     "id": "ddp-pf00931",
     "slug": "diego-dalla-palma-professional-icon-time-gold-elixir-siero-antieta-ridensificante-30-ml-pf00931",
     "name": "Icon Time Gold Elixir Siero Antietà Ridensificante 30 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Skincare & Dermo",
     "description": "Icon Time Gold Elixir Siero Antietà Ridensificante 30 ml. Linea antietà professionale con attivi ridensificanti e antiossidanti per una pelle visibilmente più giovane e compatta.",
-    "shortDescription": "Icon Time Gold Elixir Siero Antietà Ridensificante 30 ml Icon Time - Linea Professional.",
-    "price": 79.5,
+    "shortDescription": "Icon Time Gold Elixir Siero Antietà Ridensificante 30 ml",
+    "price": 90,
     "originalWholesalePrice": 47.7,
     "badge": "Iconico",
     "badges": [
@@ -26787,7 +26786,7 @@
         "code": "PF00931",
         "hex": "#DFB248",
         "image": "/products/ddp-pf00931.webp",
-        "price": 79.5,
+        "price": 90,
         "inStock": true,
         "stock": 2
       }
@@ -26801,7 +26800,7 @@
         "colorHex": "#DFB248",
         "image": "/products/ddp-pf00931.webp",
         "inStock": true,
-        "price": 79.5,
+        "price": 90,
         "originalWholesalePrice": 47.7,
         "stock": 2
       }
@@ -26814,11 +26813,11 @@
     "id": "ddp-pf01061",
     "slug": "diego-dalla-palma-professional-icon-time-crema-contorno-occhi-correttiva-15-ml-pf01061",
     "name": "Icon Time Crema Contorno Occhi Correttiva 15 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Occhi",
     "description": "Icon Time Crema Contorno Occhi Correttiva 15 ml. Linea antietà professionale con attivi ridensificanti e antiossidanti per una pelle visibilmente più giovane e compatta.",
-    "shortDescription": "Icon Time Crema Contorno Occhi Correttiva 15 ml Icon Time - Linea Professional.",
-    "price": 46.5,
+    "shortDescription": "Icon Time Crema Contorno Occhi Correttiva 15 ml",
+    "price": 57,
     "originalWholesalePrice": 30.2,
     "badge": "Bestseller",
     "badges": [
@@ -26844,7 +26843,7 @@
         "code": "PF01061",
         "hex": "#E6C3A2",
         "image": "/products/ddp-pf01061.webp",
-        "price": 46.5,
+        "price": 57,
         "inStock": true,
         "stock": 2
       }
@@ -26858,7 +26857,7 @@
         "colorHex": "#E6C3A2",
         "image": "/products/ddp-pf01061.webp",
         "inStock": true,
-        "price": 46.5,
+        "price": 57,
         "originalWholesalePrice": 30.2,
         "stock": 2
       }
@@ -26871,11 +26870,11 @@
     "id": "ddp-pf07011",
     "slug": "diego-dalla-palma-professional-metodo-bianco-blend-vitality-profumo-100-ml-pf07011",
     "name": "Metodo Bianco Blend Vitality Profumo 100 ml",
-    "brand": "Diego dalla Palma",
+    "brand": "Diego dalla Palma Professional",
     "category": "Beauty & Accessori",
     "description": "Metodo Bianco Blend Vitality Profumo 100 ml. Profumazione di nicchia Diego dalla Palma Professional, blend esclusivi per una firma olfattiva unica.",
-    "shortDescription": "Metodo Bianco Blend Vitality Profumo 100 ml Metodo - Linea Professional.",
-    "price": 49,
+    "shortDescription": "Metodo Bianco Blend Vitality Profumo 100 ml",
+    "price": 50,
     "originalWholesalePrice": 26.5,
     "badge": "Edizione Speciale",
     "badges": [
@@ -26901,7 +26900,7 @@
         "code": "PF07011",
         "hex": "#F5F5F7",
         "image": "/products/ddp-pf07011.webp",
-        "price": 49,
+        "price": 50,
         "inStock": true,
         "stock": 1
       }
@@ -26915,7 +26914,7 @@
         "colorHex": "#F5F5F7",
         "image": "/products/ddp-pf07011.webp",
         "inStock": true,
-        "price": 49,
+        "price": 50,
         "originalWholesalePrice": 26.5,
         "stock": 1
       }
