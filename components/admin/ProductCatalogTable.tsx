@@ -10,6 +10,7 @@ import {
   ChevronLeft,
   ChevronRight,
   AlertTriangle,
+  Barcode,
 } from "lucide-react";
 import rawCatalog from "@/data/catalog.json";
 import { Product } from "@/types/product";
@@ -497,6 +498,26 @@ export default function ProductCatalogTable() {
                       {/* Actions */}
                       <td className="py-3.5 px-4 text-right">
                         <div className="flex items-center justify-end gap-2">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const firstCode =
+                                product.variants?.[0]?.ean ||
+                                product.variants?.[0]?.sku ||
+                                product.id;
+                              window.dispatchEvent(
+                                new CustomEvent("open_quick_scan_modal", {
+                                  detail: firstCode,
+                                })
+                              );
+                            }}
+                            className="px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold transition-colors flex items-center gap-1.5 border border-emerald-200"
+                            title="Apri popup cassa / simula scansione barcode al banco"
+                          >
+                            <Barcode className="w-3.5 h-3.5 text-emerald-600" />
+                            <span className="hidden xl:inline">Test Cassa</span>
+                          </button>
+
                           <button
                             type="button"
                             onClick={() => setEditingProduct(product)}
