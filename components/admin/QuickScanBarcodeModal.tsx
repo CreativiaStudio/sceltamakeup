@@ -23,6 +23,8 @@ import {
   Check,
   BadgePercent,
   Link as LinkIcon,
+  Cloud,
+  Sparkles,
 } from "lucide-react";
 import rawCatalog from "@/data/catalog.json";
 import { Product, ProductCategory } from "@/types/product";
@@ -148,10 +150,26 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const [showUrlInput, setShowUrlInput] = useState(false);
   const [imageUrlInput, setImageUrlInput] = useState("");
 
-  // Inline Base List Price Editing
-  const [isEditingPrice, setIsEditingPrice] = useState(false);
+  // Live Cloud Synchronization Status
+  const [cloudSyncStatus, setCloudSyncStatus] = useState<"idle" | "saving" | "saved">("idle");
+  const cloudSyncTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const markCloudSaved = useCallback(() => {
+    setCloudSyncStatus("saved");
+    if (cloudSyncTimerRef.current) clearTimeout(cloudSyncTimerRef.current);
+    cloudSyncTimerRef.current = setTimeout(() => {
+      setCloudSyncStatus("idle");
+    }, 2800);
+  }, []);
+
+  // Title Editing
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [titleEditValue, setTitleEditValue] = useState("");
+
+  // Base List Price Direct Editing & Instant Cloud Auto-Sync
   const [priceEditValue, setPriceEditValue] = useState("");
   const [isUpdatingPrice, setIsUpdatingPrice] = useState(false);
+  const priceDebounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Estemporaneous Counter Discount (current sale only)
   const [discountMode, setDiscountMode] = useState<DiscountMode>("none");
@@ -238,15 +256,22 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     return null;
   }, []);
 
-  // Sync current stock when matched product/variant changes
+  // Sync current stock, price edit value & title when matched product/variant changes
   useEffect(() => {
-    if (matchedProduct && matchedProduct.variants) {
-      const v = matchedProduct.variants[matchedVariantIndex];
-      if (v) {
-        const state = getAdminStoreState();
-        const vStock = state.variantStocks[v.id];
-        setCurrentStock(vStock ? vStock.stockQuantity : (v.stock ?? 0));
+    if (matchedProduct) {
+      if (matchedProduct.variants) {
+        const v = matchedProduct.variants[matchedVariantIndex];
+        if (v) {
+          const state = getAdminStoreState();
+          const vStock = state.variantStocks[v.id];
+          setCurrentStock(vStock ? vStock.stockQuantity : (v.stock ?? 0));
+        }
       }
+      const v = matchedProduct.variants?.[matchedVariantIndex];
+      const p = (v?.price ?? matchedProduct.price) || 0;
+      setPriceEditValue(p > 0 ? p.toFixed(2) : "");
+      setTitleEditValue(matchedProduct.name);
+      setIsEditingTitle(false);
     }
   }, [matchedProduct, matchedVariantIndex]);
 
@@ -264,6 +289,8 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         setMatchedVariantIndex(match.variantIndex);
         const itemPrice = (match.product.variants?.[match.variantIndex]?.price ?? match.product.price) || 1.0;
         setCashTendered(itemPrice.toFixed(2));
+        setPriceEditValue(itemPrice.toFixed(2));
+        setTitleEditValue(match.product.name);
       } else {
         setMatchedProduct(null);
         setMatchedVariantIndex(0);
@@ -271,10 +298,12 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         setNewProdPrice("11.90");
         setNewProdStock("3");
         setCashTendered("11.90");
+        setPriceEditValue("11.90");
+        setTitleEditValue("");
       }
 
       // Reset any in-progress photo / price / discount editing for the new scan
-      setIsEditingPrice(false);
+      setIsEditingTitle(false);
       setShowUrlInput(false);
       setImageUrlInput("");
       setDiscountMode("none");
@@ -408,13 +437,15 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       inStock: newQty > 0,
     };
 
+    setCloudSyncStatus("saving");
     updateProductDetails(matchedProduct.id, {
       variants: updatedVariants,
       stock: updatedVariants.reduce((sum, item) => sum + (item.stock || 0), 0),
       inStock: newQty > 0,
     });
+    markCloudSaved();
 
-    setSuccessToast(`Giacenza aggiornata: ${newQty} pz`);
+    setSuccessToast(`Giacenza aggiornata: ${newQty} pz (sincronizzata nel cloud)`);
     setTimeout(() => {
       setIsStockUpdating(false);
       setSuccessToast(null);
@@ -654,6 +685,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   // ---------------------------------------------------------------------------
   const applyNewImage = (imgSrc: string) => {
     if (!matchedProduct || !imgSrc) return;
+    setCloudSyncStatus("saving");
 
     const updatedVariants = matchedProduct.variants ? [...matchedProduct.variants] : [];
     if (updatedVariants[matchedVariantIndex]) {
@@ -677,6 +709,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
 
     if (result && (result as { error?: string }).error) {
       setSuccessToast((result as { error?: string }).error || "Errore durante il salvataggio della foto.");
+      setCloudSyncStatus("idle");
       return;
     }
 
@@ -685,7 +718,8 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       variants: updatedVariants.length ? updatedVariants : matchedProduct.variants,
       images: updatedImages,
     });
-    setSuccessToast("Foto aggiornata con successo!");
+    markCloudSaved();
+    setSuccessToast("Foto aggiornata e sincronizzata nel cloud!");
     setTimeout(() => setSuccessToast(null), 2400);
   };
 
@@ -714,52 +748,126 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   };
 
   // ---------------------------------------------------------------------------
-  // 2. Base list price editing handlers
+  // 2. Base list price & title editing handlers (Instant Auto-Sync)
   // ---------------------------------------------------------------------------
-  const startEditPrice = () => {
-    setPriceEditValue(baseListPrice.toFixed(2));
-    setIsEditingPrice(true);
-  };
+  const commitTitleChange = useCallback(
+    (customTitle?: string) => {
+      if (!matchedProduct) return;
+      const clean = (customTitle !== undefined ? customTitle : titleEditValue).trim();
+      if (!clean || clean === matchedProduct.name) {
+        setIsEditingTitle(false);
+        return;
+      }
 
-  const savePriceEdit = () => {
-    if (!matchedProduct) return;
-    const newPrice = parseFloat(priceEditValue.replace(",", "."));
-    if (isNaN(newPrice) || newPrice < 0) {
-      setIsEditingPrice(false);
-      return;
-    }
-    const rounded = Math.round(newPrice * 100) / 100;
-    setIsUpdatingPrice(true);
+      setCloudSyncStatus("saving");
+      const result = updateProductDetails(matchedProduct.id, { name: clean });
+      if (result && (result as { error?: string }).error) {
+        setSuccessToast((result as { error?: string }).error || "Errore salvataggio titolo.");
+        setCloudSyncStatus("idle");
+        setIsEditingTitle(false);
+        return;
+      }
 
-    const updatedVariants = matchedProduct.variants ? [...matchedProduct.variants] : [];
-    const updates: Partial<Product> = { price: rounded };
-    if (updatedVariants[matchedVariantIndex]) {
-      updatedVariants[matchedVariantIndex] = {
-        ...updatedVariants[matchedVariantIndex],
-        price: rounded,
-      };
-      updates.variants = updatedVariants;
-    }
+      setMatchedProduct((prev) => (prev ? { ...prev, name: clean } : null));
+      setIsEditingTitle(false);
+      markCloudSaved();
+      setSuccessToast("Nome prodotto aggiornato e sincronizzato!");
+      setTimeout(() => setSuccessToast(null), 2400);
+    },
+    [matchedProduct, titleEditValue, markCloudSaved]
+  );
 
-    const result = updateProductDetails(matchedProduct.id, updates);
-    if (result && (result as { error?: string }).error) {
-      setSuccessToast((result as { error?: string }).error || "Errore durante il salvataggio del prezzo.");
+  const commitPriceChange = useCallback(
+    (customVal?: string) => {
+      if (!matchedProduct) return;
+      const raw = customVal !== undefined ? customVal : priceEditValue;
+      if (!raw || !raw.trim()) return;
+      const newPrice = parseFloat(raw.replace(",", "."));
+      if (isNaN(newPrice) || newPrice < 0) return;
+      const rounded = Math.round(newPrice * 100) / 100;
+
+      const currentPrice =
+        (matchedProduct.variants?.[matchedVariantIndex]?.price ?? matchedProduct.price) || 0;
+      if (Math.abs(rounded - currentPrice) < 0.001) return;
+
+      setCloudSyncStatus("saving");
+      setIsUpdatingPrice(true);
+
+      const updatedVariants = matchedProduct.variants ? [...matchedProduct.variants] : [];
+      const updates: Partial<Product> = { price: rounded };
+      if (updatedVariants[matchedVariantIndex]) {
+        updatedVariants[matchedVariantIndex] = {
+          ...updatedVariants[matchedVariantIndex],
+          price: rounded,
+        };
+        updates.variants = updatedVariants;
+      }
+
+      const result = updateProductDetails(matchedProduct.id, updates);
+      if (result && (result as { error?: string }).error) {
+        setSuccessToast((result as { error?: string }).error || "Errore durante il salvataggio del prezzo.");
+        setIsUpdatingPrice(false);
+        setCloudSyncStatus("idle");
+        return;
+      }
+
+      setMatchedProduct((prev) =>
+        prev
+          ? {
+              ...prev,
+              price: rounded,
+              variants: updatedVariants.length ? updatedVariants : prev.variants,
+            }
+          : null
+      );
+
+      if (discountMode === "none") {
+        setCashTendered(rounded.toFixed(2));
+      }
+
       setIsUpdatingPrice(false);
-      setIsEditingPrice(false);
-      return;
+      markCloudSaved();
+      setSuccessToast(`Prezzo di listino sincronizzato: €${rounded.toFixed(2)}`);
+      setTimeout(() => setSuccessToast(null), 2500);
+    },
+    [matchedProduct, matchedVariantIndex, priceEditValue, discountMode, markCloudSaved]
+  );
+
+  const handlePriceInputChange = (val: string) => {
+    setPriceEditValue(val);
+    if (priceDebounceTimerRef.current) {
+      clearTimeout(priceDebounceTimerRef.current);
+    }
+    const n = parseFloat(val.replace(",", "."));
+    if (!isNaN(n) && n >= 0) {
+      setCloudSyncStatus("saving");
+      priceDebounceTimerRef.current = setTimeout(() => {
+        commitPriceChange(val);
+      }, 700);
+    }
+  };
+
+  const handleCloseModal = useCallback(() => {
+    // 1. Flush in-flight price auto-save
+    if (priceDebounceTimerRef.current) {
+      clearTimeout(priceDebounceTimerRef.current);
+      priceDebounceTimerRef.current = null;
+    }
+    if (priceEditValue && matchedProduct) {
+      const rawNum = parseFloat(priceEditValue.replace(",", "."));
+      if (!isNaN(rawNum) && rawNum >= 0) {
+        commitPriceChange(priceEditValue);
+      }
     }
 
-    setMatchedProduct({
-      ...matchedProduct,
-      price: rounded,
-      variants: updatedVariants.length ? updatedVariants : matchedProduct.variants,
-    });
-    setCashTendered(rounded.toFixed(2));
-    setIsEditingPrice(false);
-    setIsUpdatingPrice(false);
-    setSuccessToast(`Prezzo di listino aggiornato: €${rounded.toFixed(2)}`);
-    setTimeout(() => setSuccessToast(null), 2600);
-  };
+    // 2. Flush in-flight title auto-save
+    if (isEditingTitle && titleEditValue.trim() && matchedProduct) {
+      commitTitleChange(titleEditValue);
+    }
+
+    // 3. Close modal
+    setIsOpen(false);
+  }, [priceEditValue, matchedProduct, commitPriceChange, isEditingTitle, titleEditValue, commitTitleChange]);
 
   // ---------------------------------------------------------------------------
   // 3. Counter discount handlers
@@ -826,7 +934,10 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+      onClick={handleCloseModal}
+    >
       <div
         className="bg-white rounded-3xl shadow-2xl border border-[#D8C2E7]/80 w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
@@ -850,14 +961,35 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setIsOpen(false)}
-            className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/80 hover:text-white transition-colors cursor-pointer"
-            title="Chiudi finestra (Esc)"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-2">
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+              {cloudSyncStatus === "saving" ? (
+                <>
+                  <Loader2 className="w-3 h-3 animate-spin text-amber-300" />
+                  <span className="text-[11px] font-semibold text-amber-200">Sincronizzo Cloud...</span>
+                </>
+              ) : cloudSyncStatus === "saved" ? (
+                <>
+                  <Check className="w-3 h-3 text-emerald-300" />
+                  <span className="text-[11px] font-semibold text-emerald-200">Salvato nel Cloud</span>
+                </>
+              ) : (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[11px] font-semibold text-emerald-200">Auto-Sync Cloud Attivo</span>
+                </>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={handleCloseModal}
+              className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/80 hover:text-white transition-colors cursor-pointer"
+              title="Chiudi finestra (Esc)"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* Top Controls: Toast & Search bar (Compact shrink-0) */}
@@ -997,9 +1129,53 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                         </span>
                       </div>
 
-                      <h2 className="font-serif text-base sm:text-lg font-bold text-[#1F1B24] leading-snug line-clamp-2">
-                        {matchedProduct.name}
-                      </h2>
+                      {/* Product Name (Inline Editable) */}
+                      {isEditingTitle ? (
+                        <div className="flex items-center gap-1.5 my-1">
+                          <input
+                            type="text"
+                            value={titleEditValue}
+                            onChange={(e) => setTitleEditValue(e.target.value)}
+                            onBlur={() => commitTitleChange()}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                commitTitleChange();
+                              } else if (e.key === "Escape") {
+                                setIsEditingTitle(false);
+                                setTitleEditValue(matchedProduct.name);
+                              }
+                            }}
+                            autoFocus
+                            className="w-full px-2 py-0.5 text-xs sm:text-sm font-serif font-bold text-[#1F1B24] bg-white rounded-lg border border-[#5E1788] focus:outline-none"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => commitTitleChange()}
+                            className="w-6 h-6 rounded bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shrink-0 cursor-pointer"
+                            title="Salva nome"
+                          >
+                            <Check className="w-3 h-3" />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="group flex items-start gap-1">
+                          <h2 className="font-serif text-sm sm:text-base font-bold text-[#1F1B24] leading-snug line-clamp-2">
+                            {matchedProduct.name}
+                          </h2>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setTitleEditValue(matchedProduct.name);
+                              setIsEditingTitle(true);
+                            }}
+                            className="opacity-60 hover:opacity-100 p-0.5 rounded text-gray-400 hover:text-[#5E1788] hover:bg-purple-100 transition-colors shrink-0 cursor-pointer"
+                            title="Modifica titolo prodotto"
+                          >
+                            <Pencil className="w-2.5 h-2.5" />
+                          </button>
+                        </div>
+                      )}
 
                       {currentVariant && currentVariant.name && currentVariant.name !== "Standard" && (
                         <div className="text-[11px] font-semibold text-[#D462A6] flex items-center gap-1">
@@ -1008,68 +1184,62 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                         </div>
                       )}
 
-                      {/* Base Price + Inline Edit */}
-                      <div className="pt-0.5 flex items-center gap-2 flex-wrap">
-                        {isEditingPrice ? (
-                          <div className="flex items-center gap-1">
-                            <span className="text-lg font-mono font-bold text-[#5E1788]">€</span>
+                      {/* Base Price Card with Direct Instant Edit & Auto-Sync */}
+                      <div className="mt-1 p-2 rounded-xl bg-purple-50/80 border border-purple-200 flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex flex-col">
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[9px] uppercase tracking-wider font-extrabold text-[#5E1788]">
+                              Prezzo Listino
+                            </span>
+                            <span className="text-[8px] font-bold text-emerald-700 bg-emerald-100/80 px-1.5 py-0.2 rounded">
+                              Auto-Sync
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1 mt-0.5">
+                            <span className="text-base font-mono font-extrabold text-[#5E1788]">€</span>
                             <input
-                              type="number"
-                              step="0.01"
-                              min="0"
+                              type="text"
+                              inputMode="decimal"
                               value={priceEditValue}
-                              onChange={(e) => setPriceEditValue(e.target.value)}
+                              onChange={(e) => handlePriceInputChange(e.target.value)}
+                              onBlur={() => commitPriceChange()}
                               onKeyDown={(e) => {
                                 if (e.key === "Enter") {
                                   e.preventDefault();
-                                  savePriceEdit();
-                                } else if (e.key === "Escape") {
-                                  e.preventDefault();
-                                  setIsEditingPrice(false);
+                                  commitPriceChange();
+                                  (e.target as HTMLInputElement).blur();
                                 }
                               }}
-                              autoFocus
-                              className="w-20 px-1.5 py-0.5 rounded border border-[#5E1788] text-base font-mono font-bold text-[#5E1788] focus:outline-none"
+                              className="w-20 px-1.5 py-0.5 bg-white rounded-lg border-2 border-purple-300 font-mono font-extrabold text-sm text-[#1F1B24] focus:outline-none focus:border-[#5E1788] focus:ring-1 focus:ring-[#5E1788]"
+                              title="Modifica il prezzo: si sincronizza automaticamente nel cloud!"
                             />
-                            <button
-                              type="button"
-                              onClick={savePriceEdit}
-                              disabled={isUpdatingPrice}
-                              className="w-6 h-6 rounded bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition-colors disabled:opacity-50 cursor-pointer"
-                              title="Salva prezzo"
-                            >
-                              {isUpdatingPrice ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => setIsEditingPrice(false)}
-                              className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center transition-colors cursor-pointer"
-                              title="Annulla"
-                            >
-                              <X className="w-3 h-3" />
-                            </button>
-                          </div>
-                        ) : (
-                          <>
-                            <span className="text-xl font-mono font-bold text-[#5E1788]">
-                              €{baseListPrice.toFixed(2)}
-                            </span>
                             {matchedProduct.originalPrice && (
-                              <span className="text-xs line-through text-gray-400 font-mono">
+                              <span className="text-xs line-through text-gray-400 font-mono ml-1">
                                 €{matchedProduct.originalPrice.toFixed(2)}
                               </span>
                             )}
-                            <button
-                              type="button"
-                              onClick={startEditPrice}
-                              className="px-1.5 py-0.5 rounded bg-white border border-[#D8C2E7] hover:bg-purple-50 text-[#5E1788] text-[9px] font-bold transition-colors flex items-center gap-1 cursor-pointer"
-                              title="Modifica prezzo di listino"
-                            >
-                              <Pencil className="w-2.5 h-2.5" />
-                              <span>Modifica listino</span>
-                            </button>
-                          </>
-                        )}
+                          </div>
+                        </div>
+
+                        {/* Status salvataggio live */}
+                        <div className="flex items-center gap-1">
+                          {cloudSyncStatus === "saving" ? (
+                            <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-50 border border-amber-200 text-amber-800 text-[10px] font-bold animate-pulse">
+                              <Loader2 className="w-2.5 h-2.5 animate-spin text-amber-600" />
+                              <span>Salvo...</span>
+                            </div>
+                          ) : cloudSyncStatus === "saved" ? (
+                            <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 border border-emerald-300 text-emerald-800 text-[10px] font-bold animate-in fade-in">
+                              <Check className="w-3 h-3 text-emerald-600" />
+                              <span>Salvato</span>
+                            </div>
+                          ) : (
+                            <span className="text-[9px] text-gray-500 font-medium flex items-center gap-1" title="Modifichi, chiudi ed è salvato">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                              Salvato
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1455,13 +1625,32 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                     </button>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setIsOpen(false)}
-                    className="px-4 py-1.5 rounded-lg border border-[#D8C2E7] text-gray-700 text-[11px] font-bold hover:bg-gray-50 transition-colors cursor-pointer"
-                  >
-                    Chiudi (Esc)
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleCloseModal}
+                      className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-95"
+                      title="Salva tutte le modifiche e chiudi"
+                    >
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Salva & Chiudi</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleCloseModal}
+                      className="px-3 py-1.5 rounded-lg border border-[#D8C2E7] text-gray-700 text-xs font-semibold hover:bg-gray-50 transition-colors cursor-pointer"
+                    >
+                      Chiudi (Esc)
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between text-[10px] text-gray-500 pt-0.5 px-1">
+                  <span className="flex items-center gap-1 text-emerald-700 font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Auto-sync cloud attivo: modifichi, chiudi ed è salvato.
+                  </span>
                 </div>
               </div>
             </div>
