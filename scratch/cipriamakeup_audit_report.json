@@ -1,0 +1,259 @@
+{
+  "generatedAt": "2026-09-22T11:10:20.027Z",
+  "catalogFile": "data/catalog.json",
+  "scope": {
+    "description": "Prodotti importati da Cipria Makeup (cipriamakeup.it)",
+    "totalProducts": 260,
+    "byBrand": {
+      "RVB LAB": 53,
+      "Cipria Make Up": 23,
+      "Eveline Cosmetics": 99,
+      "Pierre René": 59,
+      "Miyo": 26
+    }
+  },
+  "integrity": {
+    "priceIntegrityPct": 100,
+    "imageIntegrityPct": 100,
+    "cardIntegrityPct": 100,
+    "imageRefsChecked": 2124,
+    "productsWithPriceIssues": 0,
+    "productsWithImageIssues": 0,
+    "productsWithCardIssues": 0
+  },
+  "checks": {
+    "prices": {
+      "rules": [
+        "price>0 e finito",
+        "price in range plausibile",
+        "variant/shade price sincronizzato col genitore",
+        "originalPrice>=price o assente",
+        "wholesale>0 e price>wholesale"
+      ],
+      "issuesBeforeFix": [],
+      "issuesAfterFix": []
+    },
+    "images": {
+      "rules": [
+        "file esiste in public/products",
+        "size>2048B",
+        "firma binaria png/jpeg/webp",
+        "non e' una pagina HTML di errore"
+      ],
+      "issuesBeforeFix": [],
+      "issuesAfterFix": []
+    },
+    "cards": {
+      "rules": [
+        "categoria valida",
+        "slug univoco e non vuoto",
+        "id univoco",
+        "testi obbligatori non vuoti",
+        "variants/shades presenti",
+        "sku/ean presenti",
+        "stock coerente con inStock e somma varianti"
+      ],
+      "issuesBeforeFix": [],
+      "issuesAfterFix": []
+    }
+  },
+  "anomalies": {
+    "detected": [
+      {
+        "kind": "image",
+        "id": "cipria-67238b",
+        "where": "image",
+        "rel": "/products/eveline-cosmetics-packshot.jpg",
+        "reason": "missing-file"
+      },
+      {
+        "kind": "image",
+        "id": "cipria-67238b",
+        "where": "images[0]",
+        "rel": "/products/eveline-cosmetics-packshot.jpg",
+        "reason": "missing-file"
+      },
+      {
+        "kind": "image",
+        "id": "cipria-67238b",
+        "where": "shades[0].image",
+        "rel": "/products/eveline-cosmetics-packshot.jpg",
+        "reason": "missing-file"
+      },
+      {
+        "kind": "image",
+        "id": "cipria-67238b",
+        "where": "variants[0].image",
+        "rel": "/products/eveline-cosmetics-packshot.jpg",
+        "reason": "missing-file"
+      },
+      {
+        "kind": "price",
+        "id": "cipria-73706",
+        "field": "variant.price",
+        "issue": "zero-or-invalid",
+        "variant": "5903416080039",
+        "value": 0
+      },
+      {
+        "kind": "price",
+        "id": "cipria-73706",
+        "field": "originalPrice",
+        "issue": "zero-strike-price",
+        "value": 0
+      }
+    ],
+    "resolved": [
+      {
+        "id": "cipria-73706",
+        "type": "variant-price-synced",
+        "where": "shades[0]",
+        "variant": "5903416080039",
+        "from": 0,
+        "to": 8.9
+      },
+      {
+        "id": "cipria-73706",
+        "type": "variant-price-synced",
+        "where": "variants[0]",
+        "variant": "5903416080039",
+        "from": 0,
+        "to": 8.9
+      },
+      {
+        "id": "cipria-73706",
+        "type": "originalPrice-normalized",
+        "from": 0,
+        "to": 8.9
+      },
+      {
+        "id": "cipria-67238b",
+        "type": "image-reassigned",
+        "from": [
+          "/products/eveline-cosmetics-packshot.jpg",
+          "/products/eveline-cosmetics-packshot.jpg",
+          "/products/eveline-cosmetics-packshot.jpg",
+          "/products/eveline-cosmetics-packshot.jpg"
+        ],
+        "to": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-crema-riparatrice-40.png"
+      }
+    ],
+    "remaining": []
+  },
+  "warnings": {
+    "lowMargin": [
+      {
+        "id": "cipria-69571",
+        "name": "Pierre René Eyeshadow Matt ART Palette Match System",
+        "price": 7.9,
+        "wholesale": 6.29,
+        "margin": 1.26
+      },
+      {
+        "id": "cipria-73711",
+        "name": "Eveline Cosmetics Superfruit Tint Tinta labbra in gel",
+        "price": 4.99,
+        "wholesale": 3.7,
+        "margin": 1.35
+      }
+    ]
+  },
+  "samplePriceStructure": {
+    "perBrand": {
+      "RVB LAB": {
+        "count": 53,
+        "priceMin": 10.5,
+        "priceMax": 44.5,
+        "priceAvg": 24.66,
+        "margin": {
+          "min": 2.68,
+          "max": 2.69,
+          "median": 2.68,
+          "avg": 2.68
+        },
+        "discountDepth": {
+          "min": 0.13,
+          "max": 0.13,
+          "median": 0.13,
+          "avg": 0.13
+        }
+      },
+      "Cipria Make Up": {
+        "count": 23,
+        "priceMin": 4.99,
+        "priceMax": 22.9,
+        "priceAvg": 14.37,
+        "margin": {
+          "min": 1.35,
+          "max": 3.85,
+          "median": 2.7,
+          "avg": 2.74
+        },
+        "discountDepth": {
+          "min": 0.15,
+          "max": 0.15,
+          "median": 0.15,
+          "avg": 0.15
+        }
+      },
+      "Eveline Cosmetics": {
+        "count": 99,
+        "priceMin": 2.4,
+        "priceMax": 15,
+        "priceAvg": 9.72,
+        "margin": {
+          "min": 1.78,
+          "max": 4.36,
+          "median": 2.52,
+          "avg": 2.53
+        },
+        "discountDepth": {
+          "min": 0.14,
+          "max": 0.16,
+          "median": 0.15,
+          "avg": 0.15
+        }
+      },
+      "Pierre René": {
+        "count": 59,
+        "priceMin": 7.9,
+        "priceMax": 29.9,
+        "priceAvg": 16.86,
+        "margin": {
+          "min": 1.26,
+          "max": 3.51,
+          "median": 2.94,
+          "avg": 2.75
+        },
+        "discountDepth": {
+          "min": 0.15,
+          "max": 0.16,
+          "median": 0.15,
+          "avg": 0.15
+        }
+      },
+      "Miyo": {
+        "count": 26,
+        "priceMin": 5.4,
+        "priceMax": 14.9,
+        "priceAvg": 10.49,
+        "margin": {
+          "min": 1.59,
+          "max": 5.11,
+          "median": 2.69,
+          "avg": 2.73
+        },
+        "discountDepth": {
+          "min": 0.15,
+          "max": 0.16,
+          "median": 0.15,
+          "avg": 0.15
+        }
+      }
+    },
+    "invoiceCrossCheck": {
+      "matched": 431,
+      "mismatches": []
+    }
+  }
+}

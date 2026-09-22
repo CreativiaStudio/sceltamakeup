@@ -19667,7 +19667,7 @@
     "description": "Wonder Match BB Cream SPF 50 è la soluzione ideale per una pelle liscia, fresca e dall&#8217;aspetto naturale per tutto il giorno. La formula Repair Complex, ispirata alla tradizione coreana, lascia l&#8217;incarnato morbido, più idratato e radioso. Offre una copertura completa, nasconde le imperfezioni e leviga visibilmente la grana della pelle. La texture leggera si adatta alle espressioni del viso, garantendo un trucco dall&#8217;aspetto naturale. Uniforma l&#8217;incarnato e permette una copertura modulabile. Il finish satinato dona un aspetto naturale, radioso e leggermente illuminato. L&#8217;elevato fattore di protezione solare SPF 50, composto da filtri fisici (minerali) e chimici, offre una protezione UV più efficace e ad ampio spettro. PRINCIPALI INGREDIENTI ATTIVI E LORO AZIONE I filtri UV, fisici (minerali) e chimici combinano i benefici di entrambi, offrendo una protezione ad ampio spettro contro il fotoinvecchiamento. Ceramidi: supportano la barriera cutanea naturale, ne migliorano l&#8217;elasticità e riducono la tendenza alla secchezza. Contribuiscono a mantenere il comfort per tutto il giorno. CICA: lenisce le irritazioni e favorisce la rigenerazione, lasciando la pelle più calma e uniforme. Niacinamide: uniforma l&#8217;incarnato, supporta la barriera idrolipidica e migliora le condizioni generali della pelle. Aiuta a mantenere un aspetto fresco e riposato. Fito PDRN (DNA di sodio): favorisce il rinnovamento cellulare della pelle e ne migliora l&#8217;elasticità. Il collagene sostiene la struttura della pelle, aumentandone l&#8217;elasticità e la tonicità. Aiuta a ridurre la visibilità delle piccole imperfezioni e migliora la levigatezza della pelle. L&#8217;acido ialuronico idrata e lega l&#8217;acqua all&#8217;epidermide, lasciando la pelle morbida e confortevole per ore. Applicazione: Applicare uniformemente sulla pelle del viso.",
     "shortDescription": "Wonder Match BB Cream SPF 50 è la soluzione ideale per una pelle liscia, fresca e dall&#8217;aspetto naturale per tutto il giorno.",
     "price": 8.9,
-    "originalPrice": 0,
+    "originalPrice": 8.9,
     "originalWholesalePrice": 4.99,
     "badge": "Bestseller",
     "badges": [
@@ -19693,7 +19693,7 @@
         "code": "5903416080039",
         "hex": "#FAF7FC",
         "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-bb-cream-spf-50-01.jpg",
-        "price": 0,
+        "price": 8.9,
         "inStock": true,
         "stock": 3
       }
@@ -19707,7 +19707,7 @@
         "colorHex": null,
         "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-bb-cream-spf-50-01.jpg",
         "inStock": true,
-        "price": 0,
+        "price": 8.9,
         "originalWholesalePrice": 4.99,
         "stock": 3
       }
@@ -25801,7 +25801,7 @@
       "adatta a tutti i tipi di pelle dai 40 anni"
     ],
     "images": [
-      "/products/eveline-cosmetics-packshot.jpg"
+      "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-crema-riparatrice-40.png"
     ],
     "shades": [
       {
@@ -25809,7 +25809,7 @@
         "name": "50ML",
         "code": "5903416026051",
         "hex": "#E9C299",
-        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-crema-riparatrice-40.png",
         "price": 11.9,
         "inStock": true,
         "stock": 3
@@ -25822,7 +25822,7 @@
         "sku": "5903416026051",
         "ean": "5903416026051",
         "colorHex": "#E9C299",
-        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-crema-riparatrice-40.png",
         "inStock": true,
         "price": 11.9,
         "originalWholesalePrice": 4.59,
@@ -25831,7 +25831,7 @@
     ],
     "stock": 3,
     "inStock": true,
-    "image": "/products/eveline-cosmetics-packshot.jpg"
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-crema-riparatrice-40.png"
   },
   {
     "id": "cipria-67239",
