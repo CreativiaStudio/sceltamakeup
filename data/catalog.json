@@ -10574,6 +10574,16 @@
         "price": 9.4,
         "inStock": true,
         "stock": 6
+      },
+      {
+        "id": "var-5903416066071",
+        "name": "13 Blue Sky Metal",
+        "code": "5903416066071",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-waterproof-eyeliner-pencil.jpg",
+        "price": 9.4,
+        "inStock": true,
+        "stock": 6
       }
     ],
     "variants": [
@@ -10636,9 +10646,21 @@
         "price": 9.4,
         "originalWholesalePrice": 3.1,
         "stock": 6
+      },
+      {
+        "id": "var-5903416066071",
+        "name": "13 Blue Sky Metal",
+        "sku": "5903416066071",
+        "ean": "5903416066071",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-waterproof-eyeliner-pencil.jpg",
+        "inStock": true,
+        "price": 9.4,
+        "originalWholesalePrice": 3.1,
+        "stock": 6
       }
     ],
-    "stock": 30,
+    "stock": 36,
     "inStock": true,
     "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-waterproof-eyeliner-pencil.jpg"
   },
@@ -11279,6 +11301,26 @@
         "price": 7.9,
         "inStock": true,
         "stock": 3
+      },
+      {
+        "id": "var-5903416017455",
+        "name": "Dark Brown",
+        "code": "5903416017455",
+        "hex": "#C5A880",
+        "image": "/products/pierre-rene-eveline-cosmetics-eyebrow-pencil-waterproof.jpg",
+        "price": 7.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416074953",
+        "name": "Graphite",
+        "code": "5903416074953",
+        "hex": "#C5A880",
+        "image": "/products/pierre-rene-eveline-cosmetics-eyebrow-pencil-waterproof.jpg",
+        "price": 7.9,
+        "inStock": true,
+        "stock": 3
       }
     ],
     "variants": [
@@ -11317,9 +11359,33 @@
         "price": 7.9,
         "originalWholesalePrice": 3.48,
         "stock": 3
+      },
+      {
+        "id": "var-5903416017455",
+        "name": "Dark Brown",
+        "sku": "5903416017455",
+        "ean": "5903416017455",
+        "colorHex": "#C5A880",
+        "image": "/products/pierre-rene-eveline-cosmetics-eyebrow-pencil-waterproof.jpg",
+        "inStock": true,
+        "price": 7.9,
+        "originalWholesalePrice": 3.48,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416074953",
+        "name": "Graphite",
+        "sku": "5903416074953",
+        "ean": "5903416074953",
+        "colorHex": "#C5A880",
+        "image": "/products/pierre-rene-eveline-cosmetics-eyebrow-pencil-waterproof.jpg",
+        "inStock": true,
+        "price": 7.9,
+        "originalWholesalePrice": 3.48,
+        "stock": 3
       }
     ],
-    "stock": 9,
+    "stock": 15,
     "inStock": true,
     "image": "/products/pierre-rene-eveline-cosmetics-eyebrow-pencil-waterproof.jpg"
   },
@@ -11625,6 +11691,16 @@
         "price": 5.9,
         "inStock": true,
         "stock": 2
+      },
+      {
+        "id": "var-5901761936704",
+        "name": "Widelash Black",
+        "code": "5901761936704",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-eyeliner-celebrities.jpg",
+        "price": 5.9,
+        "inStock": true,
+        "stock": 3
       }
     ],
     "variants": [
@@ -11651,9 +11727,21 @@
         "price": 5.9,
         "originalWholesalePrice": 2.7,
         "stock": 2
+      },
+      {
+        "id": "var-5901761936704",
+        "name": "Widelash Black",
+        "sku": "5901761936704",
+        "ean": "5901761936704",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-eyeliner-celebrities.jpg",
+        "inStock": true,
+        "price": 5.9,
+        "originalWholesalePrice": 2.7,
+        "stock": 3
       }
     ],
-    "stock": 5,
+    "stock": 8,
     "inStock": true,
     "image": "/products/eveline-cosmetics-eveline-cosmetics-eyeliner-celebrities.jpg"
   },
@@ -12212,6 +12300,26 @@
         "price": 16.5,
         "inStock": true,
         "stock": 3
+      },
+      {
+        "id": "var-3700467823989",
+        "name": "02 Ginger Bronze",
+        "code": "3700467823989",
+        "hex": "#C5A880",
+        "image": "/products/pierre-rene-pierre-rene-brow-liner-with-brush.jpg",
+        "price": 16.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467842560",
+        "name": "04 Dark Brown",
+        "code": "3700467842560",
+        "hex": "#C5A880",
+        "image": "/products/pierre-rene-pierre-rene-brow-liner-with-brush.jpg",
+        "price": 16.5,
+        "inStock": true,
+        "stock": 3
       }
     ],
     "variants": [
@@ -12226,9 +12334,33 @@
         "price": 16.5,
         "originalWholesalePrice": 4.7,
         "stock": 3
+      },
+      {
+        "id": "var-3700467823989",
+        "name": "02 Ginger Bronze",
+        "sku": "3700467823989",
+        "ean": "3700467823989",
+        "colorHex": "#C5A880",
+        "image": "/products/pierre-rene-pierre-rene-brow-liner-with-brush.jpg",
+        "inStock": true,
+        "price": 16.5,
+        "originalWholesalePrice": 4.7,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467842560",
+        "name": "04 Dark Brown",
+        "sku": "3700467842560",
+        "ean": "3700467842560",
+        "colorHex": "#C5A880",
+        "image": "/products/pierre-rene-pierre-rene-brow-liner-with-brush.jpg",
+        "inStock": true,
+        "price": 16.5,
+        "originalWholesalePrice": 4.7,
+        "stock": 3
       }
     ],
-    "stock": 3,
+    "stock": 9,
     "inStock": true,
     "image": "/products/pierre-rene-pierre-rene-brow-liner-with-brush.jpg"
   },
@@ -13822,6 +13954,46 @@
         "price": 9.5,
         "inStock": true,
         "stock": 6
+      },
+      {
+        "id": "var-5903416052470",
+        "name": "01 Nude",
+        "code": "5903416052470",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
+        "price": 9.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416066040",
+        "name": "04 Candy",
+        "code": "5903416066040",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
+        "price": 9.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416066057",
+        "name": "05 Angel",
+        "code": "5903416066057",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
+        "price": 9.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416080404",
+        "name": "10 Pink",
+        "code": "5903416080404",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
+        "price": 9.5,
+        "inStock": true,
+        "stock": 6
       }
     ],
     "variants": [
@@ -13848,9 +14020,57 @@
         "price": 9.5,
         "originalWholesalePrice": 3.1,
         "stock": 6
+      },
+      {
+        "id": "var-5903416052470",
+        "name": "01 Nude",
+        "sku": "5903416052470",
+        "ean": "5903416052470",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
+        "inStock": true,
+        "price": 9.5,
+        "originalWholesalePrice": 3.1,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416066040",
+        "name": "04 Candy",
+        "sku": "5903416066040",
+        "ean": "5903416066040",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
+        "inStock": true,
+        "price": 9.5,
+        "originalWholesalePrice": 3.1,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416066057",
+        "name": "05 Angel",
+        "sku": "5903416066057",
+        "ean": "5903416066057",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
+        "inStock": true,
+        "price": 9.5,
+        "originalWholesalePrice": 3.1,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416080404",
+        "name": "10 Pink",
+        "sku": "5903416080404",
+        "ean": "5903416080404",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
+        "inStock": true,
+        "price": 9.5,
+        "originalWholesalePrice": 3.1,
+        "stock": 6
       }
     ],
-    "stock": 12,
+    "stock": 36,
     "inStock": true,
     "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg"
   },
@@ -14169,6 +14389,26 @@
         "price": 9.9,
         "inStock": true,
         "stock": 6
+      },
+      {
+        "id": "var-5901761965780",
+        "name": "Waterproof",
+        "code": "5901761965780",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-variete-lashes-show.jpeg",
+        "price": 9.9,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416038245",
+        "name": "Pretty",
+        "code": "5903416038245",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-variete-lashes-show.jpeg",
+        "price": 9.9,
+        "inStock": true,
+        "stock": 6
       }
     ],
     "variants": [
@@ -14183,9 +14423,33 @@
         "price": 9.9,
         "originalWholesalePrice": 3.66,
         "stock": 6
+      },
+      {
+        "id": "var-5901761965780",
+        "name": "Waterproof",
+        "sku": "5901761965780",
+        "ean": "5901761965780",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-variete-lashes-show.jpeg",
+        "inStock": true,
+        "price": 9.9,
+        "originalWholesalePrice": 4.34,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416038245",
+        "name": "Pretty",
+        "sku": "5903416038245",
+        "ean": "5903416038245",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-variete-lashes-show.jpeg",
+        "inStock": true,
+        "price": 9.9,
+        "originalWholesalePrice": 3.54,
+        "stock": 6
       }
     ],
-    "stock": 6,
+    "stock": 18,
     "inStock": true,
     "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-variete-lashes-show.jpeg"
   },
@@ -14767,6 +15031,26 @@
         "price": 7.9,
         "inStock": true,
         "stock": 6
+      },
+      {
+        "id": "var-3700467822722",
+        "name": "Brown Vegan",
+        "code": "3700467822722",
+        "hex": "#C5A880",
+        "image": "/products/miyo-miyo-cosmetics-mascara-vegan-big-fat-lashes.jpg",
+        "price": 7.9,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467816066",
+        "name": "Smoky Vegan",
+        "code": "3700467816066",
+        "hex": "#C5A880",
+        "image": "/products/miyo-miyo-cosmetics-mascara-vegan-big-fat-lashes.jpg",
+        "price": 7.9,
+        "inStock": true,
+        "stock": 6
       }
     ],
     "variants": [
@@ -14793,9 +15077,33 @@
         "price": 7.9,
         "originalWholesalePrice": 2.56,
         "stock": 6
+      },
+      {
+        "id": "var-3700467822722",
+        "name": "Brown Vegan",
+        "sku": "3700467822722",
+        "ean": "3700467822722",
+        "colorHex": "#C5A880",
+        "image": "/products/miyo-miyo-cosmetics-mascara-vegan-big-fat-lashes.jpg",
+        "inStock": true,
+        "price": 7.9,
+        "originalWholesalePrice": 2.56,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467816066",
+        "name": "Smoky Vegan",
+        "sku": "3700467816066",
+        "ean": "3700467816066",
+        "colorHex": "#C5A880",
+        "image": "/products/miyo-miyo-cosmetics-mascara-vegan-big-fat-lashes.jpg",
+        "inStock": true,
+        "price": 7.9,
+        "originalWholesalePrice": 2.75,
+        "stock": 6
       }
     ],
-    "stock": 12,
+    "stock": 24,
     "inStock": true,
     "image": "/products/miyo-miyo-cosmetics-mascara-vegan-big-fat-lashes.jpg"
   },
@@ -15340,6 +15648,56 @@
         "price": 8.7,
         "inStock": true,
         "stock": 3
+      },
+      {
+        "id": "var-5903416074113",
+        "name": "02 Neutral Nude",
+        "code": "5903416074113",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-ombretto.jpg",
+        "price": 8.7,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416074120",
+        "name": "03 Warm Nude",
+        "code": "5903416074120",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-ombretto.jpg",
+        "price": 8.7,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416074137",
+        "name": "04 Brown",
+        "code": "5903416074137",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-ombretto.jpg",
+        "price": 8.7,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416074144",
+        "name": "05 Golden Glow",
+        "code": "5903416074144",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-ombretto.jpg",
+        "price": 8.7,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416074151",
+        "name": "06 Rose Glow",
+        "code": "5903416074151",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-ombretto.jpg",
+        "price": 8.7,
+        "inStock": true,
+        "stock": 3
       }
     ],
     "variants": [
@@ -15354,9 +15712,69 @@
         "price": 8.7,
         "originalWholesalePrice": 3.57,
         "stock": 3
+      },
+      {
+        "id": "var-5903416074113",
+        "name": "02 Neutral Nude",
+        "sku": "5903416074113",
+        "ean": "5903416074113",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-ombretto.jpg",
+        "inStock": true,
+        "price": 8.7,
+        "originalWholesalePrice": 3.57,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416074120",
+        "name": "03 Warm Nude",
+        "sku": "5903416074120",
+        "ean": "5903416074120",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-ombretto.jpg",
+        "inStock": true,
+        "price": 8.7,
+        "originalWholesalePrice": 3.57,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416074137",
+        "name": "04 Brown",
+        "sku": "5903416074137",
+        "ean": "5903416074137",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-ombretto.jpg",
+        "inStock": true,
+        "price": 8.7,
+        "originalWholesalePrice": 3.57,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416074144",
+        "name": "05 Golden Glow",
+        "sku": "5903416074144",
+        "ean": "5903416074144",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-ombretto.jpg",
+        "inStock": true,
+        "price": 8.7,
+        "originalWholesalePrice": 3.57,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416074151",
+        "name": "06 Rose Glow",
+        "sku": "5903416074151",
+        "ean": "5903416074151",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-ombretto.jpg",
+        "inStock": true,
+        "price": 8.7,
+        "originalWholesalePrice": 3.57,
+        "stock": 3
       }
     ],
-    "stock": 3,
+    "stock": 18,
     "inStock": true,
     "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-ombretto.jpg"
   },
@@ -16578,6 +16996,36 @@
         "price": 14.9,
         "inStock": true,
         "stock": 4
+      },
+      {
+        "id": "var-5903416017752",
+        "name": "15 Natural",
+        "code": "5903416017752",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 4
+      },
+      {
+        "id": "var-5901761985184",
+        "name": "16 Light Beige",
+        "code": "5901761985184",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 4
+      },
+      {
+        "id": "var-5903416017776",
+        "name": "30 Cool Beige",
+        "code": "5903416017776",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 4
       }
     ],
     "variants": [
@@ -16592,9 +17040,45 @@
         "price": 14.9,
         "originalWholesalePrice": 6.59,
         "stock": 4
+      },
+      {
+        "id": "var-5903416017752",
+        "name": "15 Natural",
+        "sku": "5903416017752",
+        "ean": "5903416017752",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 6.59,
+        "stock": 4
+      },
+      {
+        "id": "var-5901761985184",
+        "name": "16 Light Beige",
+        "sku": "5901761985184",
+        "ean": "5901761985184",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 6.59,
+        "stock": 4
+      },
+      {
+        "id": "var-5903416017776",
+        "name": "30 Cool Beige",
+        "sku": "5903416017776",
+        "ean": "5903416017776",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 6.59,
+        "stock": 4
       }
     ],
-    "stock": 4,
+    "stock": 16,
     "inStock": true,
     "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg"
   },
@@ -17404,6 +17888,16 @@
         "price": 24.7,
         "inStock": true,
         "stock": 3
+      },
+      {
+        "id": "var-3700467819692",
+        "name": "21 Porcelain Beige",
+        "code": "3700467819692",
+        "hex": "#C5A880",
+        "image": "/products/pierre-rene-pierre-rene-skin-balance-cover.jpg",
+        "price": 24.7,
+        "inStock": true,
+        "stock": 3
       }
     ],
     "variants": [
@@ -17442,9 +17936,21 @@
         "price": 24.7,
         "originalWholesalePrice": 7.2,
         "stock": 3
+      },
+      {
+        "id": "var-3700467819692",
+        "name": "21 Porcelain Beige",
+        "sku": "3700467819692",
+        "ean": "3700467819692",
+        "colorHex": "#C5A880",
+        "image": "/products/pierre-rene-pierre-rene-skin-balance-cover.jpg",
+        "inStock": true,
+        "price": 24.7,
+        "originalWholesalePrice": 7.2,
+        "stock": 3
       }
     ],
-    "stock": 9,
+    "stock": 12,
     "inStock": true,
     "image": "/products/pierre-rene-pierre-rene-skin-balance-cover.jpg"
   },
@@ -17486,6 +17992,36 @@
         "price": 27.3,
         "inStock": true,
         "stock": 3
+      },
+      {
+        "id": "var-3700467852644",
+        "name": "01 Ivory Nude",
+        "code": "3700467852644",
+        "hex": "#C5A880",
+        "image": "/products/pierre-rene-pierre-rene-fondotinta-skin-elixir-velvet.jpg",
+        "price": 27.3,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467852651",
+        "name": "02 Natur Nude",
+        "code": "3700467852651",
+        "hex": "#C5A880",
+        "image": "/products/pierre-rene-pierre-rene-fondotinta-skin-elixir-velvet.jpg",
+        "price": 27.3,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467852675",
+        "name": "04 Warm Nude",
+        "code": "3700467852675",
+        "hex": "#C5A880",
+        "image": "/products/pierre-rene-pierre-rene-fondotinta-skin-elixir-velvet.jpg",
+        "price": 27.3,
+        "inStock": true,
+        "stock": 3
       }
     ],
     "variants": [
@@ -17500,9 +18036,45 @@
         "price": 27.3,
         "originalWholesalePrice": 8.8,
         "stock": 3
+      },
+      {
+        "id": "var-3700467852644",
+        "name": "01 Ivory Nude",
+        "sku": "3700467852644",
+        "ean": "3700467852644",
+        "colorHex": "#C5A880",
+        "image": "/products/pierre-rene-pierre-rene-fondotinta-skin-elixir-velvet.jpg",
+        "inStock": true,
+        "price": 27.3,
+        "originalWholesalePrice": 8.8,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467852651",
+        "name": "02 Natur Nude",
+        "sku": "3700467852651",
+        "ean": "3700467852651",
+        "colorHex": "#C5A880",
+        "image": "/products/pierre-rene-pierre-rene-fondotinta-skin-elixir-velvet.jpg",
+        "inStock": true,
+        "price": 27.3,
+        "originalWholesalePrice": 8.8,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467852675",
+        "name": "04 Warm Nude",
+        "sku": "3700467852675",
+        "ean": "3700467852675",
+        "colorHex": "#C5A880",
+        "image": "/products/pierre-rene-pierre-rene-fondotinta-skin-elixir-velvet.jpg",
+        "inStock": true,
+        "price": 27.3,
+        "originalWholesalePrice": 8.8,
+        "stock": 3
       }
     ],
-    "stock": 3,
+    "stock": 12,
     "inStock": true,
     "image": "/products/pierre-rene-pierre-rene-fondotinta-skin-elixir-velvet.jpg"
   },
@@ -19312,6 +19884,26 @@
         "price": 10.9,
         "inStock": true,
         "stock": 3
+      },
+      {
+        "id": "var-5903416065975",
+        "name": "Light Beige",
+        "code": "5903416065975",
+        "hex": "#C5A880",
+        "image": "/products/pierre-rene-eveline-cosmetics-wonder-match-compact-powder-spf30.jpg",
+        "price": 10.9,
+        "inStock": true,
+        "stock": 4
+      },
+      {
+        "id": "var-5903416070351",
+        "name": "Medium Beige",
+        "code": "5903416070351",
+        "hex": "#C5A880",
+        "image": "/products/pierre-rene-eveline-cosmetics-wonder-match-compact-powder-spf30.jpg",
+        "price": 10.9,
+        "inStock": true,
+        "stock": 4
       }
     ],
     "variants": [
@@ -19326,9 +19918,33 @@
         "price": 10.9,
         "originalWholesalePrice": 5.99,
         "stock": 3
+      },
+      {
+        "id": "var-5903416065975",
+        "name": "Light Beige",
+        "sku": "5903416065975",
+        "ean": "5903416065975",
+        "colorHex": "#C5A880",
+        "image": "/products/pierre-rene-eveline-cosmetics-wonder-match-compact-powder-spf30.jpg",
+        "inStock": true,
+        "price": 10.9,
+        "originalWholesalePrice": 4.99,
+        "stock": 4
+      },
+      {
+        "id": "var-5903416070351",
+        "name": "Medium Beige",
+        "sku": "5903416070351",
+        "ean": "5903416070351",
+        "colorHex": "#C5A880",
+        "image": "/products/pierre-rene-eveline-cosmetics-wonder-match-compact-powder-spf30.jpg",
+        "inStock": true,
+        "price": 10.9,
+        "originalWholesalePrice": 4.99,
+        "stock": 4
       }
     ],
-    "stock": 3,
+    "stock": 11,
     "inStock": true,
     "image": "/products/pierre-rene-eveline-cosmetics-wonder-match-compact-powder-spf30.jpg"
   },
@@ -23176,6 +23792,26 @@
         "price": 14.9,
         "inStock": true,
         "stock": 3
+      },
+      {
+        "id": "var-5903416074243",
+        "name": "Bronzer 1BE Natural",
+        "code": "5903416074243",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-show-illuminante-stick.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416074250",
+        "name": "Bronzer 2BE Happy",
+        "code": "5903416074250",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-show-illuminante-stick.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 3
       }
     ],
     "variants": [
@@ -23202,9 +23838,33 @@
         "price": 14.9,
         "originalWholesalePrice": 6.49,
         "stock": 3
+      },
+      {
+        "id": "var-5903416074243",
+        "name": "Bronzer 1BE Natural",
+        "sku": "5903416074243",
+        "ean": "5903416074243",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-show-illuminante-stick.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 6.49,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416074250",
+        "name": "Bronzer 2BE Happy",
+        "sku": "5903416074250",
+        "ean": "5903416074250",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-show-illuminante-stick.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 6.49,
+        "stock": 3
       }
     ],
-    "stock": 6,
+    "stock": 12,
     "inStock": true,
     "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-show-illuminante-stick.jpg"
   },
@@ -26944,5 +27604,4041 @@
     "stock": 1,
     "inStock": true,
     "image": "/products/ddp-pf07011.webp"
+  },
+  {
+    "id": "cipria-5903416080244",
+    "slug": "eveline-cosmetics-eyeliner-24h-waterproof-slim-black",
+    "name": "Eveline Cosmetics EYELINER 24H WATERPROOF SLIM BLACK",
+    "brand": "Eveline Cosmetics",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics EYELINER 24H WATERPROOF SLIM BLACK di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 8.9,
+    "originalPrice": 10.23,
+    "originalWholesalePrice": 3.1,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/pierre-rene-eveline-cosmetics-precise-slim-eyeliner-waterproof-nero-10.jpg",
+    "images": [
+      "/products/pierre-rene-eveline-cosmetics-precise-slim-eyeliner-waterproof-nero-10.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416080244",
+        "name": "Formato Originale",
+        "sku": "5903416080244",
+        "ean": "5903416080244",
+        "colorHex": "#C5A880",
+        "image": "/products/pierre-rene-eveline-cosmetics-precise-slim-eyeliner-waterproof-nero-10.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 3.1,
+        "stock": 6
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416080244",
+        "name": "Formato Originale",
+        "code": "5903416080244",
+        "hex": "#C5A880",
+        "image": "/products/pierre-rene-eveline-cosmetics-precise-slim-eyeliner-waterproof-nero-10.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416080237",
+    "slug": "eveline-cosmetics-eyeliner48h-long-lasting-vinyl-black",
+    "name": "Eveline Cosmetics EYELINER48H LONG LASTING VINYL BLACK",
+    "brand": "Eveline Cosmetics",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics EYELINER48H LONG LASTING VINYL BLACK di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 7.9,
+    "originalPrice": 9.08,
+    "originalWholesalePrice": 3.1,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-eyeliner-pencil-long-wear-black.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-eyeliner-pencil-long-wear-black.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416080237",
+        "name": "Formato Originale",
+        "sku": "5903416080237",
+        "ean": "5903416080237",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-eyeliner-pencil-long-wear-black.jpg",
+        "inStock": true,
+        "price": 7.9,
+        "originalWholesalePrice": 3.1,
+        "stock": 6
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416080237",
+        "name": "Formato Originale",
+        "code": "5903416080237",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-eyeliner-pencil-long-wear-black.jpg",
+        "price": 7.9,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5901761965773",
+    "slug": "eveline-cosmetics-eyeliner-variete-double-effect-black",
+    "name": "Eveline Cosmetics EYELINER VARIETE DOUBLE EFFECT BLACK",
+    "brand": "Eveline Cosmetics",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics EYELINER VARIETE DOUBLE EFFECT BLACK di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 11.9,
+    "originalPrice": 13.68,
+    "originalWholesalePrice": 4.62,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg",
+    "images": [
+      "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5901761965773",
+        "name": "Formato Originale",
+        "sku": "5901761965773",
+        "ean": "5901761965773",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 4.62,
+        "stock": 6
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5901761965773",
+        "name": "Formato Originale",
+        "code": "5901761965773",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416074175",
+    "slug": "eveline-cosmetics-wonder-match-eyeliner-waterproof",
+    "name": "Eveline Cosmetics WONDER MATCH EYELINER WATERPROOF",
+    "brand": "Eveline Cosmetics",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics WONDER MATCH EYELINER WATERPROOF di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 11.9,
+    "originalPrice": 13.68,
+    "originalWholesalePrice": 5.7,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg",
+    "images": [
+      "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416074175",
+        "name": "Formato Originale",
+        "sku": "5903416074175",
+        "ean": "5903416074175",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 5.7,
+        "stock": 6
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416074175",
+        "name": "Formato Originale",
+        "code": "5903416074175",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416065654",
+    "slug": "eveline-cosmetics-brow-go-eyebrow-gel-lamination-effect",
+    "name": "Eveline Cosmetics BROW&GO EYEBROW GEL LAMINATION EFFECT",
+    "brand": "Eveline Cosmetics",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics BROW&GO EYEBROW GEL LAMINATION EFFECT di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 9.9,
+    "originalPrice": 11.38,
+    "originalWholesalePrice": 3.2,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-eyebrow-pencil-waterproof-taupe.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-eyebrow-pencil-waterproof-taupe.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416065654",
+        "name": "Formato Originale",
+        "sku": "5903416065654",
+        "ean": "5903416065654",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-eyebrow-pencil-waterproof-taupe.jpg",
+        "inStock": true,
+        "price": 9.9,
+        "originalWholesalePrice": 3.2,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416065654",
+        "name": "Formato Originale",
+        "code": "5903416065654",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-eyebrow-pencil-waterproof-taupe.jpg",
+        "price": 9.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5901761997606",
+    "slug": "eveline-cosmetics-brow-go-eyebrow-mascara-n-01-light",
+    "name": "Eveline Cosmetics BROW&GO EYEBROW MASCARA N 01 LIGHT",
+    "brand": "Eveline Cosmetics",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics BROW&GO EYEBROW MASCARA N 01 LIGHT di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 8.9,
+    "originalPrice": 10.23,
+    "originalWholesalePrice": 3.08,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5901761997606",
+        "name": "Formato Originale",
+        "sku": "5901761997606",
+        "ean": "5901761997606",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 3.08,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5901761997606",
+        "name": "Formato Originale",
+        "code": "5901761997606",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416034124",
+    "slug": "eveline-cosmetics-brow-go-eyebrow-mascara-n-05-taupe",
+    "name": "Eveline Cosmetics BROW&GO EYEBROW MASCARA N 05 TAUPE",
+    "brand": "Eveline Cosmetics",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics BROW&GO EYEBROW MASCARA N 05 TAUPE di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 8.9,
+    "originalPrice": 10.23,
+    "originalWholesalePrice": 3.08,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-brow-go-pomade-pencil-taupe.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-brow-go-pomade-pencil-taupe.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416034124",
+        "name": "Formato Originale",
+        "sku": "5903416034124",
+        "ean": "5903416034124",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-brow-go-pomade-pencil-taupe.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 3.08,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416034124",
+        "name": "Formato Originale",
+        "code": "5903416034124",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-brow-go-pomade-pencil-taupe.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416052463",
+    "slug": "eveline-cosmetics-brow-go-eyebr-pomad-pencil-dark-brown",
+    "name": "Eveline Cosmetics BROW&GO EYEBR POMAD PENCIL DARK BROWN",
+    "brand": "Eveline Cosmetics",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics BROW&GO EYEBR POMAD PENCIL DARK BROWN di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 10.9,
+    "originalPrice": 12.54,
+    "originalWholesalePrice": 3.88,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-brow-go-pomade-pencil-taupe.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-brow-go-pomade-pencil-taupe.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416052463",
+        "name": "Formato Originale",
+        "sku": "5903416052463",
+        "ean": "5903416052463",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-brow-go-pomade-pencil-taupe.jpg",
+        "inStock": true,
+        "price": 10.9,
+        "originalWholesalePrice": 3.88,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416052463",
+        "name": "Formato Originale",
+        "code": "5903416052463",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-brow-go-pomade-pencil-taupe.jpg",
+        "price": 10.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5901761909982",
+    "slug": "eveline-cosmetics-lash-therapy-total-action-serum-8in1",
+    "name": "Eveline Cosmetics LASH THERAPY TOTAL ACTION SERUM 8IN1",
+    "brand": "Eveline Cosmetics",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics LASH THERAPY TOTAL ACTION SERUM 8IN1 di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 10.9,
+    "originalPrice": 12.54,
+    "originalWholesalePrice": 3.42,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-cc-cream-8in1-1.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-cc-cream-8in1-1.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5901761909982",
+        "name": "Formato Originale",
+        "sku": "5901761909982",
+        "ean": "5901761909982",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-cc-cream-8in1-1.jpg",
+        "inStock": true,
+        "price": 10.9,
+        "originalWholesalePrice": 3.42,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5901761909982",
+        "name": "Formato Originale",
+        "code": "5901761909982",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-cc-cream-8in1-1.jpg",
+        "price": 10.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5901761910797",
+    "slug": "eveline-cosmetics-eyeliner-liquid-precision-black-matt",
+    "name": "Eveline Cosmetics EYELINER LIQUID PRECISION BLACK MATT",
+    "brand": "Eveline Cosmetics",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics EYELINER LIQUID PRECISION BLACK MATT di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 7.9,
+    "originalPrice": 9.08,
+    "originalWholesalePrice": 2.64,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/pierre-rene-pierre-rene-precision-ink-eyeliner-01-black.jpg",
+    "images": [
+      "/products/pierre-rene-pierre-rene-precision-ink-eyeliner-01-black.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5901761910797",
+        "name": "Formato Originale",
+        "sku": "5901761910797",
+        "ean": "5901761910797",
+        "colorHex": "#C5A880",
+        "image": "/products/pierre-rene-pierre-rene-precision-ink-eyeliner-01-black.jpg",
+        "inStock": true,
+        "price": 7.9,
+        "originalWholesalePrice": 2.64,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5901761910797",
+        "name": "Formato Originale",
+        "code": "5901761910797",
+        "hex": "#C5A880",
+        "image": "/products/pierre-rene-pierre-rene-precision-ink-eyeliner-01-black.jpg",
+        "price": 7.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416061090",
+    "slug": "eveline-cosmetics-multipeptide-lash-brow-booster",
+    "name": "Eveline Cosmetics MULTIPEPTIDE LASH&BROW BOOSTER",
+    "brand": "Eveline Cosmetics",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics MULTIPEPTIDE LASH&BROW BOOSTER di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 11.9,
+    "originalPrice": 13.68,
+    "originalWholesalePrice": 4.12,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416061090",
+        "name": "Formato Originale",
+        "sku": "5903416061090",
+        "ean": "5903416061090",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 4.12,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416061090",
+        "name": "Formato Originale",
+        "code": "5903416061090",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-3700467814253",
+    "slug": "pierre-ren-super-contour-liner-with-sponge-blac",
+    "name": "Pierre René SUPER CONTOUR LINER WITH SPONGE BLAC",
+    "brand": "Pierre René",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Pierre René SUPER CONTOUR LINER WITH SPONGE BLAC di Pierre René. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Pierre René.",
+    "price": 11.9,
+    "originalPrice": 13.68,
+    "originalWholesalePrice": 3.9,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg",
+    "images": [
+      "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-3700467814253",
+        "name": "Formato Originale",
+        "sku": "3700467814253",
+        "ean": "3700467814253",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 3.9,
+        "stock": 6
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-3700467814253",
+        "name": "Formato Originale",
+        "code": "3700467814253",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "cipria-3700467848289",
+    "slug": "miyo-cosmetics-perspective-eyeliner-occhi-waterproof-lunga-tenuta",
+    "name": "Miyo Cosmetics Perspective Eyeliner Occhi Waterproof Lunga Tenuta",
+    "brand": "Miyo",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Miyo Cosmetics Perspective Eyeliner Occhi Waterproof Lunga Tenuta di Miyo. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Miyo.",
+    "price": 8.9,
+    "originalPrice": 10.23,
+    "originalWholesalePrice": 2.6,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg",
+    "images": [
+      "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-3700467848289",
+        "name": "2 BRONZE METAL",
+        "sku": "3700467848289",
+        "ean": "3700467848289",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 2.6,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467848296",
+        "name": "3 PEANUT BROWN",
+        "sku": "3700467848296",
+        "ean": "3700467848296",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 2.6,
+        "stock": 6
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-3700467848289",
+        "name": "2 BRONZE METAL",
+        "code": "3700467848289",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467848296",
+        "name": "3 PEANUT BROWN",
+        "code": "3700467848296",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-eyeliner-glitterato-01.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "stock": 12,
+    "inStock": true
+  },
+  {
+    "id": "cipria-3700467821046",
+    "slug": "pierre-ren-medic-mascara-sensitive-vit-complex",
+    "name": "Pierre René MEDIC MASCARA SENSITIVE VIT. COMPLEX",
+    "brand": "Pierre René",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Pierre René MEDIC MASCARA SENSITIVE VIT. COMPLEX di Pierre René. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Pierre René.",
+    "price": 13.9,
+    "originalPrice": 15.98,
+    "originalWholesalePrice": 4.8,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-big-volume-bang-original.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-mascara-big-volume-bang-original.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-3700467821046",
+        "name": "Formato Originale",
+        "sku": "3700467821046",
+        "ean": "3700467821046",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-big-volume-bang-original.jpg",
+        "inStock": true,
+        "price": 13.9,
+        "originalWholesalePrice": 4.8,
+        "stock": 6
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-3700467821046",
+        "name": "Formato Originale",
+        "code": "3700467821046",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-mascara-big-volume-bang-original.jpg",
+        "price": 13.9,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416087243",
+    "slug": "eveline-cosmetics-celebrity-skin-4in1-baked-face-palett",
+    "name": "Eveline Cosmetics CELEBRITY SKIN 4IN1 BAKED FACE PALETT",
+    "brand": "Eveline Cosmetics",
+    "category": "Viso",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics CELEBRITY SKIN 4IN1 BAKED FACE PALETT di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 13.9,
+    "originalPrice": 15.98,
+    "originalWholesalePrice": 6.77,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416087243",
+        "name": "Formato Originale",
+        "sku": "5903416087243",
+        "ean": "5903416087243",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "inStock": true,
+        "price": 13.9,
+        "originalWholesalePrice": 6.77,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416087243",
+        "name": "Formato Originale",
+        "code": "5903416087243",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "price": 13.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-3700467823842",
+    "slug": "pierre-ren-base-trucco-professionale-make-up-base",
+    "name": "Pierre René Base Trucco Professionale Make Up Base",
+    "brand": "Pierre René",
+    "category": "Viso",
+    "description": "Trattamento cosmetico professionale Pierre René Base Trucco Professionale Make Up Base di Pierre René. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Pierre René.",
+    "price": 25.5,
+    "originalPrice": 29.32,
+    "originalWholesalePrice": 7.6,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/cipria-make-up-cipria-milano-blush-on-melange-new-151-new.jpg",
+    "images": [
+      "/products/cipria-make-up-cipria-milano-blush-on-melange-new-151-new.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-3700467823842",
+        "name": "MAKE UP BASE ILLUMINATING LIGHT ROSE",
+        "sku": "3700467823842",
+        "ean": "3700467823842",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-blush-on-melange-new-151-new.jpg",
+        "inStock": true,
+        "price": 25.5,
+        "originalWholesalePrice": 7.6,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467805701",
+        "name": "MAKE UP BASE SMOOTHING TRANSPARENT",
+        "sku": "3700467805701",
+        "ean": "3700467805701",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-blush-on-melange-new-151-new.jpg",
+        "inStock": true,
+        "price": 25.5,
+        "originalWholesalePrice": 7.6,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-3700467823842",
+        "name": "MAKE UP BASE ILLUMINATING LIGHT ROSE",
+        "code": "3700467823842",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-blush-on-melange-new-151-new.jpg",
+        "price": 25.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467805701",
+        "name": "MAKE UP BASE SMOOTHING TRANSPARENT",
+        "code": "3700467805701",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-blush-on-melange-new-151-new.jpg",
+        "price": 25.5,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416038153",
+    "slug": "eveline-cosmetics-liquid-camouflage-correttore-liquido-waterproof",
+    "name": "Eveline Cosmetics Liquid Camouflage Correttore Liquido Waterproof",
+    "brand": "Eveline Cosmetics",
+    "category": "Viso",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics Liquid Camouflage Correttore Liquido Waterproof di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 9.9,
+    "originalPrice": 11.38,
+    "originalWholesalePrice": 3.9,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416038153",
+        "name": "02 LIGHT VANILL",
+        "sku": "5903416038153",
+        "ean": "5903416038153",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "inStock": true,
+        "price": 9.9,
+        "originalWholesalePrice": 3.9,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416038177",
+        "name": "04 LIGHT ALMOND",
+        "sku": "5903416038177",
+        "ean": "5903416038177",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "inStock": true,
+        "price": 9.9,
+        "originalWholesalePrice": 3.9,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416067559",
+        "name": "06 MEDIUM BEIGE",
+        "sku": "5903416067559",
+        "ean": "5903416067559",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "inStock": true,
+        "price": 9.9,
+        "originalWholesalePrice": 3.9,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416038153",
+        "name": "02 LIGHT VANILL",
+        "code": "5903416038153",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "price": 9.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416038177",
+        "name": "04 LIGHT ALMOND",
+        "code": "5903416038177",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "price": 9.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416067559",
+        "name": "06 MEDIUM BEIGE",
+        "code": "5903416067559",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "price": 9.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 9,
+    "inStock": true
+  },
+  {
+    "id": "cipria-3700467842317",
+    "slug": "miyo-cosmetics-correttore-beauty-skin-n-02-vegan",
+    "name": "Miyo Cosmetics CORRETTORE BEAUTY SKIN N 02 VEGAN",
+    "brand": "Miyo",
+    "category": "Viso",
+    "description": "Trattamento cosmetico professionale Miyo Cosmetics CORRETTORE BEAUTY SKIN N 02 VEGAN di Miyo. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Miyo.",
+    "price": 8.9,
+    "originalPrice": 10.23,
+    "originalWholesalePrice": 2.95,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/cipria-make-up-cipria-milano-correttore-colato-201.jpg",
+    "images": [
+      "/products/cipria-make-up-cipria-milano-correttore-colato-201.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-3700467842317",
+        "name": "Formato Originale",
+        "sku": "3700467842317",
+        "ean": "3700467842317",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-correttore-colato-201.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 2.95,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-3700467842317",
+        "name": "Formato Originale",
+        "code": "3700467842317",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-correttore-colato-201.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-3700467842324",
+    "slug": "miyo-cosmetics-correttore-beauty-skin-n-03-vegan",
+    "name": "Miyo Cosmetics CORRETTORE BEAUTY SKIN N 03 VEGAN",
+    "brand": "Miyo",
+    "category": "Viso",
+    "description": "Trattamento cosmetico professionale Miyo Cosmetics CORRETTORE BEAUTY SKIN N 03 VEGAN di Miyo. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Miyo.",
+    "price": 8.9,
+    "originalPrice": 10.23,
+    "originalWholesalePrice": 2.95,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/cipria-make-up-cipria-milano-correttore-colato-201.jpg",
+    "images": [
+      "/products/cipria-make-up-cipria-milano-correttore-colato-201.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-3700467842324",
+        "name": "Formato Originale",
+        "sku": "3700467842324",
+        "ean": "3700467842324",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-correttore-colato-201.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 2.95,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-3700467842324",
+        "name": "Formato Originale",
+        "code": "3700467842324",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-correttore-colato-201.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5901761985214",
+    "slug": "eveline-cosmetics-wonder-match-concealer-n10-vanilla",
+    "name": "Eveline Cosmetics WONDER MATCH CONCEALER N10 VANILLA",
+    "brand": "Eveline Cosmetics",
+    "category": "Viso",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics WONDER MATCH CONCEALER N10 VANILLA di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 8.9,
+    "originalPrice": 10.23,
+    "originalWholesalePrice": 3.49,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5901761985214",
+        "name": "Formato Originale",
+        "sku": "5901761985214",
+        "ean": "5901761985214",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 3.49,
+        "stock": 4
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5901761985214",
+        "name": "Formato Originale",
+        "code": "5901761985214",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 4
+      }
+    ],
+    "stock": 4,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5901761985221",
+    "slug": "eveline-cosmetics-wonder-match-concealer-n15-natural",
+    "name": "Eveline Cosmetics WONDER MATCH CONCEALER N15 NATURAL",
+    "brand": "Eveline Cosmetics",
+    "category": "Viso",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics WONDER MATCH CONCEALER N15 NATURAL di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 8.9,
+    "originalPrice": 10.23,
+    "originalWholesalePrice": 3.49,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5901761985221",
+        "name": "Formato Originale",
+        "sku": "5901761985221",
+        "ean": "5901761985221",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 3.49,
+        "stock": 4
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5901761985221",
+        "name": "Formato Originale",
+        "code": "5901761985221",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 4
+      }
+    ],
+    "stock": 4,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416048435",
+    "slug": "eveline-cosmetics-wonder-match-concealer-n25-sand-nude",
+    "name": "Eveline Cosmetics WONDER MATCH CONCEALER N25 SAND NUDE",
+    "brand": "Eveline Cosmetics",
+    "category": "Viso",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics WONDER MATCH CONCEALER N25 SAND NUDE di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 8.9,
+    "originalPrice": 10.23,
+    "originalWholesalePrice": 3.49,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416048435",
+        "name": "Formato Originale",
+        "sku": "5903416048435",
+        "ean": "5903416048435",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 3.49,
+        "stock": 4
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416048435",
+        "name": "Formato Originale",
+        "code": "5903416048435",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 4
+      }
+    ],
+    "stock": 4,
+    "inStock": true
+  },
+  {
+    "id": "cipria-3700467851593",
+    "slug": "pierre-ren-loose-powder-natural-glow-natural",
+    "name": "Pierre René LOOSE POWDER NATURAL GLOW NATURAL",
+    "brand": "Pierre René",
+    "category": "Viso",
+    "description": "Trattamento cosmetico professionale Pierre René LOOSE POWDER NATURAL GLOW NATURAL di Pierre René. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Pierre René.",
+    "price": 22.9,
+    "originalPrice": 26.33,
+    "originalWholesalePrice": 7.99,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/cipria-make-up-cipria-milano-cipria-loose-powder-7.jpg",
+    "images": [
+      "/products/cipria-make-up-cipria-milano-cipria-loose-powder-7.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-3700467851593",
+        "name": "Formato Originale",
+        "sku": "3700467851593",
+        "ean": "3700467851593",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-cipria-loose-powder-7.jpg",
+        "inStock": true,
+        "price": 22.9,
+        "originalWholesalePrice": 7.99,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-3700467851593",
+        "name": "Formato Originale",
+        "code": "3700467851593",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-cipria-loose-powder-7.jpg",
+        "price": 22.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-3700467843246",
+    "slug": "pierre-ren-under-eye-powder-new-illuminating-tra",
+    "name": "Pierre René UNDER EYE POWDER NEW ILLUMINATING TRA",
+    "brand": "Pierre René",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Pierre René UNDER EYE POWDER NEW ILLUMINATING TRA di Pierre René. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Pierre René.",
+    "price": 23.9,
+    "originalPrice": 27.48,
+    "originalWholesalePrice": 8.59,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/cipria-make-up-cipria-milano-cipria-loose-powder-7.jpg",
+    "images": [
+      "/products/cipria-make-up-cipria-milano-cipria-loose-powder-7.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-3700467843246",
+        "name": "Formato Originale",
+        "sku": "3700467843246",
+        "ean": "3700467843246",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-cipria-loose-powder-7.jpg",
+        "inStock": true,
+        "price": 23.9,
+        "originalWholesalePrice": 8.59,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-3700467843246",
+        "name": "Formato Originale",
+        "code": "3700467843246",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-cipria-loose-powder-7.jpg",
+        "price": 23.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-3700467846032",
+    "slug": "pierre-ren-royal-finish-mineral-powder-trasparen",
+    "name": "Pierre René ROYAL FINISH MINERAL POWDER TRASPAREN",
+    "brand": "Pierre René",
+    "category": "Viso",
+    "description": "Trattamento cosmetico professionale Pierre René ROYAL FINISH MINERAL POWDER TRASPAREN di Pierre René. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Pierre René.",
+    "price": 21.9,
+    "originalPrice": 25.18,
+    "originalWholesalePrice": 7.79,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/cipria-make-up-cipria-milano-cipria-loose-powder-7.jpg",
+    "images": [
+      "/products/cipria-make-up-cipria-milano-cipria-loose-powder-7.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-3700467846032",
+        "name": "Formato Originale",
+        "sku": "3700467846032",
+        "ean": "3700467846032",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-cipria-loose-powder-7.jpg",
+        "inStock": true,
+        "price": 21.9,
+        "originalWholesalePrice": 7.79,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-3700467846032",
+        "name": "Formato Originale",
+        "code": "3700467846032",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-cipria-milano-cipria-loose-powder-7.jpg",
+        "price": 21.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416065722",
+    "slug": "eveline-cosmetics-wonder-match-rossetto-liquido-cremoso-a-lunga-tenuta",
+    "name": "Eveline Cosmetics Wonder Match Rossetto Liquido Cremoso a Lunga Tenuta",
+    "brand": "Eveline Cosmetics",
+    "category": "Labbra",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics Wonder Match Rossetto Liquido Cremoso a Lunga Tenuta di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 11.9,
+    "originalPrice": 13.68,
+    "originalWholesalePrice": 3.99,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416065722",
+        "name": "1",
+        "sku": "5903416065722",
+        "ean": "5903416065722",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 3.99,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416065739",
+        "name": "2",
+        "sku": "5903416065739",
+        "ean": "5903416065739",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 3.99,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416065760",
+        "name": "5",
+        "sku": "5903416065760",
+        "ean": "5903416065760",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 3.99,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416065777",
+        "name": "6",
+        "sku": "5903416065777",
+        "ean": "5903416065777",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 3.99,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416070764",
+        "name": "8",
+        "sku": "5903416070764",
+        "ean": "5903416070764",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 3.99,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416070825",
+        "name": "10",
+        "sku": "5903416070825",
+        "ean": "5903416070825",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 3.99,
+        "stock": 6
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416065722",
+        "name": "1",
+        "code": "5903416065722",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416065739",
+        "name": "2",
+        "code": "5903416065739",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416065760",
+        "name": "5",
+        "code": "5903416065760",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416065777",
+        "name": "6",
+        "code": "5903416065777",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416070764",
+        "name": "8",
+        "code": "5903416070764",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416070825",
+        "name": "10",
+        "code": "5903416070825",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "stock": 36,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416059226",
+    "slug": "eveline-cosmetics-wonder-match-3in1-serum-primer",
+    "name": "Eveline Cosmetics WONDER MATCH 3IN1 SERUM-PRIMER",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics WONDER MATCH 3IN1 SERUM-PRIMER di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 13.9,
+    "originalPrice": 15.98,
+    "originalWholesalePrice": 5.3,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416059226",
+        "name": "Formato Originale",
+        "sku": "5903416059226",
+        "ean": "5903416059226",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+        "inStock": true,
+        "price": 13.9,
+        "originalWholesalePrice": 5.3,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416059226",
+        "name": "Formato Originale",
+        "code": "5903416059226",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+        "price": 13.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-3700467852996",
+    "slug": "miyo-cosmetics-balm-springs-01coachella",
+    "name": "Miyo Cosmetics BALM SPRINGS 01COACHELLA",
+    "brand": "Miyo",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Miyo Cosmetics BALM SPRINGS 01COACHELLA di Miyo. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Miyo.",
+    "price": 10.9,
+    "originalPrice": 12.54,
+    "originalWholesalePrice": 3.98,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg",
+    "images": [
+      "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-3700467852996",
+        "name": "Formato Originale",
+        "sku": "3700467852996",
+        "ean": "3700467852996",
+        "colorHex": "#C5A880",
+        "image": "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg",
+        "inStock": true,
+        "price": 10.9,
+        "originalWholesalePrice": 3.98,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-3700467852996",
+        "name": "Formato Originale",
+        "code": "3700467852996",
+        "hex": "#C5A880",
+        "image": "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg",
+        "price": 10.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-3700467853009",
+    "slug": "miyo-cosmetics-balm-springs-02luxury",
+    "name": "Miyo Cosmetics BALM SPRINGS 02LUXURY",
+    "brand": "Miyo",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Miyo Cosmetics BALM SPRINGS 02LUXURY di Miyo. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Miyo.",
+    "price": 10.9,
+    "originalPrice": 12.54,
+    "originalWholesalePrice": 3.98,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg",
+    "images": [
+      "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-3700467853009",
+        "name": "Formato Originale",
+        "sku": "3700467853009",
+        "ean": "3700467853009",
+        "colorHex": "#C5A880",
+        "image": "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg",
+        "inStock": true,
+        "price": 10.9,
+        "originalWholesalePrice": 3.98,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-3700467853009",
+        "name": "Formato Originale",
+        "code": "3700467853009",
+        "hex": "#C5A880",
+        "image": "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg",
+        "price": 10.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-3700467853016",
+    "slug": "miyo-cosmetics-balm-springs-03cali",
+    "name": "Miyo Cosmetics BALM SPRINGS 03CALI",
+    "brand": "Miyo",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Miyo Cosmetics BALM SPRINGS 03CALI di Miyo. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Miyo.",
+    "price": 10.9,
+    "originalPrice": 12.54,
+    "originalWholesalePrice": 3.98,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg",
+    "images": [
+      "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-3700467853016",
+        "name": "Formato Originale",
+        "sku": "3700467853016",
+        "ean": "3700467853016",
+        "colorHex": "#C5A880",
+        "image": "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg",
+        "inStock": true,
+        "price": 10.9,
+        "originalWholesalePrice": 3.98,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-3700467853016",
+        "name": "Formato Originale",
+        "code": "3700467853016",
+        "hex": "#C5A880",
+        "image": "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg",
+        "price": 10.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-3700467853023",
+    "slug": "miyo-cosmetics-balm-springs-04hollywood",
+    "name": "Miyo Cosmetics BALM SPRINGS 04HOLLYWOOD",
+    "brand": "Miyo",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Miyo Cosmetics BALM SPRINGS 04HOLLYWOOD di Miyo. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Miyo.",
+    "price": 10.9,
+    "originalPrice": 12.54,
+    "originalWholesalePrice": 3.98,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg",
+    "images": [
+      "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-3700467853023",
+        "name": "Formato Originale",
+        "sku": "3700467853023",
+        "ean": "3700467853023",
+        "colorHex": "#C5A880",
+        "image": "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg",
+        "inStock": true,
+        "price": 10.9,
+        "originalWholesalePrice": 3.98,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-3700467853023",
+        "name": "Formato Originale",
+        "code": "3700467853023",
+        "hex": "#C5A880",
+        "image": "/products/miyo-miyo-cosmetics-lip-balm-outstanding-29-juicy-kiss.jpg",
+        "price": 10.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5907510312621",
+    "slug": "miyo-cosmetics-insta-kiss-pocket-balsamo-labbra-nutriente",
+    "name": "Miyo Cosmetics Insta Kiss Pocket Balsamo Labbra Nutriente",
+    "brand": "Miyo",
+    "category": "Labbra",
+    "description": "Trattamento cosmetico professionale Miyo Cosmetics Insta Kiss Pocket Balsamo Labbra Nutriente di Miyo. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Miyo.",
+    "price": 10.9,
+    "originalPrice": 12.54,
+    "originalWholesalePrice": 5.39,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-lip-gloss-cooling-kisses-01-ice-mint.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-lip-gloss-cooling-kisses-01-ice-mint.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5907510312621",
+        "name": "Formato Originale",
+        "sku": "5907510312621",
+        "ean": "5907510312621",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-lip-gloss-cooling-kisses-01-ice-mint.jpg",
+        "inStock": true,
+        "price": 10.9,
+        "originalWholesalePrice": 5.39,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5907510312621",
+        "name": "Formato Originale",
+        "code": "5907510312621",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-lip-gloss-cooling-kisses-01-ice-mint.jpg",
+        "price": 10.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-3700467850787",
+    "slug": "pierre-ren-medic-laboratorium-siero-essenza-viso-attivo",
+    "name": "Pierre René Medic Laboratorium Siero Essenza Viso Attivo",
+    "brand": "Pierre René",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Pierre René Medic Laboratorium Siero Essenza Viso Attivo di Pierre René. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Pierre René.",
+    "price": 26.9,
+    "originalPrice": 30.93,
+    "originalWholesalePrice": 9.49,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-3700467850787",
+        "name": "MEDIC SERUM ESSENCE ANTI-AGING 30ML",
+        "sku": "3700467850787",
+        "ean": "3700467850787",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+        "inStock": true,
+        "price": 26.9,
+        "originalWholesalePrice": 9.49,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467850770",
+        "name": "MEDIC SERUM ESSENCE HYDRATION 30ML",
+        "sku": "3700467850770",
+        "ean": "3700467850770",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+        "inStock": true,
+        "price": 26.9,
+        "originalWholesalePrice": 9.49,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-3700467850787",
+        "name": "MEDIC SERUM ESSENCE ANTI-AGING 30ML",
+        "code": "3700467850787",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+        "price": 26.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467850770",
+        "name": "MEDIC SERUM ESSENCE HYDRATION 30ML",
+        "code": "3700467850770",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+        "price": 26.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416070535",
+    "slug": "eveline-cosmetics-ampoule-cream-crema-viso-rigenerante-intensiva-50ml",
+    "name": "Eveline Cosmetics Ampoule Cream Crema Viso Rigenerante Intensiva 50ml",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics Ampoule Cream Crema Viso Rigenerante Intensiva 50ml di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 15.9,
+    "originalPrice": 18.29,
+    "originalWholesalePrice": 3.04,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416070535",
+        "name": "AMPOULE CREAM COLLAGEN LIFTING 50ML",
+        "sku": "5903416070535",
+        "ean": "5903416070535",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 15.9,
+        "originalWholesalePrice": 3.04,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416070511",
+        "name": "AMPOULE CREAM HYALURON MOISTURIZ 50ML",
+        "sku": "5903416070511",
+        "ean": "5903416070511",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 15.9,
+        "originalWholesalePrice": 3.04,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416070481",
+        "name": "AMPOULE CREAM NIACYNAMID IMPERFC 50ML",
+        "sku": "5903416070481",
+        "ean": "5903416070481",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 15.9,
+        "originalWholesalePrice": 3.04,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416070504",
+        "name": "AMPOULE CREAM RETINOL SKIN NIGHT 50ML",
+        "sku": "5903416070504",
+        "ean": "5903416070504",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 15.9,
+        "originalWholesalePrice": 3.04,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416070498",
+        "name": "AMPOULE CREAM PEPTIDES WRINKLE 50ML",
+        "sku": "5903416070498",
+        "ean": "5903416070498",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 15.9,
+        "originalWholesalePrice": 3.04,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416070535",
+        "name": "AMPOULE CREAM COLLAGEN LIFTING 50ML",
+        "code": "5903416070535",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 15.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416070511",
+        "name": "AMPOULE CREAM HYALURON MOISTURIZ 50ML",
+        "code": "5903416070511",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 15.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416070481",
+        "name": "AMPOULE CREAM NIACYNAMID IMPERFC 50ML",
+        "code": "5903416070481",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 15.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416070504",
+        "name": "AMPOULE CREAM RETINOL SKIN NIGHT 50ML",
+        "code": "5903416070504",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 15.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416070498",
+        "name": "AMPOULE CREAM PEPTIDES WRINKLE 50ML",
+        "code": "5903416070498",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 15.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 15,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416047452",
+    "slug": "eveline-cosmetics-face-therapy-maschera-ampolla-concentrata-monouso-8ml",
+    "name": "Eveline Cosmetics Face Therapy Maschera Ampolla Concentrata Monouso 8ml",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics Face Therapy Maschera Ampolla Concentrata Monouso 8ml di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 2.9,
+    "originalPrice": 3.33,
+    "originalWholesalePrice": 0.85,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416047452",
+        "name": "MASK AMPOUL FACE THERAPY COLLAGEN 8M",
+        "sku": "5903416047452",
+        "ean": "5903416047452",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "inStock": true,
+        "price": 2.9,
+        "originalWholesalePrice": 0.85,
+        "stock": 12
+      },
+      {
+        "id": "var-5903416058533",
+        "name": "MASK AMPOUL FACE THERAPY CERAMID 8ML",
+        "sku": "5903416058533",
+        "ean": "5903416058533",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "inStock": true,
+        "price": 2.9,
+        "originalWholesalePrice": 0.85,
+        "stock": 12
+      },
+      {
+        "id": "var-5903416058540",
+        "name": "MASK AMPOUL FACE THERAPY NACINAM 8ML",
+        "sku": "5903416058540",
+        "ean": "5903416058540",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "inStock": true,
+        "price": 2.9,
+        "originalWholesalePrice": 0.85,
+        "stock": 12
+      },
+      {
+        "id": "var-5903416047469",
+        "name": "MASK AMPOUL FACE THERAPY RETINOL 8ML",
+        "sku": "5903416047469",
+        "ean": "5903416047469",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "inStock": true,
+        "price": 2.9,
+        "originalWholesalePrice": 0.85,
+        "stock": 12
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416047452",
+        "name": "MASK AMPOUL FACE THERAPY COLLAGEN 8M",
+        "code": "5903416047452",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "price": 2.9,
+        "inStock": true,
+        "stock": 12
+      },
+      {
+        "id": "var-5903416058533",
+        "name": "MASK AMPOUL FACE THERAPY CERAMID 8ML",
+        "code": "5903416058533",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "price": 2.9,
+        "inStock": true,
+        "stock": 12
+      },
+      {
+        "id": "var-5903416058540",
+        "name": "MASK AMPOUL FACE THERAPY NACINAM 8ML",
+        "code": "5903416058540",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "price": 2.9,
+        "inStock": true,
+        "stock": 12
+      },
+      {
+        "id": "var-5903416047469",
+        "name": "MASK AMPOUL FACE THERAPY RETINOL 8ML",
+        "code": "5903416047469",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "price": 2.9,
+        "inStock": true,
+        "stock": 12
+      }
+    ],
+    "stock": 48,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5901964013721",
+    "slug": "eveline-cosmetics-slim-extreme-trattamento-corpo-intensivo-snellente",
+    "name": "Eveline Cosmetics Slim Extreme Trattamento Corpo Intensivo Snellente",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics Slim Extreme Trattamento Corpo Intensivo Snellente di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 13.9,
+    "originalPrice": 15.98,
+    "originalWholesalePrice": 5.52,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-gel-occhi-antirughe-15ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-gel-occhi-antirughe-15ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5901964013721",
+        "name": "SLIM EXTREME 3D CREAM ANTI CELL 250ML",
+        "sku": "5901964013721",
+        "ean": "5901964013721",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-gel-occhi-antirughe-15ml.jpg",
+        "inStock": true,
+        "price": 13.9,
+        "originalWholesalePrice": 5.52,
+        "stock": 4
+      },
+      {
+        "id": "var-5901761913972",
+        "name": "SLIM EXTREME INTENSE BUST VOLUM.200ML",
+        "sku": "5901761913972",
+        "ean": "5901761913972",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-gel-occhi-antirughe-15ml.jpg",
+        "inStock": true,
+        "price": 13.9,
+        "originalWholesalePrice": 5.52,
+        "stock": 4
+      },
+      {
+        "id": "var-5901761967708",
+        "name": "SLIM EXTREME SUPERCONCENTR SERUM250ML",
+        "sku": "5901761967708",
+        "ean": "5901761967708",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-gel-occhi-antirughe-15ml.jpg",
+        "inStock": true,
+        "price": 13.9,
+        "originalWholesalePrice": 5.52,
+        "stock": 4
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5901964013721",
+        "name": "SLIM EXTREME 3D CREAM ANTI CELL 250ML",
+        "code": "5901964013721",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-gel-occhi-antirughe-15ml.jpg",
+        "price": 13.9,
+        "inStock": true,
+        "stock": 4
+      },
+      {
+        "id": "var-5901761913972",
+        "name": "SLIM EXTREME INTENSE BUST VOLUM.200ML",
+        "code": "5901761913972",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-gel-occhi-antirughe-15ml.jpg",
+        "price": 13.9,
+        "inStock": true,
+        "stock": 4
+      },
+      {
+        "id": "var-5901761967708",
+        "name": "SLIM EXTREME SUPERCONCENTR SERUM250ML",
+        "code": "5901761967708",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-gel-occhi-antirughe-15ml.jpg",
+        "price": 13.9,
+        "inStock": true,
+        "stock": 4
+      }
+    ],
+    "stock": 12,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416073666",
+    "slug": "eveline-cosmetics-d-aury-remodelift-crema-viso-rimodellante-antiet-50ml",
+    "name": "Eveline Cosmetics D'Aury Remodelift Crema Viso Rimodellante Antietà 50ml",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics D'Aury Remodelift Crema Viso Rimodellante Antietà 50ml di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 18.9,
+    "originalPrice": 21.73,
+    "originalWholesalePrice": 4.9,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416073666",
+        "name": "60+50ML",
+        "sku": "5903416073666",
+        "ean": "5903416073666",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 18.9,
+        "originalWholesalePrice": 4.9,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416073642",
+        "name": "40+50ML",
+        "sku": "5903416073642",
+        "ean": "5903416073642",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 18.9,
+        "originalWholesalePrice": 4.9,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416073659",
+        "name": "50+50ML",
+        "sku": "5903416073659",
+        "ean": "5903416073659",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 18.9,
+        "originalWholesalePrice": 4.9,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416073666",
+        "name": "60+50ML",
+        "code": "5903416073666",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 18.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416073642",
+        "name": "40+50ML",
+        "code": "5903416073642",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 18.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416073659",
+        "name": "50+50ML",
+        "code": "5903416073659",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 18.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 9,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416077008",
+    "slug": "eveline-cosmetics-perfect-bright-crema-viso-trattamento-luminosit",
+    "name": "Eveline Cosmetics Perfect Bright Crema Viso Trattamento Luminosità",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics Perfect Bright Crema Viso Trattamento Luminosità di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 14.9,
+    "originalPrice": 17.13,
+    "originalWholesalePrice": 5.99,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416077008",
+        "name": "20 50ML",
+        "sku": "5903416077008",
+        "ean": "5903416077008",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 5.99,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416077053",
+        "name": "50 30ML",
+        "sku": "5903416077053",
+        "ean": "5903416077053",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 5.99,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416077008",
+        "name": "20 50ML",
+        "code": "5903416077008",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416077053",
+        "name": "50 30ML",
+        "code": "5903416077053",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416077039",
+    "slug": "eveline-cosmetics-perfect-bright-radiance-toner",
+    "name": "Eveline Cosmetics PERFECT BRIGHT RADIANCE TONER",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics PERFECT BRIGHT RADIANCE TONER di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 9.9,
+    "originalPrice": 11.38,
+    "originalWholesalePrice": 3.49,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-perfect-bright-crema-mani-00ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-perfect-bright-crema-mani-00ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416077039",
+        "name": "Formato Originale",
+        "sku": "5903416077039",
+        "ean": "5903416077039",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-perfect-bright-crema-mani-00ml.jpg",
+        "inStock": true,
+        "price": 9.9,
+        "originalWholesalePrice": 3.49,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416077039",
+        "name": "Formato Originale",
+        "code": "5903416077039",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-perfect-bright-crema-mani-00ml.jpg",
+        "price": 9.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416066675",
+    "slug": "eveline-cosmetics-body-shot-balsamo-siero-corpo-trattamento-400ml",
+    "name": "Eveline Cosmetics Body Shot Balsamo-Siero Corpo Trattamento 400ml",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics Body Shot Balsamo-Siero Corpo Trattamento 400ml di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 6.9,
+    "originalPrice": 7.93,
+    "originalWholesalePrice": 2.65,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416066675",
+        "name": "BODY SHOT BALM-SERUM HYALURONIC 200ML",
+        "sku": "5903416066675",
+        "ean": "5903416066675",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "inStock": true,
+        "price": 6.9,
+        "originalWholesalePrice": 2.65,
+        "stock": 4
+      },
+      {
+        "id": "var-5903416066682",
+        "name": "BODY SHOT BALM-SERUM REGENERATI 200ML",
+        "sku": "5903416066682",
+        "ean": "5903416066682",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "inStock": true,
+        "price": 6.9,
+        "originalWholesalePrice": 2.65,
+        "stock": 4
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416066675",
+        "name": "BODY SHOT BALM-SERUM HYALURONIC 200ML",
+        "code": "5903416066675",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "price": 6.9,
+        "inStock": true,
+        "stock": 4
+      },
+      {
+        "id": "var-5903416066682",
+        "name": "BODY SHOT BALM-SERUM REGENERATI 200ML",
+        "code": "5903416066682",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "price": 6.9,
+        "inStock": true,
+        "stock": 4
+      }
+    ],
+    "stock": 8,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416060178",
+    "slug": "eveline-cosmetics-cream-shot-crema-viso-trattamento-idratante-50ml",
+    "name": "Eveline Cosmetics Cream Shot Crema Viso Trattamento Idratante 50ml",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics Cream Shot Crema Viso Trattamento Idratante 50ml di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 9.9,
+    "originalPrice": 11.38,
+    "originalWholesalePrice": 3.9,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416060178",
+        "name": "Formato Originale",
+        "sku": "5903416060178",
+        "ean": "5903416060178",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 9.9,
+        "originalWholesalePrice": 3.9,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416060178",
+        "name": "Formato Originale",
+        "code": "5903416060178",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 9.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5901761981650",
+    "slug": "eveline-cosmetics-skin-care-cream-3oil-peptid-d-n",
+    "name": "Eveline Cosmetics SKIN CARE CREAM 3OIL+PEPTID D&N",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics SKIN CARE CREAM 3OIL+PEPTID D&N di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 8.9,
+    "originalPrice": 10.23,
+    "originalWholesalePrice": 3.3,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5901761981650",
+        "name": "Formato Originale",
+        "sku": "5901761981650",
+        "ean": "5901761981650",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 3.3,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5901761981650",
+        "name": "Formato Originale",
+        "code": "5901761981650",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5901761981643",
+    "slug": "eveline-cosmetics-skin-care-cream-hyal-acid-gr-tea-d-n",
+    "name": "Eveline Cosmetics SKIN CARE CREAM HYAL ACID+GR TEA D/N",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics SKIN CARE CREAM HYAL ACID+GR TEA D/N di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 8.9,
+    "originalPrice": 10.23,
+    "originalWholesalePrice": 3.3,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5901761981643",
+        "name": "Formato Originale",
+        "sku": "5901761981643",
+        "ean": "5901761981643",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 3.3,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5901761981643",
+        "name": "Formato Originale",
+        "code": "5901761981643",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416066750",
+    "slug": "eveline-cosmetics-6-ceramides-moistur-serum-spf30",
+    "name": "Eveline Cosmetics 6 CERAMIDES MOISTUR SERUM SPF30",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics 6 CERAMIDES MOISTUR SERUM SPF30 di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 13.9,
+    "originalPrice": 15.98,
+    "originalWholesalePrice": 5.3,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416066750",
+        "name": "Formato Originale",
+        "sku": "5903416066750",
+        "ean": "5903416066750",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+        "inStock": true,
+        "price": 13.9,
+        "originalWholesalePrice": 5.3,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416066750",
+        "name": "Formato Originale",
+        "code": "5903416066750",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+        "price": 13.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416084563",
+    "slug": "eveline-cosmetics-6-ceramidi-detergente-delicato-viso",
+    "name": "Eveline Cosmetics 6 Ceramidi Detergente Delicato Viso",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics 6 Ceramidi Detergente Delicato Viso di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 10.9,
+    "originalPrice": 12.54,
+    "originalWholesalePrice": 3.8,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-feel-the-bronze-01-milky-way.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-feel-the-bronze-01-milky-way.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416084563",
+        "name": "6 CERAMIDES MILK WITH CERAMIDES150ML",
+        "sku": "5903416084563",
+        "ean": "5903416084563",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-feel-the-bronze-01-milky-way.jpg",
+        "inStock": true,
+        "price": 10.9,
+        "originalWholesalePrice": 3.8,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416047421",
+        "name": "6 CERAMIDES MOISTUR REMOVING GEL 150M",
+        "sku": "5903416047421",
+        "ean": "5903416047421",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-feel-the-bronze-01-milky-way.jpg",
+        "inStock": true,
+        "price": 10.9,
+        "originalWholesalePrice": 2.52,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416084563",
+        "name": "6 CERAMIDES MILK WITH CERAMIDES150ML",
+        "code": "5903416084563",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-feel-the-bronze-01-milky-way.jpg",
+        "price": 10.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416047421",
+        "name": "6 CERAMIDES MOISTUR REMOVING GEL 150M",
+        "code": "5903416047421",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-feel-the-bronze-01-milky-way.jpg",
+        "price": 10.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416066743",
+    "slug": "eveline-cosmetics-6-ceramides-moisturizing-toner",
+    "name": "Eveline Cosmetics 6 CERAMIDES MOISTURIZING TONER",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics 6 CERAMIDES MOISTURIZING TONER di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 6.9,
+    "originalPrice": 7.93,
+    "originalWholesalePrice": 2.59,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-super-needles-tonico-rinfrescante-150ml-50ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-super-needles-tonico-rinfrescante-150ml-50ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416066743",
+        "name": "Formato Originale",
+        "sku": "5903416066743",
+        "ean": "5903416066743",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-super-needles-tonico-rinfrescante-150ml-50ml.jpg",
+        "inStock": true,
+        "price": 6.9,
+        "originalWholesalePrice": 2.59,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416066743",
+        "name": "Formato Originale",
+        "code": "5903416066743",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-super-needles-tonico-rinfrescante-150ml-50ml.jpg",
+        "price": 6.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416066897",
+    "slug": "eveline-cosmetics-clean-shot-tonico-viso-riequilibrante",
+    "name": "Eveline Cosmetics Clean Shot Tonico Viso Riequilibrante",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics Clean Shot Tonico Viso Riequilibrante di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 8.9,
+    "originalPrice": 10.23,
+    "originalWholesalePrice": 2.37,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-clean-shot-peeling-acido-75ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-clean-shot-peeling-acido-75ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416066897",
+        "name": "CLEAN SHOT MOISTURISING TONER 150ML",
+        "sku": "5903416066897",
+        "ean": "5903416066897",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-clean-shot-peeling-acido-75ml.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 2.37,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416066880",
+        "name": "CLEAN SHOT REGENERATING TONER 200ML",
+        "sku": "5903416066880",
+        "ean": "5903416066880",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-clean-shot-peeling-acido-75ml.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 2.85,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416066897",
+        "name": "CLEAN SHOT MOISTURISING TONER 150ML",
+        "code": "5903416066897",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-clean-shot-peeling-acido-75ml.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416066880",
+        "name": "CLEAN SHOT REGENERATING TONER 200ML",
+        "code": "5903416066880",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-clean-shot-peeling-acido-75ml.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416026075",
+    "slug": "eveline-cosmetics-bio-hyaluron-cream-nourising-60",
+    "name": "Eveline Cosmetics BIO HYALURON CREAM NOURISING 60+",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics BIO HYALURON CREAM NOURISING 60+ di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 11.9,
+    "originalPrice": 13.68,
+    "originalWholesalePrice": 4.59,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416026075",
+        "name": "Formato Originale",
+        "sku": "5903416026075",
+        "ean": "5903416026075",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 4.59,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416026075",
+        "name": "Formato Originale",
+        "code": "5903416026075",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416035312",
+    "slug": "eveline-cosmetics-bio-hyaluron-serum-moisturising-18ml",
+    "name": "Eveline Cosmetics BIO HYALURON SERUM MOISTURISING 18ML",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics BIO HYALURON SERUM MOISTURISING 18ML di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 13.9,
+    "originalPrice": 15.98,
+    "originalWholesalePrice": 5.52,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416035312",
+        "name": "Formato Originale",
+        "sku": "5903416035312",
+        "ean": "5903416035312",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "inStock": true,
+        "price": 13.9,
+        "originalWholesalePrice": 5.52,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416035312",
+        "name": "Formato Originale",
+        "code": "5903416035312",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-hyaluronic-8ml.jpg",
+        "price": 13.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416047773",
+    "slug": "eveline-cosmetics-revitalum-foot-cream-exfoliating-file",
+    "name": "Eveline Cosmetics REVITALUM FOOT CREAM EXFOLIATING FILE",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics REVITALUM FOOT CREAM EXFOLIATING FILE di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 5.9,
+    "originalPrice": 6.79,
+    "originalWholesalePrice": 2.26,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-crema-riparatrice-40.png",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-crema-riparatrice-40.png"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416047773",
+        "name": "Formato Originale",
+        "sku": "5903416047773",
+        "ean": "5903416047773",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-crema-riparatrice-40.png",
+        "inStock": true,
+        "price": 5.9,
+        "originalWholesalePrice": 2.26,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416047773",
+        "name": "Formato Originale",
+        "code": "5903416047773",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-biohyaluron-3xretinol-crema-riparatrice-40.png",
+        "price": 5.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416077893",
+    "slug": "eveline-cosmetics-elixir-of-youth-peptid-cream-50",
+    "name": "Eveline Cosmetics ELIXIR OF YOUTH PEPTID CREAM 50+",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics ELIXIR OF YOUTH PEPTID CREAM 50+ di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 14.9,
+    "originalPrice": 17.13,
+    "originalWholesalePrice": 5.6,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416077893",
+        "name": "Formato Originale",
+        "sku": "5903416077893",
+        "ean": "5903416077893",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 5.6,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416077893",
+        "name": "Formato Originale",
+        "code": "5903416077893",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416077909",
+    "slug": "eveline-cosmetics-elixir-of-youth-peptid-cream-60",
+    "name": "Eveline Cosmetics ELIXIR OF YOUTH PEPTID CREAM 60+",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics ELIXIR OF YOUTH PEPTID CREAM 60+ di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 14.9,
+    "originalPrice": 17.13,
+    "originalWholesalePrice": 5.6,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416077909",
+        "name": "Formato Originale",
+        "sku": "5903416077909",
+        "ean": "5903416077909",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 5.6,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416077909",
+        "name": "Formato Originale",
+        "code": "5903416077909",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-crema-rigenerante-50ml.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416077923",
+    "slug": "eveline-cosmetics-elixir-of-youth-peptid-lift-serum18ml",
+    "name": "Eveline Cosmetics ELIXIR OF YOUTH PEPTID LIFT SERUM18ML",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics ELIXIR OF YOUTH PEPTID LIFT SERUM18ML di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 14.9,
+    "originalPrice": 17.13,
+    "originalWholesalePrice": 5.6,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-peptide-8ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-peptide-8ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416077923",
+        "name": "Formato Originale",
+        "sku": "5903416077923",
+        "ean": "5903416077923",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-peptide-8ml.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 5.6,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416077923",
+        "name": "Formato Originale",
+        "code": "5903416077923",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-peptide-8ml.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416077930",
+    "slug": "eveline-cosmetics-elixir-of-youth-peptid-rest-serum18ml",
+    "name": "Eveline Cosmetics ELIXIR OF YOUTH PEPTID REST SERUM18ML",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics ELIXIR OF YOUTH PEPTID REST SERUM18ML di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 14.9,
+    "originalPrice": 17.13,
+    "originalWholesalePrice": 5.6,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-peptide-8ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-peptide-8ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416077930",
+        "name": "Formato Originale",
+        "sku": "5903416077930",
+        "ean": "5903416077930",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-peptide-8ml.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 5.6,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416077930",
+        "name": "Formato Originale",
+        "code": "5903416077930",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-ampoule-maschera-peptide-8ml.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416090816",
+    "slug": "eveline-cosmetics-pink-snail-crema-viso-rigenerante-bava-di-lumaca-50ml",
+    "name": "Eveline Cosmetics Pink Snail Crema Viso Rigenerante Bava di Lumaca 50ml",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics Pink Snail Crema Viso Rigenerante Bava di Lumaca 50ml di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 12.9,
+    "originalPrice": 14.83,
+    "originalWholesalePrice": 4.9,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416090816",
+        "name": "PINK SNAIL MOISTUR&ILLUMIN SERUM 30ML",
+        "sku": "5903416090816",
+        "ean": "5903416090816",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+        "inStock": true,
+        "price": 12.9,
+        "originalWholesalePrice": 4.9,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416090793",
+        "name": "PINK SNAIL NOURISHING CREAM D/N 50ML",
+        "sku": "5903416090793",
+        "ean": "5903416090793",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+        "inStock": true,
+        "price": 12.9,
+        "originalWholesalePrice": 4.5,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416090816",
+        "name": "PINK SNAIL MOISTUR&ILLUMIN SERUM 30ML",
+        "code": "5903416090816",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+        "price": 12.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416090793",
+        "name": "PINK SNAIL NOURISHING CREAM D/N 50ML",
+        "code": "5903416090793",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-6-ceramidi-siero-riparatore-30ml.jpg",
+        "price": 12.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416081647",
+    "slug": "eveline-cosmetics-korean-rituals-crema-viso-trattamento-avanzato-50ml",
+    "name": "Eveline Cosmetics Korean Rituals Crema Viso Trattamento Avanzato 50ml",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics Korean Rituals Crema Viso Trattamento Avanzato 50ml di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 12.9,
+    "originalPrice": 14.83,
+    "originalWholesalePrice": 3.29,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-korean-rituals-crema-lenitiva-50ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-korean-rituals-crema-lenitiva-50ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416081647",
+        "name": "KOREAN RITUALS CERAMIDES+ CREAM50ML",
+        "sku": "5903416081647",
+        "ean": "5903416081647",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-korean-rituals-crema-lenitiva-50ml.jpg",
+        "inStock": true,
+        "price": 12.9,
+        "originalWholesalePrice": 3.29,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416081654",
+        "name": "KOREAN RITUALS HYALURON+ CREAM50ML",
+        "sku": "5903416081654",
+        "ean": "5903416081654",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-korean-rituals-crema-lenitiva-50ml.jpg",
+        "inStock": true,
+        "price": 12.9,
+        "originalWholesalePrice": 3.29,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416081647",
+        "name": "KOREAN RITUALS CERAMIDES+ CREAM50ML",
+        "code": "5903416081647",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-korean-rituals-crema-lenitiva-50ml.jpg",
+        "price": 12.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416081654",
+        "name": "KOREAN RITUALS HYALURON+ CREAM50ML",
+        "code": "5903416081654",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-korean-rituals-crema-lenitiva-50ml.jpg",
+        "price": 12.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416084419",
+    "slug": "eveline-cosmetics-super-needles-coffeine-eye-serum",
+    "name": "Eveline Cosmetics SUPER NEEDLES COFFEINE EYE SERUM",
+    "brand": "Eveline Cosmetics",
+    "category": "Occhi",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics SUPER NEEDLES COFFEINE EYE SERUM di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 15.9,
+    "originalPrice": 18.29,
+    "originalWholesalePrice": 5.49,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel-500.jpg",
+    "images": [
+      "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel-500.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416084419",
+        "name": "Formato Originale",
+        "sku": "5903416084419",
+        "ean": "5903416084419",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel-500.jpg",
+        "inStock": true,
+        "price": 15.9,
+        "originalWholesalePrice": 5.49,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416084419",
+        "name": "Formato Originale",
+        "code": "5903416084419",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel-500.jpg",
+        "price": 15.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416084396",
+    "slug": "eveline-cosmetics-super-needles-meso-booster-viso-concentrato-50ml",
+    "name": "Eveline Cosmetics Super Needles Meso-Booster Viso Concentrato 50ml",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics Super Needles Meso-Booster Viso Concentrato 50ml di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 15.9,
+    "originalPrice": 18.29,
+    "originalWholesalePrice": 5.49,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel-500.jpg",
+    "images": [
+      "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel-500.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416084396",
+        "name": "SUPER NEEDLES COLLAGEN BOOSTER 50ML",
+        "sku": "5903416084396",
+        "ean": "5903416084396",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel-500.jpg",
+        "inStock": true,
+        "price": 15.9,
+        "originalWholesalePrice": 5.49,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416084402",
+        "name": "SUPER NEEDLES HYALURON BOOSTER 50ML",
+        "sku": "5903416084402",
+        "ean": "5903416084402",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel-500.jpg",
+        "inStock": true,
+        "price": 15.9,
+        "originalWholesalePrice": 5.49,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416084396",
+        "name": "SUPER NEEDLES COLLAGEN BOOSTER 50ML",
+        "code": "5903416084396",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel-500.jpg",
+        "price": 15.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416084402",
+        "name": "SUPER NEEDLES HYALURON BOOSTER 50ML",
+        "code": "5903416084402",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel-500.jpg",
+        "price": 15.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416086420",
+    "slug": "eveline-cosmetics-super-needles-rice-meso-scrub-75ml",
+    "name": "Eveline Cosmetics SUPER NEEDLES RICE MESO-SCRUB 75ML",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics SUPER NEEDLES RICE MESO-SCRUB 75ML di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 10.9,
+    "originalPrice": 12.54,
+    "originalWholesalePrice": 3.2,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel-500.jpg",
+    "images": [
+      "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel-500.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416086420",
+        "name": "Formato Originale",
+        "sku": "5903416086420",
+        "ean": "5903416086420",
+        "colorHex": "#C5A880",
+        "image": "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel-500.jpg",
+        "inStock": true,
+        "price": 10.9,
+        "originalWholesalePrice": 3.2,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416086420",
+        "name": "Formato Originale",
+        "code": "5903416086420",
+        "hex": "#C5A880",
+        "image": "/products/cipria-make-up-eveline-cosmetics-superfruit-tint-tinta-labbra-in-gel-500.jpg",
+        "price": 10.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "cipria-5903416073871",
+    "slug": "eveline-cosmetics-cica-skin-cleansing-foam",
+    "name": "Eveline Cosmetics CICA SKIN CLEANSING FOAM",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "description": "Trattamento cosmetico professionale Eveline Cosmetics CICA SKIN CLEANSING FOAM di Eveline Cosmetics. Formulato secondo rigorosi standard europei di qualità e sicurezza dermatologica.",
+    "shortDescription": "Formula ad alta performance firmata Eveline Cosmetics.",
+    "price": 11.9,
+    "originalPrice": 13.68,
+    "originalWholesalePrice": 3.5,
+    "badge": "Novità",
+    "badges": [
+      "cruelty_free",
+      "bestseller"
+    ],
+    "formulaBenefits": "Ingredienti di qualità superiore selezionati per offrire risultati immediati, comfort prolungato e massima tollerabilità cutanea.",
+    "howToUse": "Applicare con cura sulla zona desiderata secondo il protocollo di utilizzo professionale.",
+    "inci": "Formula cosmetica testata dermatologicamente secondo standard europei di purezza e sicurezza.",
+    "features": [
+      "Formula cosmetica certificata",
+      "Testato dermatologicamente",
+      "Alta performance e tenuta"
+    ],
+    "image": "/products/eveline-cosmetics-eveline-cosmetics-cica-skin-cc-cream-30ml.jpg",
+    "images": [
+      "/products/eveline-cosmetics-eveline-cosmetics-cica-skin-cc-cream-30ml.jpg"
+    ],
+    "variants": [
+      {
+        "id": "var-5903416073871",
+        "name": "Formato Originale",
+        "sku": "5903416073871",
+        "ean": "5903416073871",
+        "colorHex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-cica-skin-cc-cream-30ml.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 3.5,
+        "stock": 3
+      }
+    ],
+    "shades": [
+      {
+        "id": "var-5903416073871",
+        "name": "Formato Originale",
+        "code": "5903416073871",
+        "hex": "#C5A880",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-cica-skin-cc-cream-30ml.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "stock": 3,
+    "inStock": true
   }
 ]
