@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import Image from "next/image";
 import {
   Barcode,
@@ -25,6 +25,10 @@ import {
   Link as LinkIcon,
   Cloud,
   Sparkles,
+  Receipt,
+  Trash2,
+  ArrowLeft,
+  ArrowRight,
 } from "lucide-react";
 import rawCatalog from "@/data/catalog.json";
 import { Product, ProductCategory } from "@/types/product";
@@ -49,6 +53,52 @@ interface QuickScanBarcodeModalProps {
 const ALL_PRODUCTS = rawCatalog as Product[];
 
 type DiscountMode = "none" | "percent" | "amount";
+
+export interface MultiCartItem {
+  id: string;
+  productId: string;
+  variantIndex: number;
+  productName: string;
+  variantName?: string;
+  brand: string;
+  sku: string;
+  ean?: string;
+  image: string;
+  originalUnitPrice: number;
+  unitPrice: number;
+  discountMode: DiscountMode;
+  discountPercent: number;
+  discountAmount: number;
+  finalUnitPrice: number;
+  quantity: number;
+}
+
+/**
+ * Generates an instant synthetic pos audio beep using the Web Audio API
+ */
+function playPosBeep() {
+  if (typeof window === "undefined") return;
+  try {
+    const AudioCtx =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext })
+        .webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(1200, ctx.currentTime);
+    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.12);
+  } catch {
+    // Ignore audio errors silently
+  }
+}
 
 /**
  * Computes the absolute discount amount (in €) to subtract from a base price,
@@ -123,6 +173,53 @@ function fileToResizedDataUrl(file: File, maxSize = 600): Promise<string> {
 
 export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeScreen, setActiveScreen] = useState<"scan" | "multi_receipt">("scan");
+  const activeScreenRef = useRef<"scan" | "multi_receipt">("scan");
+  useEffect(() => {
+    activeScreenRef.current = activeScreen;
+  }, [activeScreen]);
+
+  // Multi-item cart state with localStorage persistence
+  const [multiCartItems, setMultiCartItems] = useState<MultiCartItem[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const raw = localStorage.getItem("scelta_makeup_multi_receipt_cart_v1");
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // Keep localStorage & window event in sync
+  useEffect(() => {
+    try {
+      localStorage.setItem("scelta_makeup_multi_receipt_cart_v1", JSON.stringify(multiCartItems));
+      window.dispatchEvent(
+        new CustomEvent("multi_receipt_cart_updated", { detail: multiCartItems.length })
+      );
+    } catch (e) {
+      console.warn("Error saving multi-receipt cart", e);
+    }
+  }, [multiCartItems]);
+
+  const multiTotal = useMemo(() => {
+    return multiCartItems.reduce((sum, item) => sum + item.finalUnitPrice * item.quantity, 0);
+  }, [multiCartItems]);
+
+  const multiItemsCount = useMemo(() => {
+    return multiCartItems.reduce((sum, item) => sum + item.quantity, 0);
+  }, [multiCartItems]);
+
+  const [multiPaymentMethod, setMultiPaymentMethod] = useState<"card" | "cash">("cash");
+  const [multiCashTendered, setMultiCashTendered] = useState<string>("");
+  const [isMultiCheckingOut, setIsMultiCheckingOut] = useState(false);
+
+  useEffect(() => {
+    if (multiTotal > 0 && (!multiCashTendered || parseFloat(multiCashTendered) < multiTotal)) {
+      setMultiCashTendered(multiTotal.toFixed(2));
+    }
+  }, [multiTotal, multiCashTendered]);
+
   const [scannedBarcode, setScannedBarcode] = useState<string>("");
   const [matchedProduct, setMatchedProduct] = useState<Product | null>(null);
   const [matchedVariantIndex, setMatchedVariantIndex] = useState<number>(0);
@@ -130,7 +227,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const [isStockUpdating, setIsStockUpdating] = useState(false);
   const [successToast, setSuccessToast] = useState<string | null>(null);
 
-  // In-Store Fast Checkout State
+  // In-Store Fast Checkout State (Single item)
   const [checkoutPaymentMethod, setCheckoutPaymentMethod] = useState<"card" | "cash">("cash");
   const [cashTendered, setCashTendered] = useState<string>("");
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -297,6 +394,48 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       const match = findProductByBarcode(cleanCode);
 
       if (match) {
+        playPosBeep();
+        // If currently in Multi-Receipt screen, add item directly to cart
+        if (activeScreenRef.current === "multi_receipt") {
+          const v = match.product.variants?.[match.variantIndex];
+          const itemPrice = (v?.price ?? match.product.price) || 1.0;
+          const itemId = `${match.product.id}-${match.variantIndex}-${itemPrice.toFixed(2)}`;
+
+          setMultiCartItems((prev) => {
+            const idx = prev.findIndex((it) => it.id === itemId);
+            if (idx !== -1) {
+              const next = [...prev];
+              next[idx] = { ...next[idx], quantity: next[idx].quantity + 1 };
+              return next;
+            }
+            return [
+              ...prev,
+              {
+                id: itemId,
+                productId: match.product.id,
+                variantIndex: match.variantIndex,
+                productName: match.product.name,
+                variantName: v?.name && v.name !== "Standard" ? v.name : undefined,
+                brand: match.product.brand,
+                sku: v?.sku || match.product.id,
+                ean: v?.ean,
+                image: v?.image || match.product.images?.[0] || "/brand/logo.png",
+                originalUnitPrice: itemPrice,
+                unitPrice: itemPrice,
+                discountMode: "none",
+                discountPercent: 0,
+                discountAmount: 0,
+                finalUnitPrice: itemPrice,
+                quantity: 1,
+              },
+            ];
+          });
+          setSuccessToast(`➕ "${match.product.name.slice(0, 24)}..." aggiunto allo scontrino multiplo!`);
+          setTimeout(() => setSuccessToast(null), 2500);
+          setIsOpen(true);
+          return;
+        }
+
         setMatchedProduct(match.product);
         setMatchedVariantIndex(match.variantIndex);
         const itemPrice = (match.product.variants?.[match.variantIndex]?.price ?? match.product.price) || 1.0;
@@ -312,6 +451,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         setCashTendered("11.90");
         setPriceEditValue("11.90");
         setTitleEditValue("");
+        setActiveScreen("scan");
       }
 
       // Reset any in-progress photo / price / discount editing for the new scan
@@ -330,6 +470,214 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     },
     [findProductByBarcode]
   );
+
+  // Add current active product to Multi-Receipt cart
+  const handleAddToMultiReceipt = useCallback(() => {
+    if (!matchedProduct) return;
+    const v = matchedProduct.variants?.[matchedVariantIndex];
+    const basePrice = (v?.price ?? matchedProduct.price) || 0;
+    const discountApplied = computeDiscountAmount(basePrice, discountMode, discountPercent, discountAmount);
+    const finalPrice = Math.max(0, Math.round((basePrice - discountApplied) * 100) / 100);
+
+    const itemId = `${matchedProduct.id}-${matchedVariantIndex}-${finalPrice.toFixed(2)}`;
+
+    setMultiCartItems((prev) => {
+      const existingIdx = prev.findIndex((it) => it.id === itemId);
+      if (existingIdx !== -1) {
+        const next = [...prev];
+        next[existingIdx] = {
+          ...next[existingIdx],
+          quantity: next[existingIdx].quantity + 1,
+        };
+        return next;
+      }
+
+      const newItem: MultiCartItem = {
+        id: itemId,
+        productId: matchedProduct.id,
+        variantIndex: matchedVariantIndex,
+        productName: matchedProduct.name,
+        variantName: v?.name && v.name !== "Standard" ? v.name : undefined,
+        brand: matchedProduct.brand,
+        sku: v?.sku || matchedProduct.id,
+        ean: v?.ean,
+        image: v?.image || matchedProduct.images?.[0] || "/brand/logo.png",
+        originalUnitPrice: basePrice,
+        unitPrice: basePrice,
+        discountMode,
+        discountPercent,
+        discountAmount,
+        finalUnitPrice: finalPrice,
+        quantity: 1,
+      };
+      return [...prev, newItem];
+    });
+
+    playPosBeep();
+    setSuccessToast(`➕ "${matchedProduct.name.slice(0, 24)}..." aggiunto allo scontrino multiplo!`);
+    setTimeout(() => {
+      setSuccessToast(null);
+    }, 2500);
+  }, [matchedProduct, matchedVariantIndex, discountMode, discountPercent, discountAmount]);
+
+  const handleUpdateMultiItemQty = (itemId: string, delta: number) => {
+    setMultiCartItems((prev) => {
+      return prev
+        .map((item) => {
+          if (item.id === itemId) {
+            const newQty = item.quantity + delta;
+            return newQty > 0 ? { ...item, quantity: newQty } : null;
+          }
+          return item;
+        })
+        .filter(Boolean) as MultiCartItem[];
+    });
+  };
+
+  const handleRemoveMultiItem = (itemId: string) => {
+    setMultiCartItems((prev) => prev.filter((it) => it.id !== itemId));
+  };
+
+  const handleClearMultiReceipt = () => {
+    if (confirm("Vuoi davvero svuotare tutti i prodotti dallo scontrino multiplo?")) {
+      setMultiCartItems([]);
+      localStorage.removeItem("scelta_makeup_multi_receipt_cart_v1");
+      setSuccessToast("Scontrino multiplo svuotato.");
+      setTimeout(() => setSuccessToast(null), 1800);
+    }
+  };
+
+  // Checkout and emit fiscal receipt with ALL items in multi-receipt cart
+  const handleMultiReceiptCheckout = async () => {
+    if (multiCartItems.length === 0) return;
+    setIsMultiCheckingOut(true);
+
+    try {
+      const cashNum = parseFloat(multiCashTendered.replace(",", ".")) || multiTotal;
+      const effectivePayment = multiPaymentMethod === "cash" && cashNum >= multiTotal ? cashNum : multiTotal;
+      const change = Math.max(0, effectivePayment - multiTotal);
+
+      // 1. Decrement stock for all items
+      const state = getAdminStoreState();
+      const overrides = state.productOverrides || {};
+
+      for (const item of multiCartItems) {
+        const prod = ALL_PRODUCTS.find((p) => p.id === item.productId);
+        const currentProd = overrides[item.productId] ? { ...prod, ...overrides[item.productId] } : prod;
+        if (currentProd && currentProd.variants) {
+          const updatedVariants = [...currentProd.variants];
+          const v = updatedVariants[item.variantIndex];
+          if (v) {
+            const currentQty = v.stock ?? 0;
+            const newQty = Math.max(0, currentQty - item.quantity);
+            updatedVariants[item.variantIndex] = {
+              ...v,
+              stock: newQty,
+              inStock: newQty > 0,
+            };
+            updateProductDetails(item.productId, {
+              variants: updatedVariants,
+              stock: updatedVariants.reduce((sum, it) => sum + (it.stock || 0), 0),
+              inStock: updatedVariants.some((it) => (it.stock || 0) > 0),
+            });
+          }
+        }
+      }
+
+      // 2. Record single admin order
+      createAdminOrder({
+        customerName: "Cliente al Banco",
+        customerEmail: "banco@sceltamakeup.it",
+        customerPhone: "Vendita Diretta Boutique (Scontrino Multiplo)",
+        total: multiTotal,
+        status: "completed",
+        fulfillmentType: "store_pickup",
+        items: multiCartItems.map((item) => ({
+          productId: item.productId,
+          productTitle: item.productName,
+          variantName: item.variantName && item.variantName !== "Standard" ? item.variantName : undefined,
+          quantity: item.quantity,
+          price: item.finalUnitPrice,
+          image: item.image,
+        })),
+      });
+
+      // 3. Emit SOAP XML to Cassa RT (Epson FP-81II RT on 192.168.68.63)
+      const itemsXml = multiCartItems
+        .map((item) => {
+          const rawDesc = (
+            item.productName +
+            (item.variantName && item.variantName !== "Standard" ? ` ${item.variantName}` : "")
+          ).slice(0, 22);
+          const cleanDesc = rawDesc
+            .replace(/&/g, " e ")
+            .replace(/[<>"']/g, "");
+          const priceFormatted = item.finalUnitPrice.toFixed(2);
+          return `<printRecItem operator="1" description="${cleanDesc}" quantity="${item.quantity}" unitPrice="${priceFormatted}" department="1" />`;
+        })
+        .join("\n      ");
+
+      const paymentFormatted = effectivePayment.toFixed(2);
+      const fiscalReceiptXml = `<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <printerFiscalReceipt>
+      <beginFiscalReceipt operator="1" />
+      ${itemsXml}
+      <printRecTotal operator="1" description="${multiPaymentMethod === "card" ? "CARTA" : "CONTANTI"}" payment="${paymentFormatted}" paymentType="${multiPaymentMethod === "card" ? "1" : "0"}" />
+      <endFiscalReceipt operator="1" />
+    </printerFiscalReceipt>
+  </soapenv:Body>
+</soapenv:Envelope>`;
+
+      try {
+        await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=10000", {
+          method: "POST",
+          headers: { "Content-Type": "text/xml; charset=utf-8" },
+          body: fiscalReceiptXml,
+        });
+
+        if (multiPaymentMethod === "cash") {
+          const drawerKickXml = `<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <openDrawer />
+  </soapenv:Body>
+</soapenv:Envelope>`;
+          try {
+            await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=5000", {
+              method: "POST",
+              headers: { "Content-Type": "text/xml; charset=utf-8" },
+              body: drawerKickXml,
+            });
+          } catch (dErr) {
+            console.warn("[Cassa RT] Trigger apertura cassetto:", dErr);
+          }
+        }
+      } catch (hardwareErr) {
+        console.warn("[Cassa RT] Stampa hardware:", hardwareErr);
+      }
+
+      setMultiCartItems([]);
+      localStorage.removeItem("scelta_makeup_multi_receipt_cart_v1");
+
+      setSuccessToast(
+        multiPaymentMethod === "cash" && change > 0
+          ? `🎉 Incassato €${effectivePayment.toFixed(2)} — RESTO DA DARE: €${change.toFixed(2)} (Cassetto Aperto)`
+          : `🎉 Scontrino multiplo emesso con successo! (${multiPaymentMethod === "card" ? "myPOS Carta" : "Contanti - Cassetto Aperto"}).`
+      );
+
+      setTimeout(() => {
+        setIsOpen(false);
+        setActiveScreen("scan");
+      }, 3000);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Errore";
+      alert("Errore durante l'emissione dello scontrino multiplo: " + msg);
+    } finally {
+      setIsMultiCheckingOut(false);
+    }
+  };
 
   // Dedicated 1-Click Physical Drawer Kick
   const handleOpenCashDrawerOnly = useCallback(async () => {
@@ -367,16 +715,25 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   useEffect(() => {
     const handleCustomOpen = (e: Event) => {
       const customEv = e as CustomEvent<string>;
-      const code = customEv.detail;
+      const code = customEv?.detail;
+      setActiveScreen("scan");
       if (code) {
         handleBarcodeScanned(code);
       } else {
         setIsOpen(true);
       }
     };
+
+    const handleMultiOpen = () => {
+      setActiveScreen("multi_receipt");
+      setIsOpen(true);
+    };
+
     window.addEventListener("open_quick_scan_modal", handleCustomOpen);
+    window.addEventListener("open_multi_receipt_modal", handleMultiOpen);
     return () => {
       window.removeEventListener("open_quick_scan_modal", handleCustomOpen);
+      window.removeEventListener("open_multi_receipt_modal", handleMultiOpen);
     };
   }, [handleBarcodeScanned]);
 
@@ -389,6 +746,15 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       // Direct Keyboard Shortcuts: F2 or Ctrl+B opens barcode scanner cockpit
       if (e.key === "F2" || (e.ctrlKey && e.key.toLowerCase() === "b")) {
         e.preventDefault();
+        setActiveScreen("scan");
+        setIsOpen(true);
+        return;
+      }
+
+      // F4 or Ctrl+M opens Multi-Receipt popup
+      if (e.key === "F4" || (e.ctrlKey && e.key.toLowerCase() === "m")) {
+        e.preventDefault();
+        setActiveScreen("multi_receipt");
         setIsOpen(true);
         return;
       }
@@ -958,22 +1324,41 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         <div className="bg-gradient-to-r from-[#1F1B24] via-[#352542] to-[#5E1788] text-white px-5 py-3 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
-              <Barcode className="w-4 h-4 text-[#D462A6]" />
+              {activeScreen === "multi_receipt" ? (
+                <Receipt className="w-4 h-4 text-emerald-300" />
+              ) : (
+                <Barcode className="w-4 h-4 text-[#D462A6]" />
+              )}
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                 <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-emerald-300">
-                  Scansione Barcode Cassa
+                  {activeScreen === "multi_receipt" ? "Cassa RT • Scontrino Multiplo" : "Scansione Barcode Cassa"}
                 </span>
               </div>
               <h3 className="font-mono text-sm sm:text-base font-bold text-white tracking-wider leading-none">
-                {scannedBarcode || "Attesa scansione..."}
+                {activeScreen === "multi_receipt"
+                  ? `${multiItemsCount} ${multiItemsCount === 1 ? "Articolo" : "Articoli"} nello Scontrino`
+                  : scannedBarcode || "Attesa scansione..."}
               </h3>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
+            {multiItemsCount > 0 && (
+              <button
+                type="button"
+                onClick={() => setActiveScreen((s) => (s === "scan" ? "multi_receipt" : "scan"))}
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-400/40 text-[11px] font-bold transition-all shadow-xs cursor-pointer animate-pulse"
+                title="Passa allo Scontrino Multiplo con tutti i prodotti aggiunti"
+              >
+                <Receipt className="w-3.5 h-3.5 text-emerald-300" />
+                <span>
+                  {activeScreen === "multi_receipt" ? "← Spara altri prodotti" : `Scontrino Multiplo (${multiItemsCount}) →`}
+                </span>
+              </button>
+            )}
             <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
               {cloudSyncStatus === "saving" ? (
                 <>
@@ -1004,7 +1389,361 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
           </div>
         </div>
 
-        {/* Top Controls: Toast & Search bar (Compact shrink-0) */}
+        {activeScreen === "multi_receipt" ? (
+          /* ========================================================= */
+          /* SCREEN 2: SCONTRINO FISCALE MULTIPLO                      */
+          /* ========================================================= */
+          <div className="flex-1 flex flex-col overflow-hidden">
+            {successToast && (
+              <div className="mx-5 mt-3 p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-semibold text-emerald-800 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>{successToast}</span>
+              </div>
+            )}
+
+            {multiCartItems.length === 0 ? (
+              <div className="p-8 text-center space-y-3 flex-1 flex flex-col items-center justify-center">
+                <div className="w-16 h-16 rounded-2xl bg-purple-50 flex items-center justify-center text-[#5E1788]">
+                  <ShoppingBag className="w-8 h-8 opacity-60" />
+                </div>
+                <h4 className="font-serif text-lg font-bold text-[#1F1B24]">
+                  Nessun prodotto nello scontrino multiplo
+                </h4>
+                <p className="text-xs text-gray-500 max-w-sm">
+                  Spara i prodotti con la pistola barcode e clicca &quot;Aggiungi a scontrino multiplo&quot; per accumularli qui ed emettere un unico scontrino fiscale.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setActiveScreen("scan")}
+                  className="px-4 py-2 rounded-xl bg-[#5E1788] hover:bg-[#4D1270] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer mt-2"
+                >
+                  <Barcode className="w-4 h-4" />
+                  <span>Torna allo scanner barcode</span>
+                </button>
+              </div>
+            ) : (
+              <div className="p-5 flex-1 overflow-y-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+                  {/* COLONNA SINISTRA: ELENCO PRODOTTI NELLO SCONTRINO (7/12) */}
+                  <div className="lg:col-span-7 space-y-2.5">
+                    <div className="flex items-center justify-between pb-1">
+                      <span className="text-xs font-bold text-[#1F1B24] flex items-center gap-1.5">
+                        <Receipt className="w-4 h-4 text-[#5E1788]" />
+                        <span>Prodotti da stampare ({multiItemsCount} pezzi totali)</span>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={handleClearMultiReceipt}
+                        className="text-[11px] font-semibold text-rose-600 hover:text-rose-800 flex items-center gap-1 cursor-pointer transition-colors"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                        <span>Svuota scontrino</span>
+                      </button>
+                    </div>
+
+                    <div className="space-y-2 max-h-[52vh] overflow-y-auto pr-1">
+                      {multiCartItems.map((item) => (
+                        <div
+                          key={item.id}
+                          className="p-3 bg-[#FAF7FC] rounded-2xl border border-[#D8C2E7]/70 flex items-center gap-3 transition-all hover:border-[#5E1788]/40 shadow-2xs"
+                        >
+                          <div className="relative w-12 h-12 rounded-xl bg-white border border-[#D8C2E7]/60 overflow-hidden shrink-0 flex items-center justify-center p-1">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={item.image}
+                              alt={item.productName}
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-[#5E1788] bg-purple-100 px-1.5 py-0.2 rounded">
+                                {item.brand}
+                              </span>
+                              {item.variantName && item.variantName !== "Standard" && (
+                                <span className="text-[10px] font-semibold text-[#D462A6] truncate">
+                                  {item.variantName}
+                                </span>
+                              )}
+                            </div>
+                            <h4 className="font-serif font-bold text-xs text-[#1F1B24] truncate mt-0.5" title={item.productName}>
+                              {item.productName}
+                            </h4>
+                            <div className="flex items-center gap-2 mt-0.5 text-[11px]">
+                              <span className="font-mono font-bold text-[#5E1788]">
+                                €{item.finalUnitPrice.toFixed(2)} cad.
+                              </span>
+                              {item.discountMode !== "none" && (
+                                <span className="text-[9px] font-bold text-rose-600 bg-rose-50 px-1 rounded border border-rose-200">
+                                  Scontato
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Quantità: [-] [qty] [+] */}
+                          <div className="flex items-center gap-1 bg-white rounded-xl border border-[#D8C2E7]/70 p-1 shrink-0 shadow-2xs">
+                            <button
+                              type="button"
+                              onClick={() => handleUpdateMultiItemQty(item.id, -1)}
+                              className="w-6 h-6 rounded-lg bg-gray-50 hover:bg-rose-50 hover:text-rose-700 text-gray-700 flex items-center justify-center font-bold text-xs transition-colors cursor-pointer"
+                              title="Diminuisci quantità"
+                            >
+                              <Minus className="w-3 h-3" />
+                            </button>
+                            <span className="w-6 text-center font-mono font-extrabold text-xs text-[#1F1B24]">
+                              {item.quantity}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleUpdateMultiItemQty(item.id, 1)}
+                              className="w-6 h-6 rounded-lg bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 text-gray-700 flex items-center justify-center font-bold text-xs transition-colors cursor-pointer"
+                              title="Aumenta quantità"
+                            >
+                              <Plus className="w-3 h-3" />
+                            </button>
+                          </div>
+
+                          {/* Subtotale riga */}
+                          <div className="text-right shrink-0 min-w-[65px]">
+                            <span className="block font-mono font-extrabold text-sm text-[#1F1B24]">
+                              €{(item.finalUnitPrice * item.quantity).toFixed(2)}
+                            </span>
+                          </div>
+
+                          {/* Tasto Rimuovi */}
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveMultiItem(item.id)}
+                            className="w-7 h-7 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 flex items-center justify-center transition-colors shrink-0 cursor-pointer"
+                            title="Rimuovi prodotto"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* COLONNA DESTRA: INCASSO SCONTRINO MULTIPLO & STAMPA (5/12) */}
+                  <div className="lg:col-span-5 space-y-3">
+                    <div className="bg-gradient-to-r from-purple-50 via-white to-pink-50 p-4 rounded-2xl border border-[#D8C2E7]/80 space-y-3 shadow-xs">
+                      {/* Metodo di pagamento */}
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-[#1F1B24] flex items-center gap-1.5">
+                          <ShoppingBag className="w-4 h-4 text-[#5E1788]" />
+                          Incasso Scontrino
+                        </span>
+
+                        <div className="flex items-center gap-1 bg-white p-0.5 rounded-lg border border-[#D8C2E7]/60 shadow-2xs">
+                          <button
+                            type="button"
+                            onClick={() => setMultiPaymentMethod("card")}
+                            className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                              multiPaymentMethod === "card"
+                                ? "bg-[#5E1788] text-white shadow-xs"
+                                : "text-gray-600 hover:text-[#5E1788]"
+                            }`}
+                          >
+                            <CreditCard className="w-3 h-3" />
+                            <span>Carta</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setMultiPaymentMethod("cash")}
+                            className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                              multiPaymentMethod === "cash"
+                                ? "bg-[#1F1B24] text-white shadow-xs"
+                                : "text-gray-600 hover:text-[#1F1B24]"
+                            }`}
+                          >
+                            <Banknote className="w-3 h-3" />
+                            <span>Contanti</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Display Totale */}
+                      <div className="p-3 bg-white rounded-xl border border-[#D8C2E7]/70 flex items-center justify-between shadow-2xs">
+                        <div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block">
+                            Totale Complessivo
+                          </span>
+                          <span className="text-xs font-semibold text-gray-700">
+                            {multiItemsCount} {multiItemsCount === 1 ? "articolo" : "articoli"}
+                          </span>
+                        </div>
+                        <span className="text-2xl font-mono font-extrabold text-[#5E1788]">
+                          €{multiTotal.toFixed(2)}
+                        </span>
+                      </div>
+
+                      {/* Se Contanti: Calcolo Resto */}
+                      {multiPaymentMethod === "cash" && (
+                        <div className="p-3 bg-emerald-50/90 border border-emerald-200 rounded-xl space-y-2.5 animate-in fade-in duration-150">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-bold text-emerald-950 flex items-center gap-1">
+                              <Coins className="w-3.5 h-3.5 text-emerald-700" />
+                              <span>Calcolo Resto</span>
+                            </span>
+                          </div>
+
+                          {/* Presets */}
+                          <div className="flex flex-wrap items-center gap-1">
+                            <span className="text-[10px] font-semibold text-emerald-900 mr-0.5">Tagli:</span>
+                            {[
+                              { label: `Esatto (€${multiTotal.toFixed(2)})`, val: multiTotal },
+                              { label: "€10", val: 10 },
+                              { label: "€20", val: 20 },
+                              { label: "€50", val: 50 },
+                              { label: "€100", val: 100 },
+                            ]
+                              .filter((p) => p.val >= multiTotal || p.val === multiTotal)
+                              .slice(0, 4)
+                              .map((preset) => (
+                                <button
+                                  key={preset.label}
+                                  type="button"
+                                  onClick={() => setMultiCashTendered(preset.val.toFixed(2))}
+                                  className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border transition-all cursor-pointer ${
+                                    parseFloat(multiCashTendered) === preset.val
+                                      ? "bg-emerald-700 text-white border-emerald-800 shadow-2xs scale-105"
+                                      : "bg-white text-emerald-900 border-emerald-300 hover:bg-emerald-100"
+                                  }`}
+                                >
+                                  {preset.label}
+                                </button>
+                              ))}
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2 items-center pt-0.5">
+                            <div>
+                              <label className="block text-[10px] font-bold text-emerald-950 mb-0.5">
+                                Ricevuto (€)
+                              </label>
+                              <div className="relative">
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  min="0"
+                                  value={multiCashTendered}
+                                  onChange={(e) => setMultiCashTendered(e.target.value)}
+                                  placeholder={multiTotal.toFixed(2)}
+                                  className="w-full pl-6 pr-2 py-1.5 bg-white rounded-lg border border-emerald-300 text-xs font-bold text-emerald-950 focus:outline-none focus:border-emerald-600 shadow-2xs"
+                                />
+                                <span className="absolute left-2 top-1.5 text-xs font-bold text-emerald-700">€</span>
+                              </div>
+                            </div>
+
+                            {(() => {
+                              const cashVal = parseFloat(multiCashTendered.replace(",", ".")) || multiTotal;
+                              const isUnder = cashVal < multiTotal;
+                              const diff = isUnder ? multiTotal - cashVal : cashVal - multiTotal;
+                              return (
+                                <div
+                                  className={`p-1.5 rounded-lg border flex flex-col justify-center text-center ${
+                                    isUnder
+                                      ? "bg-rose-50 border-rose-200 text-rose-800"
+                                      : "bg-white border-emerald-300 text-emerald-900 shadow-2xs"
+                                  }`}
+                                >
+                                  <span className="text-[9px] uppercase tracking-wider font-bold opacity-75">
+                                    {isUnder ? "Mancano" : "Resto"}
+                                  </span>
+                                  <span
+                                    className={`text-lg font-mono font-extrabold ${
+                                      isUnder ? "text-rose-600" : "text-emerald-700"
+                                    }`}
+                                  >
+                                    {isUnder ? `- €${diff.toFixed(2)}` : `€${diff.toFixed(2)}`}
+                                  </span>
+                                </div>
+                              );
+                            })()}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Tasto Principale: Incassa e Stampa Scontrino */}
+                      <button
+                        type="button"
+                        onClick={handleMultiReceiptCheckout}
+                        disabled={
+                          isMultiCheckingOut ||
+                          multiCartItems.length === 0 ||
+                          (multiPaymentMethod === "cash" &&
+                            (parseFloat(multiCashTendered.replace(",", ".")) || 0) < multiTotal)
+                        }
+                        className={`w-full py-3.5 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-98 ${
+                          multiPaymentMethod === "cash"
+                            ? "bg-gradient-to-r from-emerald-600 to-[#5E1788] hover:from-emerald-700 hover:to-[#4D1270] text-white"
+                            : "bg-gradient-to-r from-[#5E1788] to-[#7A3293] hover:from-[#4D1270] hover:to-[#5E1788] text-white"
+                        }`}
+                      >
+                        {isMultiCheckingOut ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            <span>Stampa scontrino in corso...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Printer className="w-4 h-4" />
+                            <span>
+                              Incassa €{multiTotal.toFixed(2)} e Stampa Scontrino
+                            </span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Azioni secondarie in griglia 2x2 */}
+                    <div className="grid grid-cols-2 gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => setActiveScreen("scan")}
+                        className="w-full px-3 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#5E1788] border border-purple-200 text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                      >
+                        <Barcode className="w-3.5 h-3.5" />
+                        <span>Spara altri prodotti</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleOpenCashDrawerOnly}
+                        className="w-full px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                      >
+                        <Unlock className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>Apri cassetto</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleClearMultiReceipt}
+                        className="w-full px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                      >
+                        <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+                        <span>Svuota scontrino</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleCloseModal}
+                        className="w-full px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300 text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                      >
+                        <X className="w-3.5 h-3.5 text-gray-500" />
+                        <span>Esci</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          /* SCREEN 1: SCANSIONE BARCODE / CASSA STANDARD */
+          <>
+            {/* Top Controls: Toast & Search bar (Compact shrink-0) */}
         <div className="px-5 pt-3 pb-1 shrink-0 space-y-2">
           {successToast && (
             <div className="p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-semibold text-emerald-800 flex items-center gap-2">
@@ -1582,7 +2321,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                     </div>
                   )}
 
-                  {/* Main Checkout Action Button */}
+                  {/* Tasto 1: Incassa e apri cassetto / Incassa e stampa scontrino */}
                   <button
                     type="button"
                     onClick={handleInstantCheckout}
@@ -1604,58 +2343,92 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                         <span>
                           {checkoutPaymentMethod === "cash"
                             ? cashNum > finalTotal
-                              ? `Incassa €${cashNum.toFixed(2)} (Resto: €${changeDue.toFixed(2)})`
+                              ? `Incassa €${cashNum.toFixed(2)} (Resto: €${changeDue.toFixed(2)}) & Apri Cassetto`
                               : `Incassa €${finalTotal.toFixed(2)} & Apri Cassetto`
                             : `Incassa €${finalTotal.toFixed(2)} & Stampa Scontrino`}
                         </span>
                       </>
                     )}
                   </button>
+
+                  {/* Tasto 2: Aggiungi a scontrino multiplo */}
+                  <button
+                    type="button"
+                    onClick={handleAddToMultiReceipt}
+                    disabled={currentStock <= 0}
+                    className="w-full py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm bg-purple-100 hover:bg-purple-200 text-[#5E1788] border border-purple-300 shadow-2xs hover:shadow-xs transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-98"
+                    title="Aggiungi questo articolo allo scontrino multiplo"
+                  >
+                    <Plus className="w-4 h-4 text-[#5E1788]" />
+                    <span>
+                      Aggiungi a scontrino multiplo
+                      {multiItemsCount > 0 ? ` (${multiItemsCount} presenti)` : ""}
+                    </span>
+                  </button>
+
+                  {/* Scorciatoia diretta per visualizzare lo scontrino multiplo se ci sono articoli */}
+                  {multiItemsCount > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setActiveScreen("multi_receipt")}
+                      className="w-full py-2 px-3 rounded-xl font-bold text-xs bg-gradient-to-r from-emerald-50 to-teal-50 hover:from-emerald-100 hover:to-teal-100 text-emerald-800 border border-emerald-300 shadow-2xs transition-all flex items-center justify-between cursor-pointer"
+                      title="Apri il secondo popup per rivedere tutti i prodotti ed emettere lo scontrino unico"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <Receipt className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>Scontrino Multiplo ({multiItemsCount} pz)</span>
+                      </div>
+                      <span className="font-mono font-extrabold text-[#5E1788]">
+                        Totale €{multiTotal.toFixed(2)} →
+                      </span>
+                    </button>
+                  )}
                 </div>
 
-                {/* Bottom Secondary Actions */}
-                <div className="flex items-center justify-between gap-2 pt-1">
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      type="button"
-                      onClick={handleOpenCashDrawerOnly}
-                      className="px-2.5 py-1.5 rounded-lg bg-purple-50 border border-purple-200 hover:bg-purple-100 text-[#5E1788] text-[11px] font-bold transition-colors flex items-center gap-1 cursor-pointer shadow-2xs"
-                      title="Apri cassetto Epson"
-                    >
-                      <Unlock className="w-3 h-3 text-[#5E1788]" />
-                      <span>Apri Cassetto</span>
-                    </button>
+                {/* Pulsanti di servizio su 2 righe e 2 colonne */}
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  {/* Riga 1: Apri cassetto | Sblocco cassa */}
+                  <button
+                    type="button"
+                    onClick={handleOpenCashDrawerOnly}
+                    className="w-full px-3 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#5E1788] border border-purple-200 text-[11px] sm:text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                    title="Apri cassetto Epson"
+                  >
+                    <Unlock className="w-3.5 h-3.5 text-[#5E1788]" />
+                    <span>Apri cassetto</span>
+                  </button>
 
-                    <button
-                      type="button"
-                      onClick={handleVoidOpenReceipt}
-                      className="px-2.5 py-1.5 rounded-lg bg-amber-50 border border-amber-300 hover:bg-amber-100 text-amber-800 text-[11px] font-bold transition-colors flex items-center gap-1 cursor-pointer"
-                      title="Annulla scontrino rimasto aperto"
-                    >
-                      <AlertCircle className="w-3 h-3 text-amber-600" />
-                      <span className="hidden sm:inline">Sblocca</span>
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={handleVoidOpenReceipt}
+                    disabled={isCheckingOut}
+                    className="w-full px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-[11px] sm:text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                    title="Annulla scontrino rimasto aperto sulla cassa fisica"
+                  >
+                    <AlertCircle className="w-3.5 h-3.5 text-amber-600" />
+                    <span>Sblocco cassa</span>
+                  </button>
 
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={handleCloseModal}
-                      className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-95"
-                      title="Salva tutte le modifiche e chiudi"
-                    >
-                      <Check className="w-3.5 h-3.5" />
-                      <span>Salva & Chiudi</span>
-                    </button>
+                  {/* Riga 2: Salva e chiudi | Esci */}
+                  <button
+                    type="button"
+                    onClick={handleCloseModal}
+                    className="w-full px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                    title="Salva tutte le modifiche e chiudi"
+                  >
+                    <Check className="w-3.5 h-3.5" />
+                    <span>Salva e chiudi</span>
+                  </button>
 
-                    <button
-                      type="button"
-                      onClick={handleCloseModal}
-                      className="px-3 py-1.5 rounded-lg border border-[#D8C2E7] text-gray-700 text-xs font-semibold hover:bg-gray-50 transition-colors cursor-pointer"
-                    >
-                      Chiudi (Esc)
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={handleCloseModal}
+                    className="w-full px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300 text-[11px] sm:text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                    title="Esci dalla finestra"
+                  >
+                    <X className="w-3.5 h-3.5 text-gray-500" />
+                    <span>Esci</span>
+                  </button>
                 </div>
 
                 <div className="flex items-center justify-between text-[10px] text-gray-500 pt-0.5 px-1">
@@ -1778,6 +2551,8 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
             </div>
           )}
         </div>
+          </>
+        )}
       </div>
     </div>
   );

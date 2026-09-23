@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   Barcode,
   Unlock,
+  Receipt,
 } from "lucide-react";
 import AdminSidebar from "./AdminSidebar";
 import DashboardHome from "./DashboardHome";
@@ -53,6 +54,26 @@ export default function AdminClientWrapper() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [kpis, setKpis] = useState<AdminKpiSummary>(() => getAdminKpis());
   const [orders, setOrders] = useState<SceltaAdminOrder[]>(() => getAdminOrders());
+  const [multiCartCount, setMultiCartCount] = useState<number>(0);
+
+  useEffect(() => {
+    const updateCount = () => {
+      try {
+        const raw = localStorage.getItem("scelta_makeup_multi_receipt_cart_v1");
+        if (raw) {
+          const items = JSON.parse(raw);
+          setMultiCartCount(items.reduce((s: number, i: { quantity?: number }) => s + (i.quantity || 1), 0));
+        } else {
+          setMultiCartCount(0);
+        }
+      } catch {
+        setMultiCartCount(0);
+      }
+    };
+    updateCount();
+    window.addEventListener("multi_receipt_cart_updated", updateCount);
+    return () => window.removeEventListener("multi_receipt_cart_updated", updateCount);
+  }, []);
 
   const handleTabChange = useCallback(
     (tab: AdminTab) => {
@@ -165,6 +186,21 @@ export default function AdminClientWrapper() {
               <Barcode className="w-3.5 h-3.5" />
               <span>Barcode / Cassa</span>
             </button>
+
+            {/* Quick Scontrino Multiplo Trigger if items present */}
+            {multiCartCount > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent("open_multi_receipt_modal"));
+                }}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500 text-xs font-bold transition-all shadow-md animate-pulse cursor-pointer active:scale-95"
+                title="Apri scontrino multiplo in corso"
+              >
+                <Receipt className="w-3.5 h-3.5 text-amber-300" />
+                <span>Scontrino ({multiCartCount})</span>
+              </button>
+            )}
 
             {/* Quick Open Drawer Trigger */}
             <button

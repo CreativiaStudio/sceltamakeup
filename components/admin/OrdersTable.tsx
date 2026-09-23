@@ -33,6 +33,26 @@ export default function OrdersTable() {
   const [copiedOrderId, setCopiedOrderId] = useState<string | null>(null);
   const [printingOrder, setPrintingOrder] = useState<SceltaAdminOrder | null>(null);
   const [isNewOrderModalOpen, setIsNewOrderModalOpen] = useState(false);
+  const [multiCartCount, setMultiCartCount] = useState<number>(0);
+
+  useEffect(() => {
+    const updateCount = () => {
+      try {
+        const raw = localStorage.getItem("scelta_makeup_multi_receipt_cart_v1");
+        if (raw) {
+          const items = JSON.parse(raw);
+          setMultiCartCount(items.reduce((s: number, i: { quantity?: number }) => s + (i.quantity || 1), 0));
+        } else {
+          setMultiCartCount(0);
+        }
+      } catch {
+        setMultiCartCount(0);
+      }
+    };
+    updateCount();
+    window.addEventListener("multi_receipt_cart_updated", updateCount);
+    return () => window.removeEventListener("multi_receipt_cart_updated", updateCount);
+  }, []);
 
   useEffect(() => {
     const handleStoreUpdate = () => setOrders(getAdminOrders());
@@ -125,11 +145,21 @@ export default function OrdersTable() {
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => setIsNewOrderModalOpen(true)}
-            className="px-4 py-2 bg-gradient-to-r from-[#5E1788] via-[#7A3293] to-[#5E1788] hover:shadow-md text-white text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
+            onClick={() => {
+              if (multiCartCount > 0) {
+                window.dispatchEvent(new CustomEvent("open_multi_receipt_modal"));
+              } else {
+                window.dispatchEvent(new CustomEvent("open_quick_scan_modal", { detail: "" }));
+              }
+            }}
+            className="px-4 py-2 bg-gradient-to-r from-[#5E1788] via-[#7A3293] to-[#5E1788] hover:shadow-md text-white text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-all shadow-xs cursor-pointer active:scale-95"
+            title="Crea nuovo ordine tramite la cassa barcode e scontrino multiplo"
           >
             <Plus className="w-4 h-4" />
-            <span>+ Nuovo Ordine Manuale</span>
+            <span>
+              + Nuovo Ordine Manuale
+              {multiCartCount > 0 ? ` (${multiCartCount} in scontrino)` : ""}
+            </span>
           </button>
           <div className="text-xs text-gray-500 font-medium">
             Filtrati: <strong className="text-[#1F1B24]">{filteredOrders.length}</strong> ordini
