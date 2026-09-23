@@ -54,7 +54,7 @@ export default function AdminSidebar({
       id: "prodotti",
       label: "Catalogo & Stock",
       icon: Package,
-      badge: kpis?.lowStockCount ? `${kpis.lowStockCount} scorte` : "341",
+      badge: kpis?.lowStockCount ? `${kpis.lowStockCount} sotto scorta` : "406",
       badgeColor: kpis?.lowStockCount ? "bg-amber-100 text-amber-800 border-amber-300" : "bg-purple-100 text-purple-800 border-purple-200",
       category: "Gestione Principale",
     },

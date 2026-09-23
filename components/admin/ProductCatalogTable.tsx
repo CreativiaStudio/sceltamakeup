@@ -223,7 +223,7 @@ export default function ProductCatalogTable() {
               Catalogo Prodotti & Giacenze
             </h1>
             <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#5E1788]/10 text-[#5E1788] border border-[#5E1788]/20">
-              341 Prodotti Totali
+              {rawCatalog.length} Prodotti Totali (2.632 pz)
             </span>
           </div>
           <p className="text-xs text-gray-500 mt-1">
