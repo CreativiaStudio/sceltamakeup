@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import {
   Menu,
   ExternalLink,
-  ShieldCheck,
   Barcode,
   Unlock,
   Receipt,
@@ -162,16 +161,6 @@ export default function AdminClientWrapper() {
 
           {/* Top Right Badges & Indicators */}
           <div className="flex items-center gap-2.5 sm:gap-4">
-            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-medium">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Storage Isolato Locale</span>
-            </div>
-
-            <div className="hidden md:flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-50 border border-purple-200 text-[#5E1788] text-[11px] font-medium">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#5E1788]" />
-              <span>DDL Supabase 9 Tabelle</span>
-            </div>
-
             {/* Quick Barcode Scanner Modal Trigger */}
             <button
               type="button"

@@ -879,7 +879,7 @@ function ProductEditorModalDialog({
                           {status === "low_stock" && (
                             <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-semibold border border-amber-200">
                               <AlertTriangle className="w-2.5 h-2.5 text-amber-600" />
-                              Scorte Basse
+                              Qtà bassa
                             </span>
                           )}
                           {status === "out_of_stock" && (

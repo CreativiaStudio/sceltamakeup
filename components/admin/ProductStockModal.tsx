@@ -201,7 +201,7 @@ function ProductStockModalDialog({
                       {status === "low_stock" && (
                         <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-semibold border border-amber-200 flex items-center gap-1">
                           <AlertTriangle className="w-2.5 h-2.5" />
-                          Scorte Basse
+                          Qtà bassa
                         </span>
                       )}
                       {status === "out_of_stock" && (

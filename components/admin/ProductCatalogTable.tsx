@@ -296,7 +296,7 @@ export default function ProductCatalogTable() {
               }`}
             >
               <span className="w-2 h-2 rounded-full bg-amber-500" />
-              <span>Scorte Basse</span>
+              <span>Qtà bassa</span>
             </button>
             <button
               type="button"
@@ -482,7 +482,7 @@ export default function ProductCatalogTable() {
                             {summary.status === "low_stock" && (
                               <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-semibold border border-amber-200">
                                 <AlertTriangle className="w-2.5 h-2.5 text-amber-600" />
-                                Scorte Basse
+                                Qtà bassa
                               </span>
                             )}
                             {summary.status === "out_of_stock" && (
@@ -512,10 +512,10 @@ export default function ProductCatalogTable() {
                               );
                             }}
                             className="px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold transition-colors flex items-center gap-1.5 border border-emerald-200"
-                            title="Apri popup cassa / simula scansione barcode al banco"
+                            title="Apri cassa e simula scansione barcode"
                           >
                             <Barcode className="w-3.5 h-3.5 text-emerald-600" />
-                            <span className="hidden xl:inline">Test Cassa</span>
+                            <span className="hidden xl:inline">Scansiona</span>
                           </button>
 
                           <button
@@ -525,7 +525,7 @@ export default function ProductCatalogTable() {
                             title="Modifica scheda completa, foto, testi e varianti"
                           >
                             <Edit className="w-3.5 h-3.5" />
-                            <span>Modifica Prodotto</span>
+                            <span>Modifica</span>
                           </button>
 
                           <Link
