@@ -21,6 +21,7 @@ import {
 import {
   getAdminOrders,
   updateOrderStatus,
+  syncAdminStoreFromCloud,
   SceltaAdminOrder,
 } from "@/lib/adminStore";
 import OrderPrintModal from "./OrderPrintModal";
@@ -66,6 +67,7 @@ export default function OrdersTable() {
   }, []);
 
   useEffect(() => {
+    void syncAdminStoreFromCloud();
     const handleStoreUpdate = () => setOrders(getAdminOrders());
     window.addEventListener("scelta_admin_store_updated", handleStoreUpdate);
     window.addEventListener("scelta_admin_store_reset", handleStoreUpdate);
