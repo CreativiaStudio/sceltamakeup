@@ -315,6 +315,30 @@ export function getAdminStoreState(): SceltaAdminStoreState {
           }
         }
       }
+
+      // Auto-normalize legacy in-store orders created as store_pickup to pos_receipt
+      if (Array.isArray(parsed.orders)) {
+        let orderMigrated = false;
+        for (const ord of parsed.orders) {
+          if (
+            ord.fulfillmentType !== "pos_receipt" &&
+            (ord.customerEmail === "banco@sceltamakeup.it" ||
+              ord.customerName === "Cliente al Banco" ||
+              ord.customerPhone?.includes("Boutique"))
+          ) {
+            ord.fulfillmentType = "pos_receipt";
+            if (!ord.paymentMethod) ord.paymentMethod = "cash";
+            orderMigrated = true;
+          }
+        }
+        if (orderMigrated && typeof window !== "undefined") {
+          try {
+            localStorage.setItem(STORAGE_ADMIN_STORE_KEY, JSON.stringify(parsed));
+          } catch {
+            // ignore
+          }
+        }
+      }
     }
 
     memoryAdminStore = parsed as SceltaAdminStoreState;
@@ -437,6 +461,15 @@ export async function syncAdminStoreFromCloud(): Promise<boolean> {
           }
           // Preserve any locally created orders not yet on cloud and push them up
           for (const lo of state.orders) {
+            if (
+              lo.fulfillmentType !== "pos_receipt" &&
+              (lo.customerEmail === "banco@sceltamakeup.it" ||
+                lo.customerName === "Cliente al Banco" ||
+                lo.customerPhone?.includes("Boutique"))
+            ) {
+              lo.fulfillmentType = "pos_receipt";
+              if (!lo.paymentMethod) lo.paymentMethod = "cash";
+            }
             if (!map.has(lo.id)) {
               map.set(lo.id, lo);
               postCatalogUpdate(ORDERS_API, { order: lo });

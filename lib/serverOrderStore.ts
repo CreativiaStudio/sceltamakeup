@@ -134,16 +134,34 @@ export async function getCentralOrders(): Promise<SceltaAdminOrder[]> {
   return orders;
 }
 
+function normalizeOrder(order: SceltaAdminOrder): SceltaAdminOrder {
+  if (
+    order.fulfillmentType !== "pos_receipt" &&
+    (order.customerEmail === "banco@sceltamakeup.it" ||
+      order.customerName === "Cliente al Banco" ||
+      order.customerPhone?.includes("Boutique"))
+  ) {
+    return {
+      ...order,
+      fulfillmentType: "pos_receipt",
+      paymentMethod: order.paymentMethod || "cash",
+    };
+  }
+  return order;
+}
+
 export async function saveCentralOrder(newOrder: SceltaAdminOrder): Promise<SceltaAdminOrder[]> {
   return enqueue(async () => {
     const current = await getCentralOrders();
     const map = new Map<string, SceltaAdminOrder>();
 
+    const safeOrder = normalizeOrder(newOrder);
     // Put new order first
-    map.set(newOrder.id, newOrder);
+    map.set(safeOrder.id, safeOrder);
     for (const o of current) {
-      if (!map.has(o.id)) {
-        map.set(o.id, o);
+      const safeExisting = normalizeOrder(o);
+      if (!map.has(safeExisting.id)) {
+        map.set(safeExisting.id, safeExisting);
       }
     }
 
@@ -165,11 +183,13 @@ export async function saveCentralOrders(ordersBatch: SceltaAdminOrder[]): Promis
     const map = new Map<string, SceltaAdminOrder>();
 
     for (const o of ordersBatch) {
-      map.set(o.id, o);
+      const safe = normalizeOrder(o);
+      map.set(safe.id, safe);
     }
     for (const o of current) {
-      if (!map.has(o.id)) {
-        map.set(o.id, o);
+      const safe = normalizeOrder(o);
+      if (!map.has(safe.id)) {
+        map.set(safe.id, safe);
       }
     }
 
