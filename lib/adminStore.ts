@@ -23,6 +23,7 @@ export const STORAGE_ADMIN_STORE_KEY = "scelta_makeup_admin_store_v7";
 // Centralized cloud catalog endpoints (real-time multi-device sync)
 const CATALOG_OVERRIDES_API = "/api/catalog/overrides";
 const CATALOG_STOCK_API = "/api/catalog/stock";
+const ORDERS_API = "/api/admin/orders";
 
 // ------------------------------------------------------------------------------
 // Interface Contracts (PROJECT.md)
@@ -48,13 +49,16 @@ export interface SceltaVariantStock {
 }
 
 export interface SceltaAdminOrder {
-  id: string; // e.g. "SC-ORD-2026-0001"
+  id: string; // e.g. "SC-ORD-2026-0001" or "SC-POS-2026-0001"
   customerName: string;
   customerEmail: string;
   customerPhone: string;
   total: number;
   status: "processing" | "shipped" | "ready_for_pickup" | "completed" | "cancelled";
-  fulfillmentType: "courier" | "store_pickup";
+  fulfillmentType: "courier" | "store_pickup" | "pos_receipt";
+  paymentMethod?: "cash" | "card" | "stripe" | "mypos";
+  change?: number;
+  receiptNumber?: string;
   shippingAddress?: {
     street: string;
     city: string;
@@ -410,6 +414,45 @@ export async function syncAdminStoreFromCloud(): Promise<boolean> {
         state.variantStocks = mergedStocks;
         changed = true;
       }
+    }
+
+    // Reconcile centralized cloud orders & POS receipts
+    try {
+      const ordersRes = await fetch(ORDERS_API, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+      });
+      if (ordersRes.ok) {
+        const ordersPayload = (await ordersRes.json()) as {
+          success?: boolean;
+          orders?: SceltaAdminOrder[];
+        };
+        if (ordersPayload?.success && Array.isArray(ordersPayload.orders)) {
+          const cloudOrders = ordersPayload.orders;
+          const map = new Map<string, SceltaAdminOrder>();
+          // Cloud orders are the primary source of truth
+          for (const co of cloudOrders) {
+            map.set(co.id, co);
+          }
+          // Preserve any locally created orders not yet on cloud and push them up
+          for (const lo of state.orders) {
+            if (!map.has(lo.id)) {
+              map.set(lo.id, lo);
+              postCatalogUpdate(ORDERS_API, { order: lo });
+            }
+          }
+          const merged = Array.from(map.values()).sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+          if (JSON.stringify(merged) !== JSON.stringify(state.orders)) {
+            state.orders = merged;
+            changed = true;
+          }
+        }
+      }
+    } catch {
+      // Offline fallback
     }
 
     if (changed) {
@@ -778,6 +821,7 @@ export function updateOrderStatus(
 
   state.orders[index] = updated;
   saveAdminStoreState(state);
+  postCatalogUpdate(ORDERS_API, { order: updated });
   return updated;
 }
 
@@ -807,6 +851,7 @@ export function updateOrderTracking(
 
   state.orders[index] = updated;
   saveAdminStoreState(state);
+  postCatalogUpdate(ORDERS_API, { order: updated });
   return updated;
 }
 
@@ -815,9 +860,9 @@ export function updateOrderTracking(
  */
 export function createAdminOrder(
   orderInput: Partial<SceltaAdminOrder> & {
-    customerName: string;
-    customerEmail: string;
-    customerPhone: string;
+    customerName?: string;
+    customerEmail?: string;
+    customerPhone?: string;
     total: number;
     items: SceltaAdminOrder["items"];
   }
@@ -825,19 +870,29 @@ export function createAdminOrder(
   const state = getAdminStoreState();
   const now = new Date().toISOString();
   const nextSeq = state.orders.length + 1;
-  const orderNumber = orderInput.id || `SC-ORD-2026-${nextSeq.toString().padStart(4, "0")}`;
+  const isPos = orderInput.fulfillmentType === "pos_receipt";
+  const orderNumber =
+    orderInput.id ||
+    (isPos
+      ? `SC-POS-2026-${nextSeq.toString().padStart(4, "0")}`
+      : `SC-ORD-2026-${nextSeq.toString().padStart(4, "0")}`);
 
   const newOrder: SceltaAdminOrder = {
     id: orderNumber,
-    customerName: orderInput.customerName,
-    customerEmail: orderInput.customerEmail,
-    customerPhone: orderInput.customerPhone,
+    customerName: orderInput.customerName || (isPos ? "Cliente al Banco" : "Cliente"),
+    customerEmail: orderInput.customerEmail || (isPos ? "banco@sceltamakeup.it" : "info@sceltamakeup.it"),
+    customerPhone: orderInput.customerPhone || (isPos ? "Vendita Diretta Boutique (Cassa RT)" : ""),
     total: Math.round(orderInput.total * 100) / 100,
-    status: orderInput.status || "processing",
+    status: orderInput.status || (isPos ? "completed" : "processing"),
     fulfillmentType: orderInput.fulfillmentType || "courier",
+    paymentMethod: orderInput.paymentMethod,
+    change: orderInput.change !== undefined ? Math.round(orderInput.change * 100) / 100 : undefined,
+    receiptNumber: orderInput.receiptNumber,
     shippingAddress: orderInput.shippingAddress,
     trackingCode: orderInput.trackingCode,
-    courierName: orderInput.courierName || (orderInput.fulfillmentType === "store_pickup" ? undefined : "BRT Express"),
+    courierName:
+      orderInput.courierName ||
+      (orderInput.fulfillmentType === "courier" ? "BRT Express" : undefined),
     items: orderInput.items,
     createdAt: orderInput.createdAt || now,
     updatedAt: now,
@@ -845,6 +900,10 @@ export function createAdminOrder(
 
   state.orders = [newOrder, ...state.orders];
   saveAdminStoreState(state);
+
+  // Synchronize immediately to cloud (Creativia Hub / Supabase)
+  postCatalogUpdate(ORDERS_API, { order: newOrder });
+
   return newOrder;
 }
 

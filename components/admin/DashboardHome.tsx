@@ -17,6 +17,7 @@ import {
   Clock,
   Sparkles,
   CheckCircle2,
+  Receipt,
 } from "lucide-react";
 import { AdminKpiSummary, SceltaAdminOrder } from "@/lib/adminStore";
 import { AdminTab } from "@/types/admin";
@@ -413,6 +414,7 @@ export default function DashboardHome({
             <div className="divide-y divide-gray-100 mt-2">
               {recentOrders.map((order) => {
                 const isCourier = order.fulfillmentType === "courier";
+                const isPos = order.fulfillmentType === "pos_receipt";
 
                 return (
                   <div
@@ -426,12 +428,19 @@ export default function DashboardHome({
                         </span>
                         <span
                           className={`text-[10px] px-2 py-0.5 rounded-full font-medium flex items-center gap-1 ${
-                            isCourier
+                            isPos
+                              ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                              : isCourier
                               ? "bg-blue-50 text-blue-700 border border-blue-200"
                               : "bg-purple-50 text-[#5E1788] border border-purple-200"
                           }`}
                         >
-                          {isCourier ? (
+                          {isPos ? (
+                            <>
+                              <Receipt className="w-2.5 h-2.5 text-emerald-600" />
+                              <span>Banco Cassa RT</span>
+                            </>
+                          ) : isCourier ? (
                             <>
                               <Truck className="w-2.5 h-2.5" />
                               <span>Corriere</span>

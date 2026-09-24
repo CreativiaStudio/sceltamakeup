@@ -584,25 +584,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         }
       }
 
-      // 2. Record single admin order
-      createAdminOrder({
-        customerName: "Cliente al Banco",
-        customerEmail: "banco@sceltamakeup.it",
-        customerPhone: "Vendita Diretta Boutique (Scontrino Multiplo)",
-        total: multiTotal,
-        status: "completed",
-        fulfillmentType: "store_pickup",
-        items: multiCartItems.map((item) => ({
-          productId: item.productId,
-          productTitle: item.productName,
-          variantName: item.variantName && item.variantName !== "Standard" ? item.variantName : undefined,
-          quantity: item.quantity,
-          price: item.finalUnitPrice,
-          image: item.image,
-        })),
-      });
-
-      // 3. Emit SOAP XML to Cassa RT (Epson FP-81II RT on 192.168.68.63)
+      // 2. Emit SOAP XML to Cassa RT (Epson FP-81II RT on 192.168.68.63)
       const itemsXml = multiCartItems
         .map((item) => {
           const rawDesc = (
@@ -657,6 +639,26 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       } catch (hardwareErr) {
         console.warn("[Cassa RT] Stampa hardware:", hardwareErr);
       }
+
+      // 3. Record verified in-store order with cloud synchronization
+      createAdminOrder({
+        customerName: "Cliente al Banco",
+        customerEmail: "banco@sceltamakeup.it",
+        customerPhone: "Vendita Diretta Boutique (Cassa RT)",
+        total: multiTotal,
+        status: "completed",
+        fulfillmentType: "pos_receipt",
+        paymentMethod: multiPaymentMethod,
+        change: multiPaymentMethod === "cash" && change > 0 ? change : undefined,
+        items: multiCartItems.map((item) => ({
+          productId: item.productId,
+          productTitle: item.productName,
+          variantName: item.variantName && item.variantName !== "Standard" ? item.variantName : undefined,
+          quantity: item.quantity,
+          price: item.finalUnitPrice,
+          image: item.image,
+        })),
+      });
 
       setMultiCartItems([]);
       localStorage.removeItem("scelta_makeup_multi_receipt_cart_v1");
@@ -863,27 +865,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         inStock: newQty > 0,
       });
 
-      // 2. Record order in store
-      createAdminOrder({
-        customerName: "Cliente al Banco",
-        customerEmail: "banco@sceltamakeup.it",
-        customerPhone: "Vendita Diretta Boutique",
-        total: price,
-        status: "completed",
-        fulfillmentType: "store_pickup",
-        items: [
-          {
-            productId: matchedProduct.id,
-            productTitle: matchedProduct.name,
-            variantName: v?.name !== "Standard" ? v?.name : undefined,
-            quantity: 1,
-            price: price,
-            image: v?.image || matchedProduct.images?.[0] || "/brand/logo.png",
-          },
-        ],
-      });
-
-      // 3. Emit SOAP XML to Cassa RT (Epson FP-81II RT on 192.168.68.63)
+      // 2. Emit SOAP XML to Cassa RT (Epson FP-81II RT on 192.168.68.63)
       // When effectivePayment > price, Epson RT automatically computes and prints RESTO!
       const priceFormatted = price.toFixed(2);
       const paymentFormatted = effectivePayment.toFixed(2);
@@ -906,7 +888,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
           body: fiscalReceiptXml,
         });
 
-        // 4. For cash payments, trigger physical cash drawer opening
+        // 3. For cash payments, trigger physical cash drawer opening
         if (checkoutPaymentMethod === "cash") {
           const drawerKickXml = `<?xml version="1.0" encoding="utf-8"?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
@@ -927,6 +909,28 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       } catch (hardwareErr) {
         console.warn("[Cassa RT] Stampa hardware:", hardwareErr);
       }
+
+      // 4. Record verified in-store order with cloud synchronization
+      createAdminOrder({
+        customerName: "Cliente al Banco",
+        customerEmail: "banco@sceltamakeup.it",
+        customerPhone: "Vendita Diretta Boutique (Cassa RT)",
+        total: price,
+        status: "completed",
+        fulfillmentType: "pos_receipt",
+        paymentMethod: checkoutPaymentMethod,
+        change: checkoutPaymentMethod === "cash" && change > 0 ? change : undefined,
+        items: [
+          {
+            productId: matchedProduct.id,
+            productTitle: matchedProduct.name,
+            variantName: v?.name !== "Standard" ? v?.name : undefined,
+            quantity: 1,
+            price: price,
+            image: v?.image || matchedProduct.images?.[0] || "/brand/logo.png",
+          },
+        ],
+      });
 
       setSuccessToast(
         checkoutPaymentMethod === "cash" && change > 0

@@ -60,7 +60,7 @@ export default function AdminSidebar({
     },
     {
       id: "ordini",
-      label: "Ordini E-Commerce",
+      label: "Ordini & Vendite Banco",
       icon: ShoppingCart,
       badge: kpis?.pendingOrdersCount ? `${kpis.pendingOrdersCount} nuovi` : undefined,
       badgeColor: "bg-[#D462A6]/20 text-[#5E1788] border-[#D462A6]/30",

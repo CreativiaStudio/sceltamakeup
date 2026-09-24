@@ -15,6 +15,8 @@ import {
   Check,
   Printer,
   Plus,
+  Receipt,
+  CreditCard,
 } from "lucide-react";
 import {
   getAdminOrders,
@@ -34,6 +36,15 @@ export default function OrdersTable() {
   const [printingOrder, setPrintingOrder] = useState<SceltaAdminOrder | null>(null);
   const [isNewOrderModalOpen, setIsNewOrderModalOpen] = useState(false);
   const [multiCartCount, setMultiCartCount] = useState<number>(0);
+
+  const posOrders = useMemo(
+    () => orders.filter((o) => o.fulfillmentType === "pos_receipt"),
+    [orders]
+  );
+  const posRevenue = useMemo(
+    () => posOrders.reduce((sum, o) => sum + o.total, 0),
+    [posOrders]
+  );
 
   useEffect(() => {
     const updateCount = () => {
@@ -131,14 +142,20 @@ export default function OrdersTable() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="font-serif text-2xl font-bold text-[#1F1B24]">
-              Gestione Ordini E-Commerce
+              Gestione Ordini & Vendite Banco
             </h1>
             <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#5E1788]/10 text-[#5E1788] border border-[#5E1788]/20">
               {orders.length} Totali
             </span>
+            {posOrders.length > 0 && (
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                <Receipt className="w-3.5 h-3.5 text-emerald-600" />
+                <span>{posOrders.length} in Negozio ({formatEuro(posRevenue)})</span>
+              </span>
+            )}
           </div>
           <p className="text-xs text-gray-500 mt-1">
-            Macchina a stati operativi con invio notifiche corriere e ritiro in salone.
+            Gestione integrata ordini e-commerce spediti, ritiri in salone e scontrini fiscali al banco cassa RT.
           </p>
         </div>
 
@@ -191,7 +208,7 @@ export default function OrdersTable() {
           </div>
 
           {/* Fulfillment Type Toggle */}
-          <div className="flex items-center gap-1.5 shrink-0 bg-gray-50 p-1 rounded-xl border border-gray-200">
+          <div className="flex items-center gap-1.5 shrink-0 bg-gray-50 p-1 rounded-xl border border-gray-200 overflow-x-auto">
             <button
               type="button"
               onClick={() => setFulfillmentFilter("all")}
@@ -202,6 +219,18 @@ export default function OrdersTable() {
               }`}
             >
               Tutti i Canali
+            </button>
+            <button
+              type="button"
+              onClick={() => setFulfillmentFilter("pos_receipt")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
+                fulfillmentFilter === "pos_receipt"
+                  ? "bg-white text-emerald-800 shadow-sm font-semibold border border-emerald-200"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              <Receipt className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Venduti in Negozio ({posOrders.length})</span>
             </button>
             <button
               type="button"
@@ -329,6 +358,7 @@ export default function OrdersTable() {
                 filteredOrders.map((order) => {
                   const isExpanded = expandedOrderId === order.id;
                   const isCourier = order.fulfillmentType === "courier";
+                  const isPos = order.fulfillmentType === "pos_receipt";
 
                   return (
                     <React.Fragment key={order.id}>
@@ -348,11 +378,23 @@ export default function OrdersTable() {
                         {/* Customer */}
                         <td className="py-3.5 px-4">
                           <div className="space-y-0.5">
-                            <div className="font-semibold text-[#1F1B24]">
-                              {order.customerName}
+                            <div className="font-semibold text-[#1F1B24] flex items-center gap-1.5">
+                              <span>{order.customerName}</span>
+                              {isPos && (
+                                <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-semibold border border-emerald-200">
+                                  Banco Cassa RT
+                                </span>
+                              )}
                             </div>
                             <div className="text-[11px] text-gray-500">
-                              {order.customerEmail}
+                              {isPos ? (
+                                <span className="text-emerald-700 font-medium">
+                                  {order.paymentMethod === "card" ? "💳 Carta / POS" : "💶 Contanti"}
+                                  {order.change ? ` • Resto: €${order.change.toFixed(2)}` : ""}
+                                </span>
+                              ) : (
+                                order.customerEmail
+                              )}
                             </div>
                             <div className="text-[11px] text-gray-400 font-mono">
                               {order.customerPhone}
@@ -362,25 +404,22 @@ export default function OrdersTable() {
 
                         {/* Fulfillment Mode */}
                         <td className="py-3.5 px-4">
-                          <span
-                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border ${
-                              isCourier
-                                ? "bg-blue-50 text-blue-800 border-blue-200"
-                                : "bg-purple-50 text-[#5E1788] border-purple-200"
-                            }`}
-                          >
-                            {isCourier ? (
-                              <>
-                                <Truck className="w-3 h-3 text-blue-600" />
-                                <span>Corriere Espresso</span>
-                              </>
-                            ) : (
-                              <>
-                                <Store className="w-3 h-3 text-[#5E1788]" />
-                                <span>Ritiro in Boutique</span>
-                              </>
-                            )}
-                          </span>
+                          {isPos ? (
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200">
+                              <Receipt className="w-3.5 h-3.5 text-emerald-600" />
+                              <span>Scontrino Cassa RT</span>
+                            </span>
+                          ) : isCourier ? (
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border bg-blue-50 text-blue-800 border-blue-200">
+                              <Truck className="w-3 h-3 text-blue-600" />
+                              <span>Corriere Espresso</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border bg-purple-50 text-[#5E1788] border-purple-200">
+                              <Store className="w-3 h-3 text-[#5E1788]" />
+                              <span>Ritiro in Boutique</span>
+                            </span>
+                          )}
                         </td>
 
                         {/* Total Amount */}
@@ -395,32 +434,39 @@ export default function OrdersTable() {
 
                         {/* Status Select */}
                         <td className="py-3.5 px-4">
-                          <select
-                            value={order.status}
-                            onChange={(e) =>
-                              handleStatusChange(
-                                order.id,
-                                e.target.value as SceltaAdminOrder["status"]
-                              )
-                            }
-                            className={`px-3 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer focus:outline-none transition-colors ${
-                              order.status === "processing"
-                                ? "bg-amber-50 text-amber-800 border-amber-300"
-                                : order.status === "shipped"
-                                ? "bg-blue-50 text-blue-800 border-blue-300"
-                                : order.status === "ready_for_pickup"
-                                ? "bg-purple-50 text-[#5E1788] border-purple-300"
-                                : order.status === "completed"
-                                ? "bg-emerald-50 text-emerald-800 border-emerald-300"
-                                : "bg-rose-50 text-rose-800 border-rose-300"
-                            }`}
-                          >
-                            <option value="processing">In Elaborazione</option>
-                            <option value="shipped">Spedito con Corriere</option>
-                            <option value="ready_for_pickup">Pronto Ritiro Salone</option>
-                            <option value="completed">Completato</option>
-                            <option value="cancelled">Annullato</option>
-                          </select>
+                          {isPos ? (
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-300">
+                              <Check className="w-3.5 h-3.5 text-emerald-600" />
+                              <span>Incassato al Banco</span>
+                            </span>
+                          ) : (
+                            <select
+                              value={order.status}
+                              onChange={(e) =>
+                                handleStatusChange(
+                                  order.id,
+                                  e.target.value as SceltaAdminOrder["status"]
+                                )
+                              }
+                              className={`px-3 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer focus:outline-none transition-colors ${
+                                order.status === "processing"
+                                  ? "bg-amber-50 text-amber-800 border-amber-300"
+                                  : order.status === "shipped"
+                                  ? "bg-blue-50 text-blue-800 border-blue-300"
+                                  : order.status === "ready_for_pickup"
+                                  ? "bg-purple-50 text-[#5E1788] border-purple-300"
+                                  : order.status === "completed"
+                                  ? "bg-emerald-50 text-emerald-800 border-emerald-300"
+                                  : "bg-rose-50 text-rose-800 border-rose-300"
+                              }`}
+                            >
+                              <option value="processing">In Elaborazione</option>
+                              <option value="shipped">Spedito con Corriere</option>
+                              <option value="ready_for_pickup">Pronto Ritiro Salone</option>
+                              <option value="completed">Completato</option>
+                              <option value="cancelled">Annullato</option>
+                            </select>
+                          )}
                         </td>
 
                         {/* Actions / Expand */}
@@ -519,7 +565,27 @@ export default function OrdersTable() {
                                   <span>Destinazione & Recapiti</span>
                                 </h3>
 
-                                {isCourier && order.shippingAddress ? (
+                                {isPos ? (
+                                  <div className="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/60 space-y-2 text-xs">
+                                    <div className="flex items-center gap-2 font-semibold text-emerald-800">
+                                      <Receipt className="w-4 h-4 text-emerald-600" />
+                                      <span>Scontrino Fiscale Hardware Cassa RT</span>
+                                    </div>
+                                    <p className="text-emerald-700 leading-relaxed">
+                                      Vendita al banco registrata ed emessa su registratore telematico Epson FP-81II RT.
+                                    </p>
+                                    <div className="pt-2 border-t border-emerald-200 flex items-center justify-between text-[11px] text-emerald-900">
+                                      <span>Metodo di Pagamento:</span>
+                                      <strong className="font-semibold">
+                                        {order.paymentMethod === "card" ? "💳 Carta / POS" : "💶 Contanti"}
+                                        {order.change ? ` (Resto dato: €${order.change.toFixed(2)})` : ""}
+                                      </strong>
+                                    </div>
+                                    <div className="text-[10px] text-emerald-600 font-mono">
+                                      ID Transazione POS: {order.id}
+                                    </div>
+                                  </div>
+                                ) : isCourier && order.shippingAddress ? (
                                   <div className="p-3.5 rounded-xl border border-gray-200 bg-gray-50 space-y-2">
                                     <div className="text-xs font-semibold text-gray-800">
                                       Indirizzo di Spedizione:
