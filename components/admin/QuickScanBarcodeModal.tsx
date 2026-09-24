@@ -22,6 +22,7 @@ import {
   Pencil,
   Check,
   BadgePercent,
+  Percent,
   Link as LinkIcon,
   Cloud,
   Sparkles,
@@ -202,13 +203,114 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     }
   }, [multiCartItems]);
 
-  const multiTotal = useMemo(() => {
-    return multiCartItems.reduce((sum, item) => sum + item.finalUnitPrice * item.quantity, 0);
+  // Inline editing state for items in multi-receipt cart
+  const [editingMultiItemId, setEditingMultiItemId] = useState<string | null>(null);
+  const [editingMultiField, setEditingMultiField] = useState<"title" | "price" | null>(null);
+  const [tempEditValue, setTempEditValue] = useState<string>("");
+
+  const handleStartEditMultiItem = (item: MultiCartItem, field: "title" | "price") => {
+    setEditingMultiItemId(item.id);
+    setEditingMultiField(field);
+    setTempEditValue(field === "title" ? item.productName : item.unitPrice.toFixed(2));
+  };
+
+  const handleCommitEditMultiItem = () => {
+    if (!editingMultiItemId || !editingMultiField) return;
+    if (editingMultiField === "title") {
+      const trimmed = tempEditValue.trim();
+      if (trimmed) {
+        setMultiCartItems((prev) =>
+          prev.map((it) => (it.id === editingMultiItemId ? { ...it, productName: trimmed } : it))
+        );
+      }
+    } else if (editingMultiField === "price") {
+      const num = parseFloat(tempEditValue.replace(",", "."));
+      if (!isNaN(num) && num >= 0) {
+        const safePrice = Math.round(num * 100) / 100;
+        setMultiCartItems((prev) =>
+          prev.map((it) =>
+            it.id === editingMultiItemId
+              ? {
+                  ...it,
+                  unitPrice: safePrice,
+                  originalUnitPrice: safePrice,
+                  finalUnitPrice: safePrice,
+                }
+              : it
+          )
+        );
+      }
+    }
+    setEditingMultiItemId(null);
+    setEditingMultiField(null);
+    setTempEditValue("");
+  };
+
+  const handleCancelEditMultiItem = () => {
+    setEditingMultiItemId(null);
+    setEditingMultiField(null);
+    setTempEditValue("");
+  };
+
+  // Multi-receipt Global Discount State
+  const [multiDiscountMode, setMultiDiscountMode] = useState<"none" | "percent" | "amount" | "custom_final">("none");
+  const [multiDiscountPercent, setMultiDiscountPercent] = useState<number>(0);
+  const [multiDiscountAmount, setMultiDiscountAmount] = useState<number>(0);
+  const [multiCustomFinal, setMultiCustomFinal] = useState<string>("");
+
+  const multiGrossTotal = useMemo(() => {
+    return multiCartItems.reduce((sum, item) => sum + (item.unitPrice || item.finalUnitPrice) * item.quantity, 0);
   }, [multiCartItems]);
+
+  const multiDiscountTotal = useMemo(() => {
+    if (multiDiscountMode === "none" || multiGrossTotal <= 0) return 0;
+    if (multiDiscountMode === "percent") {
+      return Math.min(multiGrossTotal, (multiGrossTotal * multiDiscountPercent) / 100);
+    }
+    if (multiDiscountMode === "amount") {
+      return Math.min(multiGrossTotal, multiDiscountAmount);
+    }
+    if (multiDiscountMode === "custom_final") {
+      const finalNum = parseFloat(multiCustomFinal.replace(",", ".")) || multiGrossTotal;
+      return Math.max(0, Math.min(multiGrossTotal, multiGrossTotal - finalNum));
+    }
+    return 0;
+  }, [multiDiscountMode, multiGrossTotal, multiDiscountPercent, multiDiscountAmount, multiCustomFinal]);
+
+  const multiTotal = useMemo(() => {
+    return Math.max(0, Math.round((multiGrossTotal - multiDiscountTotal) * 100) / 100);
+  }, [multiGrossTotal, multiDiscountTotal]);
 
   const multiItemsCount = useMemo(() => {
     return multiCartItems.reduce((sum, item) => sum + item.quantity, 0);
   }, [multiCartItems]);
+
+  // Scaled items with proportional discount distributed to each item
+  const multiItemsWithDiscount = useMemo(() => {
+    if (multiCartItems.length === 0) return [];
+    if (multiDiscountTotal <= 0 || multiGrossTotal <= 0) {
+      return multiCartItems.map((it) => ({
+        ...it,
+        finalUnitPrice: it.unitPrice || it.finalUnitPrice,
+      }));
+    }
+    const ratio = 1 - multiDiscountTotal / multiGrossTotal;
+    let runningTotal = 0;
+    return multiCartItems.map((it, idx) => {
+      const baseP = it.unitPrice || it.finalUnitPrice;
+      let discountedUnitPrice = Math.max(0, Math.round(baseP * ratio * 100) / 100);
+      if (idx === multiCartItems.length - 1 && it.quantity > 0) {
+        const neededTotal = multiTotal - runningTotal;
+        discountedUnitPrice = Math.max(0, Math.round((neededTotal / it.quantity) * 100) / 100);
+      } else {
+        runningTotal += discountedUnitPrice * it.quantity;
+      }
+      return {
+        ...it,
+        finalUnitPrice: discountedUnitPrice,
+      };
+    });
+  }, [multiCartItems, multiDiscountTotal, multiGrossTotal, multiTotal]);
 
   const [multiPaymentMethod, setMultiPaymentMethod] = useState<"card" | "cash">("cash");
   const [multiCashTendered, setMultiCashTendered] = useState<string>("");
@@ -541,6 +643,10 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const handleClearMultiReceipt = () => {
     if (confirm("Vuoi davvero svuotare tutti i prodotti dallo scontrino multiplo?")) {
       setMultiCartItems([]);
+      setMultiDiscountMode("none");
+      setMultiDiscountPercent(0);
+      setMultiDiscountAmount(0);
+      setMultiCustomFinal("");
       localStorage.removeItem("scelta_makeup_multi_receipt_cart_v1");
       setSuccessToast("Scontrino multiplo svuotato.");
       setTimeout(() => setSuccessToast(null), 1800);
@@ -585,7 +691,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       }
 
       // 2. Emit SOAP XML to Cassa RT (Epson FP-81II RT on 192.168.68.63)
-      const itemsXml = multiCartItems
+      const itemsXml = multiItemsWithDiscount
         .map((item) => {
           const rawDesc = (
             item.productName +
@@ -650,7 +756,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         fulfillmentType: "pos_receipt",
         paymentMethod: multiPaymentMethod,
         change: multiPaymentMethod === "cash" && change > 0 ? change : undefined,
-        items: multiCartItems.map((item) => ({
+        items: multiItemsWithDiscount.map((item) => ({
           productId: item.productId,
           productTitle: item.productName,
           variantName: item.variantName && item.variantName !== "Standard" ? item.variantName : undefined,
@@ -661,6 +767,10 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       });
 
       setMultiCartItems([]);
+      setMultiDiscountMode("none");
+      setMultiDiscountPercent(0);
+      setMultiDiscountAmount(0);
+      setMultiCustomFinal("");
       localStorage.removeItem("scelta_makeup_multi_receipt_cart_v1");
 
       setSuccessToast(
@@ -1471,16 +1581,98 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                                 </span>
                               )}
                             </div>
-                            <h4 className="font-serif font-bold text-xs text-[#1F1B24] truncate mt-0.5" title={item.productName}>
-                              {item.productName}
-                            </h4>
+                            {/* Titolo Prodotto Modificabile */}
+                            {editingMultiItemId === item.id && editingMultiField === "title" ? (
+                              <div className="flex items-center gap-1 mt-1">
+                                <input
+                                  type="text"
+                                  value={tempEditValue}
+                                  onChange={(e) => setTempEditValue(e.target.value)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Enter") handleCommitEditMultiItem();
+                                    if (e.key === "Escape") handleCancelEditMultiItem();
+                                  }}
+                                  autoFocus
+                                  className="w-full text-xs font-bold px-2 py-0.5 rounded-lg border-2 border-[#5E1788] bg-white focus:outline-none shadow-xs"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={handleCommitEditMultiItem}
+                                  className="p-1 rounded-lg bg-[#5E1788] text-white hover:bg-[#7A3293] shrink-0 cursor-pointer shadow-2xs"
+                                  title="Conferma titolo"
+                                >
+                                  <Check className="w-3 h-3 stroke-[2.5]" />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={handleCancelEditMultiItem}
+                                  className="p-1 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 shrink-0 cursor-pointer"
+                                  title="Annulla"
+                                >
+                                  <X className="w-3 h-3" />
+                                </button>
+                              </div>
+                            ) : (
+                              <h4
+                                onClick={() => handleStartEditMultiItem(item, "title")}
+                                className="font-serif font-bold text-xs text-[#1F1B24] truncate mt-0.5 flex items-center gap-1.5 cursor-pointer group hover:text-[#5E1788] transition-colors"
+                                title="Clicca per modificare il titolo"
+                              >
+                                <span className="truncate">{item.productName}</span>
+                                <Pencil className="w-2.5 h-2.5 opacity-30 group-hover:opacity-100 text-gray-400 group-hover:text-[#5E1788] shrink-0 transition-opacity" />
+                              </h4>
+                            )}
+
+                            {/* Prezzo Unitario Modificabile */}
                             <div className="flex items-center gap-2 mt-0.5 text-[11px]">
-                              <span className="font-mono font-bold text-[#5E1788]">
-                                €{item.finalUnitPrice.toFixed(2)} cad.
-                              </span>
-                              {item.discountMode !== "none" && (
-                                <span className="text-[9px] font-bold text-rose-600 bg-rose-50 px-1 rounded border border-rose-200">
-                                  Scontato
+                              {editingMultiItemId === item.id && editingMultiField === "price" ? (
+                                <div className="flex items-center gap-1">
+                                  <span className="text-xs font-bold text-[#5E1788]">€</span>
+                                  <input
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    value={tempEditValue}
+                                    onChange={(e) => setTempEditValue(e.target.value)}
+                                    onKeyDown={(e) => {
+                                      if (e.key === "Enter") handleCommitEditMultiItem();
+                                      if (e.key === "Escape") handleCancelEditMultiItem();
+                                    }}
+                                    autoFocus
+                                    className="w-18 text-xs font-mono font-bold px-1.5 py-0.5 rounded-lg border-2 border-[#5E1788] bg-white focus:outline-none shadow-xs"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={handleCommitEditMultiItem}
+                                    className="p-1 rounded-lg bg-[#5E1788] text-white hover:bg-[#7A3293] shrink-0 cursor-pointer shadow-2xs"
+                                    title="Conferma prezzo"
+                                  >
+                                    <Check className="w-3 h-3 stroke-[2.5]" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={handleCancelEditMultiItem}
+                                    className="p-1 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 shrink-0 cursor-pointer"
+                                    title="Annulla"
+                                  >
+                                    <X className="w-3 h-3" />
+                                  </button>
+                                </div>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => handleStartEditMultiItem(item, "price")}
+                                  className="font-mono font-bold text-[#5E1788] hover:bg-purple-100/70 px-1 py-0.2 rounded transition-colors flex items-center gap-1 cursor-pointer"
+                                  title="Clicca per modificare il prezzo unitario"
+                                >
+                                  <span>€{item.finalUnitPrice.toFixed(2)} cad.</span>
+                                  <Pencil className="w-2.5 h-2.5 opacity-30 hover:opacity-100 text-gray-400 hover:text-[#5E1788] shrink-0 transition-opacity" />
+                                </button>
+                              )}
+
+                              {multiDiscountTotal > 0 && (
+                                <span className="text-[9px] font-bold text-rose-600 bg-rose-50 px-1.5 py-0.2 rounded-full border border-rose-200">
+                                  Sconto applicato
                                 </span>
                               )}
                             </div>
@@ -1568,19 +1760,220 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                         </div>
                       </div>
 
-                      {/* Display Totale */}
-                      <div className="p-3 bg-white rounded-xl border border-[#D8C2E7]/70 flex items-center justify-between shadow-2xs">
-                        <div>
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block">
-                            Totale Complessivo
+                      {/* SCONTO SCONTRINO MULTIPLO */}
+                      <div className="p-3 bg-white rounded-xl border border-[#D8C2E7]/80 space-y-2.5 shadow-2xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] font-bold text-[#1F1B24] flex items-center gap-1.5">
+                            <BadgePercent className="w-3.5 h-3.5 text-[#D462A6]" />
+                            <span>Sconto Scontrino</span>
                           </span>
-                          <span className="text-xs font-semibold text-gray-700">
-                            {multiItemsCount} {multiItemsCount === 1 ? "articolo" : "articoli"}
-                          </span>
+                          {multiDiscountMode !== "none" && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setMultiDiscountMode("none");
+                                setMultiDiscountPercent(0);
+                                setMultiDiscountAmount(0);
+                                setMultiCustomFinal("");
+                              }}
+                              className="text-[10px] text-rose-600 hover:text-rose-800 font-bold hover:underline cursor-pointer"
+                            >
+                              Azzera sconto
+                            </button>
+                          )}
                         </div>
-                        <span className="text-2xl font-mono font-extrabold text-[#5E1788]">
-                          €{multiTotal.toFixed(2)}
-                        </span>
+
+                        {/* Modalità sconto */}
+                        <div className="grid grid-cols-4 gap-1 p-0.5 bg-gray-100 rounded-lg text-[10px] font-bold">
+                          <button
+                            type="button"
+                            onClick={() => setMultiDiscountMode("none")}
+                            className={`py-1 rounded-md transition-all cursor-pointer ${
+                              multiDiscountMode === "none"
+                                ? "bg-white text-[#5E1788] shadow-2xs font-extrabold"
+                                : "text-gray-600 hover:text-gray-900"
+                            }`}
+                          >
+                            Nessuno
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setMultiDiscountMode("percent");
+                              if (multiDiscountPercent === 0) setMultiDiscountPercent(10);
+                            }}
+                            className={`py-1 rounded-md transition-all cursor-pointer ${
+                              multiDiscountMode === "percent"
+                                ? "bg-[#5E1788] text-white shadow-2xs font-extrabold"
+                                : "text-gray-600 hover:text-[#5E1788]"
+                            }`}
+                          >
+                            % Sconto
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setMultiDiscountMode("amount");
+                              if (multiDiscountAmount === 0) setMultiDiscountAmount(5);
+                            }}
+                            className={`py-1 rounded-md transition-all cursor-pointer ${
+                              multiDiscountMode === "amount"
+                                ? "bg-[#5E1788] text-white shadow-2xs font-extrabold"
+                                : "text-gray-600 hover:text-[#5E1788]"
+                            }`}
+                          >
+                            € Fisso
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setMultiDiscountMode("custom_final");
+                              if (!multiCustomFinal) setMultiCustomFinal(Math.floor(multiGrossTotal).toFixed(2));
+                            }}
+                            className={`py-1 rounded-md transition-all cursor-pointer ${
+                              multiDiscountMode === "custom_final"
+                                ? "bg-[#5E1788] text-white shadow-2xs font-extrabold"
+                                : "text-gray-600 hover:text-[#5E1788]"
+                            }`}
+                          >
+                            Tot. Netto
+                          </button>
+                        </div>
+
+                        {/* Controlli specifici per modalità */}
+                        {multiDiscountMode === "percent" && (
+                          <div className="space-y-1.5 pt-0.5 animate-in fade-in duration-150">
+                            <div className="flex flex-wrap gap-1">
+                              {[5, 10, 15, 20, 30].map((pct) => (
+                                <button
+                                  key={pct}
+                                  type="button"
+                                  onClick={() => setMultiDiscountPercent(pct)}
+                                  className={`px-2 py-0.5 rounded-md text-[10px] font-bold border transition-all cursor-pointer ${
+                                    multiDiscountPercent === pct
+                                      ? "bg-[#5E1788] text-white border-[#5E1788] shadow-2xs"
+                                      : "bg-white text-gray-700 border-gray-200 hover:border-purple-300"
+                                  }`}
+                                >
+                                  -{pct}%
+                                </button>
+                              ))}
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[10px] text-gray-500 font-bold whitespace-nowrap">% Personalizzata:</span>
+                              <div className="relative flex-1">
+                                <input
+                                  type="number"
+                                  min="0"
+                                  max="100"
+                                  value={multiDiscountPercent || ""}
+                                  onChange={(e) =>
+                                    setMultiDiscountPercent(Math.min(100, Math.max(0, parseFloat(e.target.value) || 0)))
+                                  }
+                                  placeholder="es. 12"
+                                  className="w-full px-2 py-1 bg-gray-50 rounded-lg border border-gray-200 text-xs font-bold text-gray-900 focus:outline-none focus:border-[#5E1788]"
+                                />
+                                <span className="absolute right-2 top-1 text-xs text-gray-400 font-bold">%</span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {multiDiscountMode === "amount" && (
+                          <div className="space-y-1.5 pt-0.5 animate-in fade-in duration-150">
+                            <div className="flex flex-wrap gap-1">
+                              {[2, 5, 10, 15, 20].map((amt) => (
+                                <button
+                                  key={amt}
+                                  type="button"
+                                  onClick={() => setMultiDiscountAmount(amt)}
+                                  className={`px-2 py-0.5 rounded-md text-[10px] font-bold border transition-all cursor-pointer ${
+                                    multiDiscountAmount === amt
+                                      ? "bg-[#5E1788] text-white border-[#5E1788] shadow-2xs"
+                                      : "bg-white text-gray-700 border-gray-200 hover:border-purple-300"
+                                  }`}
+                                >
+                                  -{amt}€
+                                </button>
+                              ))}
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[10px] text-gray-500 font-bold whitespace-nowrap">€ Personalizzato:</span>
+                              <div className="relative flex-1">
+                                <input
+                                  type="number"
+                                  step="0.5"
+                                  min="0"
+                                  max={multiGrossTotal}
+                                  value={multiDiscountAmount || ""}
+                                  onChange={(e) => setMultiDiscountAmount(Math.max(0, parseFloat(e.target.value) || 0))}
+                                  placeholder="es. 7.50"
+                                  className="w-full pl-5 pr-2 py-1 bg-gray-50 rounded-lg border border-gray-200 text-xs font-bold text-gray-900 focus:outline-none focus:border-[#5E1788]"
+                                />
+                                <span className="absolute left-2 top-1 text-xs text-gray-400 font-bold">€</span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {multiDiscountMode === "custom_final" && (
+                          <div className="space-y-1 pt-0.5 animate-in fade-in duration-150">
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[10px] text-gray-500 font-bold whitespace-nowrap">Totale concordato (€):</span>
+                              <div className="relative flex-1">
+                                <input
+                                  type="number"
+                                  step="0.10"
+                                  min="0"
+                                  max={multiGrossTotal}
+                                  value={multiCustomFinal}
+                                  onChange={(e) => setMultiCustomFinal(e.target.value)}
+                                  placeholder={multiGrossTotal.toFixed(2)}
+                                  className="w-full pl-5 pr-2 py-1 bg-gray-50 rounded-lg border border-gray-200 text-xs font-bold text-gray-900 focus:outline-none focus:border-[#5E1788]"
+                                />
+                                <span className="absolute left-2 top-1 text-xs text-gray-400 font-bold">€</span>
+                              </div>
+                            </div>
+                            <p className="text-[9px] text-gray-400">
+                              Lordo: €{multiGrossTotal.toFixed(2)} → digita la cifra tonda concordata (es. €{Math.floor(multiGrossTotal)}).
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Display Totale */}
+                      <div className="p-3 bg-white rounded-xl border border-[#D8C2E7]/70 space-y-1 shadow-2xs">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block">
+                              Totale Complessivo
+                            </span>
+                            <span className="text-xs font-semibold text-gray-700">
+                              {multiItemsCount} {multiItemsCount === 1 ? "articolo" : "articoli"}
+                            </span>
+                          </div>
+                          <div className="text-right">
+                            {multiDiscountTotal > 0 && (
+                              <span className="block text-xs text-gray-400 line-through font-mono">
+                                €{multiGrossTotal.toFixed(2)}
+                              </span>
+                            )}
+                            <span className="text-2xl font-mono font-extrabold text-[#5E1788]">
+                              €{multiTotal.toFixed(2)}
+                            </span>
+                          </div>
+                        </div>
+                        {multiDiscountTotal > 0 && (
+                          <div className="flex items-center justify-between pt-1 border-t border-dashed border-gray-200 text-[11px]">
+                            <span className="font-semibold text-rose-600 flex items-center gap-1">
+                              <Sparkles className="w-3 h-3 text-[#D462A6]" />
+                              Sconto applicato:
+                            </span>
+                            <span className="font-mono font-bold text-rose-600">
+                              - €{multiDiscountTotal.toFixed(2)} ({((multiDiscountTotal / multiGrossTotal) * 100).toFixed(0)}%)
+                            </span>
+                          </div>
+                        )}
                       </div>
 
                       {/* Se Contanti: Calcolo Resto */}
