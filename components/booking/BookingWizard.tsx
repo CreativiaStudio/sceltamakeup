@@ -514,7 +514,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                     Salone Chiuso di Domenica e Lunedì
                   </h3>
                   <p className="text-xs text-amber-800 max-w-md mx-auto leading-relaxed">
-                    La boutique e i servizi trucco personalizzati sono attivi dal <strong>Martedì al Sabato</strong> (09:30–14:00 / 16:00–19:30). Seleziona un giorno da martedì a sabato nella barra in alto per scegliere l&apos;orario.
+                    Il salone e i servizi trucco personalizzati sono attivi dal <strong>Martedì al Sabato</strong> (09:30–14:00 / 16:00–19:30). Seleziona un giorno da martedì a sabato nella barra in alto per scegliere l&apos;orario.
                   </p>
                 </div>
               )}

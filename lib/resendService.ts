@@ -163,7 +163,7 @@ function getEmailFooter(): string {
           ${STORE_NAME}
         </p>
         <p style="margin: 0 0 6px 0; font-size: 12px; color: ${BRAND_PALETTE.charcoalDeep}; opacity: 0.8; line-height: 1.6;">
-          📍 Boutique: ${STORE_ADDRESS}<br/>
+          📍 Salone: ${STORE_ADDRESS}<br/>
           💬 Assistenza & WhatsApp: <span style="color: ${BRAND_PALETTE.royalViolet}; font-weight: bold;">+39 379 337 0322 (Federica)</span><br/>
           ✉️ Email: <a href="mailto:info@sceltamakeup.it" style="color: ${BRAND_PALETTE.royalViolet}; text-decoration: none;">info@sceltamakeup.it</a>
         </p>

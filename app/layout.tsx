@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     template: "%s | Scelta Makeup",
   },
   description:
-    "Boutique ufficiale di alta cosmesi ed e-commerce nazionale. Rivenditore autorizzato Diego della Palma Milano e Cipria Make Up. Spedizione gratuita da 49€, consegna rapida 24/48h e atelier di bellezza a Napoli.",
+    "Salone ufficiale di alta cosmesi ed e-commerce nazionale. Rivenditore autorizzato Diego della Palma Milano e Cipria Make Up. Spedizione gratuita da 49€, consegna rapida 24/48h e atelier di bellezza a Napoli.",
   keywords: [
     "Scelta Makeup",
     "Diego della Palma Napoli",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         type: "image/jpeg",
-        alt: "Scelta Makeup — Boutique & Alta Cosmesi Napoli",
+        alt: "Scelta Makeup — Salone & Alta Cosmesi Napoli",
       },
       {
         url: "https://www.sceltamakeup.it/brand/og-square.jpg",
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Scelta Makeup — L'eleganza di essere autentica",
     description:
-      "Boutique ufficiale di alta cosmesi ed e-commerce nazionale. Diego della Palma Milano e Cipria Make Up. Spedizioni rapide in tutta Italia.",
+      "Salone ufficiale di alta cosmesi ed e-commerce nazionale. Diego della Palma Milano e Cipria Make Up. Spedizioni rapide in tutta Italia.",
     images: ["https://www.sceltamakeup.it/brand/og-image.jpg"],
   },
 };

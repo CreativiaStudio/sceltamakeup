@@ -21,7 +21,8 @@ import type { SceltaAdminOrder } from "@/lib/adminStore";
 const CREATIVIA_HUB_URL =
   process.env.CREATIVIA_HUB_SUPABASE_URL || "https://ekfnekrjpumjpetzgwzy.supabase.co";
 const CREATIVIA_HUB_SERVICE_KEY =
-  process.env.CREATIVIA_HUB_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+  process.env.CREATIVIA_HUB_SERVICE_ROLE_KEY ||
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVrZm5la3JqcHVtanBldHpnd3p5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MzgyNjAxNiwiZXhwIjoyMDk5NDAyMDE2fQ.Ne-jtSPB8NP-79_pV1KsGubYbCDtQVhQAXRtC-PzT-8";
 const SCELTA_MAKEUP_CLIENT_ID =
   process.env.SCELTA_MAKEUP_CLIENT_ID || "14fa9b24-8991-4150-a1fe-d60adbabd469";
 
@@ -139,7 +140,8 @@ function normalizeOrder(order: SceltaAdminOrder): SceltaAdminOrder {
     order.fulfillmentType !== "pos_receipt" &&
     (order.customerEmail === "banco@sceltamakeup.it" ||
       order.customerName === "Cliente al Banco" ||
-      order.customerPhone?.includes("Boutique"))
+      order.customerPhone?.includes("Boutique") ||
+      order.customerPhone?.includes("Salone"))
   ) {
     return {
       ...order,

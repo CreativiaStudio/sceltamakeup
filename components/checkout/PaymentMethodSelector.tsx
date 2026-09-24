@@ -369,7 +369,7 @@ export default function PaymentMethodSelector({
                 <div className="space-y-1 flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm font-semibold text-[#1F1B24]">
-                      Paga al Ritiro in Boutique a Napoli
+                      Paga al Ritiro in Salone a Napoli
                     </span>
                     <span className="text-[10px] uppercase font-bold text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded-full">
                       Zero Commissioni

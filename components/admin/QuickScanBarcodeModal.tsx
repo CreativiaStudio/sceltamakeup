@@ -644,7 +644,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       createAdminOrder({
         customerName: "Cliente al Banco",
         customerEmail: "banco@sceltamakeup.it",
-        customerPhone: "Vendita Diretta Boutique (Cassa RT)",
+        customerPhone: "Vendita Diretta Salone (Cassa RT)",
         total: multiTotal,
         status: "completed",
         fulfillmentType: "pos_receipt",
@@ -914,7 +914,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       createAdminOrder({
         customerName: "Cliente al Banco",
         customerEmail: "banco@sceltamakeup.it",
-        customerPhone: "Vendita Diretta Boutique (Cassa RT)",
+        customerPhone: "Vendita Diretta Salone (Cassa RT)",
         total: price,
         status: "completed",
         fulfillmentType: "pos_receipt",
@@ -993,7 +993,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       name: newProdName.trim(),
       brand: newProdBrand.trim(),
       category: newProdCategory,
-      description: `Prodotto registrato al banco boutique con codice a barre ${scannedBarcode}.`,
+      description: `Prodotto registrato al banco salone con codice a barre ${scannedBarcode}.`,
       shortDescription: newProdName.trim(),
       price: priceNum,
       originalWholesalePrice: Math.round(priceNum * 0.4 * 100) / 100,
@@ -1002,7 +1002,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       formulaBenefits: "Formula professionale dermatologicamente testata.",
       howToUse: "Applicare secondo le indicazioni del prodotto.",
       inci: "Formula dermatologicamente testata.",
-      features: ["Prodotto professionale boutique", "Testato dermatologicamente"],
+      features: ["Prodotto professionale salone", "Testato dermatologicamente"],
       images: ["/products/eveline-cosmetics-packshot.jpg"],
       shades: [
         {

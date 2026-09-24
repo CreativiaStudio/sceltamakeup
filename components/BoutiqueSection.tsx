@@ -50,19 +50,19 @@ const BOUTIQUE_GALLERY: BoutiquePhoto[] = [
   },
   {
     src: "/boutique/salone-espositori-pierre-rene-eveline.webp",
-    alt: "Espositore Pierre René Professional ed Eveline Cosmetics in boutique",
+    alt: "Espositore Pierre René Professional ed Eveline Cosmetics in salone",
     title: "Corner Pierre René & Eveline",
     description: "Palette occhi, polveri viso vellutate e prodotti skincare per ogni esigenza",
   },
   {
     src: "/boutique/salone-panoramica-boutique-completa.webp",
-    alt: "Panoramica completa del salone e boutique Scelta Makeup con illuminazione LED diffusa",
-    title: "Panoramica Salone & Boutique",
+    alt: "Panoramica completa del salone Scelta Makeup con illuminazione LED diffusa",
+    title: "Panoramica del Salone",
     description: "Uno spazio moderno ed elegante studiato per la resa cromatica ottimale del trucco",
   },
   {
     src: "/boutique/salone-prospettiva-boutique-retail.webp",
-    alt: "Prospettiva dell'area retail ed espositiva della boutique Scelta Makeup",
+    alt: "Prospettiva dell'area retail ed espositiva del salone Scelta Makeup",
     title: "Area Espositiva & Prova Collezioni",
     description: "Ambiente accogliente nel cuore di Napoli per scoprire e testare dal vivo le novità beauty",
   },
@@ -91,7 +91,7 @@ export default function BoutiqueSection() {
             <div className="flex items-center justify-between gap-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#D8C2E7]/70 text-[#5E1788] text-xs font-semibold tracking-wider uppercase shadow-xs">
                 <Camera className="h-3.5 w-3.5 text-[#D462A6]" />
-                <span>Galleria della Boutique</span>
+                <span>Galleria del Salone</span>
               </div>
               <span className="text-xs font-semibold text-neutral-500 tabular-nums">
                 Foto {activeIndex + 1} di {BOUTIQUE_GALLERY.length}

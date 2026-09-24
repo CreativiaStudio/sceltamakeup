@@ -324,7 +324,8 @@ export function getAdminStoreState(): SceltaAdminStoreState {
             ord.fulfillmentType !== "pos_receipt" &&
             (ord.customerEmail === "banco@sceltamakeup.it" ||
               ord.customerName === "Cliente al Banco" ||
-              ord.customerPhone?.includes("Boutique"))
+              ord.customerPhone?.includes("Boutique") ||
+              ord.customerPhone?.includes("Salone"))
           ) {
             ord.fulfillmentType = "pos_receipt";
             if (!ord.paymentMethod) ord.paymentMethod = "cash";
@@ -465,7 +466,8 @@ export async function syncAdminStoreFromCloud(): Promise<boolean> {
               lo.fulfillmentType !== "pos_receipt" &&
               (lo.customerEmail === "banco@sceltamakeup.it" ||
                 lo.customerName === "Cliente al Banco" ||
-                lo.customerPhone?.includes("Boutique"))
+                lo.customerPhone?.includes("Boutique") ||
+                lo.customerPhone?.includes("Salone"))
             ) {
               lo.fulfillmentType = "pos_receipt";
               if (!lo.paymentMethod) lo.paymentMethod = "cash";
@@ -914,7 +916,7 @@ export function createAdminOrder(
     id: orderNumber,
     customerName: orderInput.customerName || (isPos ? "Cliente al Banco" : "Cliente"),
     customerEmail: orderInput.customerEmail || (isPos ? "banco@sceltamakeup.it" : "info@sceltamakeup.it"),
-    customerPhone: orderInput.customerPhone || (isPos ? "Vendita Diretta Boutique (Cassa RT)" : ""),
+    customerPhone: orderInput.customerPhone || (isPos ? "Vendita Diretta Salone (Cassa RT)" : ""),
     total: Math.round(orderInput.total * 100) / 100,
     status: orderInput.status || (isPos ? "completed" : "processing"),
     fulfillmentType: orderInput.fulfillmentType || "courier",

@@ -282,7 +282,7 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
             </div>
 
             <p className="text-[11px] text-gray-600 mt-6 text-center font-medium">
-              Inserisci il PIN 4 cifre assegnato alla boutique per sbloccare la cassa
+              Inserisci il PIN 4 cifre assegnato al salone per sbloccare la cassa
             </p>
           </div>
         )}

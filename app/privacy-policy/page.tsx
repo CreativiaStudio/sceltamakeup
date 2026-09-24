@@ -43,7 +43,7 @@ export default function PrivacyPolicyPage() {
             <div className="bg-[#FAF7FC] p-5 rounded-2xl border border-[#E8DEF8] text-xs space-y-1.5 font-mono my-4 text-gray-800">
               <p><strong>Ditta Individuale:</strong> Cesiano Federica</p>
               <p><strong>Brand / Insegna:</strong> Scelta Makeup</p>
-              <p><strong>Sede Operativa &amp; Boutique:</strong> Via dei Pellegrini 28/29, 80132 Napoli (NA) - Italia</p>
+              <p><strong>Sede Operativa &amp; Salone:</strong> Via dei Pellegrini 28/29, 80132 Napoli (NA) - Italia</p>
               <p><strong>Email di Contatto:</strong> info@sceltamakeup.it</p>
               <p><strong>Email Ufficiale:</strong> marketing@sceltamakeup.it</p>
               <p><strong>Assistenza WhatsApp:</strong> +39 379 337 0322</p>

@@ -419,7 +419,7 @@ export default function OrdersTable() {
                           ) : (
                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border bg-purple-50 text-[#5E1788] border-purple-200">
                               <Store className="w-3 h-3 text-[#5E1788]" />
-                              <span>Ritiro in Boutique</span>
+                              <span>Ritiro in Salone</span>
                             </span>
                           )}
                         </td>

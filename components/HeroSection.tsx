@@ -145,7 +145,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
             {/* Overline Badge */}
             <div className="inline-flex items-center gap-2 self-center lg:self-start px-4 py-1.5 rounded-full bg-[#FAF7FC] border border-[#D8C2E7]/70 text-[#5E1788] text-xs font-semibold tracking-wider uppercase shadow-xs">
               <Sparkles className="h-3.5 w-3.5 text-[#D462A6]" />
-              <span>BOUTIQUE UFFICIALE & ALTA COSMESI PROFESSIONALE</span>
+              <span>SALONE UFFICIALE & ALTA COSMESI PROFESSIONALE</span>
             </div>
 
             {/* Editorial Title */}

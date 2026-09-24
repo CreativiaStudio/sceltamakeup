@@ -42,7 +42,7 @@ export default function TerminiCondizioniPage() {
             <div className="bg-[#FAF7FC] p-5 rounded-2xl border border-[#E8DEF8] text-xs space-y-1.5 font-mono my-4 text-gray-800">
               <p><strong>Ditta Individuale:</strong> Cesiano Federica</p>
               <p><strong>Insegna:</strong> Scelta Makeup</p>
-              <p><strong>Sede Legale &amp; Boutique:</strong> Via dei Pellegrini 28/29, 80132 Napoli (NA)</p>
+              <p><strong>Sede Legale &amp; Salone:</strong> Via dei Pellegrini 28/29, 80132 Napoli (NA)</p>
               <p><strong>Email Assistenza:</strong> info@sceltamakeup.it</p>
               <p><strong>WhatsApp Ufficiale:</strong> +39 379 337 0322</p>
             </div>
@@ -68,7 +68,7 @@ export default function TerminiCondizioniPage() {
               <li>Carte di Credito e Debito (Visa, Mastercard, Maestro, American Express, PostePay) con 3D Secure 2.0.</li>
               <li>Apple Pay e Google Pay in un clic.</li>
               <li>Pagamento a rate a tasso zero tramite Klarna o Scalapay.</li>
-              <li>Opzione Ritiro in Boutique a Napoli con saldo diretto in contanti o POS fisico al banco.</li>
+              <li>Opzione Ritiro in Salone a Napoli con saldo diretto in contanti o POS fisico al banco.</li>
             </ul>
           </section>
 
