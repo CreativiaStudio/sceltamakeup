@@ -18,7 +18,7 @@ export const CATEGORIES: CategoryKey[] = [
  */
 function applyOverrides(baseProducts: Product[], overrides: Record<string, Partial<Product>>): Product[] {
   if (!overrides || Object.keys(overrides).length === 0) return baseProducts;
-  return baseProducts.map((p) => {
+  const baseMap = baseProducts.map((p) => {
     const ov = overrides[p.id];
     if (!ov) return p;
     return {
@@ -28,6 +28,16 @@ function applyOverrides(baseProducts: Product[], overrides: Record<string, Parti
       images: ov.images || p.images,
     };
   });
+
+  const baseIds = new Set(baseProducts.map((p) => p.id));
+  const extraProducts: Product[] = [];
+  for (const [id, ov] of Object.entries(overrides)) {
+    if (!baseIds.has(id) && ov && ov.name && ov.variants) {
+      extraProducts.push(ov as Product);
+    }
+  }
+
+  return [...baseMap, ...extraProducts];
 }
 
 /**

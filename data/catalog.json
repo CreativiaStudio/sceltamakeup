@@ -9810,6 +9810,46 @@
         "price": 8.9,
         "inStock": true,
         "stock": 3
+      },
+      {
+        "id": "var-8024523475024",
+        "name": "CRISTAL EYESHADOW",
+        "code": "8024523475024",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
+        "price": 8.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-8024523485344",
+        "name": "CRISTAL EYESHADOW 518",
+        "code": "8024523485344",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
+        "price": 8.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-8024523485252",
+        "name": "CRISTAL EYESHADOW 537",
+        "code": "8024523485252",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
+        "price": 8.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-2500000013119",
+        "name": "CRISTAL EYESHADOW 702",
+        "code": "2500000013119",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
+        "price": 8.5,
+        "inStock": true,
+        "stock": 3
       }
     ],
     "variants": [
@@ -9824,9 +9864,57 @@
         "price": 8.9,
         "originalWholesalePrice": 3.3,
         "stock": 3
+      },
+      {
+        "id": "var-8024523475024",
+        "name": "CRISTAL EYESHADOW",
+        "sku": "8024523475024",
+        "ean": "8024523475024",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
+        "inStock": true,
+        "price": 8.5,
+        "originalWholesalePrice": 3.3,
+        "stock": 3
+      },
+      {
+        "id": "var-8024523485344",
+        "name": "CRISTAL EYESHADOW 518",
+        "sku": "8024523485344",
+        "ean": "8024523485344",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
+        "inStock": true,
+        "price": 8.5,
+        "originalWholesalePrice": 3.3,
+        "stock": 3
+      },
+      {
+        "id": "var-8024523485252",
+        "name": "CRISTAL EYESHADOW 537",
+        "sku": "8024523485252",
+        "ean": "8024523485252",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
+        "inStock": true,
+        "price": 8.5,
+        "originalWholesalePrice": 3.3,
+        "stock": 3
+      },
+      {
+        "id": "var-2500000013119",
+        "name": "CRISTAL EYESHADOW 702",
+        "sku": "2500000013119",
+        "ean": "2500000013119",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
+        "inStock": true,
+        "price": 8.5,
+        "originalWholesalePrice": 3.3,
+        "stock": 3
       }
     ],
-    "stock": 3,
+    "stock": 15,
     "inStock": true,
     "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg"
   },
@@ -10584,6 +10672,16 @@
         "price": 9.4,
         "inStock": true,
         "stock": 6
+      },
+      {
+        "id": "var-5903416037873",
+        "name": "01 BLACK",
+        "code": "5903416037873",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-waterproof-eyeliner-pencil.jpg",
+        "price": 7.9,
+        "inStock": true,
+        "stock": 6
       }
     ],
     "variants": [
@@ -10658,9 +10756,21 @@
         "price": 9.4,
         "originalWholesalePrice": 3.1,
         "stock": 6
+      },
+      {
+        "id": "var-5903416037873",
+        "name": "01 BLACK",
+        "sku": "5903416037873",
+        "ean": "5903416037873",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-waterproof-eyeliner-pencil.jpg",
+        "inStock": true,
+        "price": 7.9,
+        "originalWholesalePrice": 3.1,
+        "stock": 6
       }
     ],
-    "stock": 36,
+    "stock": 42,
     "inStock": true,
     "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-waterproof-eyeliner-pencil.jpg"
   },
@@ -11860,6 +11970,56 @@
         "price": 12.9,
         "inStock": true,
         "stock": 3
+      },
+      {
+        "id": "var-3700467825570",
+        "name": "PALETTE FIVE POINTS N 06 VEGAN",
+        "code": "3700467825570",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467827130",
+        "name": "PALETTE FIVE POINTS N 10 VEGAN",
+        "code": "3700467827130",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467840498",
+        "name": "PALETTE FIVE POINTS N 22 VEGAN",
+        "code": "3700467840498",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467840511",
+        "name": "PALETTE FIVE POINTS N 24 VEGAN",
+        "code": "3700467840511",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467840535",
+        "name": "PALETTE FIVE POINTS N 26 VEGAN",
+        "code": "3700467840535",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 3
       }
     ],
     "variants": [
@@ -11958,9 +12118,69 @@
         "price": 12.9,
         "originalWholesalePrice": 5.52,
         "stock": 3
+      },
+      {
+        "id": "var-3700467825570",
+        "name": "PALETTE FIVE POINTS N 06 VEGAN",
+        "sku": "3700467825570",
+        "ean": "3700467825570",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 5.52,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467827130",
+        "name": "PALETTE FIVE POINTS N 10 VEGAN",
+        "sku": "3700467827130",
+        "ean": "3700467827130",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 5.52,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467840498",
+        "name": "PALETTE FIVE POINTS N 22 VEGAN",
+        "sku": "3700467840498",
+        "ean": "3700467840498",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 5.52,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467840511",
+        "name": "PALETTE FIVE POINTS N 24 VEGAN",
+        "sku": "3700467840511",
+        "ean": "3700467840511",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 5.52,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467840535",
+        "name": "PALETTE FIVE POINTS N 26 VEGAN",
+        "sku": "3700467840535",
+        "ean": "3700467840535",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 5.52,
+        "stock": 3
       }
     ],
-    "stock": 24,
+    "stock": 39,
     "inStock": true,
     "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg"
   },
@@ -12446,6 +12666,16 @@
         "price": 9.9,
         "inStock": true,
         "stock": 3
+      },
+      {
+        "id": "var-3700467838587",
+        "name": "SPRINKLE ME PIGMENTI N11 VEG",
+        "code": "3700467838587",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me.jpg",
+        "price": 9.5,
+        "inStock": true,
+        "stock": 3
       }
     ],
     "variants": [
@@ -12508,9 +12738,21 @@
         "price": 9.9,
         "originalWholesalePrice": 3.4,
         "stock": 3
+      },
+      {
+        "id": "var-3700467838587",
+        "name": "SPRINKLE ME PIGMENTI N11 VEG",
+        "sku": "3700467838587",
+        "ean": "3700467838587",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me.jpg",
+        "inStock": true,
+        "price": 9.5,
+        "originalWholesalePrice": 3.4,
+        "stock": 3
       }
     ],
-    "stock": 15,
+    "stock": 18,
     "inStock": true,
     "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me.jpg"
   },
@@ -13744,6 +13986,46 @@
         "price": 7.9,
         "inStock": true,
         "stock": 6
+      },
+      {
+        "id": "var-3700467845998",
+        "name": "LIP CONTOUR SCRIBER 04 COCOA",
+        "code": "3700467845998",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467850268",
+        "name": "LIP CONTOUR SCRIBER 06 PEACHY",
+        "code": "3700467850268",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467850282",
+        "name": "LIP CONTOUR SCRIBER 08 BERRIES",
+        "code": "3700467850282",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467853801",
+        "name": "LIP CONTOUR SCRIBER 11JULS",
+        "code": "3700467853801",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 6
       }
     ],
     "variants": [
@@ -13818,9 +14100,57 @@
         "price": 7.9,
         "originalWholesalePrice": 2.6,
         "stock": 6
+      },
+      {
+        "id": "var-3700467845998",
+        "name": "LIP CONTOUR SCRIBER 04 COCOA",
+        "sku": "3700467845998",
+        "ean": "3700467845998",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.6,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467850268",
+        "name": "LIP CONTOUR SCRIBER 06 PEACHY",
+        "sku": "3700467850268",
+        "ean": "3700467850268",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.6,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467850282",
+        "name": "LIP CONTOUR SCRIBER 08 BERRIES",
+        "sku": "3700467850282",
+        "ean": "3700467850282",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.6,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467853801",
+        "name": "LIP CONTOUR SCRIBER 11JULS",
+        "sku": "3700467853801",
+        "ean": "3700467853801",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.6,
+        "stock": 6
       }
     ],
-    "stock": 36,
+    "stock": 60,
     "inStock": true,
     "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg"
   },
@@ -13994,6 +14324,36 @@
         "price": 9.5,
         "inStock": true,
         "stock": 6
+      },
+      {
+        "id": "var-5903416066064",
+        "name": "VARIETE GEL LIP LINER WATERP. N6HALZE",
+        "code": "5903416066064",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
+        "price": 7.9,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416080381",
+        "name": "VARIETE GEL LIP LINER WATERP. N8ROSE",
+        "code": "5903416080381",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
+        "price": 7.9,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416080398",
+        "name": "VARIETE GEL LIP LINER WATERP. N9BROWN",
+        "code": "5903416080398",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
+        "price": 7.9,
+        "inStock": true,
+        "stock": 6
       }
     ],
     "variants": [
@@ -14068,9 +14428,45 @@
         "price": 9.5,
         "originalWholesalePrice": 3.1,
         "stock": 6
+      },
+      {
+        "id": "var-5903416066064",
+        "name": "VARIETE GEL LIP LINER WATERP. N6HALZE",
+        "sku": "5903416066064",
+        "ean": "5903416066064",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
+        "inStock": true,
+        "price": 7.9,
+        "originalWholesalePrice": 3.1,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416080381",
+        "name": "VARIETE GEL LIP LINER WATERP. N8ROSE",
+        "sku": "5903416080381",
+        "ean": "5903416080381",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
+        "inStock": true,
+        "price": 7.9,
+        "originalWholesalePrice": 3.1,
+        "stock": 6
+      },
+      {
+        "id": "var-5903416080398",
+        "name": "VARIETE GEL LIP LINER WATERP. N9BROWN",
+        "sku": "5903416080398",
+        "ean": "5903416080398",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
+        "inStock": true,
+        "price": 7.9,
+        "originalWholesalePrice": 3.1,
+        "stock": 6
       }
     ],
-    "stock": 36,
+    "stock": 54,
     "inStock": true,
     "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg"
   },
@@ -14938,6 +15334,16 @@
         "price": 14.9,
         "inStock": true,
         "stock": 3
+      },
+      {
+        "id": "var-3700467851692",
+        "name": "CHEEKY BLUSH N 05 GIRL BOSS",
+        "code": "3700467851692",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-miyo-cosmetics-cheeky-blush-girl-boss.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 3
       }
     ],
     "variants": [
@@ -14976,9 +15382,21 @@
         "price": 14.9,
         "originalWholesalePrice": 5.5,
         "stock": 3
+      },
+      {
+        "id": "var-3700467851692",
+        "name": "CHEEKY BLUSH N 05 GIRL BOSS",
+        "sku": "3700467851692",
+        "ean": "3700467851692",
+        "colorHex": null,
+        "image": "/products/miyo-miyo-cosmetics-cheeky-blush-girl-boss.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 5.5,
+        "stock": 3
       }
     ],
-    "stock": 12,
+    "stock": 15,
     "inStock": true,
     "image": "/products/miyo-miyo-cosmetics-cheeky-blush-girl-boss.jpg"
   },
@@ -17026,6 +17444,26 @@
         "price": 14.9,
         "inStock": true,
         "stock": 4
+      },
+      {
+        "id": "var-5903416043454",
+        "name": "WONDER MATCH FOUNDATION LUMI N 15",
+        "code": "5903416043454",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg",
+        "price": 16.5,
+        "inStock": true,
+        "stock": 4
+      },
+      {
+        "id": "var-5903416043485",
+        "name": "WONDER MATCH FOUNDATION LUMI N 20",
+        "code": "5903416043485",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg",
+        "price": 16.5,
+        "inStock": true,
+        "stock": 4
       }
     ],
     "variants": [
@@ -17076,9 +17514,33 @@
         "price": 14.9,
         "originalWholesalePrice": 6.59,
         "stock": 4
+      },
+      {
+        "id": "var-5903416043454",
+        "name": "WONDER MATCH FOUNDATION LUMI N 15",
+        "sku": "5903416043454",
+        "ean": "5903416043454",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg",
+        "inStock": true,
+        "price": 16.5,
+        "originalWholesalePrice": 6.59,
+        "stock": 4
+      },
+      {
+        "id": "var-5903416043485",
+        "name": "WONDER MATCH FOUNDATION LUMI N 20",
+        "sku": "5903416043485",
+        "ean": "5903416043485",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg",
+        "inStock": true,
+        "price": 16.5,
+        "originalWholesalePrice": 6.59,
+        "stock": 4
       }
     ],
-    "stock": 16,
+    "stock": 24,
     "inStock": true,
     "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg"
   },
@@ -17280,6 +17742,36 @@
         "price": 22.9,
         "inStock": true,
         "stock": 5
+      },
+      {
+        "id": "var-8024523501181",
+        "name": "FONDOTINTA RETOUCHING N 08",
+        "code": "8024523501181",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-make-up-cipria-milano-fondotinta-retouching-skin.jpg",
+        "price": 19.9,
+        "inStock": true,
+        "stock": 5
+      },
+      {
+        "id": "var-8024523501198",
+        "name": "FONDOTINTA RETOUCHING N 09",
+        "code": "8024523501198",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-make-up-cipria-milano-fondotinta-retouching-skin.jpg",
+        "price": 19.9,
+        "inStock": true,
+        "stock": 5
+      },
+      {
+        "id": "var-8024523501228",
+        "name": "FONDOTINTA RETOUCHING N 13",
+        "code": "8024523501228",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-make-up-cipria-milano-fondotinta-retouching-skin.jpg",
+        "price": 19.9,
+        "inStock": true,
+        "stock": 5
       }
     ],
     "variants": [
@@ -17330,9 +17822,45 @@
         "price": 22.9,
         "originalWholesalePrice": 7.9,
         "stock": 5
+      },
+      {
+        "id": "var-8024523501181",
+        "name": "FONDOTINTA RETOUCHING N 08",
+        "sku": "8024523501181",
+        "ean": "8024523501181",
+        "colorHex": null,
+        "image": "/products/cipria-make-up-cipria-milano-fondotinta-retouching-skin.jpg",
+        "inStock": true,
+        "price": 19.9,
+        "originalWholesalePrice": 7.9,
+        "stock": 5
+      },
+      {
+        "id": "var-8024523501198",
+        "name": "FONDOTINTA RETOUCHING N 09",
+        "sku": "8024523501198",
+        "ean": "8024523501198",
+        "colorHex": null,
+        "image": "/products/cipria-make-up-cipria-milano-fondotinta-retouching-skin.jpg",
+        "inStock": true,
+        "price": 19.9,
+        "originalWholesalePrice": 7.9,
+        "stock": 5
+      },
+      {
+        "id": "var-8024523501228",
+        "name": "FONDOTINTA RETOUCHING N 13",
+        "sku": "8024523501228",
+        "ean": "8024523501228",
+        "colorHex": null,
+        "image": "/products/cipria-make-up-cipria-milano-fondotinta-retouching-skin.jpg",
+        "inStock": true,
+        "price": 19.9,
+        "originalWholesalePrice": 7.9,
+        "stock": 5
       }
     ],
-    "stock": 20,
+    "stock": 35,
     "inStock": true,
     "image": "/products/cipria-make-up-cipria-milano-fondotinta-retouching-skin.jpg"
   },
@@ -18240,6 +18768,16 @@
         "price": 13.9,
         "inStock": true,
         "stock": 4
+      },
+      {
+        "id": "var-8024523504229",
+        "name": "Shade WHITE N 00",
+        "code": "8024523504229",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-make-up-cipria-milano-compact-powder-cipria-compatta.jpg",
+        "price": 12.9,
+        "inStock": true,
+        "stock": 4
       }
     ],
     "variants": [
@@ -18278,9 +18816,21 @@
         "price": 13.9,
         "originalWholesalePrice": 5.1,
         "stock": 4
+      },
+      {
+        "id": "var-8024523504229",
+        "name": "Shade WHITE N 00",
+        "sku": "8024523504229",
+        "ean": "8024523504229",
+        "colorHex": null,
+        "image": "/products/cipria-make-up-cipria-milano-compact-powder-cipria-compatta.jpg",
+        "inStock": true,
+        "price": 12.9,
+        "originalWholesalePrice": 5.1,
+        "stock": 4
       }
     ],
-    "stock": 12,
+    "stock": 16,
     "inStock": true,
     "image": "/products/cipria-make-up-cipria-milano-compact-powder-cipria-compatta.jpg"
   },
@@ -18799,6 +19349,16 @@
         "price": 15.9,
         "inStock": true,
         "stock": 4
+      },
+      {
+        "id": "var-8024523501280",
+        "name": "SUBLIME BLUSH ON N",
+        "code": "8024523501280",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-make-up-cipria-milano-sublime-blush-on.jpg",
+        "price": 15.5,
+        "inStock": true,
+        "stock": 4
       }
     ],
     "variants": [
@@ -18837,9 +19397,21 @@
         "price": 15.9,
         "originalWholesalePrice": 6,
         "stock": 4
+      },
+      {
+        "id": "var-8024523501280",
+        "name": "SUBLIME BLUSH ON N",
+        "sku": "8024523501280",
+        "ean": "8024523501280",
+        "colorHex": null,
+        "image": "/products/cipria-make-up-cipria-milano-sublime-blush-on.jpg",
+        "inStock": true,
+        "price": 15.5,
+        "originalWholesalePrice": 6,
+        "stock": 4
       }
     ],
-    "stock": 12,
+    "stock": 16,
     "inStock": true,
     "image": "/products/cipria-make-up-cipria-milano-sublime-blush-on.jpg"
   },
@@ -19813,6 +20385,36 @@
         "price": 17.8,
         "inStock": true,
         "stock": 3
+      },
+      {
+        "id": "var-3700467850299",
+        "name": "Shade",
+        "code": "3700467850299",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-pierre-rene-compact-powder-spf25-limited-edition.jpg",
+        "price": 16.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467850305",
+        "name": "Shade",
+        "code": "3700467850305",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-pierre-rene-compact-powder-spf25-limited-edition.jpg",
+        "price": 16.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467850312",
+        "name": "Shade",
+        "code": "3700467850312",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-pierre-rene-compact-powder-spf25-limited-edition.jpg",
+        "price": 16.5,
+        "inStock": true,
+        "stock": 3
       }
     ],
     "variants": [
@@ -19839,9 +20441,45 @@
         "price": 17.8,
         "originalWholesalePrice": 5.99,
         "stock": 3
+      },
+      {
+        "id": "var-3700467850299",
+        "name": "Shade",
+        "sku": "3700467850299",
+        "ean": "3700467850299",
+        "colorHex": null,
+        "image": "/products/pierre-rene-pierre-rene-compact-powder-spf25-limited-edition.jpg",
+        "inStock": true,
+        "price": 16.5,
+        "originalWholesalePrice": 5.99,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467850305",
+        "name": "Shade",
+        "sku": "3700467850305",
+        "ean": "3700467850305",
+        "colorHex": null,
+        "image": "/products/pierre-rene-pierre-rene-compact-powder-spf25-limited-edition.jpg",
+        "inStock": true,
+        "price": 16.5,
+        "originalWholesalePrice": 5.99,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467850312",
+        "name": "Shade",
+        "sku": "3700467850312",
+        "ean": "3700467850312",
+        "colorHex": null,
+        "image": "/products/pierre-rene-pierre-rene-compact-powder-spf25-limited-edition.jpg",
+        "inStock": true,
+        "price": 16.5,
+        "originalWholesalePrice": 5.99,
+        "stock": 3
       }
     ],
-    "stock": 6,
+    "stock": 15,
     "inStock": true,
     "image": "/products/pierre-rene-pierre-rene-compact-powder-spf25-limited-edition.jpg"
   },
@@ -20159,6 +20797,16 @@
         "price": 10.9,
         "inStock": true,
         "stock": 3
+      },
+      {
+        "id": "var-5903416048602",
+        "name": "WONDER MATCH CHEEK&LIP N",
+        "code": "5903416048602",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-cheek-lip.jpg",
+        "price": 9.5,
+        "inStock": true,
+        "stock": 3
       }
     ],
     "variants": [
@@ -20209,9 +20857,21 @@
         "price": 10.9,
         "originalWholesalePrice": 3.69,
         "stock": 3
+      },
+      {
+        "id": "var-5903416048602",
+        "name": "WONDER MATCH CHEEK&LIP N",
+        "sku": "5903416048602",
+        "ean": "5903416048602",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-cheek-lip.jpg",
+        "inStock": true,
+        "price": 9.5,
+        "originalWholesalePrice": 3.69,
+        "stock": 3
       }
     ],
-    "stock": 12,
+    "stock": 15,
     "inStock": true,
     "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-cheek-lip.jpg"
   },
@@ -28625,6 +29285,30 @@
         "price": 9.9,
         "originalWholesalePrice": 3.9,
         "stock": 3
+      },
+      {
+        "id": "var-5903416067566",
+        "name": "LIQUID CAMOU WATERPR. 2.5 LIGHT PEACH",
+        "sku": "5903416067566",
+        "ean": "5903416067566",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "inStock": true,
+        "price": 9.9,
+        "originalWholesalePrice": 3.9,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416038184",
+        "name": "LIQUID CAMOU WATERPR. 05 LIGHT SAND",
+        "sku": "5903416038184",
+        "ean": "5903416038184",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "inStock": true,
+        "price": 9.9,
+        "originalWholesalePrice": 3.9,
+        "stock": 3
       }
     ],
     "shades": [
@@ -28657,9 +29341,29 @@
         "price": 9.9,
         "inStock": true,
         "stock": 3
+      },
+      {
+        "id": "var-5903416067566",
+        "name": "LIQUID CAMOU WATERPR. 2.5 LIGHT PEACH",
+        "code": "5903416067566",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "price": 9.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416038184",
+        "name": "LIQUID CAMOU WATERPR. 05 LIGHT SAND",
+        "code": "5903416038184",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-4in1-multitasking-glow-booster-01-universal-light.jpg",
+        "price": 9.9,
+        "inStock": true,
+        "stock": 3
       }
     ],
-    "stock": 9,
+    "stock": 15,
     "inStock": true
   },
   {
@@ -28816,6 +29520,18 @@
         "price": 8.9,
         "originalWholesalePrice": 3.49,
         "stock": 4
+      },
+      {
+        "id": "var-5901761985207",
+        "name": "WONDER MATCH CONCEALER N 5 PORCELAIN",
+        "sku": "5901761985207",
+        "ean": "5901761985207",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 3.49,
+        "stock": 4
       }
     ],
     "shades": [
@@ -28828,9 +29544,19 @@
         "price": 8.9,
         "inStock": true,
         "stock": 4
+      },
+      {
+        "id": "var-5901761985207",
+        "name": "WONDER MATCH CONCEALER N 5 PORCELAIN",
+        "code": "5901761985207",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match-45-honey.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 4
       }
     ],
-    "stock": 4,
+    "stock": 8,
     "inStock": true
   },
   {
@@ -31639,6 +32365,2741 @@
       }
     ],
     "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-8024523475284",
+    "slug": "cipria-make-up-cm-eyeshadow-n-416-475284",
+    "name": "Cipria Make Up CM EYESHADOW N 416",
+    "brand": "Cipria Make Up",
+    "category": "Viso",
+    "price": 8.5,
+    "originalWholesalePrice": 3.3,
+    "description": "Cipria Make Up CM EYESHADOW N 416 formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Cipria Make Up CM EYESHADOW N 416 professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-8024523475284",
+        "name": "EYESHADOW N 416",
+        "code": "8024523475284",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-milano-packshot.jpg",
+        "price": 8.5,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-8024523475284",
+        "name": "EYESHADOW N 416",
+        "sku": "8024523475284",
+        "ean": "8024523475284",
+        "colorHex": null,
+        "image": "/products/cipria-milano-packshot.jpg",
+        "inStock": true,
+        "price": 8.5,
+        "originalWholesalePrice": 3.3,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/cipria-milano-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-8024523476335",
+    "slug": "cipria-make-up-cm-eyeshadow-n-551-476335",
+    "name": "Cipria Make Up CM EYESHADOW N 551",
+    "brand": "Cipria Make Up",
+    "category": "Viso",
+    "price": 8.5,
+    "originalWholesalePrice": 3.3,
+    "description": "Cipria Make Up CM EYESHADOW N 551 formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Cipria Make Up CM EYESHADOW N 551 professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-8024523476335",
+        "name": "EYESHADOW N 551",
+        "code": "8024523476335",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-milano-packshot.jpg",
+        "price": 8.5,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-8024523476335",
+        "name": "EYESHADOW N 551",
+        "sku": "8024523476335",
+        "ean": "8024523476335",
+        "colorHex": null,
+        "image": "/products/cipria-milano-packshot.jpg",
+        "inStock": true,
+        "price": 8.5,
+        "originalWholesalePrice": 3.3,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/cipria-milano-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-8024523476373",
+    "slug": "cipria-make-up-cm-eyeshadow-n-555-476373",
+    "name": "Cipria Make Up CM EYESHADOW N 555",
+    "brand": "Cipria Make Up",
+    "category": "Viso",
+    "price": 8.5,
+    "originalWholesalePrice": 3.3,
+    "description": "Cipria Make Up CM EYESHADOW N 555 formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Cipria Make Up CM EYESHADOW N 555 professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-8024523476373",
+        "name": "EYESHADOW N 555",
+        "code": "8024523476373",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-milano-packshot.jpg",
+        "price": 8.5,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-8024523476373",
+        "name": "EYESHADOW N 555",
+        "sku": "8024523476373",
+        "ean": "8024523476373",
+        "colorHex": null,
+        "image": "/products/cipria-milano-packshot.jpg",
+        "inStock": true,
+        "price": 8.5,
+        "originalWholesalePrice": 3.3,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/cipria-milano-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-8024523476397",
+    "slug": "cipria-make-up-cm-eyeshadow-n-557-476397",
+    "name": "Cipria Make Up CM EYESHADOW N 557",
+    "brand": "Cipria Make Up",
+    "category": "Viso",
+    "price": 8.5,
+    "originalWholesalePrice": 3.3,
+    "description": "Cipria Make Up CM EYESHADOW N 557 formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Cipria Make Up CM EYESHADOW N 557 professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-8024523476397",
+        "name": "EYESHADOW N 557",
+        "code": "8024523476397",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-milano-packshot.jpg",
+        "price": 8.5,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-8024523476397",
+        "name": "EYESHADOW N 557",
+        "sku": "8024523476397",
+        "ean": "8024523476397",
+        "colorHex": null,
+        "image": "/products/cipria-milano-packshot.jpg",
+        "inStock": true,
+        "price": 8.5,
+        "originalWholesalePrice": 3.3,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/cipria-milano-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-eveline-cosmetics-eye-pencils",
+    "slug": "eveline-cosmetics-matite-occhi-eyeliner-professionali-encils",
+    "name": "Eveline Cosmetics Matite Occhi & Eyeliner Professionali",
+    "brand": "Eveline Cosmetics",
+    "category": "Occhi",
+    "price": 7.43,
+    "originalWholesalePrice": 2.88,
+    "description": "Eveline Cosmetics Matite Occhi & Eyeliner Professionali formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Eveline Cosmetics Matite Occhi & Eyeliner Professionali professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-5903416067665",
+        "name": "EYELINER&STAMP 2IN1 STAR",
+        "code": "5903416067665",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 6.9,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-5901964041380",
+        "name": "EYELINER PRECISION BLACK",
+        "code": "5901964041380",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 6.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416017448",
+        "name": "EYEBROW PENCIL WATERPROOF SOFT BROWN",
+        "code": "5903416017448",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-5903416067665",
+        "name": "EYELINER&STAMP 2IN1 STAR",
+        "sku": "5903416067665",
+        "ean": "5903416067665",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 6.9,
+        "originalWholesalePrice": 2.65,
+        "stock": 6
+      },
+      {
+        "id": "var-5901964041380",
+        "name": "EYELINER PRECISION BLACK",
+        "sku": "5901964041380",
+        "ean": "5901964041380",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 6.5,
+        "originalWholesalePrice": 2.52,
+        "stock": 3
+      },
+      {
+        "id": "var-5903416017448",
+        "name": "EYEBROW PENCIL WATERPROOF SOFT BROWN",
+        "sku": "5903416017448",
+        "ean": "5903416017448",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 3.48,
+        "stock": 6
+      }
+    ],
+    "images": [
+      "/products/eveline-cosmetics-packshot.jpg"
+    ],
+    "stock": 15,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-3700467852712",
+    "slug": "miyo-miyo-flow-master-pen-01-tobacco-852712",
+    "name": "Miyo MIYO FLOW MASTER PEN 01 TOBACCO",
+    "brand": "Miyo",
+    "category": "Viso",
+    "price": 10.9,
+    "originalWholesalePrice": 3.9,
+    "description": "Miyo MIYO FLOW MASTER PEN 01 TOBACCO formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Miyo MIYO FLOW MASTER PEN 01 TOBACCO professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467852712",
+        "name": "FLOW MASTER PEN 01 TOBACCO",
+        "code": "3700467852712",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-packshot.jpg",
+        "price": 10.9,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467852712",
+        "name": "FLOW MASTER PEN 01 TOBACCO",
+        "sku": "3700467852712",
+        "ean": "3700467852712",
+        "colorHex": null,
+        "image": "/products/miyo-packshot.jpg",
+        "inStock": true,
+        "price": 10.9,
+        "originalWholesalePrice": 3.9,
+        "stock": 6
+      }
+    ],
+    "images": [
+      "/products/miyo-packshot.jpg"
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-3700467852729",
+    "slug": "miyo-miyo-flow-master-pen-02sweet-plum-852729",
+    "name": "Miyo MIYO FLOW MASTER PEN 02SWEET PLUM",
+    "brand": "Miyo",
+    "category": "Viso",
+    "price": 10.9,
+    "originalWholesalePrice": 3.9,
+    "description": "Miyo MIYO FLOW MASTER PEN 02SWEET PLUM formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Miyo MIYO FLOW MASTER PEN 02SWEET PLUM professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467852729",
+        "name": "FLOW MASTER PEN 02SWEET PLUM",
+        "code": "3700467852729",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-packshot.jpg",
+        "price": 10.9,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467852729",
+        "name": "FLOW MASTER PEN 02SWEET PLUM",
+        "sku": "3700467852729",
+        "ean": "3700467852729",
+        "colorHex": null,
+        "image": "/products/miyo-packshot.jpg",
+        "inStock": true,
+        "price": 10.9,
+        "originalWholesalePrice": 3.9,
+        "stock": 6
+      }
+    ],
+    "images": [
+      "/products/miyo-packshot.jpg"
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-3700467842447",
+    "slug": "pierre-ren-pr-brow-pomade-03-dark-brown-842447",
+    "name": "Pierre René PR BROW POMADE 03 DARK BROWN",
+    "brand": "Pierre René",
+    "category": "Viso",
+    "price": 16.5,
+    "originalWholesalePrice": 6,
+    "description": "Pierre René PR BROW POMADE 03 DARK BROWN formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René PR BROW POMADE 03 DARK BROWN professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467842447",
+        "name": "BROW POMADE 03 DARK BROWN",
+        "code": "3700467842447",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 16.5,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467842447",
+        "name": "BROW POMADE 03 DARK BROWN",
+        "sku": "3700467842447",
+        "ean": "3700467842447",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 16.5,
+        "originalWholesalePrice": 6,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-pierre-ren-eye-pencils",
+    "slug": "pierre-ren-matite-occhi-eyeliner-professionali-encils",
+    "name": "Pierre René Matite Occhi & Eyeliner Professionali",
+    "brand": "Pierre René",
+    "category": "Occhi",
+    "price": 10.43,
+    "originalWholesalePrice": 3.73,
+    "description": "Pierre René Matite Occhi & Eyeliner Professionali formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René Matite Occhi & Eyeliner Professionali professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467842508",
+        "name": "ROYAL PENCIL BLACK",
+        "code": "3700467842508",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467852125",
+        "name": "ROYAL PENCIL BROWN",
+        "code": "3700467852125",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 11.9,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467839805",
+        "name": "LONG LASTING EYELINER 03",
+        "code": "3700467839805",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467842508",
+        "name": "ROYAL PENCIL BLACK",
+        "sku": "3700467842508",
+        "ean": "3700467842508",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 4.3,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467852125",
+        "name": "ROYAL PENCIL BROWN",
+        "sku": "3700467852125",
+        "ean": "3700467852125",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 11.9,
+        "originalWholesalePrice": 4.3,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467839805",
+        "name": "LONG LASTING EYELINER 03",
+        "sku": "3700467839805",
+        "ean": "3700467839805",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.6,
+        "stock": 6
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 18,
+    "inStock": true
+  },
+  {
+    "id": "prod-pierre-ren-brushes",
+    "slug": "pierre-ren-pennelli-e-accessori-trucco-professionali-rushes",
+    "name": "Pierre René Pennelli e Accessori Trucco Professionali",
+    "brand": "Pierre René",
+    "category": "Beauty & Accessori",
+    "price": 16.77,
+    "originalWholesalePrice": 6.01,
+    "description": "Pierre René Pennelli e Accessori Trucco Professionali formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René Pennelli e Accessori Trucco Professionali professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467837115",
+        "name": "BRUSH MINI BLEND 206",
+        "code": "3700467837115",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 15.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467848166",
+        "name": "BRUSH PRECISION LINE 209",
+        "code": "3700467848166",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 14.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-8032179084620",
+        "name": "RB BLENDER UOVO 2062-4",
+        "code": "8032179084620",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 8.9,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467837047",
+        "name": "BRUSH POWDER 107",
+        "code": "3700467837047",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 21.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467837016",
+        "name": "BRUSH FOUNDATION 104",
+        "code": "3700467837016",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 21.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467837078",
+        "name": "BRUSH EYESHADOW APPLICATOR 202",
+        "code": "3700467837078",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 15.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467837030",
+        "name": "BRUSH POWDER AND BRONZER 106",
+        "code": "3700467837030",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 20.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467837023",
+        "name": "BRUSH ROUGE POWDER",
+        "code": "3700467837023",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 16.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467837054",
+        "name": "BRUSH CONCEALER",
+        "code": "3700467837054",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 14.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467845813",
+        "name": "BRUSH UNDER EYE",
+        "code": "3700467845813",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 19.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467845806",
+        "name": "BRUSH HIGHLIGHTER",
+        "code": "3700467845806",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 16.5,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467837085",
+        "name": "BRUSH EYESHADOW MINI",
+        "code": "3700467837085",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 15.5,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467837115",
+        "name": "BRUSH MINI BLEND 206",
+        "sku": "3700467837115",
+        "ean": "3700467837115",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 15.5,
+        "originalWholesalePrice": 5.5,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467848166",
+        "name": "BRUSH PRECISION LINE 209",
+        "sku": "3700467848166",
+        "ean": "3700467848166",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 14.5,
+        "originalWholesalePrice": 5.15,
+        "stock": 3
+      },
+      {
+        "id": "var-8032179084620",
+        "name": "RB BLENDER UOVO 2062-4",
+        "sku": "8032179084620",
+        "ean": "8032179084620",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 8.9,
+        "originalWholesalePrice": 3.12,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467837047",
+        "name": "BRUSH POWDER 107",
+        "sku": "3700467837047",
+        "ean": "3700467837047",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 21.9,
+        "originalWholesalePrice": 7.9,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467837016",
+        "name": "BRUSH FOUNDATION 104",
+        "sku": "3700467837016",
+        "ean": "3700467837016",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 21.9,
+        "originalWholesalePrice": 7.9,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467837078",
+        "name": "BRUSH EYESHADOW APPLICATOR 202",
+        "sku": "3700467837078",
+        "ean": "3700467837078",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 15.5,
+        "originalWholesalePrice": 5.6,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467837030",
+        "name": "BRUSH POWDER AND BRONZER 106",
+        "sku": "3700467837030",
+        "ean": "3700467837030",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 20.5,
+        "originalWholesalePrice": 7.3,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467837023",
+        "name": "BRUSH ROUGE POWDER",
+        "sku": "3700467837023",
+        "ean": "3700467837023",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 16.5,
+        "originalWholesalePrice": 5.9,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467837054",
+        "name": "BRUSH CONCEALER",
+        "sku": "3700467837054",
+        "ean": "3700467837054",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 14.5,
+        "originalWholesalePrice": 5.2,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467845813",
+        "name": "BRUSH UNDER EYE",
+        "sku": "3700467845813",
+        "ean": "3700467845813",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 19.5,
+        "originalWholesalePrice": 7,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467845806",
+        "name": "BRUSH HIGHLIGHTER",
+        "sku": "3700467845806",
+        "ean": "3700467845806",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 16.5,
+        "originalWholesalePrice": 5.9,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467837085",
+        "name": "BRUSH EYESHADOW MINI",
+        "sku": "3700467837085",
+        "ean": "3700467837085",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 15.5,
+        "originalWholesalePrice": 5.6,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 39,
+    "inStock": true
+  },
+  {
+    "id": "prod-miyo-eye-pencils",
+    "slug": "miyo-matite-occhi-eyeliner-professionali-encils",
+    "name": "Miyo Matite Occhi & Eyeliner Professionali",
+    "brand": "Miyo",
+    "category": "Occhi",
+    "price": 7.5,
+    "originalWholesalePrice": 2.6,
+    "description": "Miyo Matite Occhi & Eyeliner Professionali formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Miyo Matite Occhi & Eyeliner Professionali professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467848302",
+        "name": "EYELINER PERSPECTIVE 4 UMBRA BROWN",
+        "code": "3700467848302",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-packshot.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467848302",
+        "name": "EYELINER PERSPECTIVE 4 UMBRA BROWN",
+        "sku": "3700467848302",
+        "ean": "3700467848302",
+        "colorHex": null,
+        "image": "/products/miyo-packshot.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.6,
+        "stock": 6
+      }
+    ],
+    "images": [
+      "/products/miyo-packshot.jpg"
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "prod-mascara-3700467825341",
+    "slug": "pierre-ren-pr-mascara-super-curly-825341",
+    "name": "Pierre René PR MASCARA SUPER CURLY",
+    "brand": "Pierre René",
+    "category": "Occhi",
+    "price": 13.9,
+    "originalWholesalePrice": 5.05,
+    "description": "Pierre René PR MASCARA SUPER CURLY formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René PR MASCARA SUPER CURLY professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467825341",
+        "name": "MASCARA SUPER CURLY",
+        "code": "3700467825341",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 13.9,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467825341",
+        "name": "MASCARA SUPER CURLY",
+        "sku": "3700467825341",
+        "ean": "3700467825341",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 13.9,
+        "originalWholesalePrice": 5.05,
+        "stock": 6
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "prod-palette-3700467852873",
+    "slug": "pierre-ren-palette-ombretti-mocha-852873",
+    "name": "Pierre René Palette Ombretti MOCHA",
+    "brand": "Pierre René",
+    "category": "Occhi",
+    "price": 32.9,
+    "originalWholesalePrice": 11.9,
+    "description": "Pierre René Palette Ombretti MOCHA formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René Palette Ombretti MOCHA professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467852873",
+        "name": "EYESHADOW PALETTE MOCHA",
+        "code": "3700467852873",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 32.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467852873",
+        "name": "EYESHADOW PALETTE MOCHA",
+        "sku": "3700467852873",
+        "ean": "3700467852873",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 32.9,
+        "originalWholesalePrice": 11.9,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-palette-5907510303353",
+    "slug": "pierre-ren-palette-ombretti-sunset-303353",
+    "name": "Pierre René Palette Ombretti SUNSET",
+    "brand": "Pierre René",
+    "category": "Occhi",
+    "price": 17.5,
+    "originalWholesalePrice": 6.29,
+    "description": "Pierre René Palette Ombretti SUNSET formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René Palette Ombretti SUNSET professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-5907510303353",
+        "name": "EYESHADOW PALETTE SUNSET",
+        "code": "5907510303353",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 17.5,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-5907510303353",
+        "name": "EYESHADOW PALETTE SUNSET",
+        "sku": "5907510303353",
+        "ean": "5907510303353",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 17.5,
+        "originalWholesalePrice": 6.29,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-palette-5903416059011",
+    "slug": "eveline-cosmetics-palette-ombretti-look-up-9-col-gimme-more-059011",
+    "name": "Eveline Cosmetics Palette Ombretti LOOK UP 9 COL. GIMME MORE",
+    "brand": "Eveline Cosmetics",
+    "category": "Occhi",
+    "price": 14.5,
+    "originalWholesalePrice": 5.8,
+    "description": "Eveline Cosmetics Palette Ombretti LOOK UP 9 COL. GIMME MORE formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Eveline Cosmetics Palette Ombretti LOOK UP 9 COL. GIMME MORE professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-5903416059011",
+        "name": "PALETTE LOOK UP 9 COL. GIMME MORE",
+        "code": "5903416059011",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 14.5,
+        "inStock": true,
+        "stock": 2
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-5903416059011",
+        "name": "PALETTE LOOK UP 9 COL. GIMME MORE",
+        "sku": "5903416059011",
+        "ean": "5903416059011",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 14.5,
+        "originalWholesalePrice": 5.8,
+        "stock": 2
+      }
+    ],
+    "images": [
+      "/products/eveline-cosmetics-packshot.jpg"
+    ],
+    "stock": 2,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-3700467840009",
+    "slug": "pierre-ren-pr-contour-concealer-05-840009",
+    "name": "Pierre René PR CONTOUR CONCEALER 05",
+    "brand": "Pierre René",
+    "category": "Viso",
+    "price": 16.5,
+    "originalWholesalePrice": 5.99,
+    "description": "Pierre René PR CONTOUR CONCEALER 05 formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René PR CONTOUR CONCEALER 05 professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467840009",
+        "name": "CONTOUR CONCEALER 05",
+        "code": "3700467840009",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 16.5,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467840009",
+        "name": "CONTOUR CONCEALER 05",
+        "sku": "3700467840009",
+        "ean": "3700467840009",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 16.5,
+        "originalWholesalePrice": 5.99,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-8024523472085",
+    "slug": "cipria-make-up-cm-fondotinta-no-trace-n-302-472085",
+    "name": "Cipria Make Up CM FONDOTINTA NO TRACE N 302",
+    "brand": "Cipria Make Up",
+    "category": "Viso",
+    "price": 16.5,
+    "originalWholesalePrice": 6.55,
+    "description": "Cipria Make Up CM FONDOTINTA NO TRACE N 302 formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Cipria Make Up CM FONDOTINTA NO TRACE N 302 professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-8024523472085",
+        "name": "FONDOTINTA NO TRACE N 302",
+        "code": "8024523472085",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-milano-packshot.jpg",
+        "price": 16.5,
+        "inStock": true,
+        "stock": 5
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-8024523472085",
+        "name": "FONDOTINTA NO TRACE N 302",
+        "sku": "8024523472085",
+        "ean": "8024523472085",
+        "colorHex": null,
+        "image": "/products/cipria-milano-packshot.jpg",
+        "inStock": true,
+        "price": 16.5,
+        "originalWholesalePrice": 6.55,
+        "stock": 5
+      }
+    ],
+    "images": [
+      "/products/cipria-milano-packshot.jpg"
+    ],
+    "stock": 5,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-3700467850343",
+    "slug": "pierre-ren-pr-lumi-touch-foundation-art-03-850343",
+    "name": "Pierre René PR LUMI TOUCH FOUNDATION ART 03",
+    "brand": "Pierre René",
+    "category": "Viso",
+    "price": 24.9,
+    "originalWholesalePrice": 8.98,
+    "description": "Pierre René PR LUMI TOUCH FOUNDATION ART 03 formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René PR LUMI TOUCH FOUNDATION ART 03 professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467850343",
+        "name": "LUMI TOUCH FOUNDATION ART 03",
+        "code": "3700467850343",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 24.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467850343",
+        "name": "LUMI TOUCH FOUNDATION ART 03",
+        "sku": "3700467850343",
+        "ean": "3700467850343",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 24.9,
+        "originalWholesalePrice": 8.98,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-3700467819715",
+    "slug": "pierre-ren-pr-skin-balance-cover-23-nude-819715",
+    "name": "Pierre René PR SKIN BALANCE COVER 23 - NUDE",
+    "brand": "Pierre René",
+    "category": "Viso",
+    "price": 19.9,
+    "originalWholesalePrice": 7.2,
+    "description": "Pierre René PR SKIN BALANCE COVER 23 - NUDE formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René PR SKIN BALANCE COVER 23 - NUDE professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467819715",
+        "name": "SKIN BALANCE COVER 23 - NUDE",
+        "code": "3700467819715",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 19.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467819715",
+        "name": "SKIN BALANCE COVER 23 - NUDE",
+        "sku": "3700467819715",
+        "ean": "3700467819715",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 19.9,
+        "originalWholesalePrice": 7.2,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-3700467852668",
+    "slug": "pierre-ren-pr-skin-elixir-founda-spf30-3-vanil-nude-852668",
+    "name": "Pierre René PR SKIN ELIXIR FOUNDA SPF30 3 VANIL NUDE",
+    "brand": "Pierre René",
+    "category": "Viso",
+    "price": 24.5,
+    "originalWholesalePrice": 8.8,
+    "description": "Pierre René PR SKIN ELIXIR FOUNDA SPF30 3 VANIL NUDE formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René PR SKIN ELIXIR FOUNDA SPF30 3 VANIL NUDE professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467852668",
+        "name": "SKIN ELIXIR FOUNDA SPF30 3 VANIL NUDE",
+        "code": "3700467852668",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 24.5,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467852668",
+        "name": "SKIN ELIXIR FOUNDA SPF30 3 VANIL NUDE",
+        "sku": "3700467852668",
+        "ean": "3700467852668",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 24.5,
+        "originalWholesalePrice": 8.8,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-8024523472184",
+    "slug": "cipria-make-up-cm-wet-dry-n-591-472184",
+    "name": "Cipria Make Up CM WET & DRY N 591",
+    "brand": "Cipria Make Up",
+    "category": "Viso",
+    "price": 14.5,
+    "originalWholesalePrice": 5.6,
+    "description": "Cipria Make Up CM WET & DRY N 591 formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Cipria Make Up CM WET & DRY N 591 professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-8024523472184",
+        "name": "WET & DRY N 591",
+        "code": "8024523472184",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-milano-packshot.jpg",
+        "price": 14.5,
+        "inStock": true,
+        "stock": 4
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-8024523472184",
+        "name": "WET & DRY N 591",
+        "sku": "8024523472184",
+        "ean": "8024523472184",
+        "colorHex": null,
+        "image": "/products/cipria-milano-packshot.jpg",
+        "inStock": true,
+        "price": 14.5,
+        "originalWholesalePrice": 5.6,
+        "stock": 4
+      }
+    ],
+    "images": [
+      "/products/cipria-milano-packshot.jpg"
+    ],
+    "stock": 4,
+    "inStock": true
+  },
+  {
+    "id": "prod-pierre-ren-lip-liners",
+    "slug": "pierre-ren-matita-labbra-contorno-definizione-liners",
+    "name": "Pierre René Matita Labbra Contorno & Definizione",
+    "brand": "Pierre René",
+    "category": "Labbra",
+    "price": 11.13,
+    "originalWholesalePrice": 3.94,
+    "description": "Pierre René Matita Labbra Contorno & Definizione formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René Matita Labbra Contorno & Definizione professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467814550",
+        "name": "LIPMATIC WATERPROOF LINER",
+        "code": "3700467814550",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 10.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467820889",
+        "name": "LIPMATIC WATERPROOF LINER",
+        "code": "3700467820889",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 10.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467825372",
+        "name": "LIPMATIC WATERPROOF LINER",
+        "code": "3700467825372",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 10.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467842393",
+        "name": "LIPMATIC WATERPROOF LINER",
+        "code": "3700467842393",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 10.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467852262",
+        "name": "LIPMATIC WATERPROOF LINER",
+        "code": "3700467852262",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 10.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467852279",
+        "name": "LIPMATIC WATERPROOF LINER",
+        "code": "3700467852279",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 10.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467850060",
+        "name": "GLORY LIPMATIC LOVE",
+        "code": "3700467850060",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 14.9,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467814550",
+        "name": "LIPMATIC WATERPROOF LINER",
+        "sku": "3700467814550",
+        "ean": "3700467814550",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 10.5,
+        "originalWholesalePrice": 3.7,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467820889",
+        "name": "LIPMATIC WATERPROOF LINER",
+        "sku": "3700467820889",
+        "ean": "3700467820889",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 10.5,
+        "originalWholesalePrice": 3.7,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467825372",
+        "name": "LIPMATIC WATERPROOF LINER",
+        "sku": "3700467825372",
+        "ean": "3700467825372",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 10.5,
+        "originalWholesalePrice": 3.7,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467842393",
+        "name": "LIPMATIC WATERPROOF LINER",
+        "sku": "3700467842393",
+        "ean": "3700467842393",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 10.5,
+        "originalWholesalePrice": 3.7,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467852262",
+        "name": "LIPMATIC WATERPROOF LINER",
+        "sku": "3700467852262",
+        "ean": "3700467852262",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 10.5,
+        "originalWholesalePrice": 3.7,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467852279",
+        "name": "LIPMATIC WATERPROOF LINER",
+        "sku": "3700467852279",
+        "ean": "3700467852279",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 10.5,
+        "originalWholesalePrice": 3.7,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467850060",
+        "name": "GLORY LIPMATIC LOVE",
+        "sku": "3700467850060",
+        "ean": "3700467850060",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 14.9,
+        "originalWholesalePrice": 5.4,
+        "stock": 6
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 42,
+    "inStock": true
+  },
+  {
+    "id": "prod-cipria-make-up-tinta-labbra-sublime",
+    "slug": "cipria-make-up-tinta-labbra-sublime-no-transfer-ublime",
+    "name": "Cipria Make Up Tinta Labbra Sublime No Transfer",
+    "brand": "Cipria Make Up",
+    "category": "Labbra",
+    "price": 9.5,
+    "originalWholesalePrice": 3.7,
+    "description": "Cipria Make Up Tinta Labbra Sublime No Transfer formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Cipria Make Up Tinta Labbra Sublime No Transfer professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-8024523485078",
+        "name": "TINTA LABBRA SUBLIME N",
+        "code": "8024523485078",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-milano-packshot.jpg",
+        "price": 9.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-8024523998462",
+        "name": "TINTA LABBRA SUBLIME N",
+        "code": "8024523998462",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-milano-packshot.jpg",
+        "price": 9.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-8024523998479",
+        "name": "TINTA LABBRA SUBLIME N",
+        "code": "8024523998479",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-milano-packshot.jpg",
+        "price": 9.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-8024523998486",
+        "name": "TINTA LABBRA SUBLIME N",
+        "code": "8024523998486",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-milano-packshot.jpg",
+        "price": 9.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-8024523504403",
+        "name": "TINTA LABBRA SUBLIME N",
+        "code": "8024523504403",
+        "hex": "#FAF7FC",
+        "image": "/products/cipria-milano-packshot.jpg",
+        "price": 9.5,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-8024523485078",
+        "name": "TINTA LABBRA SUBLIME N",
+        "sku": "8024523485078",
+        "ean": "8024523485078",
+        "colorHex": null,
+        "image": "/products/cipria-milano-packshot.jpg",
+        "inStock": true,
+        "price": 9.5,
+        "originalWholesalePrice": 3.7,
+        "stock": 6
+      },
+      {
+        "id": "var-8024523998462",
+        "name": "TINTA LABBRA SUBLIME N",
+        "sku": "8024523998462",
+        "ean": "8024523998462",
+        "colorHex": null,
+        "image": "/products/cipria-milano-packshot.jpg",
+        "inStock": true,
+        "price": 9.5,
+        "originalWholesalePrice": 3.7,
+        "stock": 6
+      },
+      {
+        "id": "var-8024523998479",
+        "name": "TINTA LABBRA SUBLIME N",
+        "sku": "8024523998479",
+        "ean": "8024523998479",
+        "colorHex": null,
+        "image": "/products/cipria-milano-packshot.jpg",
+        "inStock": true,
+        "price": 9.5,
+        "originalWholesalePrice": 3.7,
+        "stock": 6
+      },
+      {
+        "id": "var-8024523998486",
+        "name": "TINTA LABBRA SUBLIME N",
+        "sku": "8024523998486",
+        "ean": "8024523998486",
+        "colorHex": null,
+        "image": "/products/cipria-milano-packshot.jpg",
+        "inStock": true,
+        "price": 9.5,
+        "originalWholesalePrice": 3.7,
+        "stock": 6
+      },
+      {
+        "id": "var-8024523504403",
+        "name": "TINTA LABBRA SUBLIME N",
+        "sku": "8024523504403",
+        "ean": "8024523504403",
+        "colorHex": null,
+        "image": "/products/cipria-milano-packshot.jpg",
+        "inStock": true,
+        "price": 9.5,
+        "originalWholesalePrice": 3.7,
+        "stock": 6
+      }
+    ],
+    "images": [
+      "/products/cipria-milano-packshot.jpg"
+    ],
+    "stock": 30,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-5903416065746",
+    "slug": "eveline-cosmetics-liquid-3-065746",
+    "name": "Eveline Cosmetics LIQUID 3",
+    "brand": "Eveline Cosmetics",
+    "category": "Viso",
+    "price": 12.5,
+    "originalWholesalePrice": 5,
+    "description": "Eveline Cosmetics LIQUID 3 formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Eveline Cosmetics LIQUID 3 professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-5903416065746",
+        "name": "LIQUID 3",
+        "code": "5903416065746",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 12.5,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-5903416065746",
+        "name": "LIQUID 3",
+        "sku": "5903416065746",
+        "ean": "5903416065746",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 12.5,
+        "originalWholesalePrice": 5,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/eveline-cosmetics-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-5903416078807",
+    "slug": "eveline-cosmetics-liquid4a-078807",
+    "name": "Eveline Cosmetics LIQUID4A",
+    "brand": "Eveline Cosmetics",
+    "category": "Viso",
+    "price": 12.5,
+    "originalWholesalePrice": 5,
+    "description": "Eveline Cosmetics LIQUID4A formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Eveline Cosmetics LIQUID4A professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-5903416078807",
+        "name": "LIQUID4A",
+        "code": "5903416078807",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 12.5,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-5903416078807",
+        "name": "LIQUID4A",
+        "sku": "5903416078807",
+        "ean": "5903416078807",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 12.5,
+        "originalWholesalePrice": 5,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/eveline-cosmetics-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-5903416065753",
+    "slug": "eveline-cosmetics-liquid-4-065753",
+    "name": "Eveline Cosmetics LIQUID 4",
+    "brand": "Eveline Cosmetics",
+    "category": "Viso",
+    "price": 12.5,
+    "originalWholesalePrice": 5,
+    "description": "Eveline Cosmetics LIQUID 4 formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Eveline Cosmetics LIQUID 4 professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-5903416065753",
+        "name": "LIQUID 4",
+        "code": "5903416065753",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 12.5,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-5903416065753",
+        "name": "LIQUID 4",
+        "sku": "5903416065753",
+        "ean": "5903416065753",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 12.5,
+        "originalWholesalePrice": 5,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/eveline-cosmetics-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-5903416078821",
+    "slug": "eveline-cosmetics-liquid11a-078821",
+    "name": "Eveline Cosmetics LIQUID11A",
+    "brand": "Eveline Cosmetics",
+    "category": "Viso",
+    "price": 12.5,
+    "originalWholesalePrice": 5,
+    "description": "Eveline Cosmetics LIQUID11A formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Eveline Cosmetics LIQUID11A professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-5903416078821",
+        "name": "LIQUID11A",
+        "code": "5903416078821",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 12.5,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-5903416078821",
+        "name": "LIQUID11A",
+        "sku": "5903416078821",
+        "ean": "5903416078821",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 12.5,
+        "originalWholesalePrice": 5,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/eveline-cosmetics-packshot.jpg"
+    ],
+    "stock": 3,
+    "inStock": true
+  },
+  {
+    "id": "prod-pierre-ren-satin-pure-lipstick",
+    "slug": "pierre-ren-satin-pure-lipstick-rossetto-idratante-pstick",
+    "name": "Pierre René Satin Pure Lipstick Rossetto Idratante",
+    "brand": "Pierre René",
+    "category": "Labbra",
+    "price": 17.9,
+    "originalWholesalePrice": 6.49,
+    "description": "Pierre René Satin Pure Lipstick Rossetto Idratante formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René Satin Pure Lipstick Rossetto Idratante professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467852170",
+        "name": "SATIN PURE LIPSTICK N.01",
+        "code": "3700467852170",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 17.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467852217",
+        "name": "SATIN PURE LIPSTICK N.05",
+        "code": "3700467852217",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 17.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467852170",
+        "name": "SATIN PURE LIPSTICK N.01",
+        "sku": "3700467852170",
+        "ean": "3700467852170",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 17.9,
+        "originalWholesalePrice": 6.49,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467852217",
+        "name": "SATIN PURE LIPSTICK N.05",
+        "sku": "3700467852217",
+        "ean": "3700467852217",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 17.9,
+        "originalWholesalePrice": 6.49,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "prod-pierre-ren-royal-mat-lipstick",
+    "slug": "pierre-ren-royal-mat-lipstick-rossetto-opaco-pstick",
+    "name": "Pierre René Royal Mat Lipstick Rossetto Opaco",
+    "brand": "Pierre René",
+    "category": "Labbra",
+    "price": 15.9,
+    "originalWholesalePrice": 5.8,
+    "description": "Pierre René Royal Mat Lipstick Rossetto Opaco formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René Royal Mat Lipstick Rossetto Opaco professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467826171",
+        "name": "ROYAL MAT LIPSTICK 04 - TOFFEE CREAM",
+        "code": "3700467826171",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 15.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467840160",
+        "name": "ROYAL MAT LIPSTICK 38 - CHARM OF MOC",
+        "code": "3700467840160",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 15.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467840177",
+        "name": "ROYAL MAT LIPSTICK 39 - WARM WORDS",
+        "code": "3700467840177",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 15.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467826171",
+        "name": "ROYAL MAT LIPSTICK 04 - TOFFEE CREAM",
+        "sku": "3700467826171",
+        "ean": "3700467826171",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 15.9,
+        "originalWholesalePrice": 5.8,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467840160",
+        "name": "ROYAL MAT LIPSTICK 38 - CHARM OF MOC",
+        "sku": "3700467840160",
+        "ean": "3700467840160",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 15.9,
+        "originalWholesalePrice": 5.8,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467840177",
+        "name": "ROYAL MAT LIPSTICK 39 - WARM WORDS",
+        "sku": "3700467840177",
+        "ean": "3700467840177",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 15.9,
+        "originalWholesalePrice": 5.8,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 9,
+    "inStock": true
+  },
+  {
+    "id": "prod-miyo-outstanding-lip-gloss",
+    "slug": "miyo-outstanding-vegan-lip-gloss-lucidalabbra--gloss",
+    "name": "Miyo Outstanding Vegan Lip Gloss Lucidalabbra",
+    "brand": "Miyo",
+    "category": "Labbra",
+    "price": 7.5,
+    "originalWholesalePrice": 2.72,
+    "description": "Miyo Outstanding Vegan Lip Gloss Lucidalabbra formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Miyo Outstanding Vegan Lip Gloss Lucidalabbra professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467838341",
+        "name": "LIP GLOSS OUTSTANDING N 21 VEGAN",
+        "code": "3700467838341",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-packshot.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467850640",
+        "name": "LIP GLOSS OUTSTANDING N 33 VEGAN",
+        "code": "3700467850640",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-packshot.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467851678",
+        "name": "LIP GLOSS OUTSTANDING N 36 VEGAN",
+        "code": "3700467851678",
+        "hex": "#FAF7FC",
+        "image": "/products/miyo-packshot.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467838341",
+        "name": "LIP GLOSS OUTSTANDING N 21 VEGAN",
+        "sku": "3700467838341",
+        "ean": "3700467838341",
+        "colorHex": null,
+        "image": "/products/miyo-packshot.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.72,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467850640",
+        "name": "LIP GLOSS OUTSTANDING N 33 VEGAN",
+        "sku": "3700467850640",
+        "ean": "3700467850640",
+        "colorHex": null,
+        "image": "/products/miyo-packshot.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.72,
+        "stock": 6
+      },
+      {
+        "id": "var-3700467851678",
+        "name": "LIP GLOSS OUTSTANDING N 36 VEGAN",
+        "sku": "3700467851678",
+        "ean": "3700467851678",
+        "colorHex": null,
+        "image": "/products/miyo-packshot.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.72,
+        "stock": 6
+      }
+    ],
+    "images": [
+      "/products/miyo-packshot.jpg"
+    ],
+    "stock": 18,
+    "inStock": true
+  },
+  {
+    "id": "prod-single-5901761941692",
+    "slug": "eveline-cosmetics-ev-variete-satin-lipstick-n-05-941692",
+    "name": "Eveline Cosmetics EV VARIETE SATIN LIPSTICK N 05",
+    "brand": "Eveline Cosmetics",
+    "category": "Viso",
+    "price": 9.5,
+    "originalWholesalePrice": 3.73,
+    "description": "Eveline Cosmetics EV VARIETE SATIN LIPSTICK N 05 formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Eveline Cosmetics EV VARIETE SATIN LIPSTICK N 05 professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-5901761941692",
+        "name": "VARIETE SATIN LIPSTICK N 05",
+        "code": "5901761941692",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 9.5,
+        "inStock": true,
+        "stock": 6
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-5901761941692",
+        "name": "VARIETE SATIN LIPSTICK N 05",
+        "sku": "5901761941692",
+        "ean": "5901761941692",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 9.5,
+        "originalWholesalePrice": 3.73,
+        "stock": 6
+      }
+    ],
+    "images": [
+      "/products/eveline-cosmetics-packshot.jpg"
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "prod-pierre-ren-nail-polish",
+    "slug": "pierre-ren-nail-polish-smalto-unghie-lunga-tenuta-polish",
+    "name": "Pierre René Nail Polish Smalto Unghie Lunga Tenuta",
+    "brand": "Pierre René",
+    "category": "Beauty & Accessori",
+    "price": 7.5,
+    "originalWholesalePrice": 2.65,
+    "description": "Pierre René Nail Polish Smalto Unghie Lunga Tenuta formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René Nail Polish Smalto Unghie Lunga Tenuta professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467820339",
+        "name": "NAIL POLISH 313",
+        "code": "3700467820339",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 5
+      },
+      {
+        "id": "var-3700467820476",
+        "name": "NAIL POLISH 327",
+        "code": "3700467820476",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 5
+      },
+      {
+        "id": "var-3700467820483",
+        "name": "NAIL POLISH 328",
+        "code": "3700467820483",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 5
+      },
+      {
+        "id": "var-3700467820452",
+        "name": "NAIL POLISH 325",
+        "code": "3700467820452",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 5
+      },
+      {
+        "id": "var-3700467820421",
+        "name": "NAIL POLISH 322",
+        "code": "3700467820421",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 5
+      },
+      {
+        "id": "var-3700467821541",
+        "name": "NAIL POLISH 359",
+        "code": "3700467821541",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 5
+      },
+      {
+        "id": "var-3700467828380",
+        "name": "NAIL POLISH 376",
+        "code": "3700467828380",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 7.5,
+        "inStock": true,
+        "stock": 5
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467820339",
+        "name": "NAIL POLISH 313",
+        "sku": "3700467820339",
+        "ean": "3700467820339",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.65,
+        "stock": 5
+      },
+      {
+        "id": "var-3700467820476",
+        "name": "NAIL POLISH 327",
+        "sku": "3700467820476",
+        "ean": "3700467820476",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.65,
+        "stock": 5
+      },
+      {
+        "id": "var-3700467820483",
+        "name": "NAIL POLISH 328",
+        "sku": "3700467820483",
+        "ean": "3700467820483",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.65,
+        "stock": 5
+      },
+      {
+        "id": "var-3700467820452",
+        "name": "NAIL POLISH 325",
+        "sku": "3700467820452",
+        "ean": "3700467820452",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.65,
+        "stock": 5
+      },
+      {
+        "id": "var-3700467820421",
+        "name": "NAIL POLISH 322",
+        "sku": "3700467820421",
+        "ean": "3700467820421",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.65,
+        "stock": 5
+      },
+      {
+        "id": "var-3700467821541",
+        "name": "NAIL POLISH 359",
+        "sku": "3700467821541",
+        "ean": "3700467821541",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.65,
+        "stock": 5
+      },
+      {
+        "id": "var-3700467828380",
+        "name": "NAIL POLISH 376",
+        "sku": "3700467828380",
+        "ean": "3700467828380",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 7.5,
+        "originalWholesalePrice": 2.65,
+        "stock": 5
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 35,
+    "inStock": true
+  },
+  {
+    "id": "prod-pierre-ren-medic-care-foundation",
+    "slug": "pierre-ren-medic-care-fondotinta-trattante-lenitivo-dation",
+    "name": "Pierre René Medic Care Fondotinta Trattante Lenitivo",
+    "brand": "Pierre René",
+    "category": "Viso",
+    "price": 21.9,
+    "originalWholesalePrice": 7.95,
+    "description": "Pierre René Medic Care Fondotinta Trattante Lenitivo formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Pierre René Medic Care Fondotinta Trattante Lenitivo professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-3700467850558",
+        "name": "MEDIC CARE FOUNDATION 01",
+        "code": "3700467850558",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 21.9,
+        "inStock": true,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467850565",
+        "name": "MEDIC CARE FOUNDATION 02",
+        "code": "3700467850565",
+        "hex": "#FAF7FC",
+        "image": "/products/pierre-rene-packshot.jpg",
+        "price": 21.9,
+        "inStock": true,
+        "stock": 3
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-3700467850558",
+        "name": "MEDIC CARE FOUNDATION 01",
+        "sku": "3700467850558",
+        "ean": "3700467850558",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 21.9,
+        "originalWholesalePrice": 7.95,
+        "stock": 3
+      },
+      {
+        "id": "var-3700467850565",
+        "name": "MEDIC CARE FOUNDATION 02",
+        "sku": "3700467850565",
+        "ean": "3700467850565",
+        "colorHex": null,
+        "image": "/products/pierre-rene-packshot.jpg",
+        "inStock": true,
+        "price": 21.9,
+        "originalWholesalePrice": 7.95,
+        "stock": 3
+      }
+    ],
+    "images": [
+      "/products/pierre-rene-packshot.jpg"
+    ],
+    "stock": 6,
+    "inStock": true
+  },
+  {
+    "id": "prod-eveline-cosmetics-sheet-masks",
+    "slug": "eveline-cosmetics-maschere-viso-monodose-trattamento-urto--masks",
+    "name": "Eveline Cosmetics Maschere Viso Monodose Trattamento Urto",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "price": 5.9,
+    "originalWholesalePrice": 0.85,
+    "description": "Eveline Cosmetics Maschere Viso Monodose Trattamento Urto formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Eveline Cosmetics Maschere Viso Monodose Trattamento Urto professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-5903416047483",
+        "name": "MASK AMPOUL FACE THERAPY VIT C 8ML",
+        "code": "5903416047483",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 5.9,
+        "inStock": true,
+        "stock": 12
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-5903416047483",
+        "name": "MASK AMPOUL FACE THERAPY VIT C 8ML",
+        "sku": "5903416047483",
+        "ean": "5903416047483",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 5.9,
+        "originalWholesalePrice": 0.85,
+        "stock": 12
+      }
+    ],
+    "images": [
+      "/products/eveline-cosmetics-packshot.jpg"
+    ],
+    "stock": 12,
+    "inStock": true
+  },
+  {
+    "id": "prod-eveline-cosmetics-slim-extreme-body",
+    "slug": "eveline-cosmetics-slim-extreme-4d-trattamento-corpo-rimodellante-e-body",
+    "name": "Eveline Cosmetics Slim Extreme 4D Trattamento Corpo Rimodellante",
+    "brand": "Eveline Cosmetics",
+    "category": "Skincare & Dermo",
+    "price": 13.9,
+    "originalWholesalePrice": 5.52,
+    "description": "Eveline Cosmetics Slim Extreme 4D Trattamento Corpo Rimodellante formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
+    "shortDescription": "Eveline Cosmetics Slim Extreme 4D Trattamento Corpo Rimodellante professionale Scelta Makeup.",
+    "formulaBenefits": "Formula professionale dermatologicamente testata per un trucco duraturo e confortevole.",
+    "howToUse": "Applicare secondo le necessità del makeup look professionale.",
+    "inci": "Formula cosmetica certificata standard europei di qualità e sicurezza.",
+    "features": [
+      "Performance professionale salone",
+      "Formula testata e garantita",
+      "Texture ad alta definizione"
+    ],
+    "badges": [
+      "cruelty_free"
+    ],
+    "shades": [
+      {
+        "id": "var-5903416026983",
+        "name": "SLIM EXTREME 4D STRECH MARKS 150ML",
+        "code": "5903416026983",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 13.9,
+        "inStock": true,
+        "stock": 4
+      },
+      {
+        "id": "var-5901761916034",
+        "name": "SLIM EXTREME NIGHT THERAPY SERUM 250M",
+        "code": "5901761916034",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 13.9,
+        "inStock": true,
+        "stock": 4
+      },
+      {
+        "id": "var-5901761939682",
+        "name": "SLIM EXTREME 4D SLIMMING SERUM 250ML",
+        "code": "5901761939682",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 13.9,
+        "inStock": true,
+        "stock": 4
+      },
+      {
+        "id": "var-5907609316387",
+        "name": "SLIM EXTREME THERMO ACTIVATOR 250ML",
+        "code": "5907609316387",
+        "hex": "#FAF7FC",
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "price": 13.9,
+        "inStock": true,
+        "stock": 4
+      }
+    ],
+    "variants": [
+      {
+        "id": "var-5903416026983",
+        "name": "SLIM EXTREME 4D STRECH MARKS 150ML",
+        "sku": "5903416026983",
+        "ean": "5903416026983",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 13.9,
+        "originalWholesalePrice": 5.52,
+        "stock": 4
+      },
+      {
+        "id": "var-5901761916034",
+        "name": "SLIM EXTREME NIGHT THERAPY SERUM 250M",
+        "sku": "5901761916034",
+        "ean": "5901761916034",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 13.9,
+        "originalWholesalePrice": 5.52,
+        "stock": 4
+      },
+      {
+        "id": "var-5901761939682",
+        "name": "SLIM EXTREME 4D SLIMMING SERUM 250ML",
+        "sku": "5901761939682",
+        "ean": "5901761939682",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 13.9,
+        "originalWholesalePrice": 5.52,
+        "stock": 4
+      },
+      {
+        "id": "var-5907609316387",
+        "name": "SLIM EXTREME THERMO ACTIVATOR 250ML",
+        "sku": "5907609316387",
+        "ean": "5907609316387",
+        "colorHex": null,
+        "image": "/products/eveline-cosmetics-packshot.jpg",
+        "inStock": true,
+        "price": 13.9,
+        "originalWholesalePrice": 5.52,
+        "stock": 4
+      }
+    ],
+    "images": [
+      "/products/eveline-cosmetics-packshot.jpg"
+    ],
+    "stock": 16,
     "inStock": true
   }
 ]

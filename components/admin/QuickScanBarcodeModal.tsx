@@ -388,6 +388,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const [customFinal, setCustomFinal] = useState("");
 
   // Lookup function for barcode in catalog and store overrides
+  // Lookup function for barcode in catalog and store overrides
   const findProductByBarcode = useCallback((barcode: string) => {
     const clean = barcode.trim();
     if (!clean) return null;
@@ -396,72 +397,101 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     const state = getAdminStoreState();
     const overrides = state.productOverrides || {};
 
-    // First search in local product overrides
-    for (const [prodId, override] of Object.entries(overrides)) {
-      if (override.variants) {
-        const vIdx = override.variants.findIndex(
-          (v) =>
-            (v.ean && v.ean.trim().toUpperCase() === cleanUpper) ||
-            (v.sku && v.sku.trim().toUpperCase() === cleanUpper)
-        );
-        if (vIdx !== -1) {
-          const baseProd = ALL_PRODUCTS.find((p) => p.id === prodId);
-          if (baseProd) {
-            return { product: { ...baseProd, ...override }, variantIndex: vIdx };
+    // Multi-candidate scanner tolerance (12-digit UPC, leading 0, or leading 8 on Italian barcodes)
+    const candidates = [cleanUpper];
+    if (/^\d{12}$/.test(cleanUpper)) {
+      candidates.push("0" + cleanUpper);
+      candidates.push("8" + cleanUpper);
+    } else if (/^\d{13}$/.test(cleanUpper)) {
+      candidates.push(cleanUpper.slice(1));
+    }
+
+    for (const code of candidates) {
+      // 1. Search in product overrides (including quick-registered products)
+      for (const [prodId, override] of Object.entries(overrides)) {
+        if (override.variants) {
+          const vIdx = override.variants.findIndex(
+            (v) =>
+              (v.ean && v.ean.trim().toUpperCase() === code) ||
+              (v.sku && v.sku.trim().toUpperCase() === code)
+          );
+          if (vIdx !== -1) {
+            const baseProd = ALL_PRODUCTS.find((p) => p.id === prodId);
+            if (baseProd) {
+              return { product: { ...baseProd, ...override }, variantIndex: vIdx };
+            }
+            if (override.name && override.variants) {
+              return { product: override as Product, variantIndex: vIdx };
+            }
+          }
+        }
+      }
+
+      // 2. Search in raw catalog variants & shades
+      for (const product of ALL_PRODUCTS) {
+        if (product.variants) {
+          const vIdx = product.variants.findIndex(
+            (v) =>
+              (v.ean && v.ean.trim().toUpperCase() === code) ||
+              (v.sku && v.sku.trim().toUpperCase() === code)
+          );
+          if (vIdx !== -1) {
+            const override = overrides[product.id];
+            return {
+              product: override ? { ...product, ...override } : product,
+              variantIndex: vIdx,
+            };
+          }
+        }
+
+        if (product.shades) {
+          const sIdx = product.shades.findIndex(
+            (s) => s.code && s.code.trim().toUpperCase() === code
+          );
+          if (sIdx !== -1) {
+            const override = overrides[product.id];
+            return {
+              product: override ? { ...product, ...override } : product,
+              variantIndex: sIdx,
+            };
+          }
+        }
+      }
+
+      // 3. Search in synchronized variantStocks
+      for (const vStock of Object.values(state.variantStocks || {})) {
+        if (
+          (vStock.ean && vStock.ean.trim().toUpperCase() === code) ||
+          (vStock.sku && vStock.sku.trim().toUpperCase() === code)
+        ) {
+          const prod = ALL_PRODUCTS.find((p) => p.id === vStock.productId);
+          if (prod) {
+            const vIdx = (prod.variants || []).findIndex((v) => v.id === vStock.variantId);
+            return {
+              product: overrides[prod.id] ? { ...prod, ...overrides[prod.id] } : prod,
+              variantIndex: vIdx >= 0 ? vIdx : 0,
+            };
+          }
+          const ovProd = overrides[vStock.productId];
+          if (ovProd && ovProd.name) {
+            const vIdx = (ovProd.variants || []).findIndex((v) => v.id === vStock.variantId);
+            return {
+              product: ovProd as Product,
+              variantIndex: vIdx >= 0 ? vIdx : 0,
+            };
           }
         }
       }
     }
 
-    // Search in raw catalog variants & shades
-    for (const product of ALL_PRODUCTS) {
-      if (product.variants) {
-        const vIdx = product.variants.findIndex(
-          (v) =>
-            (v.ean && v.ean.trim().toUpperCase() === cleanUpper) ||
-            (v.sku && v.sku.trim().toUpperCase() === cleanUpper)
-        );
-        if (vIdx !== -1) {
-          const override = overrides[product.id];
-          return {
-            product: override ? { ...product, ...override } : product,
-            variantIndex: vIdx,
-          };
-        }
-      }
-
-      if (product.shades) {
-        const sIdx = product.shades.findIndex(
-          (s) => s.code && s.code.trim().toUpperCase() === cleanUpper
-        );
-        if (sIdx !== -1) {
-          const override = overrides[product.id];
-          return {
-            product: override ? { ...product, ...override } : product,
-            variantIndex: sIdx,
-          };
-        }
+    // 4. Direct match in overrides by product ID or slug
+    for (const [prodId, override] of Object.entries(overrides)) {
+      if (prodId.toUpperCase() === cleanUpper || (override.slug && override.slug.toUpperCase() === cleanUpper)) {
+        return { product: override as Product, variantIndex: 0 };
       }
     }
 
-    // Search in synchronized variantStocks
-    for (const vStock of Object.values(state.variantStocks || {})) {
-      if (
-        (vStock.ean && vStock.ean.trim().toUpperCase() === cleanUpper) ||
-        (vStock.sku && vStock.sku.trim().toUpperCase() === cleanUpper)
-      ) {
-        const prod = ALL_PRODUCTS.find((p) => p.id === vStock.productId);
-        if (prod) {
-          const vIdx = (prod.variants || []).findIndex((v) => v.id === vStock.variantId);
-          return {
-            product: overrides[prod.id] ? { ...prod, ...overrides[prod.id] } : prod,
-            variantIndex: vIdx >= 0 ? vIdx : 0,
-          };
-        }
-      }
-    }
-
-    // Direct match by product ID or slug (e.g. from Test Cassa button on products without EAN)
+    // 5. Direct match in raw catalog by product ID or slug
     const directProd = ALL_PRODUCTS.find(
       (p) => p.id.toUpperCase() === cleanUpper || p.slug.toUpperCase() === cleanUpper
     );

@@ -290,8 +290,16 @@ export function getAdminStoreState(): SceltaAdminStoreState {
         }
       }
 
-      // 2. Add any newly defined variants from catalog that are missing in local storage cache
-      for (const prod of products) {
+      // 2. Add any newly defined variants from catalog & overrides that are missing in local storage cache
+      const allProductSources = [...products];
+      const baseIds = new Set(products.map(p => p.id));
+      for (const [ovId, ovProd] of Object.entries(overrides)) {
+        if (!baseIds.has(ovId) && ovProd && ovProd.variants) {
+          allProductSources.push(ovProd as Product);
+        }
+      }
+
+      for (const prod of allProductSources) {
         if (!prod.variants) continue;
         for (const v of prod.variants) {
           if (!parsed.variantStocks[v.id]) {

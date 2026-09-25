@@ -158,9 +158,9 @@ export default function ProductCatalogTable() {
     [stocksMap]
   );
 
-  // Products with applied overrides from admin store
+  // Products with applied overrides from admin store (including newly created items)
   const productsWithOverrides = useMemo(() => {
-    return ALL_PRODUCTS.map((product) => {
+    const baseList = ALL_PRODUCTS.map((product) => {
       const override = overridesMap[product.id];
       if (!override) return product;
       return {
@@ -170,6 +170,17 @@ export default function ProductCatalogTable() {
         images: override.images || product.images,
       };
     });
+
+    const baseIds = new Set(ALL_PRODUCTS.map((p) => p.id));
+    const extraProducts: Product[] = [];
+
+    for (const [id, override] of Object.entries(overridesMap)) {
+      if (!baseIds.has(id) && override && override.name && override.variants) {
+        extraProducts.push(override as Product);
+      }
+    }
+
+    return [...baseList, ...extraProducts];
   }, [overridesMap]);
 
   // Channel counts
@@ -265,7 +276,7 @@ export default function ProductCatalogTable() {
               Catalogo Prodotti & Giacenze
             </h1>
             <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#5E1788]/10 text-[#5E1788] border border-[#5E1788]/20">
-              {rawCatalog.length} Prodotti Totali (2.632 pz)
+              {productsWithOverrides.length} Prodotti Totali
             </span>
           </div>
           <p className="text-xs text-gray-500 mt-1">

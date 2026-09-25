@@ -23,6 +23,7 @@ import {
   createAdminOrder,
   SceltaAdminOrder,
   getAdminVariantStocks,
+  getProductOverrides,
 } from "@/lib/adminStore";
 
 interface NewManualOrderModalProps {
@@ -77,20 +78,36 @@ export default function NewManualOrderModal({
 
   // Catalog search filtering
   const matchingProducts = useMemo(() => {
+    const overrides = getProductOverrides();
+    const baseList = ALL_PRODUCTS.map((p) => {
+      const ov = overrides[p.id];
+      return ov ? { ...p, ...ov } : p;
+    });
+    const baseIds = new Set(ALL_PRODUCTS.map((p) => p.id));
+    const extra: Product[] = [];
+    for (const [id, ov] of Object.entries(overrides)) {
+      if (!baseIds.has(id) && ov && ov.name) {
+        extra.push(ov as Product);
+      }
+    }
+    const combined = [...baseList, ...extra];
     const q = searchCatalogQuery.trim().toLowerCase();
-    if (!q) return ALL_PRODUCTS.slice(0, 8);
+    if (!q) return combined.slice(0, 8);
 
-    return ALL_PRODUCTS.filter((p) =>
-      p.name.toLowerCase().includes(q) ||
-      p.brand.toLowerCase().includes(q) ||
-      p.category.toLowerCase().includes(q) ||
-      p.variants?.some(
-        (v) =>
-          v.sku.toLowerCase().includes(q) ||
-          v.name.toLowerCase().includes(q) ||
-          (v.ean && v.ean.includes(q))
+    return combined
+      .filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.brand.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q) ||
+          p.variants?.some(
+            (v) =>
+              v.sku.toLowerCase().includes(q) ||
+              v.name.toLowerCase().includes(q) ||
+              (v.ean && v.ean.includes(q))
+          )
       )
-    ).slice(0, 10);
+      .slice(0, 10);
   }, [searchCatalogQuery]);
 
   const handleAddItem = (product: Product, variantIndex: number = 0) => {
