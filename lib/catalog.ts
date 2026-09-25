@@ -31,14 +31,19 @@ function applyOverrides(baseProducts: Product[], overrides: Record<string, Parti
 }
 
 /**
- * Restituisce tutti i prodotti a catalogo sincronizzati con il cloud
+ * Restituisce i prodotti a catalogo sincronizzati con il cloud.
+ * Di default per lo storefront pubblico esclude i prodotti contrassegnati come "isLocalOnly: true" (Solo Negozio Fisico).
+ * Passando options: { includeLocalOnly: true } restituisce il catalogo integrale.
  */
-export async function getAllProducts(): Promise<Product[]> {
+export async function getAllProducts(options?: { includeLocalOnly?: boolean }): Promise<Product[]> {
   try {
     const central = await getCentralCatalogState();
-    return applyOverrides(rawCatalog as Product[], central.productOverrides || {});
+    const withOverrides = applyOverrides(rawCatalog as Product[], central.productOverrides || {});
+    if (options?.includeLocalOnly) return withOverrides;
+    return withOverrides.filter((p) => !p.isLocalOnly);
   } catch {
-    return catalog;
+    if (options?.includeLocalOnly) return catalog;
+    return catalog.filter((p) => !p.isLocalOnly);
   }
 }
 

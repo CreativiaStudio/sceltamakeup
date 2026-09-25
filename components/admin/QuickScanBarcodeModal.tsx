@@ -30,6 +30,8 @@ import {
   Trash2,
   ArrowLeft,
   ArrowRight,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import rawCatalog from "@/data/catalog.json";
 import { Product, ProductCategory } from "@/types/product";
@@ -2318,6 +2320,45 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                         <span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-[9px] font-semibold">
                           {matchedProduct.category}
                         </span>
+
+                        {/* 1-Click E-Commerce Visibility Toggle (Online vs Solo Negozio) */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (!matchedProduct) return;
+                            const nextState = !matchedProduct.isLocalOnly;
+                            setMatchedProduct({ ...matchedProduct, isLocalOnly: nextState });
+                            updateProductDetails(matchedProduct.id, { isLocalOnly: nextState });
+                            setSuccessToast(
+                              nextState
+                                ? "🏬 Prodotto impostato su: SOLO NEGOZIO (Nascosto dall'e-commerce pubblico)"
+                                : "🌐 Prodotto reso: VISIBILE SULL'E-COMMERCE E IN NEGOZIO"
+                            );
+                            setTimeout(() => setSuccessToast(null), 2500);
+                          }}
+                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold transition-all shadow-2xs cursor-pointer active:scale-95 ${
+                            matchedProduct.isLocalOnly
+                              ? "bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300"
+                              : "bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200"
+                          }`}
+                          title={
+                            matchedProduct.isLocalOnly
+                              ? "Attualmente: SOLO NEGOZIO FISICO (Nascosto dall'e-commerce). Clicca per pubblicarlo online!"
+                              : "Attualmente: ONLINE SU E-COMMERCE. Clicca per renderlo Solo Locale (nascosto dall'e-commerce)!"
+                          }
+                        >
+                          {matchedProduct.isLocalOnly ? (
+                            <>
+                              <EyeOff className="w-2.5 h-2.5 text-amber-600 shrink-0" />
+                              <span>Solo Negozio (Nascosto Online)</span>
+                            </>
+                          ) : (
+                            <>
+                              <Eye className="w-2.5 h-2.5 text-emerald-600 shrink-0" />
+                              <span>Online E-commerce</span>
+                            </>
+                          )}
+                        </button>
                       </div>
 
                       {/* Product Name (Inline Editable) */}

@@ -16,6 +16,8 @@ import {
   Palette,
   Star,
   Sparkles,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { Product, ProductCategory, ProductVariant, Shade } from "@/types/product";
 import {
@@ -153,6 +155,7 @@ function ProductEditorModalDialog({
       brand: merged.brand || "Diego dalla Palma",
       category: (merged.category as ProductCategory) || "Viso",
       price: merged.price || 0,
+      isLocalOnly: merged.isLocalOnly ?? false,
       shortDescription: merged.shortDescription || "",
       description: merged.description || "",
       howToUse: merged.howToUse || "",
@@ -303,6 +306,7 @@ function ProductEditorModalDialog({
       brand: formData.brand,
       category: formData.category,
       price: formData.price,
+      isLocalOnly: formData.isLocalOnly,
       shortDescription: formData.shortDescription.trim(),
       description: formData.description.trim(),
       howToUse: formData.howToUse.trim(),
@@ -561,6 +565,40 @@ function ProductEditorModalDialog({
           {/* TAB 2: TEXTS & COSMETIC SHEET */}
           {activeTab === "texts" && (
             <div className="space-y-4 animate-in fade-in duration-150">
+              {/* E-Commerce Visibility / Solo Locale Banner Toggle */}
+              <div className="p-3.5 bg-[#FAF7FC] rounded-2xl border border-purple-200 flex items-center justify-between gap-3">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    {formData.isLocalOnly ? (
+                      <EyeOff className="w-4 h-4 text-amber-600 shrink-0" />
+                    ) : (
+                      <Eye className="w-4 h-4 text-emerald-600 shrink-0" />
+                    )}
+                    <span className="text-xs font-bold text-[#1F1B24]">
+                      {formData.isLocalOnly
+                        ? "Vendita Esclusiva in Negozio Fisico (Nascosto online)"
+                        : "Visibile su E-commerce e in Negozio"}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-gray-500">
+                    {formData.isLocalOnly
+                      ? "Il prodotto non compare nel catalogo pubblico e non può essere acquistato online dai clienti."
+                      : "Il prodotto è normalmente acquistabile sia online sullo storefront che alla cassa del negozio."}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setFormData((prev) => ({ ...prev, isLocalOnly: !prev.isLocalOnly }))}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer ${
+                    formData.isLocalOnly
+                      ? "bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300"
+                      : "bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200"
+                  }`}
+                >
+                  {formData.isLocalOnly ? "Pubblica su E-commerce" : "Imposta Solo Locale"}
+                </button>
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* Product Name */}
                 <div className="sm:col-span-2 space-y-1">

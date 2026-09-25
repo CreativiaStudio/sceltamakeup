@@ -53,6 +53,7 @@ export interface Product {
   variants: ProductVariant[];
   images: string[];
   isFeatured?: boolean;
+  isLocalOnly?: boolean; // Se true, venduto solo in negozio/salone fisico ed escluso dall'e-commerce pubblico
   tags?: string[];
   texture?: string;
   coverage?: string;

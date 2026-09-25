@@ -11,6 +11,9 @@ import {
   ChevronRight,
   AlertTriangle,
   Barcode,
+  Eye,
+  EyeOff,
+  Sparkles,
 } from "lucide-react";
 import rawCatalog from "@/data/catalog.json";
 import { Product } from "@/types/product";
@@ -19,6 +22,7 @@ import {
   computeStockStatus,
   SceltaVariantStock,
   getProductOverrides,
+  updateProductDetails,
 } from "@/lib/adminStore";
 import ProductEditorModal from "./ProductEditorModal";
 
@@ -48,6 +52,8 @@ export default function ProductCatalogTable() {
   const [selectedBrand, setSelectedBrand] = useState("Tutti");
   const [selectedCategory, setSelectedCategory] = useState("Tutte");
   const [selectedStockStatus, setSelectedStockStatus] = useState<"all" | "available" | "low_stock" | "out_of_stock">("all");
+  const [selectedChannel, setSelectedChannel] = useState<"all" | "online" | "local_only">("all");
+  const [actionFeedback, setActionFeedback] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
 
@@ -77,6 +83,19 @@ export default function ProductCatalogTable() {
     };
   }, [refreshStocks]);
 
+  // 1-Click Toggle E-Commerce Online vs Solo Negozio Locale
+  const handleToggleLocalOnly = (product: Product, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const nextLocalOnly = !product.isLocalOnly;
+    updateProductDetails(product.id, { isLocalOnly: nextLocalOnly });
+    setActionFeedback(
+      nextLocalOnly
+        ? `🏬 "${product.name.slice(0, 22)}..." impostato come SOLO NEGOZIO (nascosto dall'e-commerce)`
+        : `🌐 "${product.name.slice(0, 22)}..." pubblicato sull'E-COMMERCE!`
+    );
+    setTimeout(() => setActionFeedback(null), 2800);
+  };
+
   // Handlers that reset pagination to page 1
   const handleSearchChange = (val: string) => {
     setSearchQuery(val);
@@ -95,6 +114,11 @@ export default function ProductCatalogTable() {
 
   const handleStockStatusSelect = (status: "all" | "available" | "low_stock" | "out_of_stock") => {
     setSelectedStockStatus(status);
+    setCurrentPage(1);
+  };
+
+  const handleChannelSelect = (channel: "all" | "online" | "local_only") => {
+    setSelectedChannel(channel);
     setCurrentPage(1);
   };
 
@@ -148,11 +172,29 @@ export default function ProductCatalogTable() {
     });
   }, [overridesMap]);
 
+  // Channel counts
+  const onlineCount = useMemo(
+    () => productsWithOverrides.filter((p) => !p.isLocalOnly).length,
+    [productsWithOverrides]
+  );
+  const localOnlyCount = useMemo(
+    () => productsWithOverrides.filter((p) => p.isLocalOnly).length,
+    [productsWithOverrides]
+  );
+
   // Filtered products
   const filteredProducts = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
 
     return productsWithOverrides.filter((product) => {
+      // Channel filter (online vs local only)
+      if (selectedChannel === "online" && product.isLocalOnly) {
+        return false;
+      }
+      if (selectedChannel === "local_only" && !product.isLocalOnly) {
+        return false;
+      }
+
       // Brand filter
       if (selectedBrand !== "Tutti") {
         const matchesBrand =
@@ -198,7 +240,7 @@ export default function ProductCatalogTable() {
 
       return true;
     });
-  }, [searchQuery, selectedBrand, selectedCategory, selectedStockStatus, getProductStockSummary]);
+  }, [productsWithOverrides, selectedChannel, searchQuery, selectedBrand, selectedCategory, selectedStockStatus, getProductStockSummary]);
 
   // Pagination calculation
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage) || 1;
@@ -311,7 +353,56 @@ export default function ProductCatalogTable() {
               <span>Esauriti</span>
             </button>
           </div>
+
+          {/* E-Commerce Channel Selector */}
+          <div className="flex items-center gap-1 shrink-0 bg-gray-50 p-1 rounded-xl border border-gray-200">
+            <button
+              type="button"
+              onClick={() => handleChannelSelect("all")}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                selectedChannel === "all"
+                  ? "bg-white text-[#5E1788] shadow-sm font-semibold"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              Tutti i canali
+            </button>
+            <button
+              type="button"
+              onClick={() => handleChannelSelect("online")}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
+                selectedChannel === "online"
+                  ? "bg-white text-emerald-700 shadow-sm font-semibold"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+              title="Prodotti visibili sull'e-commerce"
+            >
+              <Eye className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Online ({onlineCount})</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleChannelSelect("local_only")}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
+                selectedChannel === "local_only"
+                  ? "bg-white text-amber-700 shadow-sm font-semibold"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+              title="Prodotti venduti solo in negozio (nascosti dall'e-commerce)"
+            >
+              <EyeOff className="w-3.5 h-3.5 text-amber-600" />
+              <span>Solo Negozio ({localOnlyCount})</span>
+            </button>
+          </div>
         </div>
+
+        {/* 1-Click Action Feedback Notification */}
+        {actionFeedback && (
+          <div className="p-2.5 bg-purple-50 border border-purple-200 rounded-xl text-xs font-semibold text-[#5E1788] flex items-center gap-2 animate-in fade-in">
+            <Sparkles className="w-4 h-4 text-[#5E1788] shrink-0" />
+            <span>{actionFeedback}</span>
+          </div>
+        )}
 
         {/* Brand Filter Pills */}
         <div className="pt-2 border-t border-gray-100 flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
@@ -373,13 +464,14 @@ export default function ProductCatalogTable() {
                 <th className="py-3 px-4">Prezzo</th>
                 <th className="py-3 px-4">Varianti / Tonalità</th>
                 <th className="py-3 px-4">Giacenza Totale</th>
+                <th className="py-3 px-4 text-center">Canale</th>
                 <th className="py-3 px-4 text-right">Azioni</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 text-xs">
               {paginatedProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-gray-400">
+                  <td colSpan={7} className="py-12 text-center text-gray-400">
                     Nessun prodotto trovato per i filtri selezionati.
                   </td>
                 </tr>
@@ -495,6 +587,36 @@ export default function ProductCatalogTable() {
                         </div>
                       </td>
 
+                      {/* Canale Vendita: Online vs Solo Negozio Locale (1-Click Toggle) */}
+                      <td className="py-3.5 px-4 text-center">
+                        <button
+                          type="button"
+                          onClick={(e) => handleToggleLocalOnly(product, e)}
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer active:scale-95 ${
+                            product.isLocalOnly
+                              ? "bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300"
+                              : "bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200"
+                          }`}
+                          title={
+                            product.isLocalOnly
+                              ? "Attualmente: SOLO NEGOZIO FISICO (Nascosto dall'e-commerce). Clicca per renderlo visibile online con 1 click!"
+                              : "Attualmente: VISIBILE SU E-COMMERCE. Clicca per toglierlo dall'e-commerce (Solo Locale) con 1 click!"
+                          }
+                        >
+                          {product.isLocalOnly ? (
+                            <>
+                              <EyeOff className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                              <span>Solo Locale</span>
+                            </>
+                          ) : (
+                            <>
+                              <Eye className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                              <span>Online</span>
+                            </>
+                          )}
+                        </button>
+                      </td>
+
                       {/* Actions */}
                       <td className="py-3.5 px-4 text-right">
                         <div className="flex items-center justify-end gap-2">
@@ -531,8 +653,16 @@ export default function ProductCatalogTable() {
                           <Link
                             href={`/prodotti/${product.slug}`}
                             target="_blank"
-                            className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-                            title="Vedi nello storefront pubblico"
+                            className={`p-1.5 rounded-lg transition-colors ${
+                              product.isLocalOnly
+                                ? "text-gray-300 opacity-40 cursor-not-allowed pointer-events-none"
+                                : "text-gray-400 hover:text-gray-700 hover:bg-gray-100"
+                            }`}
+                            title={
+                              product.isLocalOnly
+                                ? "Prodotto nascosto dall'e-commerce pubblico (Solo Locale)"
+                                : "Vedi nello storefront pubblico"
+                            }
                           >
                             <ExternalLink className="w-4 h-4" />
                           </Link>
