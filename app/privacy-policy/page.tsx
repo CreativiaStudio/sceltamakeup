@@ -58,10 +58,10 @@ export default function PrivacyPolicyPage() {
               Scelta Makeup raccoglie e tratta esclusivamente i dati necessari per la gestione degli ordini e-commerce, delle prenotazioni dei servizi in atelier e per la corretta navigazione del sito:
             </p>
             <ul className="list-disc pl-6 space-y-2 mt-2">
-              <li><strong>Dati di Spedizione e Fatturazione:</strong> Nome, Cognome, Indirizzo di consegna, CAP, Città, Numero di Telefono ed Email per l'invio della merce e delle ricevute contabili.</li>
+              <li><strong>Dati di Spedizione e Fatturazione:</strong> Nome, Cognome, Indirizzo di consegna, CAP, Città, Numero di Telefono ed Email per l&apos;invio della merce e delle ricevute contabili.</li>
               <li><strong>Dati di Prenotazione Servizi Cabina:</strong> Nome, Telefono ed eventuali note fornite spontaneamente per il servizio make-up o consulenza estetica richiesta.</li>
               <li><strong>Dati di Pagamento:</strong> Le transazioni elettroniche sono gestite in modo crittografato conforme a PCI-DSS tramite il gateway sicuro <strong>Stripe</strong>. Nessun dato relativo a numeri completi di carte di credito viene salvato sui nostri server.</li>
-              <li><strong>Dati Tecnici di Navigazione:</strong> Indirizzo IP anonimizzato, log di sistema per la prevenzione frodi e sicurezza dell'infrastruttura.</li>
+              <li><strong>Dati Tecnici di Navigazione:</strong> Indirizzo IP anonimizzato, log di sistema per la prevenzione frodi e sicurezza dell&apos;infrastruttura.</li>
             </ul>
           </section>
 
@@ -73,7 +73,7 @@ export default function PrivacyPolicyPage() {
             <ul className="list-disc pl-6 space-y-2 mt-2">
               <li><strong>Esecuzione del Contratto (Art. 6.1.b GDPR):</strong> Spedizione dei prodotti ordinati, ritiro in salone a Napoli ed erogazione dei trattamenti prenotati.</li>
               <li><strong>Adempimento di Obblighi di Legge (Art. 6.1.c GDPR):</strong> Emissione dello scontrino fiscale/documento commerciale di cassa RT Epson e adempimenti fiscali.</li>
-              <li><strong>Notifiche Transazionali:</strong> Invio via email (Resend) e WhatsApp dei riepiloghi d'ordine e dei promemoria appuntamento 24h prima per contrastare i no-show.</li>
+              <li><strong>Notifiche Transazionali:</strong> Invio via email (Resend) e WhatsApp dei riepiloghi d&apos;ordine e dei promemoria appuntamento 24h prima per contrastare i no-show.</li>
               <li><strong>Legittimo Interesse (Art. 6.1.f GDPR):</strong> Tutela e sicurezza della piattaforma da accessi non autorizzati e abusi.</li>
             </ul>
           </section>
@@ -82,7 +82,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="font-serif text-lg font-bold text-[#5E1788] uppercase tracking-wider mb-2">
               4. Destinatari dei Dati e Terze Parti
             </h2>
-            <p>Per l'espletamento dei servizi, i dati possono essere comunicati a soggetti terzi di comprovata affidabilità:</p>
+            <p>Per l&apos;espletamento dei servizi, i dati possono essere comunicati a soggetti terzi di comprovata affidabilità:</p>
             <ul className="list-disc pl-6 space-y-2 mt-2">
               <li><strong>Corrieri Espressi e Vettori Logistici:</strong> per la consegna a domicilio dei prodotti cosmetici.</li>
               <li><strong>Fornitori di Servizi Tecnologici:</strong> Vercel (hosting e CDN del sito), Supabase (database isolato e protetto), Stripe (infrastruttura di pagamento), Resend (posta transazionale).</li>
@@ -94,16 +94,16 @@ export default function PrivacyPolicyPage() {
               5. Periodo di Conservazione dei Dati
             </h2>
             <p>
-              I dati contabili e di fatturazione sono conservati per 10 anni in ottemperanza agli obblighi civilistici e fiscali italiani. I dati di contatto per prenotazioni e notifiche ordini vengono conservati per il tempo strettamente necessario all'esecuzione del servizio.
+              I dati contabili e di fatturazione sono conservati per 10 anni in ottemperanza agli obblighi civilistici e fiscali italiani. I dati di contatto per prenotazioni e notifiche ordini vengono conservati per il tempo strettamente necessario all&apos;esecuzione del servizio.
             </p>
           </section>
 
           <section>
             <h2 className="font-serif text-lg font-bold text-[#5E1788] uppercase tracking-wider mb-2">
-              6. Diritti dell'Interessato (Artt. 15-22 GDPR)
+              6. Diritti dell&apos;Interessato (Artt. 15-22 GDPR)
             </h2>
             <p>
-              In ogni momento puoi esercitare i tuoi diritti: accesso ai dati, rettifica, cancellazione (diritto all'oblio), limitazione del trattamento, portabilità dei dati o revoca del consenso inviando una comunicazione a:{" "}
+              In ogni momento puoi esercitare i tuoi diritti: accesso ai dati, rettifica, cancellazione (diritto all&apos;oblio), limitazione del trattamento, portabilità dei dati o revoca del consenso inviando una comunicazione a:{" "}
               <a href="mailto:info@sceltamakeup.it" className="text-[#5E1788] font-medium underline">
                 info@sceltamakeup.it
               </a>.
@@ -117,7 +117,7 @@ export default function PrivacyPolicyPage() {
             className="inline-flex items-center gap-2 bg-[#5E1788] text-white px-8 py-3.5 rounded-full text-xs font-semibold uppercase tracking-wider hover:bg-[#7A3293] transition-all shadow-md"
           >
             <ArrowLeft size={16} />
-            <span>Torna all'E-commerce</span>
+            <span>Torna all&apos;E-commerce</span>
           </Link>
         </div>
       </div>

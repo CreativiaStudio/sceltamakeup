@@ -17,8 +17,6 @@ export interface DailyVisitorStats {
   cities: Record<string, number>;
 }
 
-const STORAGE_ANALYTICS_KEY = "scelta_analytics_local_summary_v1";
-
 /**
  * Client-side visit tracker helper that dispatches to /api/track/visit
  */
@@ -55,7 +53,7 @@ export async function trackPageView(path?: string): Promise<void> {
       body: JSON.stringify(payload),
       keepalive: true,
     });
-  } catch (err) {
+  } catch {
     // Silently continue
   }
 }

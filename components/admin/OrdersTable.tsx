@@ -16,7 +16,6 @@ import {
   Printer,
   Plus,
   Receipt,
-  CreditCard,
 } from "lucide-react";
 import {
   getAdminOrders,

@@ -2,14 +2,12 @@
 
 import React from "react";
 import {
-  CreditCard,
   ShieldCheck,
   Lock,
   Sparkles,
   Store,
   Check,
   Clock,
-  ArrowRight,
 } from "lucide-react";
 import type { PaymentMethod, DeliveryMethod } from "@/types/order";
 import {

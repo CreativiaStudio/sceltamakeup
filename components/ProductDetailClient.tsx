@@ -41,6 +41,14 @@ export default function ProductDetailClient({
     };
   });
 
+  const [selectedShade, setSelectedShade] = useState<Shade | null>(
+    product.shades && product.shades.length > 0 ? product.shades[0] : null
+  );
+
+  const [activeImage, setActiveImage] = useState<string>(
+    selectedShade?.image || product.images[0] || "/brand/logo.png"
+  );
+
   useEffect(() => {
     const applyOverride = () => {
       const override = getProductOverride(initialProduct.id);
@@ -71,13 +79,6 @@ export default function ProductDetailClient({
       window.removeEventListener("scelta_admin_store_reset", applyOverride);
     };
   }, [initialProduct]);
-  const [selectedShade, setSelectedShade] = useState<Shade | null>(
-    product.shades && product.shades.length > 0 ? product.shades[0] : null
-  );
-
-  const [activeImage, setActiveImage] = useState<string>(
-    selectedShade?.image || product.images[0] || "/brand/logo.png"
-  );
 
   const [viewMode, setViewMode] = useState<"packshot" | "texture">("packshot");
   const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});

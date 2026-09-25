@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShieldCheck, Settings, Check, X, ChevronDown, ChevronUp, Lock } from "lucide-react";
+import { ShieldCheck, Settings, Check, X, Lock } from "lucide-react";
 
 export function generateId(prefix: string) {
   return prefix + "_" + Math.random().toString(36).substring(2, 11) + Date.now().toString(36);
@@ -23,6 +23,9 @@ export default function CookieBanner() {
   });
 
   useEffect(() => {
+    // Inizializzazione client-side one-shot: localStorage non è disponibile in SSR,
+    // quindi i setState avvengono qui al mount (pattern SSR-safe controllato).
+    /* eslint-disable react-hooks/set-state-in-effect */
     // 1. Inizializza o recupera Visitor ID
     let currentVid = localStorage.getItem("scelta_visitor_id");
     if (!currentVid) {
@@ -40,7 +43,7 @@ export default function CookieBanner() {
         if (parsed.categories) {
           setCategories(parsed.categories);
         }
-      } catch (e) {
+      } catch {
         setShowBanner(true);
       }
     } else {
@@ -48,6 +51,7 @@ export default function CookieBanner() {
       setConsentId(newCid);
       setShowBanner(true);
     }
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     // 3. Listener globale per consentire la riapertura del banner da link nel footer ("Preferenze Cookie")
     const handleReopen = () => {

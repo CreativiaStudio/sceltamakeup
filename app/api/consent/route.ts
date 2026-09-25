@@ -28,13 +28,14 @@ export async function POST(req: Request) {
             created_at: timestamp || new Date().toISOString(),
           }),
         });
-      } catch (dbErr) {
+      } catch {
         // Fallback silently if table not yet created
       }
     }
 
     return NextResponse.json({ success: true, consentId });
-  } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 400 });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Richiesta non valida";
+    return NextResponse.json({ success: false, error: message }, { status: 400 });
   }
 }

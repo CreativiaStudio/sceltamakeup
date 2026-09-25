@@ -22,14 +22,10 @@ import {
   Pencil,
   Check,
   BadgePercent,
-  Percent,
   Link as LinkIcon,
-  Cloud,
   Sparkles,
   Receipt,
   Trash2,
-  ArrowLeft,
-  ArrowRight,
   Eye,
   EyeOff,
 } from "lucide-react";
@@ -326,9 +322,12 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const [isMultiCheckingOut, setIsMultiCheckingOut] = useState(false);
 
   useEffect(() => {
+    // Sincronizza il contante proposto quando cambia il totale dello scontrino.
+    /* eslint-disable react-hooks/set-state-in-effect */
     if (multiTotal > 0 && (!multiCashTendered || parseFloat(multiCashTendered) < multiTotal)) {
       setMultiCashTendered(multiTotal.toFixed(2));
     }
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [multiTotal, multiCashTendered]);
 
   const [scannedBarcode, setScannedBarcode] = useState<string>("");
@@ -376,7 +375,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
 
   // Base List Price Direct Editing & Instant Cloud Auto-Sync
   const [priceEditValue, setPriceEditValue] = useState("");
-  const [isUpdatingPrice, setIsUpdatingPrice] = useState(false);
+  const [, setIsUpdatingPrice] = useState(false);
   const priceDebounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Estemporaneous Counter Discount (current sale only)
@@ -508,6 +507,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
 
   // Sync current stock, price edit value & title when matched product/variant changes
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
     if (matchedProduct) {
       if (matchedProduct.variants) {
         const v = matchedProduct.variants[matchedVariantIndex];
@@ -523,6 +523,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       setTitleEditValue(matchedProduct.name);
       setIsEditingTitle(false);
     }
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [matchedProduct, matchedVariantIndex]);
 
   // Handle Barcode Scan from any hardware reader or manual trigger

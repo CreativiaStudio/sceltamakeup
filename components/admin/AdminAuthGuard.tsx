@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { Lock, Unlock, KeyRound, ShieldAlert, ArrowLeft, Eye, EyeOff, Store, LogOut } from "lucide-react";
+import { Lock, KeyRound, ShieldAlert, ArrowLeft, Eye, EyeOff, Store } from "lucide-react";
 
 const STORAGE_AUTH_KEY = "scelta_admin_unlocked_session";
 
@@ -38,7 +37,7 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
             return;
           }
         }
-      } catch (e) {
+      } catch {
         // Ignora
       }
 
@@ -47,13 +46,6 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
 
     checkAuth();
   }, []);
-
-  // Invio automatico del PIN appena si raggiungono 4 cifre
-  useEffect(() => {
-    if (pin.length === 4 && mode === "pin") {
-      handleLogin();
-    }
-  }, [pin]);
 
   const handleKeyPress = (digit: string) => {
     setErrorMsg("");
@@ -72,7 +64,12 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
     setPin("");
   };
 
-  const handleLogin = async () => {
+  const triggerShake = useCallback(() => {
+    setShake(true);
+    setTimeout(() => setShake(false), 500);
+  }, []);
+
+  const handleLogin = useCallback(async () => {
     setIsSubmitting(true);
     setErrorMsg("");
 
@@ -96,24 +93,30 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
         setErrorMsg(data.error || "Credenziali non corrette");
         if (mode === "pin") setPin("");
       }
-    } catch (err: any) {
+    } catch {
       triggerShake();
       setErrorMsg("Errore di connessione al server");
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [mode, pin, password, triggerShake]);
 
-  const triggerShake = () => {
-    setShake(true);
-    setTimeout(() => setShake(false), 500);
-  };
+  // Invio automatico del PIN appena si raggiungono 4 cifre
+  useEffect(() => {
+    if (pin.length === 4 && mode === "pin") {
+      // Flusso di autenticazione asincrono volutamente innescato al completamento del PIN.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      handleLogin();
+    }
+  }, [pin, mode, handleLogin]);
 
   const handleLock = async () => {
     sessionStorage.removeItem(STORAGE_AUTH_KEY);
     try {
       await fetch("/api/admin/auth", { method: "DELETE" });
-    } catch (e) {}
+    } catch {
+      // Ignora
+    }
     setIsAuthenticated(false);
     setPin("");
     setPassword("");

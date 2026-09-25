@@ -7025,16 +7025,6 @@
         "price": 15,
         "inStock": true,
         "stock": 16
-      },
-      {
-        "id": "var-pf01631-box",
-        "name": "Cofanetto 8 pz",
-        "code": "PF01631",
-        "hex": "#E5E5E5",
-        "image": "/products/ddp-pf01631.webp",
-        "price": 120,
-        "inStock": true,
-        "stock": 2
       }
     ],
     "variants": [
@@ -7049,18 +7039,6 @@
         "price": 15,
         "originalWholesalePrice": 2.25,
         "stock": 16
-      },
-      {
-        "id": "var-pf01631-box",
-        "name": "Cofanetto Display 8 pz",
-        "sku": "PF01631",
-        "ean": "8023264527887",
-        "colorHex": null,
-        "image": "/products/ddp-pf01631.webp",
-        "inStock": true,
-        "price": 120,
-        "originalWholesalePrice": 18,
-        "stock": 2
       }
     ],
     "stock": 16,
@@ -9817,7 +9795,7 @@
         "code": "8024523475024",
         "hex": "#FAF7FC",
         "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
-        "price": 8.5,
+        "price": 8.9,
         "inStock": true,
         "stock": 3
       },
@@ -9827,7 +9805,7 @@
         "code": "8024523485344",
         "hex": "#FAF7FC",
         "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
-        "price": 8.5,
+        "price": 8.9,
         "inStock": true,
         "stock": 3
       },
@@ -9837,7 +9815,7 @@
         "code": "8024523485252",
         "hex": "#FAF7FC",
         "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
-        "price": 8.5,
+        "price": 8.9,
         "inStock": true,
         "stock": 3
       },
@@ -9847,7 +9825,7 @@
         "code": "2500000013119",
         "hex": "#FAF7FC",
         "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
-        "price": 8.5,
+        "price": 8.9,
         "inStock": true,
         "stock": 3
       }
@@ -9873,7 +9851,7 @@
         "colorHex": null,
         "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
         "inStock": true,
-        "price": 8.5,
+        "price": 8.9,
         "originalWholesalePrice": 3.3,
         "stock": 3
       },
@@ -9885,7 +9863,7 @@
         "colorHex": null,
         "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
         "inStock": true,
-        "price": 8.5,
+        "price": 8.9,
         "originalWholesalePrice": 3.3,
         "stock": 3
       },
@@ -9897,7 +9875,7 @@
         "colorHex": null,
         "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
         "inStock": true,
-        "price": 8.5,
+        "price": 8.9,
         "originalWholesalePrice": 3.3,
         "stock": 3
       },
@@ -9909,7 +9887,7 @@
         "colorHex": null,
         "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me-01-blink-blink.jpg",
         "inStock": true,
-        "price": 8.5,
+        "price": 8.9,
         "originalWholesalePrice": 3.3,
         "stock": 3
       }
@@ -10679,7 +10657,7 @@
         "code": "5903416037873",
         "hex": "#FAF7FC",
         "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-waterproof-eyeliner-pencil.jpg",
-        "price": 7.9,
+        "price": 9.4,
         "inStock": true,
         "stock": 6
       }
@@ -10765,7 +10743,7 @@
         "colorHex": null,
         "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-waterproof-eyeliner-pencil.jpg",
         "inStock": true,
-        "price": 7.9,
+        "price": 9.4,
         "originalWholesalePrice": 3.1,
         "stock": 6
       }
@@ -11977,7 +11955,7 @@
         "code": "3700467825570",
         "hex": "#FAF7FC",
         "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
-        "price": 14.9,
+        "price": 12.9,
         "inStock": true,
         "stock": 3
       },
@@ -11987,7 +11965,7 @@
         "code": "3700467827130",
         "hex": "#FAF7FC",
         "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
-        "price": 14.9,
+        "price": 12.9,
         "inStock": true,
         "stock": 3
       },
@@ -11997,7 +11975,7 @@
         "code": "3700467840498",
         "hex": "#FAF7FC",
         "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
-        "price": 14.9,
+        "price": 12.9,
         "inStock": true,
         "stock": 3
       },
@@ -12007,7 +11985,7 @@
         "code": "3700467840511",
         "hex": "#FAF7FC",
         "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
-        "price": 14.9,
+        "price": 12.9,
         "inStock": true,
         "stock": 3
       },
@@ -12017,7 +11995,7 @@
         "code": "3700467840535",
         "hex": "#FAF7FC",
         "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
-        "price": 14.9,
+        "price": 12.9,
         "inStock": true,
         "stock": 3
       }
@@ -12127,7 +12105,7 @@
         "colorHex": null,
         "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
         "inStock": true,
-        "price": 14.9,
+        "price": 12.9,
         "originalWholesalePrice": 5.52,
         "stock": 3
       },
@@ -12139,7 +12117,7 @@
         "colorHex": null,
         "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
         "inStock": true,
-        "price": 14.9,
+        "price": 12.9,
         "originalWholesalePrice": 5.52,
         "stock": 3
       },
@@ -12151,7 +12129,7 @@
         "colorHex": null,
         "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
         "inStock": true,
-        "price": 14.9,
+        "price": 12.9,
         "originalWholesalePrice": 5.52,
         "stock": 3
       },
@@ -12163,7 +12141,7 @@
         "colorHex": null,
         "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
         "inStock": true,
-        "price": 14.9,
+        "price": 12.9,
         "originalWholesalePrice": 5.52,
         "stock": 3
       },
@@ -12175,7 +12153,7 @@
         "colorHex": null,
         "image": "/products/miyo-miyo-cosmetics-palette-five-points-vegan.jpg",
         "inStock": true,
-        "price": 14.9,
+        "price": 12.9,
         "originalWholesalePrice": 5.52,
         "stock": 3
       }
@@ -12673,7 +12651,7 @@
         "code": "3700467838587",
         "hex": "#FAF7FC",
         "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me.jpg",
-        "price": 9.5,
+        "price": 9.9,
         "inStock": true,
         "stock": 3
       }
@@ -12747,7 +12725,7 @@
         "colorHex": null,
         "image": "/products/miyo-miyo-cosmetics-pigmenti-sprinkle-me.jpg",
         "inStock": true,
-        "price": 9.5,
+        "price": 9.9,
         "originalWholesalePrice": 3.4,
         "stock": 3
       }
@@ -13993,7 +13971,7 @@
         "code": "3700467845998",
         "hex": "#FAF7FC",
         "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
-        "price": 7.5,
+        "price": 7.9,
         "inStock": true,
         "stock": 6
       },
@@ -14003,7 +13981,7 @@
         "code": "3700467850268",
         "hex": "#FAF7FC",
         "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
-        "price": 7.5,
+        "price": 7.9,
         "inStock": true,
         "stock": 6
       },
@@ -14013,7 +13991,7 @@
         "code": "3700467850282",
         "hex": "#FAF7FC",
         "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
-        "price": 7.5,
+        "price": 7.9,
         "inStock": true,
         "stock": 6
       },
@@ -14023,7 +14001,7 @@
         "code": "3700467853801",
         "hex": "#FAF7FC",
         "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
-        "price": 7.5,
+        "price": 7.9,
         "inStock": true,
         "stock": 6
       }
@@ -14109,7 +14087,7 @@
         "colorHex": null,
         "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
         "inStock": true,
-        "price": 7.5,
+        "price": 7.9,
         "originalWholesalePrice": 2.6,
         "stock": 6
       },
@@ -14121,7 +14099,7 @@
         "colorHex": null,
         "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
         "inStock": true,
-        "price": 7.5,
+        "price": 7.9,
         "originalWholesalePrice": 2.6,
         "stock": 6
       },
@@ -14133,7 +14111,7 @@
         "colorHex": null,
         "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
         "inStock": true,
-        "price": 7.5,
+        "price": 7.9,
         "originalWholesalePrice": 2.6,
         "stock": 6
       },
@@ -14145,7 +14123,7 @@
         "colorHex": null,
         "image": "/products/miyo-miyo-cosmetics-lip-contour-scriber.jpg",
         "inStock": true,
-        "price": 7.5,
+        "price": 7.9,
         "originalWholesalePrice": 2.6,
         "stock": 6
       }
@@ -14331,7 +14309,7 @@
         "code": "5903416066064",
         "hex": "#FAF7FC",
         "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
-        "price": 7.9,
+        "price": 9.5,
         "inStock": true,
         "stock": 6
       },
@@ -14341,7 +14319,7 @@
         "code": "5903416080381",
         "hex": "#FAF7FC",
         "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
-        "price": 7.9,
+        "price": 9.5,
         "inStock": true,
         "stock": 6
       },
@@ -14351,7 +14329,7 @@
         "code": "5903416080398",
         "hex": "#FAF7FC",
         "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
-        "price": 7.9,
+        "price": 9.5,
         "inStock": true,
         "stock": 6
       }
@@ -14437,7 +14415,7 @@
         "colorHex": null,
         "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
         "inStock": true,
-        "price": 7.9,
+        "price": 9.5,
         "originalWholesalePrice": 3.1,
         "stock": 6
       },
@@ -14449,7 +14427,7 @@
         "colorHex": null,
         "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
         "inStock": true,
-        "price": 7.9,
+        "price": 9.5,
         "originalWholesalePrice": 3.1,
         "stock": 6
       },
@@ -14461,7 +14439,7 @@
         "colorHex": null,
         "image": "/products/eveline-cosmetics-eveline-cosmetics-variete-gel-lip-pencil.jpg",
         "inStock": true,
-        "price": 7.9,
+        "price": 9.5,
         "originalWholesalePrice": 3.1,
         "stock": 6
       }
@@ -17451,7 +17429,7 @@
         "code": "5903416043454",
         "hex": "#FAF7FC",
         "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg",
-        "price": 16.5,
+        "price": 14.9,
         "inStock": true,
         "stock": 4
       },
@@ -17461,7 +17439,7 @@
         "code": "5903416043485",
         "hex": "#FAF7FC",
         "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg",
-        "price": 16.5,
+        "price": 14.9,
         "inStock": true,
         "stock": 4
       }
@@ -17523,7 +17501,7 @@
         "colorHex": null,
         "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg",
         "inStock": true,
-        "price": 16.5,
+        "price": 14.9,
         "originalWholesalePrice": 6.59,
         "stock": 4
       },
@@ -17535,7 +17513,7 @@
         "colorHex": null,
         "image": "/products/eveline-cosmetics-eveline-cosmetics-fondotinta-wonder-match.jpg",
         "inStock": true,
-        "price": 16.5,
+        "price": 14.9,
         "originalWholesalePrice": 6.59,
         "stock": 4
       }
@@ -17749,7 +17727,7 @@
         "code": "8024523501181",
         "hex": "#FAF7FC",
         "image": "/products/cipria-make-up-cipria-milano-fondotinta-retouching-skin.jpg",
-        "price": 19.9,
+        "price": 22.9,
         "inStock": true,
         "stock": 5
       },
@@ -17759,7 +17737,7 @@
         "code": "8024523501198",
         "hex": "#FAF7FC",
         "image": "/products/cipria-make-up-cipria-milano-fondotinta-retouching-skin.jpg",
-        "price": 19.9,
+        "price": 22.9,
         "inStock": true,
         "stock": 5
       },
@@ -17769,7 +17747,7 @@
         "code": "8024523501228",
         "hex": "#FAF7FC",
         "image": "/products/cipria-make-up-cipria-milano-fondotinta-retouching-skin.jpg",
-        "price": 19.9,
+        "price": 22.9,
         "inStock": true,
         "stock": 5
       }
@@ -17831,7 +17809,7 @@
         "colorHex": null,
         "image": "/products/cipria-make-up-cipria-milano-fondotinta-retouching-skin.jpg",
         "inStock": true,
-        "price": 19.9,
+        "price": 22.9,
         "originalWholesalePrice": 7.9,
         "stock": 5
       },
@@ -17843,7 +17821,7 @@
         "colorHex": null,
         "image": "/products/cipria-make-up-cipria-milano-fondotinta-retouching-skin.jpg",
         "inStock": true,
-        "price": 19.9,
+        "price": 22.9,
         "originalWholesalePrice": 7.9,
         "stock": 5
       },
@@ -17855,7 +17833,7 @@
         "colorHex": null,
         "image": "/products/cipria-make-up-cipria-milano-fondotinta-retouching-skin.jpg",
         "inStock": true,
-        "price": 19.9,
+        "price": 22.9,
         "originalWholesalePrice": 7.9,
         "stock": 5
       }
@@ -18775,7 +18753,7 @@
         "code": "8024523504229",
         "hex": "#FAF7FC",
         "image": "/products/cipria-make-up-cipria-milano-compact-powder-cipria-compatta.jpg",
-        "price": 12.9,
+        "price": 13.9,
         "inStock": true,
         "stock": 4
       }
@@ -18825,7 +18803,7 @@
         "colorHex": null,
         "image": "/products/cipria-make-up-cipria-milano-compact-powder-cipria-compatta.jpg",
         "inStock": true,
-        "price": 12.9,
+        "price": 13.9,
         "originalWholesalePrice": 5.1,
         "stock": 4
       }
@@ -19356,7 +19334,7 @@
         "code": "8024523501280",
         "hex": "#FAF7FC",
         "image": "/products/cipria-make-up-cipria-milano-sublime-blush-on.jpg",
-        "price": 15.5,
+        "price": 15.9,
         "inStock": true,
         "stock": 4
       }
@@ -19406,7 +19384,7 @@
         "colorHex": null,
         "image": "/products/cipria-make-up-cipria-milano-sublime-blush-on.jpg",
         "inStock": true,
-        "price": 15.5,
+        "price": 15.9,
         "originalWholesalePrice": 6,
         "stock": 4
       }
@@ -20392,7 +20370,7 @@
         "code": "3700467850299",
         "hex": "#FAF7FC",
         "image": "/products/pierre-rene-pierre-rene-compact-powder-spf25-limited-edition.jpg",
-        "price": 16.5,
+        "price": 17.8,
         "inStock": true,
         "stock": 3
       },
@@ -20402,7 +20380,7 @@
         "code": "3700467850305",
         "hex": "#FAF7FC",
         "image": "/products/pierre-rene-pierre-rene-compact-powder-spf25-limited-edition.jpg",
-        "price": 16.5,
+        "price": 17.8,
         "inStock": true,
         "stock": 3
       },
@@ -20412,7 +20390,7 @@
         "code": "3700467850312",
         "hex": "#FAF7FC",
         "image": "/products/pierre-rene-pierre-rene-compact-powder-spf25-limited-edition.jpg",
-        "price": 16.5,
+        "price": 17.8,
         "inStock": true,
         "stock": 3
       }
@@ -20450,7 +20428,7 @@
         "colorHex": null,
         "image": "/products/pierre-rene-pierre-rene-compact-powder-spf25-limited-edition.jpg",
         "inStock": true,
-        "price": 16.5,
+        "price": 17.8,
         "originalWholesalePrice": 5.99,
         "stock": 3
       },
@@ -20462,7 +20440,7 @@
         "colorHex": null,
         "image": "/products/pierre-rene-pierre-rene-compact-powder-spf25-limited-edition.jpg",
         "inStock": true,
-        "price": 16.5,
+        "price": 17.8,
         "originalWholesalePrice": 5.99,
         "stock": 3
       },
@@ -20474,7 +20452,7 @@
         "colorHex": null,
         "image": "/products/pierre-rene-pierre-rene-compact-powder-spf25-limited-edition.jpg",
         "inStock": true,
-        "price": 16.5,
+        "price": 17.8,
         "originalWholesalePrice": 5.99,
         "stock": 3
       }
@@ -20804,7 +20782,7 @@
         "code": "5903416048602",
         "hex": "#FAF7FC",
         "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-cheek-lip.jpg",
-        "price": 9.5,
+        "price": 10.9,
         "inStock": true,
         "stock": 3
       }
@@ -20866,7 +20844,7 @@
         "colorHex": null,
         "image": "/products/eveline-cosmetics-eveline-cosmetics-wonder-match-cheek-lip.jpg",
         "inStock": true,
-        "price": 9.5,
+        "price": 10.9,
         "originalWholesalePrice": 3.69,
         "stock": 3
       }
@@ -32585,7 +32563,7 @@
     "name": "Eveline Cosmetics Matite Occhi & Eyeliner Professionali",
     "brand": "Eveline Cosmetics",
     "category": "Occhi",
-    "price": 7.43,
+    "price": 6.5,
     "originalWholesalePrice": 2.88,
     "description": "Eveline Cosmetics Matite Occhi & Eyeliner Professionali formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
     "shortDescription": "Eveline Cosmetics Matite Occhi & Eyeliner Professionali professionale Scelta Makeup.",
@@ -32841,7 +32819,7 @@
     "name": "Pierre René Matite Occhi & Eyeliner Professionali",
     "brand": "Pierre René",
     "category": "Occhi",
-    "price": 10.43,
+    "price": 7.5,
     "originalWholesalePrice": 3.73,
     "description": "Pierre René Matite Occhi & Eyeliner Professionali formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
     "shortDescription": "Pierre René Matite Occhi & Eyeliner Professionali professionale Scelta Makeup.",
@@ -32938,7 +32916,7 @@
     "name": "Pierre René Pennelli e Accessori Trucco Professionali",
     "brand": "Pierre René",
     "category": "Beauty & Accessori",
-    "price": 16.77,
+    "price": 8.9,
     "originalWholesalePrice": 6.01,
     "description": "Pierre René Pennelli e Accessori Trucco Professionali formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
     "shortDescription": "Pierre René Pennelli e Accessori Trucco Professionali professionale Scelta Makeup.",
@@ -33816,7 +33794,7 @@
     "name": "Pierre René Matita Labbra Contorno & Definizione",
     "brand": "Pierre René",
     "category": "Labbra",
-    "price": 11.13,
+    "price": 10.5,
     "originalWholesalePrice": 3.94,
     "description": "Pierre René Matita Labbra Contorno & Definizione formulato con ingredienti professionali di altissima qualità per garantire resa impeccabile, tenuta confortevole e performance da salone di bellezza.",
     "shortDescription": "Pierre René Matita Labbra Contorno & Definizione professionale Scelta Makeup.",

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Scale, ArrowLeft, ShoppingBag, Truck, Undo2, Sparkles } from "lucide-react";
+import { Scale, ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Termini e Condizioni di Vendita",

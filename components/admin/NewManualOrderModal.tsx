@@ -22,7 +22,6 @@ import { Product } from "@/types/product";
 import {
   createAdminOrder,
   SceltaAdminOrder,
-  getAdminVariantStocks,
   getProductOverrides,
 } from "@/lib/adminStore";
 
@@ -62,15 +61,13 @@ export default function NewManualOrderModal({
   const [city, setCity] = useState("Napoli");
   const [postalCode, setPostalCode] = useState("80121");
   const [province, setProvince] = useState("NA");
-  const [courierName, setCourierName] = useState("BRT Express");
+  const [courierName] = useState("BRT Express");
 
   // Items in order
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]);
 
   // Product catalog search for adding items
   const [searchCatalogQuery, setSearchCatalogQuery] = useState("");
-  const [selectedProductToAdd, setSelectedProductToAdd] = useState<Product | null>(null);
-  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);

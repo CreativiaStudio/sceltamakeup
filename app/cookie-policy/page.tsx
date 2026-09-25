@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Cookie, ArrowLeft, Settings2 } from "lucide-react";
+import { Cookie, ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Informativa Cookie",
@@ -28,7 +28,7 @@ export default function CookiePolicyPage() {
           Cookie Policy
         </h1>
         <p className="text-xs text-gray-500 text-center uppercase tracking-widest mb-10">
-          Informativa estesa sull'uso dei Cookie e strumenti di tracciamento
+          Informativa estesa sull&apos;uso dei Cookie e strumenti di tracciamento
         </p>
 
         <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed space-y-8 font-light text-sm">
@@ -37,7 +37,7 @@ export default function CookiePolicyPage() {
               1. Cosa sono i Cookie
             </h2>
             <p>
-              I cookie sono piccoli file di testo che i siti web visitati inviano al dispositivo dell'utente (computer, tablet, smartphone), dove vengono memorizzati per essere poi ritrasmessi agli stessi siti alle visite successive. Servono a garantire il corretto funzionamento delle pagine, memorizzare gli articoli nel carrello e migliorare l'esperienza di navigazione.
+              I cookie sono piccoli file di testo che i siti web visitati inviano al dispositivo dell&apos;utente (computer, tablet, smartphone), dove vengono memorizzati per essere poi ritrasmessi agli stessi siti alle visite successive. Servono a garantire il corretto funzionamento delle pagine, memorizzare gli articoli nel carrello e migliorare l&apos;esperienza di navigazione.
             </p>
           </section>
 
@@ -51,7 +51,7 @@ export default function CookiePolicyPage() {
                   A. Cookie Tecnici &amp; Strettamente Necessari (Sempre Attivi)
                 </h3>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  Indispensabili per consentire la navigazione tra le pagine, la conservazione dei cosmetici aggiunti al carrello, il checkout sicuro con Stripe e la memorizzazione della scelta del consenso cookie. Ai sensi dell'art. 122 del Codice Privacy, non richiedono il preventivo consenso dell'utente.
+                  Indispensabili per consentire la navigazione tra le pagine, la conservazione dei cosmetici aggiunti al carrello, il checkout sicuro con Stripe e la memorizzazione della scelta del consenso cookie. Ai sensi dell&apos;art. 122 del Codice Privacy, non richiedono il preventivo consenso dell&apos;utente.
                 </p>
               </div>
 
@@ -69,7 +69,7 @@ export default function CookiePolicyPage() {
                   C. Cookie di Funzionalità &amp; Preferenze
                 </h3>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  Permettono di memorizzare le preferenze espresse dall'utente (come la data selezionata per la prenotazione make-up in salone o il canale di consulenza).
+                  Permettono di memorizzare le preferenze espresse dall&apos;utente (come la data selezionata per la prenotazione make-up in salone o il canale di consulenza).
                 </p>
               </div>
             </div>

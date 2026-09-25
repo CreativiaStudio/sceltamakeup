@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { TrendingUp, Activity, Sparkles, Eye, Users, Smartphone, Monitor, MapPin, RefreshCw } from "lucide-react";
+import { TrendingUp, Activity, Sparkles, Eye, Smartphone, Monitor, MapPin, RefreshCw } from "lucide-react";
 import { AdminKpiSummary } from "@/lib/adminStore";
 import TrackingInfrastructureSection from "./TrackingInfrastructureSection";
 
@@ -20,7 +20,6 @@ interface LiveTrafficData {
 
 export default function AnalyticsTab({ kpis }: AnalyticsTabProps) {
   const [activeSection, setActiveSection] = useState<"traffic" | "sales" | "tracking">("traffic");
-  const [timeRange, setTimeRange] = useState<"7d" | "30d" | "90d">("30d");
   const [trafficData, setTrafficData] = useState<LiveTrafficData>({
     date: new Date().toISOString().split("T")[0],
     totalViews: 0,
@@ -39,7 +38,7 @@ export default function AnalyticsTab({ kpis }: AnalyticsTabProps) {
         const data = await res.json();
         setTrafficData(data);
       }
-    } catch (e) {
+    } catch {
       // Ignora silenziosamente
     } finally {
       setIsLoadingTraffic(false);
@@ -47,6 +46,8 @@ export default function AnalyticsTab({ kpis }: AnalyticsTabProps) {
   };
 
   useEffect(() => {
+    // Fetch iniziale al mount (il loading è gestito asincronamente in fetchTraffic)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTraffic();
     const interval = setInterval(fetchTraffic, 30000); // Polling ogni 30s
     return () => clearInterval(interval);

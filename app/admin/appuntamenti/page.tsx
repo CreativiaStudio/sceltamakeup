@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from "react";
 import {
-  Calendar as CalendarIcon,
   Clock,
   CheckCircle2,
   DollarSign,
@@ -15,7 +14,6 @@ import {
   X,
   Radio,
   Filter,
-  Sparkles,
 } from "lucide-react";
 import NotificationQueueTab from "@/components/admin/NotificationQueueTab";
 import QuickScanBarcodeModal from "@/components/admin/QuickScanBarcodeModal";
@@ -26,7 +24,6 @@ import {
   markAppointmentPaid,
   toggleSlotBlock,
   createAppointment,
-  getServices,
   getOperators,
   getAgendaSlots,
   AGENDA_BOUTIQUE_SLOTS,
@@ -59,8 +56,6 @@ export default function AdminAppuntamentiPage() {
   const [manualPhone, setManualPhone] = useState("");
   const [manualNotes, setManualNotes] = useState("");
 
-  const operators = useMemo(() => getOperators(), []);
-
   const todayAppointments = useMemo(() => {
     return appointments.filter((a) => a.date === selectedDate);
   }, [appointments, selectedDate]);
@@ -92,7 +87,7 @@ export default function AdminAppuntamentiPage() {
       time,
       isBlocked: blockedForDate.includes(time),
     }));
-  }, [selectedDate, blockedRevision]);
+  }, [selectedDate, blockedRevision, appointments]);
 
   const totalDepositsCollected = useMemo(() => {
     return todayAppointments.reduce((acc, a) => acc + a.pricing.depositPaid, 0);

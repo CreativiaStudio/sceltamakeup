@@ -44,7 +44,6 @@ export async function POST(req: Request) {
 
     // Cattura header geolocalizzati forniti da Vercel Edge
     const city = req.headers.get("x-vercel-ip-city") || "Napoli e Campania";
-    const country = req.headers.get("x-vercel-ip-country") || "IT";
 
     // Incrementa contatori in memoria
     memoryAnalytics.totalViews += 1;
@@ -85,14 +84,15 @@ export async function POST(req: Request) {
             updated_at: new Date().toISOString(),
           }),
         });
-      } catch (err) {
+      } catch {
         // Ignora silenziosamente se la tabella non è ancora pronta
       }
     }
 
     return NextResponse.json({ success: true, count: memoryAnalytics.totalViews });
-  } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 400 });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Richiesta non valida";
+    return NextResponse.json({ success: false, error: message }, { status: 400 });
   }
 }
 

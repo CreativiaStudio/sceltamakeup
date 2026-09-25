@@ -7,12 +7,10 @@ import {
   ShieldCheck,
   Truck,
   Store,
-  CreditCard,
   CheckCircle2,
   Lock,
   ArrowLeft,
   Sparkles,
-  Smartphone,
 } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 

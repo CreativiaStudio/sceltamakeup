@@ -23,7 +23,7 @@ export interface TrackingEventRecord {
   timestamp: string;
   eventName: TrackingEventName;
   destinations: TrackingDestination[];
-  payload: Record<string, any>;
+  payload: Record<string, unknown>;
   status: "delivered" | "pending" | "failed";
   responseStatus: number;
   emqScore?: number;
@@ -101,7 +101,7 @@ export function saveTrackingEvents(events: TrackingEventRecord[]): void {
 
 export function logTrackingEvent(
   eventName: TrackingEventName,
-  payload: Record<string, any>,
+  payload: Record<string, unknown>,
   destinations: TrackingDestination[] = ["ga4", "gtm", "meta_pixel", "meta_capi"]
 ): TrackingEventRecord {
   const newRecord: TrackingEventRecord = {
@@ -127,7 +127,7 @@ export function logTrackingEvent(
       );
 
       // Push to GTM dataLayer if available
-      const win = window as any;
+      const win = window as typeof window & { dataLayer?: unknown[] };
       if (Array.isArray(win.dataLayer)) {
         win.dataLayer.push({
           event: eventName,
@@ -163,11 +163,11 @@ export function resetTrackingEventsToDefault(): TrackingEventRecord[] {
  */
 export function simulateTrackingEvent(
   eventName: TrackingEventName,
-  customPayload?: Record<string, any>
+  customPayload?: Record<string, unknown>
 ): TrackingEventRecord {
   const randomSuffix = Math.floor(1000 + Math.random() * 9000);
 
-  let defaultPayload: Record<string, any> = {};
+  let defaultPayload: Record<string, unknown> = {};
 
   switch (eventName) {
     case "page_view":

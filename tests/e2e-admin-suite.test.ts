@@ -49,14 +49,11 @@ import {
   getCourierTrackingUrl,
   getWhatsAppTrackingMessage,
   getWhatsAppDirectUrl,
-  formatPhoneForWhatsApp,
 } from "../lib/trackingUtils";
 import {
   getTrackingConfig,
   getTrackingEvents,
   simulateTrackingEvent,
-  clearTrackingEvents,
-  resetTrackingEventsToDefault,
 } from "../lib/pixelTracker";
 
 const PROJECT_ROOT = path.resolve(__dirname, "..");
@@ -616,7 +613,7 @@ describe("Scelta Makeup E-Commerce Admin Suite E2E Test Suite (/admin)", () => {
       // 4. Simulate purchase event
       const purchaseEvt = simulateTrackingEvent("purchase");
       assert.strictEqual(purchaseEvt.eventName, "purchase");
-      assert.ok(purchaseEvt.payload.transaction_id.startsWith("SC-ORD-SIM-"));
+      assert.ok((purchaseEvt.payload.transaction_id as string).startsWith("SC-ORD-SIM-"));
       assert.strictEqual(purchaseEvt.responseStatus, 200);
 
       // 5. Verify events stream contains the newly simulated events

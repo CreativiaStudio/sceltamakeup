@@ -4,9 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import {
   Activity,
   CheckCircle2,
-  Radio,
   Sparkles,
-  Zap,
   Trash2,
   RefreshCw,
   Eye,
@@ -15,7 +13,6 @@ import {
   ShoppingBag,
   Calendar,
   Layers,
-  ShieldCheck,
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
@@ -509,13 +506,22 @@ export default function TrackingInfrastructureSection() {
                         </td>
 
                         <td className="py-3 px-4 max-w-xs truncate font-mono text-[11px] text-gray-600">
-                          {record.payload.value
-                            ? `Valore: €${record.payload.value} • ${
-                                record.payload.items?.[0]?.item_name ||
-                                record.payload.service_name ||
-                                "Transazione"
-                              }`
-                            : record.payload.page_title || JSON.stringify(record.payload).slice(0, 45)}
+                          {(() => {
+                            const p = record.payload as {
+                              value?: number;
+                              items?: Array<{ item_name?: string }>;
+                              service_name?: string;
+                              page_title?: string;
+                            };
+                            return p.value
+                              ? `Valore: €${p.value} • ${
+                                  p.items?.[0]?.item_name ||
+                                  p.service_name ||
+                                  "Transazione"
+                                }`
+                              : p.page_title ||
+                                  JSON.stringify(record.payload).slice(0, 45);
+                          })()}
                         </td>
 
                         <td className="py-3 px-4">

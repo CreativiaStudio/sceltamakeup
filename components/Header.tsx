@@ -6,7 +6,6 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import {
   ShoppingBag,
   Search,
-  MapPin,
   Phone,
   Sparkles,
   X,
