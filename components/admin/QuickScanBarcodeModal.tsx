@@ -174,8 +174,15 @@ function fileToResizedDataUrl(file: File, maxSize = 600): Promise<string> {
 
 export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const isOpenRef = useRef(false);
   const [activeScreen, setActiveScreen] = useState<"scan" | "multi_receipt">("scan");
   const activeScreenRef = useRef<"scan" | "multi_receipt">("scan");
+  const handleCloseModalRef = useRef<() => void>(() => {});
+
+  useEffect(() => {
+    isOpenRef.current = isOpen;
+  }, [isOpen]);
+
   useEffect(() => {
     activeScreenRef.current = activeScreen;
   }, [activeScreen]);
@@ -495,10 +502,12 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       setScannedBarcode(cleanCode);
       const match = findProductByBarcode(cleanCode);
 
+      // ONLY if Federica is ALREADY ON the multi-receipt screen, add item directly to cart
+      const isCurrentlyInMultiReceipt = isOpenRef.current && activeScreenRef.current === "multi_receipt";
+
       if (match) {
         playPosBeep();
-        // If currently in Multi-Receipt screen, add item directly to cart
-        if (activeScreenRef.current === "multi_receipt") {
+        if (isCurrentlyInMultiReceipt) {
           const v = match.product.variants?.[match.variantIndex];
           const itemPrice = (v?.price ?? match.product.price) || 1.0;
           const itemId = `${match.product.id}-${match.variantIndex}-${itemPrice.toFixed(2)}`;
@@ -535,9 +544,13 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
           setSuccessToast(`➕ "${match.product.name.slice(0, 24)}..." aggiunto allo scontrino multiplo!`);
           setTimeout(() => setSuccessToast(null), 2500);
           setIsOpen(true);
+          isOpenRef.current = true;
           return;
         }
 
+        // Federica is anywhere else in the gestionale or modal was closed: ALWAYS open single product popup!
+        setActiveScreen("scan");
+        activeScreenRef.current = "scan";
         setMatchedProduct(match.product);
         setMatchedVariantIndex(match.variantIndex);
         const itemPrice = (match.product.variants?.[match.variantIndex]?.price ?? match.product.price) || 1.0;
@@ -545,6 +558,9 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         setPriceEditValue(itemPrice.toFixed(2));
         setTitleEditValue(match.product.name);
       } else {
+        // Barcode non riconosciuto: apri sempre la schermata di registrazione rapido
+        setActiveScreen("scan");
+        activeScreenRef.current = "scan";
         setMatchedProduct(null);
         setMatchedVariantIndex(0);
         setNewProdName("");
@@ -553,7 +569,6 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         setCashTendered("11.90");
         setPriceEditValue("11.90");
         setTitleEditValue("");
-        setActiveScreen("scan");
       }
 
       // Reset any in-progress photo / price / discount editing for the new scan
@@ -568,6 +583,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       setCustomFinal("");
 
       setIsOpen(true);
+      isOpenRef.current = true;
       setSuccessToast(null);
     },
     [findProductByBarcode]
@@ -781,7 +797,9 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
 
       setTimeout(() => {
         setIsOpen(false);
+        isOpenRef.current = false;
         setActiveScreen("scan");
+        activeScreenRef.current = "scan";
       }, 3000);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Errore";
@@ -829,16 +847,20 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       const customEv = e as CustomEvent<string>;
       const code = customEv?.detail;
       setActiveScreen("scan");
+      activeScreenRef.current = "scan";
       if (code) {
         handleBarcodeScanned(code);
       } else {
         setIsOpen(true);
+        isOpenRef.current = true;
       }
     };
 
     const handleMultiOpen = () => {
       setActiveScreen("multi_receipt");
+      activeScreenRef.current = "multi_receipt";
       setIsOpen(true);
+      isOpenRef.current = true;
     };
 
     window.addEventListener("open_quick_scan_modal", handleCustomOpen);
@@ -859,7 +881,9 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       if (e.key === "F2" || (e.ctrlKey && e.key.toLowerCase() === "b")) {
         e.preventDefault();
         setActiveScreen("scan");
+        activeScreenRef.current = "scan";
         setIsOpen(true);
+        isOpenRef.current = true;
         return;
       }
 
@@ -867,13 +891,22 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       if (e.key === "F4" || (e.ctrlKey && e.key.toLowerCase() === "m")) {
         e.preventDefault();
         setActiveScreen("multi_receipt");
+        activeScreenRef.current = "multi_receipt";
         setIsOpen(true);
+        isOpenRef.current = true;
         return;
       }
 
       const target = e.target as HTMLElement | null;
       const isInput = target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA");
       if (isInput) return; // Don't intercept when user is typing in form inputs
+
+      // Escape closes modal cleanly if open
+      if (e.key === "Escape" && isOpenRef.current) {
+        e.preventDefault();
+        handleCloseModalRef.current();
+        return;
+      }
 
       const currentTime = Date.now();
       const timeDiff = currentTime - lastKeyTime;
@@ -1049,6 +1082,9 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       );
       setTimeout(() => {
         setIsOpen(false);
+        isOpenRef.current = false;
+        setActiveScreen("scan");
+        activeScreenRef.current = "scan";
       }, 3000);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Errore";
@@ -1355,9 +1391,16 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       commitTitleChange(titleEditValue);
     }
 
-    // 3. Close modal
+    // 3. Close modal & reset screen cleanly to single product scan
     setIsOpen(false);
+    isOpenRef.current = false;
+    setActiveScreen("scan");
+    activeScreenRef.current = "scan";
   }, [priceEditValue, matchedProduct, commitPriceChange, isEditingTitle, titleEditValue, commitTitleChange]);
+
+  useEffect(() => {
+    handleCloseModalRef.current = handleCloseModal;
+  }, [handleCloseModal]);
 
   // ---------------------------------------------------------------------------
   // 3. Counter discount handlers
@@ -2930,7 +2973,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                 <div className="flex items-center justify-end gap-3 pt-3">
                   <button
                     type="button"
-                    onClick={() => setIsOpen(false)}
+                    onClick={handleCloseModal}
                     className="px-4 py-2.5 rounded-xl border border-[#D8C2E7] text-gray-700 text-xs font-bold hover:bg-gray-50 transition-colors"
                   >
                     Annulla
