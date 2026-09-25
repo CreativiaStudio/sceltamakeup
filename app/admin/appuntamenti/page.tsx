@@ -24,7 +24,6 @@ import {
   markAppointmentPaid,
   toggleSlotBlock,
   createAppointment,
-  getOperators,
   getAgendaSlots,
   AGENDA_BOUTIQUE_SLOTS,
 } from "@/lib/bookingService";
