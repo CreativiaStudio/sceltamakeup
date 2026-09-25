@@ -18,6 +18,7 @@ import {
   Sparkles,
   Eye,
   EyeOff,
+  Camera,
 } from "lucide-react";
 import { Product, ProductCategory, ProductVariant, Shade } from "@/types/product";
 import {
@@ -172,6 +173,12 @@ function ProductEditorModalDialog({
   const [isProcessingImage, setIsProcessingImage] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // Modalità di rappresentazione per variante: HEX (colore) oppure Foto (packshot).
+  // Chiave = id variante. Se assente, viene dedotta dai dati (foto se l'HEX manca).
+  const [variantPhotoMode, setVariantPhotoMode] = useState<Record<string, boolean>>(
+    {}
+  );
+
   // Handlers for Photos Tab
   const handleAddImageUrl = () => {
     const trimmed = newImageUrl.trim();
@@ -240,6 +247,11 @@ function ProductEditorModalDialog({
       };
       return { ...prev, variants: copy };
     });
+  };
+
+  const handleViewVariantImage = (url?: string) => {
+    if (!url) return;
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   const handleVariantStockStep = (index: number, delta: number) => {
@@ -781,25 +793,57 @@ function ProductEditorModalDialog({
                 {formData.variants.map((v, idx) => {
                   const qty = v.stock ?? 0;
                   const status = computeStockStatus(qty);
+                  // Una variante è fotografica quando manca un HEX valido oppure
+                  // quando è già associata a una foto specifica. Il toggle permette
+                  // comunque di alternare manualmente tra colore e foto.
+                  const hasPhoto = Boolean(v.image);
+                  const hasValidHex =
+                    !!v.colorHex && v.colorHex !== "#---";
+                  const photoMode =
+                    variantPhotoMode[v.id] ?? (!hasValidHex || hasPhoto);
                   return (
                     <div
                       key={v.id || idx}
                       className="p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/80 transition-colors"
                     >
-                      {/* Name & Color Picker */}
-                      <div className="flex items-center gap-3 sm:w-1/3">
-                        <div className="relative shrink-0">
-                          <input
-                            type="color"
-                            value={v.colorHex || "#D8C2E7"}
-                            onChange={(e) =>
-                              handleVariantChange(idx, "colorHex", e.target.value)
-                            }
-                            className="w-8 h-8 rounded-full border border-gray-300 p-0 cursor-pointer overflow-hidden"
-                            title="Scegli colore tonalità"
-                          />
+                      {/* Name & Color/Photo Picker */}
+                      <div className="flex items-start gap-3 sm:w-1/3">
+                        <div className="relative shrink-0 pt-0.5">
+                          {photoMode ? (
+                            <button
+                              type="button"
+                              onClick={() => handleViewVariantImage(v.image)}
+                              className="relative w-9 h-9 rounded-full overflow-hidden border-2 border-[#D8C2E7] bg-[#FAF7FC] group/img"
+                              title="Vedi foto variante"
+                            >
+                              <Image
+                                src={
+                                  v.image ||
+                                  formData.images[0] ||
+                                  "/brand/logo.png"
+                                }
+                                alt={v.name || "Variante"}
+                                fill
+                                sizes="36px"
+                                className="object-cover"
+                              />
+                              <span className="absolute inset-0 bg-black/35 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                <Camera className="w-3.5 h-3.5 text-white" />
+                              </span>
+                            </button>
+                          ) : (
+                            <input
+                              type="color"
+                              value={v.colorHex || "#D8C2E7"}
+                              onChange={(e) =>
+                                handleVariantChange(idx, "colorHex", e.target.value)
+                              }
+                              className="w-8 h-8 rounded-full border border-gray-300 p-0 cursor-pointer overflow-hidden"
+                              title="Scegli colore tonalità"
+                            />
+                          )}
                         </div>
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           <input
                             type="text"
                             value={v.name}
@@ -814,9 +858,74 @@ function ProductEditorModalDialog({
                               ID: {v.id.slice(-8)}
                             </span>
                             <span className="text-[10px] text-gray-400 font-mono">
-                              {v.colorHex || "#---"}
+                              {photoMode
+                                ? hasPhoto
+                                  ? "FOTO"
+                                  : "#---"
+                                : v.colorHex || "#---"}
                             </span>
                           </div>
+
+                          {/* Toggle HEX / Foto Variante */}
+                          <div className="flex items-center gap-1 mt-1.5">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setVariantPhotoMode((prev) => ({
+                                  ...prev,
+                                  [v.id]: false,
+                                }))
+                              }
+                              className={`px-2 py-0.5 rounded-md text-[10px] font-semibold border transition-colors ${
+                                !photoMode
+                                  ? "bg-[#5E1788] text-white border-[#5E1788]"
+                                  : "bg-white text-gray-500 border-gray-200 hover:border-[#D8C2E7]"
+                              }`}
+                            >
+                              Colore HEX
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setVariantPhotoMode((prev) => ({
+                                  ...prev,
+                                  [v.id]: true,
+                                }))
+                              }
+                              className={`px-2 py-0.5 rounded-md text-[10px] font-semibold border transition-colors flex items-center gap-1 ${
+                                photoMode
+                                  ? "bg-[#5E1788] text-white border-[#5E1788]"
+                                  : "bg-white text-gray-500 border-gray-200 hover:border-[#D8C2E7]"
+                              }`}
+                            >
+                              <Camera className="w-3 h-3" />
+                              Foto
+                            </button>
+                          </div>
+
+                          {/* Foto Variante: anteprima + URL immagine */}
+                          {photoMode && (
+                            <>
+                              <input
+                                type="text"
+                                value={v.image || ""}
+                                onChange={(e) =>
+                                  handleVariantChange(idx, "image", e.target.value)
+                                }
+                                className="w-full mt-1.5 px-2 py-1 border border-gray-200 rounded-lg text-[10px] font-mono text-gray-600 focus:outline-none focus:border-[#5E1788]"
+                                placeholder="URL immagine variante"
+                              />
+                              {hasPhoto && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleViewVariantImage(v.image)}
+                                  className="mt-1 text-[10px] text-[#5E1788] hover:underline font-medium"
+                                >
+                                  Vedi foto
+                                </button>
+                              )}
+                            </>
+                          )}
                         </div>
                       </div>
 

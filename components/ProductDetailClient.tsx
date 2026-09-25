@@ -156,6 +156,18 @@ export default function ProductDetailClient({
 
   const currentPrice = selectedShade?.price ?? product.price;
 
+  // Una tonalità è "fotografica" quando non possiede un HEX valido oppure quando
+  // espone una foto dedicata (tipico di Beauty & Accessori: pennelli, spugne, ecc.).
+  const hasValidShadeHex = (hex?: string | null) =>
+    typeof hex === "string" &&
+    hex.trim() !== "" &&
+    hex.trim() !== "#---" &&
+    /^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(hex.trim());
+
+  const isPhotoShade = (shade: Shade) =>
+    !hasValidShadeHex(shade.hex) ||
+    (!!shade.image && product.category === "Beauty & Accessori");
+
   const handleAddToCart = () => {
     addItem({
       productId: product.id,
@@ -348,10 +360,26 @@ export default function ProductDetailClient({
               {/* Shade active indicator floating pill */}
               {selectedShade && (
                 <div className="absolute bottom-4 left-4 z-10 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl border border-white/80 shadow-md flex items-center gap-3">
-                  <span
-                    className="w-4 h-4 rounded-full border border-neutral-300 shrink-0 ring-1 ring-black/10 shadow-inner"
-                    style={{ backgroundColor: selectedShade.hex }}
-                  />
+                  {isPhotoShade(selectedShade) ? (
+                    <span className="relative w-8 h-8 rounded-full overflow-hidden border border-neutral-300 shrink-0 ring-1 ring-black/10 shadow-inner">
+                      <Image
+                        src={
+                          selectedShade.image ||
+                          product.images[0] ||
+                          "/brand/logo.png"
+                        }
+                        alt={selectedShade.name}
+                        fill
+                        sizes="32px"
+                        className="object-cover"
+                      />
+                    </span>
+                  ) : (
+                    <span
+                      className="w-4 h-4 rounded-full border border-neutral-300 shrink-0 ring-1 ring-black/10 shadow-inner"
+                      style={{ backgroundColor: selectedShade.hex }}
+                    />
+                  )}
                   <div className="flex flex-col">
                     <span className="text-xs font-bold text-[#1F1B24] leading-tight">
                       {selectedShade.name}
@@ -487,14 +515,36 @@ export default function ProductDetailClient({
                             : "border-neutral-200 hover:border-[#D8C2E7] hover:bg-neutral-50/80 bg-white"
                         }`}
                       >
-                        <span
-                          className={`h-4 w-4 rounded-full border shrink-0 transition-transform ${
-                            isSelected
-                              ? "scale-110 border-white ring-2 ring-[#5E1788]"
-                              : "border-neutral-300 group-hover:scale-105"
-                          }`}
-                          style={{ backgroundColor: shade.hex }}
-                        />
+                        {isPhotoShade(shade) ? (
+                          <span
+                            className={`relative h-7 w-7 rounded-full overflow-hidden border shrink-0 transition-transform ${
+                              isSelected
+                                ? "scale-110 border-white ring-2 ring-[#5E1788]"
+                                : "border-neutral-300 group-hover:scale-105"
+                            }`}
+                          >
+                            <Image
+                              src={
+                                shade.image ||
+                                product.images[0] ||
+                                "/brand/logo.png"
+                              }
+                              alt={shade.name}
+                              fill
+                              sizes="28px"
+                              className="object-cover"
+                            />
+                          </span>
+                        ) : (
+                          <span
+                            className={`h-4 w-4 rounded-full border shrink-0 transition-transform ${
+                              isSelected
+                                ? "scale-110 border-white ring-2 ring-[#5E1788]"
+                                : "border-neutral-300 group-hover:scale-105"
+                            }`}
+                            style={{ backgroundColor: shade.hex }}
+                          />
+                        )}
                         <span
                           className={`text-xs truncate max-w-[130px] ${
                             isSelected

@@ -30,11 +30,19 @@ function applyOverrides(baseProducts: Product[], overrides: Record<string, Parti
   });
 
   const baseIds = new Set(baseProducts.map((p) => p.id));
+  const baseVariantIds = new Set(
+    baseProducts.flatMap((p) => (p.variants || []).map((v) => v.id))
+  );
   const extraProducts: Product[] = [];
   for (const [id, ov] of Object.entries(overrides)) {
-    if (!baseIds.has(id) && ov && ov.name && ov.variants) {
-      extraProducts.push(ov as Product);
-    }
+    if (baseIds.has(id) || !ov || !ov.name || !ov.variants) continue;
+    // Evita la "resurrezione" di una scheda raggruppata rimossa: se tutte le
+    // sue varianti sono già native a catalogo su schede autonome, è un ghost.
+    const isGhost =
+      ov.variants.length > 0 &&
+      ov.variants.every((v) => baseVariantIds.has(v.id));
+    if (isGhost) continue;
+    extraProducts.push(ov as Product);
   }
 
   return [...baseMap, ...extraProducts];

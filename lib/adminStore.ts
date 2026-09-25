@@ -252,7 +252,14 @@ export function getAdminStoreState(): SceltaAdminStoreState {
       // 1. Sync existing variant stocks (image, EAN, SKU, price, names)
       for (const vStock of Object.values(parsed.variantStocks as Record<string, SceltaVariantStock>)) {
         if (!vStock || !vStock.productId) continue;
-        const prod = products.find(p => p.id === vStock.productId);
+        let prod = products.find(p => p.id === vStock.productId);
+        // Migrazione: la variante è stata spostata su una nuova scheda autonoma
+        // (es. split di una scheda raggruppata in più prodotti). Ricollega la
+        // giacenza al prodotto che ora possiede quella variante.
+        if (!prod) {
+          prod = products.find(p => (p.variants || []).some(v => v.id === vStock.variantId));
+          if (prod) vStock.productId = prod.id;
+        }
         if (prod) {
           const freshVariant = prod.variants?.find(v => v.id === vStock.variantId);
           if (freshVariant) {
