@@ -183,6 +183,27 @@ export default function ProductCatalogTable() {
     return [...baseList, ...extraProducts];
   }, [overridesMap]);
 
+  // Aggregate catalog metrics (schede, tonalità/SKU fisici, pezzi a magazzino)
+  const { totalCards, totalVariants, totalStockPieces } = useMemo(() => {
+    let variants = 0;
+    let pieces = 0;
+
+    for (const product of productsWithOverrides) {
+      if (!product.variants || product.variants.length === 0) continue;
+      variants += product.variants.length;
+      for (const v of product.variants) {
+        const vStock = stocksMap[v.id];
+        pieces += vStock ? vStock.stockQuantity : (v.stock ?? 0);
+      }
+    }
+
+    return {
+      totalCards: productsWithOverrides.length,
+      totalVariants: variants,
+      totalStockPieces: pieces,
+    };
+  }, [productsWithOverrides, stocksMap]);
+
   // Channel counts
   const onlineCount = useMemo(
     () => productsWithOverrides.filter((p) => !p.isLocalOnly).length,
@@ -271,12 +292,27 @@ export default function ProductCatalogTable() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <h1 className="font-serif text-2xl font-bold text-[#1F1B24]">
               Catalogo Prodotti & Giacenze
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#5E1788]/10 text-[#5E1788] border border-[#5E1788]/20">
-              {productsWithOverrides.length} Prodotti Totali
+            <span
+              className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#5E1788]/10 text-[#5E1788] border border-[#5E1788]/20"
+              title="Schede prodotto a catalogo (una riga per prodotto)"
+            >
+              {totalCards} Schede Catalogo
+            </span>
+            <span
+              className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200"
+              title="Tonalità, varianti e SKU fisici con barcode EAN"
+            >
+              {totalVariants} Tonalità & Barcode EAN
+            </span>
+            <span
+              className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200"
+              title="Pezzi totali a magazzino su tutte le varianti"
+            >
+              {totalStockPieces.toLocaleString("it-IT")} Pezzi a Magazzino
             </span>
           </div>
           <p className="text-xs text-gray-500 mt-1">
