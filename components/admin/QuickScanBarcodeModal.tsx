@@ -8,6 +8,7 @@ import {
   Minus,
   CheckCircle2,
   AlertCircle,
+  AlertTriangle,
   X,
   Save,
   Tag,
@@ -36,7 +37,7 @@ import {
   updateProductDetails,
   createAdminOrder,
 } from "@/lib/adminStore";
-import { logAdminActivity } from "@/lib/auditLogger";
+import { logAdminActivity, logAdminError } from "@/lib/auditLogger";
 import { resolveProductImageUrl } from "@/lib/r2";
 
 interface QuickScanBarcodeModalProps {
@@ -117,6 +118,32 @@ function resolveShadeVariantIndex(product: Product, shadeIndex: number): number 
 }
 
 type DiscountMode = "none" | "percent" | "amount";
+
+type ToastType = "success" | "error" | "info";
+
+interface ScanToast {
+  type: ToastType;
+  message: string;
+}
+
+/** Crea un messaggio toast tipizzato (default: success). */
+function makeToast(message: string, type: ToastType = "success"): ScanToast {
+  return { type, message };
+}
+
+/** Classi Tailwind del contenitore toast in base al tipo (success/info/error). */
+function toastContainerClass(type: ToastType): string {
+  if (type === "error") return "bg-rose-50 border-rose-300 text-rose-800";
+  if (type === "info") return "bg-blue-50 border-blue-200 text-blue-800";
+  return "bg-emerald-50 border-emerald-200 text-emerald-800";
+}
+
+/** Icona coerente con il tipo di toast. */
+function ToastIcon({ type }: { type: ToastType }) {
+  if (type === "error") return <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />;
+  if (type === "info") return <AlertCircle className="w-4 h-4 text-blue-600 shrink-0" />;
+  return <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />;
+}
 
 export interface MultiCartItem {
   id: string;
@@ -400,7 +427,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const [matchedVariantIndex, setMatchedVariantIndex] = useState<number>(0);
   const [currentStock, setCurrentStock] = useState<number>(0);
   const [isStockUpdating, setIsStockUpdating] = useState(false);
-  const [successToast, setSuccessToast] = useState<string | null>(null);
+  const [successToast, setSuccessToast] = useState<ScanToast | null>(null);
 
   // In-Store Fast Checkout State (Single item)
   const [checkoutPaymentMethod, setCheckoutPaymentMethod] = useState<"card" | "cash">("cash");
@@ -646,7 +673,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
               },
             ];
           });
-          setSuccessToast(`➕ "${match.product.name.slice(0, 24)}..." aggiunto allo scontrino multiplo!`);
+          setSuccessToast(makeToast(`➕ "${match.product.name.slice(0, 24)}..." aggiunto allo scontrino multiplo!`));
           setTimeout(() => setSuccessToast(null), 2500);
           setIsOpen(true);
           isOpenRef.current = true;
@@ -768,7 +795,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     });
 
     playPosBeep();
-    setSuccessToast(`➕ "${matchedProduct.name.slice(0, 24)}..." aggiunto allo scontrino multiplo!`);
+    setSuccessToast(makeToast(`➕ "${matchedProduct.name.slice(0, 24)}..." aggiunto allo scontrino multiplo!`));
     setTimeout(() => {
       setSuccessToast(null);
     }, 2500);
@@ -800,7 +827,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       setMultiDiscountAmount(0);
       setMultiCustomFinal("");
       localStorage.removeItem("scelta_makeup_multi_receipt_cart_v1");
-      setSuccessToast("Scontrino multiplo svuotato.");
+      setSuccessToast(makeToast("Scontrino multiplo svuotato."));
       setTimeout(() => setSuccessToast(null), 1800);
     }
   };
@@ -956,9 +983,11 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       localStorage.removeItem("scelta_makeup_multi_receipt_cart_v1");
 
       setSuccessToast(
-        multiPaymentMethod === "cash" && change > 0
-          ? `🎉 Incassato €${effectivePayment.toFixed(2)} — RESTO DA DARE: €${change.toFixed(2)} (Cassetto Aperto)`
-          : `🎉 Scontrino multiplo emesso con successo! (${multiPaymentMethod === "card" ? "myPOS Carta" : "Contanti - Cassetto Aperto"}).`
+        makeToast(
+          multiPaymentMethod === "cash" && change > 0
+            ? `🎉 Incassato €${effectivePayment.toFixed(2)} — RESTO DA DARE: €${change.toFixed(2)} (Cassetto Aperto)`
+            : `🎉 Scontrino multiplo emesso con successo! (${multiPaymentMethod === "card" ? "myPOS Carta" : "Contanti - Cassetto Aperto"}).`
+        )
       );
 
       setTimeout(() => {
@@ -969,6 +998,30 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       }, 3000);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Errore";
+      logAdminError({
+        action: "fiscal_receipt_multi_failed",
+        title: "Errore Emissione Scontrino Multiplo RT",
+        description: `Emissione dello scontrino multiplo non riuscita: ${msg}`,
+        error: err,
+        details: {
+          paymentMethod: multiPaymentMethod,
+          total: multiTotal,
+          grossTotal: multiGrossTotal,
+          discount: multiDiscountTotal,
+          itemsCount: multiItemsCount,
+          linesCount: multiCartItems.length,
+          barcodes: multiCartItems.map((it) => it.ean).filter(Boolean),
+          items: multiCartItems.map((it) => ({
+            productId: it.productId,
+            name: it.productName,
+            sku: it.sku,
+            ean: it.ean,
+            quantity: it.quantity,
+            unitPrice: it.finalUnitPrice,
+          })),
+          printer: "Epson FP-81II RT (192.168.68.63)",
+        },
+      });
       alert("Errore durante l'emissione dello scontrino multiplo: " + msg);
     } finally {
       setIsMultiCheckingOut(false);
@@ -997,10 +1050,10 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
           "Comando di apertura cassetto rendiresto inviato alla stampante fiscale Epson FP-81II RT (192.168.68.63)",
         details: { printer: "Epson FP-81II RT", address: "192.168.68.63", command: "openDrawer" },
       });
-      setSuccessToast("🔓 Cassetto portamonete aperto con successo!");
+      setSuccessToast(makeToast("🔓 Cassetto portamonete aperto con successo!"));
     } catch (err) {
       console.warn("[Cassa RT] Apertura cassetto:", err);
-      setSuccessToast("Comando apertura inviato alla cassa RT.");
+      setSuccessToast(makeToast("Comando apertura inviato alla cassa RT.", "info"));
     }
   }, []);
 
@@ -1150,7 +1203,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       details: { productId: matchedProduct.id, variantId: v.id, oldStock: currentStock, newStock: newQty, delta },
     });
 
-    setSuccessToast(`Giacenza aggiornata: ${newQty} pz (sincronizzata nel cloud)`);
+    setSuccessToast(makeToast(`Giacenza aggiornata: ${newQty} pz (sincronizzata nel cloud)`));
     setTimeout(() => {
       setIsStockUpdating(false);
       setSuccessToast(null);
@@ -1283,9 +1336,11 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       });
 
       setSuccessToast(
-        checkoutPaymentMethod === "cash" && change > 0
-          ? `🎉 Incassato €${effectivePayment.toFixed(2)} — RESTO DA DARE: €${change.toFixed(2)} (Cassetto Aperto)`
-          : `🎉 Vendita completata! Scontrino RT emesso (${checkoutPaymentMethod === "card" ? "myPOS Carta" : "Contanti - Cassetto Aperto"}).`
+        makeToast(
+          checkoutPaymentMethod === "cash" && change > 0
+            ? `🎉 Incassato €${effectivePayment.toFixed(2)} — RESTO DA DARE: €${change.toFixed(2)} (Cassetto Aperto)`
+            : `🎉 Vendita completata! Scontrino RT emesso (${checkoutPaymentMethod === "card" ? "myPOS Carta" : "Contanti - Cassetto Aperto"}).`
+        )
       );
       setTimeout(() => {
         setIsOpen(false);
@@ -1295,6 +1350,23 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       }, 3000);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Errore";
+      logAdminError({
+        action: "fiscal_receipt_single_failed",
+        title: "Errore Emissione Scontrino RT",
+        description: `Emissione dello scontrino singolo non riuscita: ${msg}`,
+        error: err,
+        details: {
+          productId: matchedProduct?.id,
+          productName: matchedProduct?.name,
+          variantName: v?.name,
+          sku: v?.sku,
+          ean: v?.ean,
+          barcode: scannedBarcode,
+          paymentMethod: checkoutPaymentMethod,
+          unitPrice: price,
+          printer: "Epson FP-81II RT (192.168.68.63)",
+        },
+      });
       alert("Errore durante la vendita: " + msg);
     } finally {
       setIsCheckingOut(false);
@@ -1320,10 +1392,27 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         headers: { "Content-Type": "text/xml; charset=utf-8" },
         body: voidXml,
       });
-      setSuccessToast("✅ Comando inviato! La cassa ha annullato lo scontrino aperto.");
+      setSuccessToast(makeToast("✅ Comando inviato! La cassa ha annullato lo scontrino aperto."));
     } catch (err) {
       console.warn("[Cassa RT] Annullamento scontrino:", err);
-      setSuccessToast("Comando inviato. Se la cassa non risponde, premi ANNULLA/STORNO sulla tastiera della cassa.");
+      logAdminError({
+        action: "fiscal_receipt_void_failed",
+        title: "Errore Annullamento Scontrino Aperto RT",
+        description:
+          "Annullamento dello scontrino aperto non riuscito: la stampante fiscale non ha risposto al comando printRecVoid.",
+        error: err,
+        details: {
+          printer: "Epson FP-81II RT",
+          address: "192.168.68.63",
+          command: "printRecVoid",
+        },
+      });
+      setSuccessToast(
+        makeToast(
+          "Annullamento non riuscito. Se la cassa non risponde, premi ANNULLA/STORNO sulla tastiera della cassa.",
+          "error"
+        )
+      );
     } finally {
       setIsCheckingOut(false);
     }
@@ -1400,7 +1489,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     setMatchedVariantIndex(0);
     setCurrentStock(stockNum);
     setIsSavingNew(false);
-    setSuccessToast("✅ Prodotto registrato e associato al codice a barre!");
+    setSuccessToast(makeToast("✅ Prodotto registrato e associato al codice a barre!"));
   };
 
   const currentVariant = matchedProduct?.variants?.[matchedVariantIndex];
@@ -1449,7 +1538,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     });
 
     if (result && (result as { error?: string }).error) {
-      setSuccessToast((result as { error?: string }).error || "Errore durante il salvataggio della foto.");
+      setSuccessToast(makeToast((result as { error?: string }).error || "Errore durante il salvataggio della foto.", "error"));
       setCloudSyncStatus("idle");
       return;
     }
@@ -1477,7 +1566,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       },
     });
 
-    setSuccessToast("Foto aggiornata e sincronizzata nel cloud!");
+    setSuccessToast(makeToast("Foto aggiornata e sincronizzata nel cloud!"));
     setTimeout(() => setSuccessToast(null), 2400);
   };
 
@@ -1486,7 +1575,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     if (!file || !matchedProduct) return;
     setIsUpdatingPhoto(true);
     try {
-      setSuccessToast("Compressione e caricamento su Cloud Storage...");
+      setSuccessToast(makeToast("Compressione e caricamento su Cloud Storage...", "info"));
       const compressedDataUrl = await fileToResizedDataUrl(file, 800);
       const res = await fetch("/api/admin/upload-image", {
         method: "POST",
@@ -1503,7 +1592,26 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       applyNewImage(data.url);
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Errore";
-      setSuccessToast("Impossibile caricare l'immagine: " + msg);
+      logAdminError({
+        action: "image_upload_failed",
+        title: "Errore Caricamento Foto Prodotto",
+        description: `Caricamento della foto non riuscito per "${matchedProduct.name}"${
+          currentVariant?.name && currentVariant.name !== "Standard" ? ` (${currentVariant.name})` : ""
+        }: ${msg}`,
+        error: err,
+        details: {
+          productId: matchedProduct.id,
+          productName: matchedProduct.name,
+          variantId: currentVariant?.id,
+          variantName: currentVariant?.name,
+          sku: currentVariant?.sku,
+          ean: currentVariant?.ean,
+          fileName: file.name,
+          fileType: file.type || "sconosciuto",
+          fileSizeKb: Math.round(file.size / 1024),
+        },
+      });
+      setSuccessToast(makeToast("Impossibile caricare l'immagine: " + msg, "error"));
     } finally {
       setIsUpdatingPhoto(false);
       if (photoInputRef.current) photoInputRef.current.value = "";
@@ -1533,7 +1641,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       setCloudSyncStatus("saving");
       const result = updateProductDetails(matchedProduct.id, { name: clean });
       if (result && (result as { error?: string }).error) {
-        setSuccessToast((result as { error?: string }).error || "Errore salvataggio titolo.");
+        setSuccessToast(makeToast((result as { error?: string }).error || "Errore salvataggio titolo.", "error"));
         setCloudSyncStatus("idle");
         setIsEditingTitle(false);
         return;
@@ -1550,7 +1658,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       setMatchedProduct((prev) => (prev ? { ...prev, name: clean } : null));
       setIsEditingTitle(false);
       markCloudSaved();
-      setSuccessToast("Nome prodotto aggiornato e sincronizzato!");
+      setSuccessToast(makeToast("Nome prodotto aggiornato e sincronizzato!"));
       setTimeout(() => setSuccessToast(null), 2400);
     },
     [matchedProduct, titleEditValue, markCloudSaved]
@@ -1584,7 +1692,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
 
       const result = updateProductDetails(matchedProduct.id, updates);
       if (result && (result as { error?: string }).error) {
-        setSuccessToast((result as { error?: string }).error || "Errore durante il salvataggio del prezzo.");
+        setSuccessToast(makeToast((result as { error?: string }).error || "Errore durante il salvataggio del prezzo.", "error"));
         setIsUpdatingPrice(false);
         setCloudSyncStatus("idle");
         return;
@@ -1615,7 +1723,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         details: { productId: matchedProduct.id, oldPrice: currentPrice, newPrice: rounded },
       });
 
-      setSuccessToast(`Prezzo di listino sincronizzato: €${rounded.toFixed(2)}`);
+      setSuccessToast(makeToast(`Prezzo di listino sincronizzato: €${rounded.toFixed(2)}`));
       setTimeout(() => setSuccessToast(null), 2500);
     },
     [matchedProduct, matchedVariantIndex, priceEditValue, discountMode, markCloudSaved]
@@ -1814,9 +1922,13 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
           /* ========================================================= */
           <div className="flex-1 flex flex-col overflow-hidden">
             {successToast && (
-              <div className="mx-5 mt-3 p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-semibold text-emerald-800 flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>{successToast}</span>
+              <div
+                className={`mx-5 mt-3 p-2.5 border rounded-xl text-xs font-semibold flex items-center gap-2 ${toastContainerClass(
+                  successToast.type
+                )}`}
+              >
+                <ToastIcon type={successToast.type} />
+                <span>{successToast.message}</span>
               </div>
             )}
 
@@ -2448,9 +2560,13 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
             {/* Top Controls: Toast & Search bar (Compact shrink-0) */}
         <div className="px-5 pt-3 pb-1 shrink-0 space-y-2">
           {successToast && (
-            <div className="p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-semibold text-emerald-800 flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>{successToast}</span>
+            <div
+              className={`p-2 border rounded-xl text-xs font-semibold flex items-center gap-2 ${toastContainerClass(
+                successToast.type
+              )}`}
+            >
+              <ToastIcon type={successToast.type} />
+              <span>{successToast.message}</span>
             </div>
           )}
 
@@ -2598,9 +2714,11 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                               details: { productId: matchedProduct.id, isLocalOnly: nextState },
                             });
                             setSuccessToast(
-                              nextState
-                                ? "🏬 Prodotto impostato su: SOLO NEGOZIO (Nascosto dall'e-commerce pubblico)"
-                                : "🌐 Prodotto reso: VISIBILE SULL'E-COMMERCE E IN NEGOZIO"
+                              makeToast(
+                                nextState
+                                  ? "🏬 Prodotto impostato su: SOLO NEGOZIO (Nascosto dall'e-commerce pubblico)"
+                                  : "🌐 Prodotto reso: VISIBILE SULL'E-COMMERCE E IN NEGOZIO"
+                              )
                             );
                             setTimeout(() => setSuccessToast(null), 2500);
                           }}

@@ -29,7 +29,11 @@ export type ActivityCategory =
   | "barcode" // Scansioni ottiche, codici non trovati
   | "prodotto" // Modifiche scheda, descrizioni, foto, nuovo prodotto
   | "canale" // Toggle solo negozio vs online
-  | "sistema"; // Reset, errori, ripristini
+  | "sistema" // Reset, errori, ripristini
+  | "errore"; // Errori ed anomalie runtime (telemetria globale)
+
+/** Gravità dell'evento: gli errori vengono evidenziati nella Scatola Nera. */
+export type AuditLogLevel = "info" | "warning" | "error";
 
 export interface AdminActivityLogItem {
   id: string;
@@ -41,6 +45,7 @@ export interface AdminActivityLogItem {
   details?: Record<string, unknown>;
   operator?: string; // Default: "Banco Salone (Federica)"
   device?: string;
+  level?: AuditLogLevel; // Popolato per errori/anomalie (default: info)
 }
 
 // ------------------------------------------------------------------------------
@@ -69,6 +74,7 @@ export const ACTIVITY_CATEGORIES: readonly ActivityCategory[] = [
   "prodotto",
   "canale",
   "sistema",
+  "errore",
 ] as const;
 
 // ------------------------------------------------------------------------------
@@ -109,6 +115,10 @@ export function isActivityCategory(value: unknown): value is ActivityCategory {
   return typeof value === "string" && (ACTIVITY_CATEGORIES as readonly string[]).includes(value);
 }
 
+export function isAuditLogLevel(value: unknown): value is AuditLogLevel {
+  return value === "info" || value === "warning" || value === "error";
+}
+
 /**
  * Clona e valida i metadati dell'evento: un round-trip JSON garantisce che
  * `details` sia serializzabile (mai oggetti circolari o funzioni in storage).
@@ -145,6 +155,7 @@ export function sanitizeAdminActivityLogItem(value: unknown): AdminActivityLogIt
     details: safeDetails(raw.details),
     operator: isNonEmptyString(raw.operator) ? raw.operator.trim().slice(0, 120) : undefined,
     device: isNonEmptyString(raw.device) ? raw.device.trim().slice(0, 120) : undefined,
+    level: isAuditLogLevel(raw.level) ? raw.level : undefined,
   };
 }
 
@@ -309,17 +320,19 @@ async function postAuditLogToCloud(item: AdminActivityLogItem): Promise<void> {
  * - Emette `scelta_audit_log_added` per l'aggiornamento reattivo della UI.
  * - Invia la notifica asincrona a `/api/admin/audit-log` (POST, best-effort).
  */
-export function logAdminActivity(entry: Omit<AdminActivityLogItem, "id" | "timestamp">): void {
-  try {
-    const item: AdminActivityLogItem = {
-      ...entry,
-      id: `act_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-      timestamp: new Date().toISOString(),
-      operator: isNonEmptyString(entry.operator) ? entry.operator.trim() : getAuditOperator(),
-      device: isNonEmptyString(entry.device) ? entry.device.trim() : getAuditDevice(),
-      details: safeDetails(entry.details),
-    };
+export function logAdminActivity(
+  entry: Omit<AdminActivityLogItem, "id" | "timestamp">
+): AdminActivityLogItem {
+  const item: AdminActivityLogItem = {
+    ...entry,
+    id: `act_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+    timestamp: new Date().toISOString(),
+    operator: isNonEmptyString(entry.operator) ? entry.operator.trim() : getAuditOperator(),
+    device: isNonEmptyString(entry.device) ? entry.device.trim() : getAuditDevice(),
+    details: safeDetails(entry.details),
+  };
 
+  try {
     memoryLogs = mergeAuditLogs(memoryLogs, [item, ...readStoredLogs()]).slice(
       0,
       MAX_LOCAL_AUDIT_LOGS
@@ -331,6 +344,158 @@ export function logAdminActivity(entry: Omit<AdminActivityLogItem, "id" | "times
     // Il registro non deve MAI interrompere una vendita o un salvataggio.
     console.warn("[Scelta Makeup · Audit] Registrazione evento non riuscita:", err);
   }
+
+  return item;
+}
+
+// ------------------------------------------------------------------------------
+// Telemetria errori (Scatola Nera automatica)
+// ------------------------------------------------------------------------------
+
+interface NormalizedErrorInfo {
+  name: string;
+  message: string;
+  stack?: string;
+}
+
+/** Normalizza qualunque valore lanciato (`Error`, stringa, oggetto, unknown) in dati serializzabili. */
+function normalizeErrorInfo(error: unknown): NormalizedErrorInfo {
+  if (error instanceof Error) {
+    return {
+      name: error.name || "Error",
+      message: error.message || "Errore sconosciuto",
+      stack: error.stack,
+    };
+  }
+  if (isNonEmptyString(error)) {
+    return { name: "Error", message: error.trim().slice(0, 2000) };
+  }
+  if (error && typeof error === "object") {
+    const raw = error as { name?: unknown; message?: unknown; stack?: unknown };
+    let fallback = "Errore sconosciuto";
+    try {
+      fallback = JSON.stringify(error) ?? fallback;
+    } catch {
+      // Struttura circolare o non serializzabile: si mantiene il fallback.
+    }
+    return {
+      name: isNonEmptyString(raw.name) ? raw.name : "Error",
+      message: isNonEmptyString(raw.message) ? raw.message : fallback.slice(0, 2000),
+      stack: isNonEmptyString(raw.stack) ? raw.stack : undefined,
+    };
+  }
+  if (error === undefined || error === null) return { name: "Error", message: "Errore sconosciuto" };
+  return { name: "Error", message: String(error) };
+}
+
+/**
+ * Registra un errore/anomalia nella Scatola Nera con tutti i dettagli diagnostici
+ * utili a Mario per intervenire in remoto PRIMA che la cliente segnali il problema:
+ * messaggio, nome, stack trace, URL della pagina, userAgent e metadati extra.
+ *
+ * Restituisce la voce creata (già persistita in locale e inviata al cloud).
+ */
+export function logAdminError(params: {
+  action: string;
+  title: string;
+  description: string;
+  error?: unknown;
+  details?: Record<string, unknown>;
+}): AdminActivityLogItem {
+  const info = normalizeErrorInfo(params.error);
+  const pageUrl = isBrowser() ? window.location.href : undefined;
+  const userAgent = typeof navigator !== "undefined" ? navigator.userAgent : undefined;
+
+  return logAdminActivity({
+    category: "errore",
+    level: "error",
+    action: params.action,
+    title: params.title,
+    description: params.description,
+    details: {
+      ...(params.details ?? {}),
+      errorName: info.name,
+      errorMessage: info.message,
+      stack: info.stack,
+      pageUrl,
+      userAgent,
+    },
+  });
+}
+
+/**
+ * Aggancia la telemetria globale del browser: cattura ogni eccezione runtime non
+ * gestita (`window.onerror`) e ogni Promise rifiutata senza `.catch`
+ * (`unhandledrejection`) e la spedisce alla Scatola Nera.
+ *
+ * Una mappa di deduplicazione evita di registrare lo stesso errore più di una
+ * volta ogni 10 secondi (es. errori che si ripetono a ogni render o polling),
+ * così la timeline di Mario resta leggibile e non viene inondata di duplicati.
+ *
+ * Ritorna la funzione di cleanup da invocare allo smontaggio del componente.
+ */
+export function setupGlobalErrorTelemetry(): () => void {
+  if (!isBrowser()) return () => {};
+
+  const DEDUP_WINDOW_MS = 10_000;
+  const recentKeys = new Map<string, number>();
+
+  const shouldReport = (key: string): boolean => {
+    const now = Date.now();
+    for (const [existingKey, at] of recentKeys) {
+      if (now - at >= DEDUP_WINDOW_MS) recentKeys.delete(existingKey);
+    }
+    const last = recentKeys.get(key);
+    if (last !== undefined && now - last < DEDUP_WINDOW_MS) return false;
+    recentKeys.set(key, now);
+    return true;
+  };
+
+  const handleWindowError = (event: ErrorEvent) => {
+    const thrown: unknown = event.error ?? event.message;
+    const info = normalizeErrorInfo(thrown);
+    const location = event.filename
+      ? `${event.filename}:${event.lineno ?? 0}:${event.colno ?? 0}`
+      : "";
+    const key = `error:${info.name}:${info.message}:${location}`;
+    if (!shouldReport(key)) return;
+
+    logAdminError({
+      action: "window_unhandled_error",
+      title: "Anomalia JavaScript Rilevata",
+      description: `${info.name}: ${info.message}${location ? ` — origine ${location}` : ""}`,
+      error: thrown,
+      details: {
+        source: "window.error",
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+      },
+    });
+  };
+
+  const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+    const info = normalizeErrorInfo(event.reason);
+    const key = `unhandledrejection:${info.name}:${info.message}`;
+    if (!shouldReport(key)) return;
+
+    logAdminError({
+      action: "window_unhandled_rejection",
+      title: "Promise Non Gestita Rilevata",
+      description: `${info.name}: ${info.message}`,
+      error: event.reason,
+      details: { source: "window.unhandledrejection" },
+    });
+  };
+
+  window.addEventListener("error", handleWindowError);
+  window.addEventListener("unhandledrejection", handleUnhandledRejection);
+
+  return () => {
+    window.removeEventListener("error", handleWindowError);
+    window.removeEventListener("unhandledrejection", handleUnhandledRejection);
+    recentKeys.clear();
+  };
 }
 
 // ------------------------------------------------------------------------------

@@ -28,7 +28,7 @@ import {
   getProductOverride,
   computeStockStatus,
 } from "@/lib/adminStore";
-import { logAdminActivity } from "@/lib/auditLogger";
+import { logAdminActivity, logAdminError } from "@/lib/auditLogger";
 
 interface ProductEditorModalProps {
   product: Product | null;
@@ -221,6 +221,20 @@ function ProductEditorModalDialog({
     } catch (err) {
       console.error("Errore caricamento immagine:", err);
       const msg = err instanceof Error ? err.message : "Errore";
+      logAdminError({
+        action: "product_editor_image_failed",
+        title: "Errore Caricamento Foto (Editor Prodotto)",
+        description: `Caricamento immagine non riuscito per "${formData.name || product.name}": ${msg}`,
+        error: err,
+        details: {
+          productId: product.id,
+          productName: formData.name,
+          fileName: file.name,
+          fileType: file.type || "sconosciuto",
+          fileSizeKb: Math.round(file.size / 1024),
+          galleryCount: formData.images.length,
+        },
+      });
       setErrorMessage("Impossibile caricare l'immagine: " + msg);
     } finally {
       setIsProcessingImage(false);

@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  AlertOctagon,
   AlertTriangle,
   Barcode,
   ChevronDown,
@@ -90,6 +91,13 @@ const CATEGORY_META: Record<ActivityCategory, CategoryMeta> = {
   sistema: {
     label: "Sistema & Ripristini",
     icon: AlertTriangle,
+    badgeClass: "bg-rose-50 text-rose-800 border-rose-300 hover:bg-rose-100",
+    activeClass: "bg-rose-600 text-white border-rose-600 shadow-sm",
+    iconWrapClass: "bg-rose-100 text-rose-700 border-rose-200",
+  },
+  errore: {
+    label: "Errori & Anomalie",
+    icon: AlertOctagon,
     badgeClass: "bg-rose-50 text-rose-800 border-rose-300 hover:bg-rose-100",
     activeClass: "bg-rose-600 text-white border-rose-600 shadow-sm",
     iconWrapClass: "bg-rose-100 text-rose-700 border-rose-200",
@@ -187,9 +195,16 @@ function ActivityEventCard({
   const Icon = meta.icon;
   const remote = isRemoteOperator(item.operator);
   const today = startOfDay(new Date()) === startOfDay(new Date(item.timestamp));
+  const isAnomaly = item.category === "errore" || item.level === "error";
 
   return (
-    <article className="rounded-2xl border border-[#EFE6F5] bg-white hover:border-[#D8C2E7] transition-colors shadow-2xs overflow-hidden">
+    <article
+      className={`rounded-2xl border transition-colors shadow-2xs overflow-hidden ${
+        isAnomaly
+          ? "border-[#F5C2C7] border-l-4 border-l-rose-500 bg-rose-50/30 hover:border-rose-300"
+          : "border-[#EFE6F5] bg-white hover:border-[#D8C2E7]"
+      }`}
+    >
       <div className="flex items-start gap-3 p-3.5 sm:p-4">
         {/* Icona categoria */}
         <div
@@ -213,6 +228,12 @@ function ActivityEventCard({
             >
               {meta.label}
             </span>
+            {isAnomaly && (
+              <span className="inline-flex items-center gap-1 text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-rose-600 text-white font-bold">
+                <AlertTriangle className="w-2.5 h-2.5" />
+                [ANOMALIA / ERRORE]
+              </span>
+            )}
           </div>
 
           <h4 className="text-sm font-bold text-[#1F1B24] mt-1.5 leading-snug">{item.title}</h4>
@@ -269,6 +290,12 @@ function ActivityEventCard({
               <span className="font-semibold text-gray-500">Categoria:</span>{" "}
               <span className="font-mono">{item.category}</span>
             </span>
+            {item.level && (
+              <span>
+                <span className="font-semibold text-gray-500">Livello:</span>{" "}
+                <span className="font-mono">{item.level}</span>
+              </span>
+            )}
           </div>
 
           {item.details && Object.keys(item.details).length > 0 && (
@@ -355,10 +382,17 @@ export default function ActivityLogTab() {
       prodotto: 0,
       canale: 0,
       sistema: 0,
+      errore: 0,
     };
     for (const item of logs) counts[item.category] = (counts[item.category] || 0) + 1;
     return counts;
   }, [logs]);
+
+  // Anomalie complessive: categoria "errore" oppure gravità "error" (anche su altre categorie).
+  const anomalyCount = useMemo(
+    () => logs.filter((item) => item.category === "errore" || item.level === "error").length,
+    [logs]
+  );
 
   const filteredLogs = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -472,6 +506,28 @@ export default function ActivityLogTab() {
           </div>
 
           <div className="flex items-center gap-2">
+            {anomalyCount > 0 && (
+              <button
+                type="button"
+                onClick={() => setCategoryFilter("errore")}
+                className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm transition-colors cursor-pointer ${
+                  categoryFilter === "errore"
+                    ? "bg-rose-600 text-white ring-2 ring-white/70"
+                    : "bg-rose-50 text-rose-800 hover:bg-rose-100 border border-rose-300"
+                }`}
+                title="Mostra solo gli errori e le anomalie rilevate automaticamente dalla telemetria"
+              >
+                <AlertOctagon
+                  className={`w-3.5 h-3.5 ${
+                    categoryFilter === "errore" ? "text-white" : "text-rose-600"
+                  }`}
+                />
+                <span>
+                  🔴 {anomalyCount} {anomalyCount === 1 ? "Anomalia Rilevata" : "Anomalie Rilevate"}
+                </span>
+              </button>
+            )}
+
             <div className="hidden sm:flex flex-col items-end mr-1">
               <span className="text-xl font-bold leading-none">{logs.length}</span>
               <span className="text-[10px] uppercase tracking-wider text-[#D8C2E7]/80">

@@ -7,6 +7,7 @@ import {
   DEFAULT_OPERATOR_LABEL,
   REMOTE_OPERATOR_LABEL,
   setAuditOperatorSession,
+  setupGlobalErrorTelemetry,
 } from "@/lib/auditLogger";
 
 const STORAGE_AUTH_KEY = "scelta_admin_unlocked_session";
@@ -50,6 +51,14 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
     }
 
     checkAuth();
+  }, []);
+
+  // Telemetria Scatola Nera: qualunque eccezione runtime non gestita sul
+  // dispositivo della cliente (laptop salone YASHI) viene catturata e inviata
+  // automaticamente alla Scatola Nera, così Mario interviene prima della segnalazione.
+  useEffect(() => {
+    const teardown = setupGlobalErrorTelemetry();
+    return teardown;
   }, []);
 
   const handleKeyPress = (digit: string) => {
