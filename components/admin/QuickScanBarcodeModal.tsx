@@ -1483,8 +1483,21 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     if (!file || !matchedProduct) return;
     setIsUpdatingPhoto(true);
     try {
-      const dataUrl = await fileToResizedDataUrl(file, 600);
-      applyNewImage(dataUrl);
+      setSuccessToast("Compressione e caricamento su Cloud Storage...");
+      const compressedDataUrl = await fileToResizedDataUrl(file, 800);
+      const res = await fetch("/api/admin/upload-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          image: compressedDataUrl,
+          productId: matchedProduct.id,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success || !data.url) {
+        throw new Error(data.error || "Errore durante l'upload su Cloud Storage");
+      }
+      applyNewImage(data.url);
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Errore";
       setSuccessToast("Impossibile caricare l'immagine: " + msg);

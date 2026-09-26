@@ -11,6 +11,9 @@
 /.next/
 /out/
 
+# Immagini prodotto caricate da /api/admin/upload-image (generate a runtime)
+/public/uploads/
+
 # production
 /build
 

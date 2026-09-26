@@ -202,13 +202,26 @@ function ProductEditorModalDialog({
     setErrorMessage(null);
     try {
       const compressedDataUrl = await compressImage(file);
+      const res = await fetch("/api/admin/upload-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          image: compressedDataUrl,
+          productId: product.id,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success || !data.url) {
+        throw new Error(data.error || "Errore durante l'upload su Cloud Storage");
+      }
       setFormData((prev) => ({
         ...prev,
-        images: [compressedDataUrl, ...prev.images],
+        images: [data.url, ...prev.images],
       }));
     } catch (err) {
       console.error("Errore caricamento immagine:", err);
-      setErrorMessage("Impossibile elaborare il file immagine. Prova con un formato PNG, JPG o WebP.");
+      const msg = err instanceof Error ? err.message : "Errore";
+      setErrorMessage("Impossibile caricare l'immagine: " + msg);
     } finally {
       setIsProcessingImage(false);
       e.target.value = "";
