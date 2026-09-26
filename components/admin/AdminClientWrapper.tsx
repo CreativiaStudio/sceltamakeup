@@ -18,6 +18,7 @@ import CrmTable from "./CrmTable";
 import AppointmentsBridgeTab from "./AppointmentsBridgeTab";
 import NotificationQueueTab from "./NotificationQueueTab";
 import AnalyticsTab from "./AnalyticsTab";
+import ActivityLogTab from "./ActivityLogTab";
 import QuickScanBarcodeModal from "./QuickScanBarcodeModal";
 import { AdminTab } from "@/types/admin";
 import {
@@ -36,6 +37,7 @@ const VALID_TABS: AdminTab[] = [
   "clienti",
   "appuntamenti",
   "notifiche",
+  "registro",
   "analytics",
 ];
 
@@ -114,6 +116,8 @@ export default function AdminClientWrapper() {
         return "Appuntamenti Cabina & Cassa RT";
       case "notifiche":
         return "Coda WhatsApp Anti-Ban & Email Transazionali";
+      case "registro":
+        return "Registro Attività & Cassa (Scatola Nera)";
       case "analytics":
         return "Statistiche & Performance Vendite";
       default:
@@ -238,6 +242,8 @@ export default function AdminClientWrapper() {
           {activeTab === "appuntamenti" && <AppointmentsBridgeTab />}
 
           {activeTab === "notifiche" && <NotificationQueueTab />}
+
+          {activeTab === "registro" && <ActivityLogTab />}
 
           {activeTab === "analytics" && <AnalyticsTab kpis={kpis} />}
         </main>

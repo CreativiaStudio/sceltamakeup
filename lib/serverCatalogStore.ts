@@ -22,11 +22,18 @@
 import rawCatalog from "@/data/catalog.json";
 import { Product } from "@/types/product";
 import type { SceltaVariantStock } from "@/lib/adminStore";
+import {
+  MAX_CLOUD_AUDIT_LOGS,
+  sanitizeAdminActivityLogItem,
+  type AdminActivityLogItem,
+} from "@/lib/auditLogger";
 
 export interface CentralCatalogState {
   version: number;
   productOverrides: Record<string, Partial<Product>>;
   variantStocks: Record<string, SceltaVariantStock>;
+  /** Scatola nera: timeline immutabile delle operazioni (max 1000 eventi). */
+  auditLogs?: AdminActivityLogItem[];
   updatedAt: string;
 }
 
@@ -71,8 +78,28 @@ function emptyState(): CentralCatalogState {
     version: 2,
     productOverrides: {},
     variantStocks: {},
+    auditLogs: [],
     updatedAt: new Date().toISOString(),
   };
+}
+
+function normalizeAuditLogs(raw: unknown): AdminActivityLogItem[] {
+  if (!Array.isArray(raw)) return [];
+  const out: AdminActivityLogItem[] = [];
+  for (const entry of raw) {
+    const clean = sanitizeAdminActivityLogItem(entry);
+    if (clean) out.push(clean);
+  }
+  // Ordine dal più recente al più vecchio, taglio alla capienza cloud.
+  out.sort((a, b) => {
+    const ta = Date.parse(a.timestamp);
+    const tb = Date.parse(b.timestamp);
+    if (Number.isNaN(ta) && Number.isNaN(tb)) return 0;
+    if (Number.isNaN(ta)) return 1;
+    if (Number.isNaN(tb)) return -1;
+    return tb - ta;
+  });
+  return out.slice(0, MAX_CLOUD_AUDIT_LOGS);
 }
 
 function normalizeState(raw: unknown): CentralCatalogState {
@@ -85,6 +112,7 @@ function normalizeState(raw: unknown): CentralCatalogState {
     variantStocks: (obj.variantStocks && typeof obj.variantStocks === "object"
       ? obj.variantStocks
       : {}) as Record<string, SceltaVariantStock>,
+    auditLogs: normalizeAuditLogs(obj.auditLogs),
     updatedAt: typeof obj.updatedAt === "string" ? obj.updatedAt : new Date().toISOString(),
   };
 }
@@ -361,6 +389,39 @@ export async function saveVariantStock(input: {
     const next: CentralCatalogState = {
       ...current,
       variantStocks: { ...current.variantStocks, [input.variantId]: updated },
+      updatedAt: new Date().toISOString(),
+    };
+
+    await persist(next);
+    return next;
+  });
+}
+
+// ------------------------------------------------------------------------------
+// Scatola Nera — Audit Trail (Registro Attività Operatore)
+// ------------------------------------------------------------------------------
+
+/**
+ * Appende uno o più eventi alla timeline cloud della scatola nera.
+ * Deduplica per id (idempotente rispetto ai retry del client), ordina dal più
+ * recente e conserva al massimo `MAX_CLOUD_AUDIT_LOGS` eventi nel singleton.
+ */
+export async function appendAuditLogs(
+  incoming: AdminActivityLogItem[]
+): Promise<CentralCatalogState> {
+  return enqueue(async () => {
+    const current = await getCentralCatalogState();
+
+    const byId = new Map<string, AdminActivityLogItem>();
+    for (const item of current.auditLogs || []) byId.set(item.id, item);
+    for (const entry of incoming) {
+      const clean = sanitizeAdminActivityLogItem(entry);
+      if (clean) byId.set(clean.id, clean);
+    }
+
+    const next: CentralCatalogState = {
+      ...current,
+      auditLogs: normalizeAuditLogs(Array.from(byId.values())),
       updatedAt: new Date().toISOString(),
     };
 

@@ -3,6 +3,11 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Lock, KeyRound, ShieldAlert, ArrowLeft, Eye, EyeOff, Store } from "lucide-react";
+import {
+  DEFAULT_OPERATOR_LABEL,
+  REMOTE_OPERATOR_LABEL,
+  setAuditOperatorSession,
+} from "@/lib/auditLogger";
 
 const STORAGE_AUTH_KEY = "scelta_admin_unlocked_session";
 
@@ -85,6 +90,12 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
 
       if (res.ok && data.success) {
         sessionStorage.setItem(STORAGE_AUTH_KEY, "true");
+        // Scatola nera: attribuisce correttamente gli eventi successivi.
+        // PIN cassa → operatore del banco salone; Password Master → admin remoto.
+        setAuditOperatorSession(
+          mode === "pin" ? DEFAULT_OPERATOR_LABEL : REMOTE_OPERATOR_LABEL,
+          mode === "pin" ? "YASHI (Laptop Salone)" : "Browser Amministratore"
+        );
         setIsAuthenticated(true);
         setPin("");
         setPassword("");

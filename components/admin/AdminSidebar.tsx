@@ -15,6 +15,7 @@ import {
   Sparkles,
   X,
   Store,
+  History,
 } from "lucide-react";
 import { AdminTab } from "@/types/admin";
 import { AdminKpiSummary } from "@/lib/adminStore";
@@ -94,6 +95,14 @@ export default function AdminSidebar({
       icon: Radio,
       badge: "Anti-Ban",
       badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-300",
+      category: "Store & Servizi",
+    },
+    {
+      id: "registro",
+      label: "Registro Attività",
+      icon: History,
+      badge: "Scatola Nera",
+      badgeColor: "bg-indigo-100 text-indigo-800 border-indigo-300",
       category: "Store & Servizi",
     },
     {

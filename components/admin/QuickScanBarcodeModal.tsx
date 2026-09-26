@@ -36,6 +36,7 @@ import {
   updateProductDetails,
   createAdminOrder,
 } from "@/lib/adminStore";
+import { logAdminActivity } from "@/lib/auditLogger";
 
 interface QuickScanBarcodeModalProps {
   onOpenManualOrderWithItem?: (item: {
@@ -658,6 +659,29 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         setCashTendered(itemPrice.toFixed(2));
         setPriceEditValue(itemPrice.toFixed(2));
         setTitleEditValue(match.product.name);
+
+        logAdminActivity({
+          category: "barcode",
+          action: "scan_success",
+          title: "Scansione Barcode",
+          description: `Codice ${cleanCode} riconosciuto → "${match.product.name}"${
+            match.product.variants?.[match.variantIndex]?.name &&
+            match.product.variants[match.variantIndex].name !== "Standard"
+              ? ` (${match.product.variants[match.variantIndex].name})`
+              : ""
+          } — €${itemPrice.toFixed(2)}`,
+          details: {
+            barcode: cleanCode,
+            productId: match.product.id,
+            productName: match.product.name,
+            brand: match.product.brand,
+            variantIndex: match.variantIndex,
+            variantName: match.product.variants?.[match.variantIndex]?.name,
+            sku: match.product.variants?.[match.variantIndex]?.sku,
+            ean: match.product.variants?.[match.variantIndex]?.ean,
+            price: itemPrice,
+          },
+        });
       } else {
         // Barcode non riconosciuto: apri sempre la schermata di registrazione rapido
         setActiveScreen("scan");
@@ -670,6 +694,14 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         setCashTendered("11.90");
         setPriceEditValue("11.90");
         setTitleEditValue("");
+
+        logAdminActivity({
+          category: "barcode",
+          action: "scan_not_found",
+          title: "Barcode Non Riconosciuto",
+          description: `Letto codice ${cleanCode}: nessun prodotto associato nel catalogo (aperta registrazione)`,
+          details: { barcode: cleanCode },
+        });
       }
 
       // Reset any in-progress photo / price / discount editing for the new scan
@@ -883,6 +915,36 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         })),
       });
 
+      logAdminActivity({
+        category: "cassa_rt",
+        action: "fiscal_receipt_multi",
+        title: "Emissione Scontrino Multiplo RT",
+        description: `Scontrino fiscale multiplo RT: ${multiItemsCount} ${
+          multiItemsCount === 1 ? "articolo" : "articoli"
+        } — totale €${multiTotal.toFixed(2)} (${
+          multiPaymentMethod === "card" ? "Carta POS" : "Contanti"
+        })${multiDiscountTotal > 0.001 ? ` — sconto applicato €${multiDiscountTotal.toFixed(2)}` : ""}${
+          multiPaymentMethod === "cash" && change > 0 ? ` — resto €${change.toFixed(2)}` : ""
+        }`,
+        details: {
+          total: multiTotal,
+          grossTotal: multiGrossTotal,
+          discount: multiDiscountTotal,
+          paymentMethod: multiPaymentMethod,
+          itemsCount: multiItemsCount,
+          linesCount: multiCartItems.length,
+          change,
+          tipoScontrino: "Fiscale (RT)",
+          items: multiItemsWithDiscount.map((it) => ({
+            productId: it.productId,
+            name: it.productName,
+            variant: it.variantName,
+            quantity: it.quantity,
+            unitPrice: it.finalUnitPrice,
+          })),
+        },
+      });
+
       setMultiCartItems([]);
       setMultiDiscountMode("none");
       setMultiDiscountPercent(0);
@@ -923,6 +985,14 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         method: "POST",
         headers: { "Content-Type": "text/xml; charset=utf-8" },
         body: drawerKickXml,
+      });
+      logAdminActivity({
+        category: "cassa_rt",
+        action: "cash_drawer_open",
+        title: "Apertura Cassetto Contanti",
+        description:
+          "Comando di apertura cassetto rendiresto inviato alla stampante fiscale Epson FP-81II RT (192.168.68.63)",
+        details: { printer: "Epson FP-81II RT", address: "192.168.68.63", command: "openDrawer" },
       });
       setSuccessToast("🔓 Cassetto portamonete aperto con successo!");
     } catch (err) {
@@ -1069,6 +1139,14 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     });
     markCloudSaved();
 
+    logAdminActivity({
+      category: "giacenza",
+      action: "stock_adjust",
+      title: "Rettifica Rapida Giacenza",
+      description: `"${matchedProduct.name}" (${v.name || "Standard"}): scorta da ${currentStock} a ${newQty} (${delta > 0 ? "+" + delta : delta})`,
+      details: { productId: matchedProduct.id, variantId: v.id, oldStock: currentStock, newStock: newQty, delta },
+    });
+
     setSuccessToast(`Giacenza aggiornata: ${newQty} pz (sincronizzata nel cloud)`);
     setTimeout(() => {
       setIsStockUpdating(false);
@@ -1177,6 +1255,30 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         ],
       });
 
+      logAdminActivity({
+        category: "cassa_rt",
+        action: "fiscal_receipt_single",
+        title: "Emissione Scontrino Cassa RT",
+        description: `Scontrino fiscale RT emesso: "${itemDesc}" - €${price.toFixed(2)} (${
+          checkoutPaymentMethod === "card" ? "Carta POS" : "Contanti"
+        }${checkoutPaymentMethod === "cash" && change > 0 ? `, Resto €${change.toFixed(2)}` : ""})`,
+        details: {
+          productId: matchedProduct.id,
+          productName: matchedProduct.name,
+          variantName: v?.name,
+          sku: v?.sku,
+          ean: v?.ean,
+          barcode: scannedBarcode,
+          importo: price,
+          listino: basePrice,
+          scontoApplicato: discountApplied,
+          paymentMethod: checkoutPaymentMethod,
+          contantiRicevuti: checkoutPaymentMethod === "cash" ? effectivePayment : undefined,
+          resto: change,
+          tipoScontrino: "Fiscale (RT)",
+        },
+      });
+
       setSuccessToast(
         checkoutPaymentMethod === "cash" && change > 0
           ? `🎉 Incassato €${effectivePayment.toFixed(2)} — RESTO DA DARE: €${change.toFixed(2)} (Cassetto Aperto)`
@@ -1283,6 +1385,14 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
 
     updateProductDetails(newId, newProduct);
 
+    logAdminActivity({
+      category: "prodotto",
+      action: "quick_register",
+      title: "Nuovo Prodotto Registrato al Banco",
+      description: `Registrato "${newProdName}" (${newProdBrand}) al prezzo di €${priceNum.toFixed(2)} con barcode ${scannedBarcode}`,
+      details: { id: newId, name: newProdName, brand: newProdBrand, price: priceNum, barcode: scannedBarcode, stock: stockNum },
+    });
+
     setMatchedProduct(newProduct);
     setMatchedVariantIndex(0);
     setCurrentStock(stockNum);
@@ -1347,6 +1457,23 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       images: updatedImages,
     });
     markCloudSaved();
+
+    logAdminActivity({
+      category: "prodotto",
+      action: "image_update",
+      title: "Aggiornata Foto Prodotto",
+      description: `Foto aggiornata per "${matchedProduct.name}"${
+        currentVariant?.name && currentVariant.name !== "Standard" ? ` (${currentVariant.name})` : ""
+      }`,
+      details: {
+        productId: matchedProduct.id,
+        variantId: currentVariant?.id,
+        variantName: currentVariant?.name,
+        imageType: imgSrc.startsWith("data:") ? "upload_locale" : "url_esterno",
+        imageUrl: imgSrc.startsWith("data:") ? undefined : imgSrc.slice(0, 300),
+      },
+    });
+
     setSuccessToast("Foto aggiornata e sincronizzata nel cloud!");
     setTimeout(() => setSuccessToast(null), 2400);
   };
@@ -1395,6 +1522,14 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         setIsEditingTitle(false);
         return;
       }
+
+      logAdminActivity({
+        category: "prodotto",
+        action: "title_edit",
+        title: "Modifica Nome Prodotto",
+        description: `Rinominato da "${matchedProduct.name}" a "${clean}"`,
+        details: { productId: matchedProduct.id, oldName: matchedProduct.name, newName: clean },
+      });
 
       setMatchedProduct((prev) => (prev ? { ...prev, name: clean } : null));
       setIsEditingTitle(false);
@@ -1455,6 +1590,15 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
 
       setIsUpdatingPrice(false);
       markCloudSaved();
+
+      logAdminActivity({
+        category: "prezzo",
+        action: "price_change",
+        title: "Variazione Prezzo Listino",
+        description: `"${matchedProduct.name}": prezzo aggiornato da €${currentPrice.toFixed(2)} a €${rounded.toFixed(2)}`,
+        details: { productId: matchedProduct.id, oldPrice: currentPrice, newPrice: rounded },
+      });
+
       setSuccessToast(`Prezzo di listino sincronizzato: €${rounded.toFixed(2)}`);
       setTimeout(() => setSuccessToast(null), 2500);
     },
@@ -2430,6 +2574,13 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                             const nextState = !matchedProduct.isLocalOnly;
                             setMatchedProduct({ ...matchedProduct, isLocalOnly: nextState });
                             updateProductDetails(matchedProduct.id, { isLocalOnly: nextState });
+                            logAdminActivity({
+                              category: "canale",
+                              action: "channel_toggle",
+                              title: "Modifica Canale Vendita",
+                              description: `"${matchedProduct.name}" impostato su ${nextState ? "SOLO NEGOZIO (nascosto dall'e-commerce)" : "ONLINE (visibile su e-commerce)"} dalla cassa`,
+                              details: { productId: matchedProduct.id, isLocalOnly: nextState },
+                            });
                             setSuccessToast(
                               nextState
                                 ? "🏬 Prodotto impostato su: SOLO NEGOZIO (Nascosto dall'e-commerce pubblico)"

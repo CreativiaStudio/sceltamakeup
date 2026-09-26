@@ -18,6 +18,7 @@ export type AdminTab =
   | "clienti"
   | "appuntamenti"
   | "notifiche"
+  | "registro"
   | "analytics";
 
 export interface AdminTabItem {

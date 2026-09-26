@@ -18,6 +18,7 @@ import {
   batchUpdateProductVariants,
   computeStockStatus,
 } from "@/lib/adminStore";
+import { logAdminActivity } from "@/lib/auditLogger";
 
 interface ProductStockModalProps {
   product: Product | null;
@@ -104,6 +105,23 @@ function ProductStockModalDialog({
       setErrorMessage("Salvataggio cloud non riuscito. Le giacenze restano salvate in locale: riprova.");
       return;
     }
+
+    logAdminActivity({
+      category: "giacenza",
+      action: "batch_stock_edit",
+      title: "Aggiornamento Stock & Prezzi Varianti",
+      description: `Aggiornate ${variantStates.length} varianti per "${product.name}" (${variantStates.reduce((sum, v) => sum + (v.stockQuantity || 0), 0)} pezzi totali)`,
+      details: {
+        productId: product.id,
+        productName: product.name,
+        variants: variantStates.map((v) => ({
+          variantId: v.variantId,
+          name: v.name,
+          qty: v.stockQuantity,
+          price: v.price,
+        })),
+      },
+    });
 
     setIsSaving(false);
     setSaveSuccess(true);

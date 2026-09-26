@@ -11,6 +11,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { STORAGE_ADMIN_STORE_KEY, resetAdminStoreToDefaults } from "@/lib/adminStore";
+import { logAdminActivity } from "@/lib/auditLogger";
 
 /**
  * Admin Cockpit error boundary.
@@ -45,6 +46,12 @@ export default function AdminError({
   const handleEmergencyReset = () => {
     setIsResetting(true);
     try {
+      logAdminActivity({
+        category: "sistema",
+        action: "emergency_reset",
+        title: "Ripristino di Emergenza Memoria",
+        description: `Eseguito reset di emergenza della memoria cassa dall'error boundary (${error?.name || "Errore"}: ${error?.message || "Imprevisto"})`,
+      });
       // 1. Ripristina il catalogo/giacenze ai valori di fabbrica (memoria e storage).
       resetAdminStoreToDefaults();
       // 2. Rimuove l'archivio corrotto: alla ricarica verrà ricostruito pulito.

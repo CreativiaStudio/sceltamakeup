@@ -16,7 +16,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import rawCatalog from "@/data/catalog.json";
-import { Product, ProductVariant } from "@/types/product";
+import { Product, ProductCategory, ProductVariant } from "@/types/product";
 import {
   getAdminVariantStocks,
   computeStockStatus,
@@ -25,6 +25,7 @@ import {
   updateProductDetails,
 } from "@/lib/adminStore";
 import ProductEditorModal from "./ProductEditorModal";
+import { logAdminActivity } from "@/lib/auditLogger";
 
 const ALL_PRODUCTS = rawCatalog as Product[];
 
@@ -108,6 +109,13 @@ export default function ProductCatalogTable() {
     if (e) e.stopPropagation();
     const nextLocalOnly = !product.isLocalOnly;
     updateProductDetails(product.id, { isLocalOnly: nextLocalOnly });
+    logAdminActivity({
+      category: "canale",
+      action: "channel_toggle",
+      title: "Modifica Canale Vendita",
+      description: `"${product.name}" impostato su ${nextLocalOnly ? "SOLO NEGOZIO (nascosto dall'e-commerce)" : "ONLINE (visibile su e-commerce)"} dal catalogo`,
+      details: { productId: product.id, isLocalOnly: nextLocalOnly },
+    });
     setActionFeedback(
       nextLocalOnly
         ? `🏬 "${product.name.slice(0, 22)}..." impostato come SOLO NEGOZIO (nascosto dall'e-commerce)`
@@ -187,6 +195,10 @@ export default function ProductCatalogTable() {
       return {
         ...product,
         ...override,
+        id: product.id,
+        name: override.name || product.name || "Prodotto Senza Nome",
+        brand: override.brand || product.brand || "Generico",
+        category: override.category || product.category || "Viso",
         variants: override.variants ? override.variants.filter(isValidVariant) : getSafeVariants(product),
         images: (override.images || product.images || []).filter(
           (img): img is string => typeof img === "string" && img.trim().length > 0
@@ -202,11 +214,23 @@ export default function ProductCatalogTable() {
         const safeVariants = override.variants.filter(isValidVariant);
         if (safeVariants.length === 0) continue;
         extraProducts.push({
-          ...(override as Product),
+          ...(override as Partial<Product>),
+          id,
+          slug: override.slug || id,
+          name: override.name || "Prodotto Senza Nome",
+          brand: override.brand || "Generico",
+          category: (override.category as ProductCategory) || "Viso",
+          price: override.price || 0,
+          isLocalOnly: override.isLocalOnly ?? false,
           variants: safeVariants,
           images: (override.images || []).filter(
             (img): img is string => typeof img === "string" && img.trim().length > 0
           ),
+          shortDescription: override.shortDescription || "",
+          description: override.description || "",
+          howToUse: override.howToUse || "",
+          formulaBenefits: override.formulaBenefits || "",
+          inci: override.inci || "",
         } as Product);
       }
     }
@@ -258,19 +282,23 @@ export default function ProductCatalogTable() {
         return false;
       }
 
+      const pBrand = product.brand || "Generico";
+      const pBrandLower = pBrand.toLowerCase();
+      const pCat = product.category || "Viso";
+
       // Brand filter
       if (selectedBrand !== "Tutti") {
         const matchesBrand =
-          product.brand === selectedBrand ||
-          (selectedBrand === "Diego dalla Palma" && product.brand.toLowerCase().includes("diego dalla palma")) ||
-          (selectedBrand === "RVB LAB" && product.brand.toLowerCase().includes("rvb lab"));
+          pBrand === selectedBrand ||
+          (selectedBrand === "Diego dalla Palma" && pBrandLower.includes("diego dalla palma")) ||
+          (selectedBrand === "RVB LAB" && pBrandLower.includes("rvb lab"));
         if (!matchesBrand) {
           return false;
         }
       }
 
       // Category filter
-      if (selectedCategory !== "Tutte" && product.category !== selectedCategory) {
+      if (selectedCategory !== "Tutte" && pCat !== selectedCategory) {
         return false;
       }
 
@@ -282,19 +310,23 @@ export default function ProductCatalogTable() {
         }
       }
 
-      // Search query
+      // Search query (bulletproof against null, undefined or non-string attributes)
       if (q) {
-        const matchName = product.name.toLowerCase().includes(q);
-        const matchBrand = product.brand.toLowerCase().includes(q);
-        const matchCat = product.category.toLowerCase().includes(q);
-        const mainSku = product.variants?.[0]?.sku || "";
-        const matchSku = mainSku.toLowerCase().includes(q);
-        const matchVariants = product.variants?.some(
-          (v) =>
-            (v?.name && v.name.toLowerCase().includes(q)) ||
-            (v?.sku && v.sku.toLowerCase().includes(q)) ||
-            (v?.ean && v.ean.toLowerCase().includes(q))
-        );
+        const nameLower = (product.name || "").toLowerCase();
+        const catLower = pCat.toLowerCase();
+        const mainSku = (product.variants?.[0]?.sku || "").toLowerCase();
+
+        const matchName = nameLower.includes(q);
+        const matchBrand = pBrandLower.includes(q);
+        const matchCat = catLower.includes(q);
+        const matchSku = mainSku.includes(q);
+        const matchVariants = (product.variants || []).some((v) => {
+          if (!v || typeof v !== "object") return false;
+          const vName = v.name ? String(v.name).toLowerCase() : "";
+          const vSku = v.sku ? String(v.sku).toLowerCase() : "";
+          const vEan = v.ean ? String(v.ean).toLowerCase() : "";
+          return vName.includes(q) || vSku.includes(q) || vEan.includes(q);
+        });
 
         if (!matchName && !matchBrand && !matchCat && !matchSku && !matchVariants) {
           return false;

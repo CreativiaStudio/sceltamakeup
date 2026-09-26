@@ -28,6 +28,7 @@ import {
   getProductOverride,
   computeStockStatus,
 } from "@/lib/adminStore";
+import { logAdminActivity } from "@/lib/auditLogger";
 
 interface ProductEditorModalProps {
   product: Product | null;
@@ -342,6 +343,22 @@ function ProductEditorModalDialog({
       setErrorMessage(res.error || "Errore durante il salvataggio. Riprova.");
       return;
     }
+
+    logAdminActivity({
+      category: "prodotto",
+      action: "full_product_edit",
+      title: "Salvataggio Scheda Prodotto",
+      description: `Aggiornati dettagli e ${formData.variants.length} varianti per "${formData.name}" (Prezzo base: €${formData.price.toFixed(2)})`,
+      details: {
+        productId: product.id,
+        name: formData.name,
+        brand: formData.brand,
+        category: formData.category,
+        price: formData.price,
+        isLocalOnly: formData.isLocalOnly,
+        variantsCount: formData.variants.length,
+      },
+    });
 
     setIsSaving(false);
     setSaveSuccess(true);
