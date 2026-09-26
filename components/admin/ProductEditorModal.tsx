@@ -19,11 +19,12 @@ import {
   Eye,
   EyeOff,
   Camera,
+  Loader2,
 } from "lucide-react";
 import { Product, ProductCategory, ProductVariant, Shade } from "@/types/product";
 import {
   getAdminVariantStocks,
-  updateProductDetails,
+  saveProductDetailsToCloud,
   getProductOverride,
   computeStockStatus,
 } from "@/lib/adminStore";
@@ -138,18 +139,20 @@ function ProductEditorModalDialog({
     const merged = { ...product, ...override };
 
     const currentStocks = getAdminVariantStocks();
-    const variants: ProductVariant[] = (merged.variants || []).map((v) => {
-      const stockItem = currentStocks[v.id];
-      return {
-        ...v,
-        stock: stockItem ? stockItem.stockQuantity : (v.stock ?? 0),
-        price: stockItem ? stockItem.price : (v.price ?? merged.price),
-        sku: v.sku || (stockItem ? stockItem.sku : v.id),
-        ean: v.ean || (stockItem ? stockItem.ean || "" : ""),
-        colorHex: v.colorHex || (stockItem ? stockItem.colorHex || null : null),
-        name: v.name || (stockItem ? stockItem.name : "Tonalità"),
-      };
-    });
+    const variants: ProductVariant[] = (merged.variants || [])
+      .filter((v): v is ProductVariant => Boolean(v && typeof v === "object"))
+      .map((v) => {
+        const stockItem = currentStocks[v.id];
+        return {
+          ...v,
+          stock: stockItem ? stockItem.stockQuantity : (v.stock ?? 0),
+          price: stockItem ? stockItem.price : (v.price ?? merged.price),
+          sku: v.sku || (stockItem ? stockItem.sku : v.id),
+          ean: v.ean || (stockItem ? stockItem.ean || "" : ""),
+          colorHex: v.colorHex || (stockItem ? stockItem.colorHex || null : null),
+          name: v.name || (stockItem ? stockItem.name : "Tonalità"),
+        };
+      });
 
     return {
       name: merged.name || "",
@@ -296,10 +299,13 @@ function ProductEditorModalDialog({
     }));
   };
 
-  // Submit and save
-  const handleSaveAll = () => {
+  // Submit and save — awaits the cloud confirmation so Federica gets a
+  // definitive result on the first click (no more "save 3-4 times").
+  const handleSaveAll = async () => {
+    if (isSaving) return;
     setIsSaving(true);
     setErrorMessage(null);
+    setSaveSuccess(false);
 
     // Build shades list matching variants for backward compatibility with frontend
     const updatedShades: Shade[] = formData.variants.map((v, i) => ({
@@ -329,10 +335,11 @@ function ProductEditorModalDialog({
       shades: updatedShades,
     };
 
-    const res = updateProductDetails(product.id, updates) as Partial<Product> & { error?: string };
-    if (res && res.error) {
+    const res = await saveProductDetailsToCloud(product.id, updates);
+    if (!res.success) {
+      // Keep the modal open so Federica can see exactly what went wrong.
       setIsSaving(false);
-      setErrorMessage(res.error);
+      setErrorMessage(res.error || "Errore durante il salvataggio. Riprova.");
       return;
     }
 
@@ -343,7 +350,7 @@ function ProductEditorModalDialog({
     setTimeout(() => {
       setSaveSuccess(false);
       onClose();
-    }, 800);
+    }, 500);
   };
 
   return (
@@ -376,8 +383,9 @@ function ProductEditorModalDialog({
 
           <button
             type="button"
+            disabled={isSaving}
             onClick={onClose}
-            className="p-2 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-2 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label="Chiudi modale"
           >
             <X className="w-5 h-5" />
@@ -1060,7 +1068,12 @@ function ProductEditorModalDialog({
         {/* Modal Footer */}
         <div className="p-4 sm:p-5 border-t border-gray-200 bg-gray-50 flex items-center justify-between shrink-0">
           <div className="text-xs text-gray-500">
-            {errorMessage ? (
+            {isSaving ? (
+              <span className="text-[#5E1788] font-semibold flex items-center gap-1.5">
+                <Loader2 className="w-4 h-4 animate-spin shrink-0" />
+                Salvataggio in corso...
+              </span>
+            ) : errorMessage ? (
               <span className="text-red-600 font-semibold flex items-center gap-1.5">
                 <AlertTriangle className="w-4 h-4 text-red-500 shrink-0" />
                 {errorMessage}
@@ -1078,8 +1091,9 @@ function ProductEditorModalDialog({
           <div className="flex items-center gap-3">
             <button
               type="button"
+              disabled={isSaving}
               onClick={onClose}
-              className="px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-100 text-xs font-semibold text-gray-700 transition-colors"
+              className="px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-100 text-xs font-semibold text-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Annulla
             </button>
@@ -1088,9 +1102,14 @@ function ProductEditorModalDialog({
               type="button"
               disabled={isSaving}
               onClick={handleSaveAll}
-              className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#5E1788] via-[#7A3293] to-[#5E1788] hover:shadow-md text-white text-xs font-semibold transition-all flex items-center gap-2"
+              className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#5E1788] via-[#7A3293] to-[#5E1788] hover:shadow-md text-white text-xs font-semibold transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-wait"
             >
-              {saveSuccess ? (
+              {isSaving ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Salvataggio in corso...</span>
+                </>
+              ) : saveSuccess ? (
                 <>
                   <CheckCircle2 className="w-4 h-4 text-emerald-300" />
                   <span>Salvato!</span>

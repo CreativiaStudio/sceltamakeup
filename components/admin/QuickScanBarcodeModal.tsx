@@ -51,6 +51,67 @@ interface QuickScanBarcodeModalProps {
 
 const ALL_PRODUCTS = rawCatalog as Product[];
 
+const DEFAULT_IMAGE = "/brand/logo.png";
+
+/**
+ * Returns a valid, non-empty image source or the brand logo fallback.
+ * Guards against `undefined`, `null` and whitespace-only strings.
+ */
+function safeImageSrc(...candidates: Array<string | null | undefined>): string {
+  for (const candidate of candidates) {
+    if (typeof candidate === "string" && candidate.trim()) return candidate.trim();
+  }
+  return DEFAULT_IMAGE;
+}
+
+/**
+ * Clamps an arbitrary index inside `product.variants` so it can never point
+ * outside the array (which would create a sparse array hole -> JSON `null`
+ * -> `TypeError: Cannot read properties of null (reading 'id')`).
+ */
+function resolveVariantIndex(product: Product | null | undefined, rawIndex: number): number {
+  const variants = product?.variants;
+  if (!Array.isArray(variants) || variants.length === 0) return 0;
+  if (!Number.isInteger(rawIndex) || rawIndex < 0 || rawIndex >= variants.length) return 0;
+  return rawIndex;
+}
+
+/**
+ * Maps a shade (tonalità) to the index of its matching variant. The historical
+ * bug used the shade index directly as a variant index: for products with one
+ * variant and many shades this produced out-of-bounds writes and array holes.
+ * Resolution order: exact variant id -> EAN/SKU code -> matching name -> clamp.
+ */
+function resolveShadeVariantIndex(product: Product, shadeIndex: number): number {
+  const variants = Array.isArray(product.variants) ? product.variants : [];
+  const shade = product.shades?.[shadeIndex];
+
+  if (shade && variants.length > 0) {
+    const byId = variants.findIndex((v) => v?.id && shade.id && v.id === shade.id);
+    if (byId !== -1) return byId;
+
+    const shadeCode = shade.code?.trim().toUpperCase();
+    if (shadeCode) {
+      const byCode = variants.findIndex(
+        (v) =>
+          (v?.ean && v.ean.trim().toUpperCase() === shadeCode) ||
+          (v?.sku && v.sku.trim().toUpperCase() === shadeCode)
+      );
+      if (byCode !== -1) return byCode;
+    }
+
+    const shadeName = shade.name?.trim().toLowerCase();
+    if (shadeName) {
+      const byName = variants.findIndex(
+        (v) => v?.name && v.name.trim().toLowerCase() === shadeName
+      );
+      if (byName !== -1) return byName;
+    }
+  }
+
+  return resolveVariantIndex(product, shadeIndex);
+}
+
 type DiscountMode = "none" | "percent" | "amount";
 
 export interface MultiCartItem {
@@ -411,16 +472,18 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         if (override.variants) {
           const vIdx = override.variants.findIndex(
             (v) =>
-              (v.ean && v.ean.trim().toUpperCase() === code) ||
-              (v.sku && v.sku.trim().toUpperCase() === code)
+              (v?.ean && v.ean.trim().toUpperCase() === code) ||
+              (v?.sku && v.sku.trim().toUpperCase() === code)
           );
           if (vIdx !== -1) {
             const baseProd = ALL_PRODUCTS.find((p) => p.id === prodId);
             if (baseProd) {
-              return { product: { ...baseProd, ...override }, variantIndex: vIdx };
+              const merged = { ...baseProd, ...override };
+              return { product: merged, variantIndex: resolveVariantIndex(merged, vIdx) };
             }
             if (override.name && override.variants) {
-              return { product: override as Product, variantIndex: vIdx };
+              const merged = override as Product;
+              return { product: merged, variantIndex: resolveVariantIndex(merged, vIdx) };
             }
           }
         }
@@ -431,27 +494,30 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         if (product.variants) {
           const vIdx = product.variants.findIndex(
             (v) =>
-              (v.ean && v.ean.trim().toUpperCase() === code) ||
-              (v.sku && v.sku.trim().toUpperCase() === code)
+              (v?.ean && v.ean.trim().toUpperCase() === code) ||
+              (v?.sku && v.sku.trim().toUpperCase() === code)
           );
           if (vIdx !== -1) {
             const override = overrides[product.id];
+            const merged = override ? { ...product, ...override } : product;
             return {
-              product: override ? { ...product, ...override } : product,
-              variantIndex: vIdx,
+              product: merged,
+              variantIndex: resolveVariantIndex(merged, vIdx),
             };
           }
         }
 
         if (product.shades) {
           const sIdx = product.shades.findIndex(
-            (s) => s.code && s.code.trim().toUpperCase() === code
+            (s) => s?.code && s.code.trim().toUpperCase() === code
           );
           if (sIdx !== -1) {
             const override = overrides[product.id];
+            const merged = override ? { ...product, ...override } : product;
+            // NEVER use the shade index directly: map it to a real variant index.
             return {
-              product: override ? { ...product, ...override } : product,
-              variantIndex: sIdx,
+              product: merged,
+              variantIndex: resolveShadeVariantIndex(merged, sIdx),
             };
           }
         }
@@ -465,18 +531,20 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         ) {
           const prod = ALL_PRODUCTS.find((p) => p.id === vStock.productId);
           if (prod) {
-            const vIdx = (prod.variants || []).findIndex((v) => v.id === vStock.variantId);
+            const merged = overrides[prod.id] ? { ...prod, ...overrides[prod.id] } : prod;
+            const vIdx = (merged.variants || []).findIndex((v) => v?.id === vStock.variantId);
             return {
-              product: overrides[prod.id] ? { ...prod, ...overrides[prod.id] } : prod,
-              variantIndex: vIdx >= 0 ? vIdx : 0,
+              product: merged,
+              variantIndex: resolveVariantIndex(merged, vIdx),
             };
           }
           const ovProd = overrides[vStock.productId];
           if (ovProd && ovProd.name) {
-            const vIdx = (ovProd.variants || []).findIndex((v) => v.id === vStock.variantId);
+            const merged = ovProd as Product;
+            const vIdx = (merged.variants || []).findIndex((v) => v?.id === vStock.variantId);
             return {
-              product: ovProd as Product,
-              variantIndex: vIdx >= 0 ? vIdx : 0,
+              product: merged,
+              variantIndex: resolveVariantIndex(merged, vIdx),
             };
           }
         }
@@ -563,7 +631,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                 brand: match.product.brand,
                 sku: v?.sku || match.product.id,
                 ean: v?.ean,
-                image: v?.image || match.product.images?.[0] || "/brand/logo.png",
+                image: safeImageSrc(v?.image, match.product.images?.[0]),
                 originalUnitPrice: itemPrice,
                 unitPrice: itemPrice,
                 discountMode: "none",
@@ -652,7 +720,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         brand: matchedProduct.brand,
         sku: v?.sku || matchedProduct.id,
         ean: v?.ean,
-        image: v?.image || matchedProduct.images?.[0] || "/brand/logo.png",
+        image: safeImageSrc(v?.image, matchedProduct.images?.[0]),
         originalUnitPrice: basePrice,
         unitPrice: basePrice,
         discountMode,
@@ -732,8 +800,8 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
             };
             updateProductDetails(item.productId, {
               variants: updatedVariants,
-              stock: updatedVariants.reduce((sum, it) => sum + (it.stock || 0), 0),
-              inStock: updatedVariants.some((it) => (it.stock || 0) > 0),
+              stock: updatedVariants.reduce((sum, it) => sum + (it?.stock || 0), 0),
+              inStock: updatedVariants.some((it) => (it?.stock || 0) > 0),
             });
           }
         }
@@ -996,7 +1064,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     setCloudSyncStatus("saving");
     updateProductDetails(matchedProduct.id, {
       variants: updatedVariants,
-      stock: updatedVariants.reduce((sum, item) => sum + (item.stock || 0), 0),
+      stock: updatedVariants.reduce((sum, item) => sum + (item?.stock || 0), 0),
       inStock: newQty > 0,
     });
     markCloudSaved();
@@ -1012,6 +1080,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const handleInstantCheckout = async () => {
     if (!matchedProduct || !matchedProduct.variants) return;
     const v = matchedProduct.variants[matchedVariantIndex];
+    if (!v) return; // Never write at an out-of-bounds index (sparse array -> null -> crash)
     const basePrice = v?.price ?? matchedProduct.price;
     // The final unit price is the net amount actually paid after the counter discount
     const discountApplied = computeDiscountAmount(basePrice, discountMode, discountPercent, discountAmount);
@@ -1037,7 +1106,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
 
       updateProductDetails(matchedProduct.id, {
         variants: updatedVariants,
-        stock: updatedVariants.reduce((sum, item) => sum + (item.stock || 0), 0),
+        stock: updatedVariants.reduce((sum, item) => sum + (item?.stock || 0), 0),
         inStock: newQty > 0,
       });
 
@@ -1103,7 +1172,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
             variantName: v?.name !== "Standard" ? v?.name : undefined,
             quantity: 1,
             price: price,
-            image: v?.image || matchedProduct.images?.[0] || "/brand/logo.png",
+            image: safeImageSrc(v?.image, matchedProduct.images?.[0]),
           },
         ],
       });
@@ -1236,7 +1305,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const effectiveDiscountPercent = baseListPrice > 0 ? (discountAmountValue / baseListPrice) * 100 : 0;
   const cashNum = parseFloat(cashTendered.replace(",", ".")) || finalTotal;
   const changeDue = Math.max(0, cashNum - finalTotal);
-  const thumbSrc = currentVariant?.image || matchedProduct?.images?.[0] || "/brand/logo.png";
+  const thumbSrc = safeImageSrc(currentVariant?.image, matchedProduct?.images?.[0]);
   const thumbIsExternal = thumbSrc.startsWith("data:") || thumbSrc.startsWith("http");
 
   // ---------------------------------------------------------------------------
@@ -2234,6 +2303,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
+                  e.stopPropagation();
                   if (manualSearchInput.trim()) {
                     handleBarcodeScanned(manualSearchInput.trim());
                   }

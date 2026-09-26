@@ -16,9 +16,81 @@
 
 import { useEffect } from "react";
 import rawCatalog from "@/data/catalog.json";
-import { Product } from "@/types/product";
+import { Product, ProductVariant } from "@/types/product";
 
 export const STORAGE_ADMIN_STORE_KEY = "scelta_makeup_admin_store_v7";
+
+// ------------------------------------------------------------------------------
+// Null-Safety Sanitizers (Data Self-Healing)
+// ------------------------------------------------------------------------------
+// A persisted sparse array ([v0, , , ..., v6]) becomes [v0, null, null, ..., v6]
+// after JSON.stringify, and JSON.parse gives back dense arrays containing null.
+// Rendering then crashes on `v.id`, `v.colorHex`, `v.name.toLowerCase()`, etc.
+// These helpers strip every invalid entry at the storage boundary so corrupted
+// legacy/cloud data can never reach the render tree.
+
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+/**
+ * Removes null/undefined/hole entries and rows without a valid id from a
+ * variants array. Returns `undefined` when the input is not an array.
+ */
+export function sanitizeVariantsArray(input: unknown): ProductVariant[] | undefined {
+  if (!Array.isArray(input)) return undefined;
+  return input.filter(
+    (v): v is ProductVariant =>
+      Boolean(v && typeof v === "object" && isNonEmptyString((v as ProductVariant).id))
+  );
+}
+
+/**
+ * Returns a cleaned copy of a product override, deleting malformed `variants`,
+ * `shades` or `images` fields instead of letting them poison the catalog.
+ */
+export function sanitizeProductOverride(override: unknown): Partial<Product> | undefined {
+  if (!override || typeof override !== "object") return undefined;
+  const source = override as Partial<Product>;
+  const clean: Partial<Product> = { ...source };
+
+  if ("variants" in source) {
+    const variants = sanitizeVariantsArray(source.variants);
+    if (variants === undefined) delete clean.variants;
+    else clean.variants = variants;
+  }
+
+  if ("shades" in source) {
+    if (Array.isArray(source.shades)) {
+      clean.shades = source.shades.filter((s) => Boolean(s && typeof s === "object"));
+    } else {
+      delete clean.shades;
+    }
+  }
+
+  if ("images" in source) {
+    if (Array.isArray(source.images)) {
+      clean.images = source.images.filter((img) => isNonEmptyString(img));
+    } else {
+      delete clean.images;
+    }
+  }
+
+  return clean;
+}
+
+/** Sanitizes an entire overrides dictionary, dropping entries that became empty. */
+export function sanitizeProductOverrides(
+  overrides: unknown
+): Record<string, Partial<Product>> {
+  const result: Record<string, Partial<Product>> = {};
+  if (!overrides || typeof overrides !== "object") return result;
+  for (const [productId, override] of Object.entries(overrides as Record<string, unknown>)) {
+    const safe = sanitizeProductOverride(override);
+    if (safe) result[productId] = safe;
+  }
+  return result;
+}
 
 // Centralized cloud catalog endpoints (real-time multi-device sync)
 const CATALOG_OVERRIDES_API = "/api/catalog/overrides";
@@ -102,6 +174,74 @@ export interface SceltaAdminStoreState {
   lastResetAt: string;
 }
 
+/** Product override enriched with an internal write timestamp (never rendered). */
+type TimestampedProductOverride = Partial<Product> & { _updatedAt?: string };
+
+// ------------------------------------------------------------------------------
+// Anti-Clobber Engine (Race Condition Guard)
+// ------------------------------------------------------------------------------
+// Federica's point-of-sale laptop keeps the local store as the source of truth
+// and reconciles with the cloud every 5s. A background GET that resolves while a
+// POST is still in flight used to return the OLD cloud snapshot and overwrite the
+// change she had just typed. This in-memory registry records the moment each
+// product was written locally so the reconciler can preserve any very recent
+// local change until the cloud snapshot catches up.
+const RECENT_LOCAL_MODIFICATION_WINDOW_MS = 45_000;
+
+/** productId -> epoch ms of the latest local write on this device. */
+const localProductModifications: Record<string, number> = {};
+
+/** Marks a product as locally modified *right now* (extends the anti-clobber window). */
+function markProductLocallyModified(productId: string, at: number = Date.now()): void {
+  if (!productId) return;
+  localProductModifications[productId] = at;
+}
+
+/** True when the product was written locally within the anti-clobber window. */
+function isRecentlyModifiedLocally(
+  productId: string | undefined,
+  now: number = Date.now()
+): boolean {
+  if (!productId) return false;
+  const writtenAt = localProductModifications[productId];
+  return typeof writtenAt === "number" && now - writtenAt < RECENT_LOCAL_MODIFICATION_WINDOW_MS;
+}
+
+/** Parses an ISO timestamp into epoch ms; returns null when absent/unparseable. */
+function parseUpdatedAt(value: unknown): number | null {
+  if (typeof value !== "string" || !value.trim()) return null;
+  const parsed = Date.parse(value);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+/** Reads the internal `_updatedAt` timestamp carried inside a product override. */
+function getOverrideUpdatedAt(override: Partial<Product> | undefined): number | null {
+  return parseUpdatedAt((override as TimestampedProductOverride | undefined)?._updatedAt);
+}
+
+/**
+ * Returns true when the cloud snapshot must NOT overwrite the local value.
+ *
+ * Product overrides and variant stocks are both protected: a local write that is
+ * either newer than the cloud record, or happened within the last 45 seconds
+ * while the cloud is not strictly newer, always wins.
+ */
+function shouldPreserveLocal(params: {
+  productId?: string;
+  localUpdatedAt: number | null;
+  cloudUpdatedAt: number | null;
+  now: number;
+}): boolean {
+  const { productId, localUpdatedAt, cloudUpdatedAt, now } = params;
+  const cloudIsStrictlyNewer =
+    cloudUpdatedAt !== null && localUpdatedAt !== null && cloudUpdatedAt > localUpdatedAt;
+
+  if (isRecentlyModifiedLocally(productId, now) && !cloudIsStrictlyNewer) {
+    return true;
+  }
+  return localUpdatedAt !== null && cloudUpdatedAt !== null && localUpdatedAt > cloudUpdatedAt;
+}
+
 // ------------------------------------------------------------------------------
 // Stock Status Calculation
 // ------------------------------------------------------------------------------
@@ -133,6 +273,7 @@ export function generateInitialVariantStocks(): Record<string, SceltaVariantStoc
     if (!product.variants || !Array.isArray(product.variants)) continue;
 
     for (const variant of product.variants) {
+      if (!variant || typeof variant !== "object" || !isNonEmptyString(variant.id)) continue;
       const quantity = typeof variant.stock === "number" ? variant.stock : 0;
       const status = computeStockStatus(quantity);
       const effectivePrice = variant.price !== undefined ? variant.price : product.price;
@@ -242,6 +383,18 @@ export function getAdminStoreState(): SceltaAdminStoreState {
 
     if (!parsed.productOverrides || typeof parsed.productOverrides !== "object") {
       parsed.productOverrides = {};
+    } else {
+      // Self-heal any corrupted override persisted by an older/cloud bug.
+      parsed.productOverrides = sanitizeProductOverrides(parsed.productOverrides);
+    }
+
+    // Drop malformed variant stock rows before the reconciliation loop runs.
+    if (parsed.variantStocks && typeof parsed.variantStocks === "object") {
+      for (const [key, value] of Object.entries(parsed.variantStocks as Record<string, unknown>)) {
+        if (!value || typeof value !== "object" || !isNonEmptyString((value as SceltaVariantStock).variantId)) {
+          delete (parsed.variantStocks as Record<string, unknown>)[key];
+        }
+      }
     }
 
     // Auto-heal variant stock images, EANs, prices, and sync any new variants from catalog
@@ -421,6 +574,9 @@ export async function syncAdminStoreFromCloud(): Promise<boolean> {
     const res = await fetch(CATALOG_OVERRIDES_API, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
+      // Explicitly bypass any browser/HTTP cache so reconciliation always sees
+      // the true cloud state (paired with the no-store headers on the route).
+      cache: "no-store",
     });
     if (!res.ok) return false;
 
@@ -433,12 +589,32 @@ export async function syncAdminStoreFromCloud(): Promise<boolean> {
 
     const state = getAdminStoreState();
     let changed = false;
+    const now = Date.now();
 
     if (payload.productOverrides && typeof payload.productOverrides === "object") {
-      const mergedOverrides: Record<string, Partial<Product>> = {
-        ...(state.productOverrides || {}),
-        ...payload.productOverrides,
-      };
+      // Sanitize cloud payloads before merging: a poisoned row (null variants)
+      // must never reach the local catalog and crash the products table.
+      const cloudOverrides = sanitizeProductOverrides(payload.productOverrides);
+      const localOverrides = state.productOverrides || {};
+      const mergedOverrides: Record<string, Partial<Product>> = { ...localOverrides };
+
+      for (const [productId, cloudOverride] of Object.entries(cloudOverrides)) {
+        const localOverride = localOverrides[productId];
+        const preserveLocal = shouldPreserveLocal({
+          productId,
+          localUpdatedAt: getOverrideUpdatedAt(localOverride),
+          cloudUpdatedAt: getOverrideUpdatedAt(cloudOverride),
+          now,
+        });
+
+        if (localOverride && preserveLocal) {
+          // A stale GET resolved while Federica's POST was still in flight:
+          // keep her freshly typed override instead of reverting it.
+          continue;
+        }
+        mergedOverrides[productId] = cloudOverride;
+      }
+
       if (JSON.stringify(mergedOverrides) !== JSON.stringify(state.productOverrides || {})) {
         state.productOverrides = mergedOverrides;
         changed = true;
@@ -446,10 +622,35 @@ export async function syncAdminStoreFromCloud(): Promise<boolean> {
     }
 
     if (payload.variantStocks && typeof payload.variantStocks === "object") {
-      const mergedStocks: Record<string, SceltaVariantStock> = {
-        ...(state.variantStocks || {}),
-        ...payload.variantStocks,
-      };
+      const localStocks = state.variantStocks || {};
+      const mergedStocks: Record<string, SceltaVariantStock> = { ...localStocks };
+
+      for (const [variantId, cloudStock] of Object.entries(
+        payload.variantStocks as Record<string, SceltaVariantStock>
+      )) {
+        if (!cloudStock || typeof cloudStock !== "object") continue;
+        const localStock = localStocks[variantId];
+
+        if (!localStock) {
+          mergedStocks[variantId] = cloudStock;
+          continue;
+        }
+
+        const productId = localStock.productId || cloudStock.productId;
+        const preserveLocal = shouldPreserveLocal({
+          productId,
+          localUpdatedAt: parseUpdatedAt(localStock.updatedAt),
+          cloudUpdatedAt: parseUpdatedAt(cloudStock.updatedAt),
+          now,
+        });
+
+        if (preserveLocal) {
+          // Never blind-overwrite giacenze with an obsolete cloud snapshot.
+          continue;
+        }
+        mergedStocks[variantId] = cloudStock;
+      }
+
       if (JSON.stringify(mergedStocks) !== JSON.stringify(state.variantStocks || {})) {
         state.variantStocks = mergedStocks;
         changed = true;
@@ -718,31 +919,56 @@ export function getProductOverride(idOrSlug: string): Partial<Product> | undefin
 /**
  * Atomically updates product details (texts, photos, variants) and updates
  * synchronized variantStocks in the admin store. Emits scelta_admin_store_updated.
+ *
+ * @param options.skipCloudSync When true, skips the fire-and-forget background
+ *   POST. Used by `saveProductDetailsToCloud`, which performs its own awaited POST
+ *   so the caller gets a definitive success/failure result.
  */
 export function updateProductDetails(
   productId: string,
-  updates: Partial<Product>
+  updates: Partial<Product>,
+  options?: { skipCloudSync?: boolean }
 ): Partial<Product> & { error?: string } {
   const state = getAdminStoreState();
   if (!state.productOverrides) {
     state.productOverrides = {};
   }
 
+  // Defense-in-depth: never persist a sparse/null variants array. An out-of-bounds
+  // write ([v0, , , v3]) is serialized by JSON.stringify as nulls and later crashes
+  // the admin render tree with "Cannot read properties of null (reading 'id')".
+  const normalizedUpdates: Partial<Product> = { ...updates };
+  let safeVariants: ProductVariant[] | undefined;
+  if ("variants" in normalizedUpdates) {
+    const cleaned = sanitizeVariantsArray(updates.variants);
+    if (cleaned) {
+      safeVariants = cleaned;
+      normalizedUpdates.variants = cleaned;
+    } else {
+      delete normalizedUpdates.variants;
+    }
+  }
+
   const existing = state.productOverrides[productId] || {};
-  const merged: Partial<Product> = {
+  const writeTimestamp = new Date().toISOString();
+  const merged: TimestampedProductOverride = {
     ...existing,
-    ...updates,
+    ...normalizedUpdates,
+    // Per-product write timestamp used by the anti-clobber reconciler so a stale
+    // cloud snapshot can never revert this change.
+    _updatedAt: writeTimestamp,
   };
 
   state.productOverrides[productId] = merged;
+  markProductLocallyModified(productId);
 
   // Synchronize variant stocks if relevant product metadata or variants were updated
-  const now = new Date().toISOString();
+  const now = writeTimestamp;
   const rawProduct = (rawCatalog as Product[]).find((p) => p.id === productId);
 
   // If variants array is explicitly passed in updates, update/add corresponding variantStocks
-  if (updates.variants && Array.isArray(updates.variants)) {
-    for (const v of updates.variants) {
+  if (safeVariants) {
+    for (const v of safeVariants) {
       const existingStock = state.variantStocks[v.id];
       const quantity = typeof v.stock === "number" ? v.stock : (existingStock?.stockQuantity ?? 0);
       const effectivePrice = v.price !== undefined ? v.price : (existingStock?.price ?? updates.price ?? 0);
@@ -804,17 +1030,15 @@ export function updateProductDetails(
 
   // Synchronize the affected variant giacenze + product override to the cloud so
   // every device (admin remote + point-of-sale laptop) stays aligned in real-time.
-  const affectedStocks: Record<string, SceltaVariantStock> = {};
-  for (const [varId, vStock] of Object.entries(state.variantStocks)) {
-    if (vStock.productId === productId) {
-      affectedStocks[varId] = vStock;
-    }
+  // When the caller performs its own awaited POST (saveProductDetailsToCloud),
+  // this background fire-and-forget is skipped to avoid a duplicate request.
+  if (!options?.skipCloudSync) {
+    postCatalogUpdate(CATALOG_OVERRIDES_API, {
+      productId,
+      updates: merged,
+      variantStocks: collectProductVariantStocks(state, productId),
+    });
   }
-  postCatalogUpdate(CATALOG_OVERRIDES_API, {
-    productId,
-    updates: merged,
-    variantStocks: affectedStocks,
-  });
 
   if (!isSaved) {
     return {
@@ -824,6 +1048,238 @@ export function updateProductDetails(
   }
   return merged;
 }
+
+/** Collects every variant stock belonging to a product (for cloud payloads). */
+function collectProductVariantStocks(
+  state: SceltaAdminStoreState,
+  productId: string
+): Record<string, SceltaVariantStock> {
+  const affected: Record<string, SceltaVariantStock> = {};
+  for (const [varId, vStock] of Object.entries(state.variantStocks)) {
+    if (vStock.productId === productId) {
+      affected[varId] = vStock;
+    }
+  }
+  return affected;
+}
+
+/**
+ * Saves product details to the cloud with a definitive, awaited result.
+ *
+ * Flow:
+ *   1. Applies the change locally first (optimistic, instant UI update).
+ *   2. POSTs to the centralized `/api/catalog/overrides` endpoint and AWAITS
+ *      the HTTP response, so the caller can display honest feedback.
+ *   3. On success, reconciles the server-confirmed snapshot into the local store
+ *      (newer-timestamp wins, protecting the local write).
+ *   4. On failure, returns `{ success: false, error }` but keeps the local data,
+ *      so nothing typed by Federica is ever lost.
+ */
+export async function saveProductDetailsToCloud(
+  productId: string,
+  updates: Partial<Product>
+): Promise<{ success: boolean; error?: string }> {
+  // 1. Optimistic local update (records the anti-clobber timestamp).
+  const localResult = updateProductDetails(productId, updates, { skipCloudSync: true });
+  if (localResult && localResult.error) {
+    return { success: false, error: localResult.error };
+  }
+
+  if (typeof window === "undefined") {
+    return { success: true };
+  }
+
+  // 2. Awaited POST with a hard timeout so the UI can never hang forever.
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15_000);
+  try {
+    const state = getAdminStoreState();
+    const confirmedOverride = state.productOverrides[productId] || {};
+    const affectedStocks = collectProductVariantStocks(state, productId);
+
+    const res = await fetch(CATALOG_OVERRIDES_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      cache: "no-store",
+      signal: controller.signal,
+      body: JSON.stringify({
+        productId,
+        updates: confirmedOverride,
+        variantStocks: affectedStocks,
+      }),
+    });
+
+    if (!res.ok) {
+      return {
+        success: false,
+        error: `Salvataggio cloud non riuscito (HTTP ${res.status}). Il dato resta salvato in locale.`,
+      };
+    }
+
+    const payload = (await res.json().catch(() => null)) as {
+      success?: boolean;
+      productOverrides?: Record<string, Partial<Product>>;
+      variantStocks?: Record<string, SceltaVariantStock>;
+    } | null;
+
+    if (payload?.success) {
+      reconcileConfirmedServerSnapshot(productId, payload);
+      // Keep the anti-clobber guard active a while longer so the next polling
+      // GET (which may still be cached upstream) cannot revert this save.
+      markProductLocallyModified(productId);
+    }
+
+    return { success: true };
+  } catch (err) {
+    const aborted = err instanceof Error && err.name === "AbortError";
+    return {
+      success: false,
+      error: aborted
+        ? "Timeout di salvataggio cloud. Il dato resta salvato in locale."
+        : "Errore di rete durante il salvataggio. Il dato resta salvato in locale.",
+    };
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+/**
+ * Reconciles the server-confirmed snapshot returned by POST into the local store.
+ * Newer timestamps win; a locally recorded change is never overwritten by an
+ * older record.
+ */
+function reconcileConfirmedServerSnapshot(
+  productId: string,
+  payload: {
+    productOverrides?: Record<string, Partial<Product>>;
+    variantStocks?: Record<string, SceltaVariantStock>;
+  }
+): void {
+  const state = getAdminStoreState();
+  let changed = false;
+  const now = Date.now();
+
+  if (payload.productOverrides) {
+    for (const [id, serverOverride] of Object.entries(
+      sanitizeProductOverrides(payload.productOverrides)
+    )) {
+      const localOverride = state.productOverrides[id];
+      const preserveLocal = shouldPreserveLocal({
+        productId: id,
+        localUpdatedAt: getOverrideUpdatedAt(localOverride),
+        cloudUpdatedAt: getOverrideUpdatedAt(serverOverride),
+        now,
+      });
+      if (localOverride && preserveLocal) continue;
+      state.productOverrides[id] = serverOverride;
+      changed = true;
+    }
+  }
+
+  if (payload.variantStocks) {
+    for (const [variantId, serverStock] of Object.entries(payload.variantStocks)) {
+      if (!serverStock || typeof serverStock !== "object") continue;
+      const localStock = state.variantStocks[variantId];
+      if (!localStock) {
+        state.variantStocks[variantId] = serverStock;
+        changed = true;
+        continue;
+      }
+      const preserveLocal = shouldPreserveLocal({
+        productId: localStock.productId || serverStock.productId || productId,
+        localUpdatedAt: parseUpdatedAt(localStock.updatedAt),
+        cloudUpdatedAt: parseUpdatedAt(serverStock.updatedAt),
+        now,
+      });
+      if (preserveLocal) continue;
+      state.variantStocks[variantId] = serverStock;
+      changed = true;
+    }
+  }
+
+  if (changed) {
+    saveAdminStoreState(state);
+  }
+}
+
+/**
+ * Persists a batch of variant stock/price edits for a single product in ONE
+ * atomic local pass and ONE awaited POST request.
+ *
+ * Replaces the old per-variant loop that fired 2×N uncoordinated HTTP requests
+ * (16 requests for an 8-variant product), which saturated the salon network and
+ * made saves feel slow/unreliable.
+ *
+ * @returns `true` when the cloud write succeeded, `false` otherwise. Local data
+ *   is always written first and preserved even when the network fails.
+ */
+export async function batchUpdateProductVariants(
+  productId: string,
+  items: Array<{ variantId: string; stockQuantity: number; price: number }>
+): Promise<boolean> {
+  const state = getAdminStoreState();
+  const now = new Date().toISOString();
+  const affectedStocks: Record<string, SceltaVariantStock> = {};
+
+  for (const item of items) {
+    if (!item || !isNonEmptyString(item.variantId)) continue;
+    const existing = state.variantStocks[item.variantId];
+    const safeQuantity = Math.max(0, Math.floor(item.stockQuantity));
+    const safePrice = Math.max(0, Math.round(item.price * 100) / 100);
+
+    const updated: SceltaVariantStock = existing
+      ? {
+          ...existing,
+          stockQuantity: safeQuantity,
+          stockStatus: computeStockStatus(safeQuantity),
+          price: safePrice,
+          updatedAt: now,
+        }
+      : {
+          variantId: item.variantId,
+          productId,
+          sku: item.variantId,
+          name: "Variante",
+          stockQuantity: safeQuantity,
+          stockStatus: computeStockStatus(safeQuantity),
+          price: safePrice,
+          updatedAt: now,
+        };
+
+    state.variantStocks[item.variantId] = updated;
+    affectedStocks[item.variantId] = updated;
+  }
+
+  markProductLocallyModified(productId);
+  saveAdminStoreState(state);
+
+  if (typeof window === "undefined") {
+    return true;
+  }
+
+  // Single awaited POST carrying every edited variant at once.
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15_000);
+  try {
+    const res = await fetch(CATALOG_OVERRIDES_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      cache: "no-store",
+      signal: controller.signal,
+      body: JSON.stringify({
+        productId,
+        updates: state.productOverrides[productId] || {},
+        variantStocks: affectedStocks,
+      }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 
 // ------------------------------------------------------------------------------
 // Orders Management API

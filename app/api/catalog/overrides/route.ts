@@ -9,6 +9,14 @@ import {
 
 export const dynamic = "force-dynamic";
 
+// Never let Vercel CDN, proxies or the browser serve a stale catalog snapshot.
+// A cached GET is exactly what reverted Federica's freshly saved changes.
+const NO_STORE_HEADERS = {
+  "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+  Pragma: "no-cache",
+  Expires: "0",
+} as const;
+
 interface OverridesPostBody {
   productId?: unknown;
   updates?: unknown;
@@ -18,12 +26,15 @@ interface OverridesPostBody {
 export async function GET() {
   try {
     const state = await getCentralCatalogState();
-    return NextResponse.json({
-      success: true,
-      productOverrides: state.productOverrides,
-      variantStocks: state.variantStocks,
-      updatedAt: state.updatedAt,
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        productOverrides: state.productOverrides,
+        variantStocks: state.variantStocks,
+        updatedAt: state.updatedAt,
+      },
+      { headers: NO_STORE_HEADERS }
+    );
   } catch (err) {
     const message = err instanceof Error ? err.message : "Errore interno";
     return NextResponse.json({ success: false, error: message }, { status: 500 });

@@ -16,7 +16,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import rawCatalog from "@/data/catalog.json";
-import { Product } from "@/types/product";
+import { Product, ProductVariant } from "@/types/product";
 import {
   getAdminVariantStocks,
   computeStockStatus,
@@ -27,6 +27,26 @@ import {
 import ProductEditorModal from "./ProductEditorModal";
 
 const ALL_PRODUCTS = rawCatalog as Product[];
+
+const DEFAULT_IMAGE = "/brand/logo.png";
+
+/** Valid, non-empty image source or the brand logo fallback. */
+function safeImageSrc(...candidates: Array<string | null | undefined>): string {
+  for (const candidate of candidates) {
+    if (typeof candidate === "string" && candidate.trim()) return candidate.trim();
+  }
+  return DEFAULT_IMAGE;
+}
+
+/** Type guard that rejects `null`, `undefined` and malformed variant rows. */
+function isValidVariant(value: unknown): value is ProductVariant {
+  return Boolean(value && typeof value === "object");
+}
+
+/** Returns a dense, null-free variants array (never a sparse/poisoned array). */
+function getSafeVariants(product: Product | null | undefined): ProductVariant[] {
+  return Array.isArray(product?.variants) ? product.variants.filter(isValidVariant) : [];
+}
 
 const BRAND_FILTERS = [
   "Tutti",
@@ -125,7 +145,8 @@ export default function ProductCatalogTable() {
   // Compute aggregated stock info for a product
   const getProductStockSummary = useCallback(
     (product: Product) => {
-      if (!product.variants || product.variants.length === 0) {
+      const variants = getSafeVariants(product);
+      if (variants.length === 0) {
         return { totalQty: 0, status: "out_of_stock" as const, shadesCount: 0 };
       }
 
@@ -133,7 +154,7 @@ export default function ProductCatalogTable() {
       let hasOutOfStock = false;
       let hasLowStock = false;
 
-      for (const v of product.variants) {
+      for (const v of variants) {
         const vStock = stocksMap[v.id];
         const qty = vStock ? vStock.stockQuantity : (v.stock ?? 0);
         totalQty += qty;
@@ -145,14 +166,14 @@ export default function ProductCatalogTable() {
       let status: "available" | "low_stock" | "out_of_stock" = "available";
       if (totalQty === 0) {
         status = "out_of_stock";
-      } else if (hasOutOfStock || hasLowStock || totalQty < 5 * product.variants.length) {
+      } else if (hasOutOfStock || hasLowStock || totalQty < 5 * variants.length) {
         status = "low_stock";
       }
 
       return {
         totalQty,
         status,
-        shadesCount: product.variants.length,
+        shadesCount: variants.length,
       };
     },
     [stocksMap]
@@ -166,8 +187,10 @@ export default function ProductCatalogTable() {
       return {
         ...product,
         ...override,
-        variants: override.variants || product.variants,
-        images: override.images || product.images,
+        variants: override.variants ? override.variants.filter(isValidVariant) : getSafeVariants(product),
+        images: (override.images || product.images || []).filter(
+          (img): img is string => typeof img === "string" && img.trim().length > 0
+        ),
       };
     });
 
@@ -175,8 +198,16 @@ export default function ProductCatalogTable() {
     const extraProducts: Product[] = [];
 
     for (const [id, override] of Object.entries(overridesMap)) {
-      if (!baseIds.has(id) && override && override.name && override.variants) {
-        extraProducts.push(override as Product);
+      if (!baseIds.has(id) && override && override.name && Array.isArray(override.variants)) {
+        const safeVariants = override.variants.filter(isValidVariant);
+        if (safeVariants.length === 0) continue;
+        extraProducts.push({
+          ...(override as Product),
+          variants: safeVariants,
+          images: (override.images || []).filter(
+            (img): img is string => typeof img === "string" && img.trim().length > 0
+          ),
+        } as Product);
       }
     }
 
@@ -189,9 +220,9 @@ export default function ProductCatalogTable() {
     let pieces = 0;
 
     for (const product of productsWithOverrides) {
-      if (!product.variants || product.variants.length === 0) continue;
-      variants += product.variants.length;
-      for (const v of product.variants) {
+      const safeVariants = getSafeVariants(product);
+      variants += safeVariants.length;
+      for (const v of safeVariants) {
         const vStock = stocksMap[v.id];
         pieces += vStock ? vStock.stockQuantity : (v.stock ?? 0);
       }
@@ -260,9 +291,9 @@ export default function ProductCatalogTable() {
         const matchSku = mainSku.toLowerCase().includes(q);
         const matchVariants = product.variants?.some(
           (v) =>
-            v.name.toLowerCase().includes(q) ||
-            v.sku.toLowerCase().includes(q) ||
-            (v.ean && v.ean.includes(q))
+            (v?.name && v.name.toLowerCase().includes(q)) ||
+            (v?.sku && v.sku.toLowerCase().includes(q)) ||
+            (v?.ean && v.ean.toLowerCase().includes(q))
         );
 
         if (!matchName && !matchBrand && !matchCat && !matchSku && !matchVariants) {
@@ -525,6 +556,7 @@ export default function ProductCatalogTable() {
               ) : (
                 paginatedProducts.map((product) => {
                   const summary = getProductStockSummary(product);
+                  const safeVariants = getSafeVariants(product);
 
                   return (
                     <tr
@@ -536,7 +568,7 @@ export default function ProductCatalogTable() {
                         <div className="flex items-center gap-3">
                           <div className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-200 overflow-hidden relative shrink-0 p-1">
                             <Image
-                              src={product.images?.[0] || "/brand/logo.png"}
+                              src={safeImageSrc(product.images?.[0])}
                               alt={product.name}
                               fill
                               className="object-contain"
@@ -586,8 +618,8 @@ export default function ProductCatalogTable() {
                           </span>
                           {/* Swatches preview */}
                           <div className="flex items-center gap-1">
-                            {product.variants?.slice(0, 5).map((v) =>
-                              v.colorHex ? (
+                            {safeVariants.slice(0, 5).map((v) =>
+                              v?.colorHex ? (
                                 <span
                                   key={v.id}
                                   className="w-3.5 h-3.5 rounded-full border border-gray-300 shadow-2xs shrink-0"
@@ -596,9 +628,9 @@ export default function ProductCatalogTable() {
                                 />
                               ) : null
                             )}
-                            {product.variants && product.variants.length > 5 && (
+                            {safeVariants.length > 5 && (
                               <span className="text-[10px] text-gray-400">
-                                +{product.variants.length - 5}
+                                +{safeVariants.length - 5}
                               </span>
                             )}
                           </div>

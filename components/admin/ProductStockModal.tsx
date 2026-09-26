@@ -10,12 +10,12 @@ import {
   Plus,
   Minus,
   Barcode,
+  Loader2,
 } from "lucide-react";
-import { Product } from "@/types/product";
+import { Product, ProductVariant } from "@/types/product";
 import {
   getAdminVariantStocks,
-  updateVariantStockCount,
-  updateVariantPrice,
+  batchUpdateProductVariants,
   computeStockStatus,
 } from "@/lib/adminStore";
 
@@ -47,22 +47,25 @@ function ProductStockModalDialog({
 }) {
   const [variantStates, setVariantStates] = useState<VariantEditState[]>(() => {
     const currentStocks = getAdminVariantStocks();
-    return (product.variants || []).map((v) => {
-      const stockItem = currentStocks[v.id];
-      return {
-        variantId: v.id,
-        name: v.name,
-        sku: v.sku,
-        ean: v.ean,
-        colorHex: v.colorHex,
-        stockQuantity: stockItem ? stockItem.stockQuantity : (v.stock ?? 0),
-        price: stockItem ? stockItem.price : (v.price ?? product.price),
-      };
-    });
+    return (product.variants || [])
+      .filter((v): v is ProductVariant => Boolean(v && typeof v === "object"))
+      .map((v) => {
+        const stockItem = currentStocks[v.id];
+        return {
+          variantId: v.id,
+          name: v.name,
+          sku: v.sku,
+          ean: v.ean,
+          colorHex: v.colorHex,
+          stockQuantity: stockItem ? stockItem.stockQuantity : (v.stock ?? 0),
+          price: stockItem ? stockItem.price : (v.price ?? product.price),
+        };
+      });
   });
 
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleQuantityChange = (variantId: string, newQty: number) => {
     const clamped = Math.max(0, Math.floor(newQty));
@@ -78,12 +81,30 @@ function ProductStockModalDialog({
     );
   };
 
-  const handleSaveAll = () => {
+  // One atomic local pass + ONE awaited cloud request for the whole product
+  // (instead of 2×N uncoordinated HTTP calls that saturated the salon network).
+  const handleSaveAll = async () => {
+    if (isSaving) return;
     setIsSaving(true);
-    for (const v of variantStates) {
-      updateVariantStockCount(v.variantId, v.stockQuantity);
-      updateVariantPrice(v.variantId, v.price);
+    setErrorMessage(null);
+    setSaveSuccess(false);
+
+    const success = await batchUpdateProductVariants(
+      product.id,
+      variantStates.map((v) => ({
+        variantId: v.variantId,
+        stockQuantity: v.stockQuantity,
+        price: v.price,
+      }))
+    );
+
+    if (!success) {
+      // Local data is preserved; surface the issue without closing the modal.
+      setIsSaving(false);
+      setErrorMessage("Salvataggio cloud non riuscito. Le giacenze restano salvate in locale: riprova.");
+      return;
     }
+
     setIsSaving(false);
     setSaveSuccess(true);
     if (onSaved) onSaved();
@@ -91,7 +112,7 @@ function ProductStockModalDialog({
     setTimeout(() => {
       setSaveSuccess(false);
       onClose();
-    }, 900);
+    }, 600);
   };
 
   const formatEuro = (val: number) =>
@@ -105,7 +126,9 @@ function ProductStockModalDialog({
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-[#1F1B24]/60 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
+        onClick={() => {
+          if (!isSaving) onClose();
+        }}
       />
 
       {/* Modal Dialog */}
@@ -138,8 +161,9 @@ function ProductStockModalDialog({
           </div>
 
           <button
+            disabled={isSaving}
             onClick={onClose}
-            className="p-2 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label="Chiudi modale"
           >
             <X className="w-5 h-5" />
@@ -277,14 +301,24 @@ function ProductStockModalDialog({
         {/* Modal Footer */}
         <div className="p-4 border-t border-gray-100 bg-gray-50 flex items-center justify-between">
           <div className="text-xs">
-            {saveSuccess ? (
+            {isSaving ? (
+              <span className="text-[#5E1788] font-semibold flex items-center gap-1.5">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Salvataggio in corso...
+              </span>
+            ) : errorMessage ? (
+              <span className="text-red-600 font-semibold flex items-center gap-1.5">
+                <AlertTriangle className="w-4 h-4 text-red-500 shrink-0" />
+                {errorMessage}
+              </span>
+            ) : saveSuccess ? (
               <span className="text-emerald-600 font-semibold flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4" />
                 Giacenze salvate con successo!
               </span>
             ) : (
               <span className="text-gray-500 text-[11px]">
-                Salvataggio atomico locale (Zero chiamate esterne)
+                Salvataggio atomico locale + sincronizzazione cloud in un&apos;unica richiesta
               </span>
             )}
           </div>
@@ -292,8 +326,9 @@ function ProductStockModalDialog({
           <div className="flex items-center gap-2">
             <button
               type="button"
+              disabled={isSaving}
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs font-medium text-gray-600 hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 rounded-xl text-xs font-medium text-gray-600 hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Annulla
             </button>
@@ -301,10 +336,19 @@ function ProductStockModalDialog({
               type="button"
               disabled={isSaving}
               onClick={handleSaveAll}
-              className="px-5 py-2 rounded-xl bg-[#5E1788] hover:bg-[#7A3293] text-white text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5 disabled:opacity-50"
+              className="px-5 py-2 rounded-xl bg-[#5E1788] hover:bg-[#7A3293] text-white text-xs font-semibold shadow-md transition-colors flex items-center gap-1.5 disabled:opacity-70 disabled:cursor-wait"
             >
-              <Save className="w-3.5 h-3.5" />
-              <span>Salva Modifiche</span>
+              {isSaving ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <span>Salvataggio in corso...</span>
+                </>
+              ) : (
+                <>
+                  <Save className="w-3.5 h-3.5" />
+                  <span>Salva Modifiche</span>
+                </>
+              )}
             </button>
           </div>
         </div>
