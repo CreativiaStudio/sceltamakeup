@@ -1,14 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { uploadBufferToR2 } from "@/lib/r2";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-const HUB_URL =
-  process.env.CREATIVIA_HUB_SUPABASE_URL || "https://ekfnekrjpumjpetzgwzy.supabase.co";
-const HUB_KEY =
-  process.env.CREATIVIA_HUB_SERVICE_ROLE_KEY ||
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVrZm5la3JqcHVtanBldHpnd3p5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MzgyNjAxNiwiZXhwIjoyMDk5NDAyMDE2fQ.Ne-jtSPB8NP-79_pV1KsGubYbCDtQVhQAXRtC-PzT-8";
-const BUCKET_NAME = "scelta-products";
 
 const ALLOWED_MIME_TO_EXT: Record<string, string> = {
   "image/jpeg": "jpg",
@@ -60,25 +54,19 @@ export async function POST(req: NextRequest) {
     }
 
     const ext = ALLOWED_MIME_TO_EXT[mimeType] || "jpg";
-    // Cartella separata 'salone-federica/' dentro il bucket dedicato scelta-products
-    const fileName = `salone-federica/prod-${productId}-${Date.now()}.${ext}`;
+    const key = `salone-federica/prod-${productId}-${Date.now()}.${ext}`;
 
-    const uploadRes = await fetch(`${HUB_URL}/storage/v1/object/${BUCKET_NAME}/${fileName}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${HUB_KEY}`,
-        "Content-Type": mimeType,
-      },
-      body: new Uint8Array(buffer),
+    const r2Result = await uploadBufferToR2({
+      key,
+      buffer,
+      mimeType,
     });
 
-    if (!uploadRes.ok) {
-      const errText = await uploadRes.text();
-      return NextResponse.json({ success: false, error: `Errore storage: ${errText}` }, { status: 500 });
+    if (!r2Result.publicUrl) {
+      throw new Error("R2 public URL non configurato");
     }
 
-    const publicUrl = `${HUB_URL}/storage/v1/object/public/${BUCKET_NAME}/${fileName}`;
-    return NextResponse.json({ success: true, url: publicUrl, fileName });
+    return NextResponse.json({ success: true, url: r2Result.publicUrl, fileName: key });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Errore durante il caricamento immagine";
     return NextResponse.json({ success: false, error: message }, { status: 500 });
