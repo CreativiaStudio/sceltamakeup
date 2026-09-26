@@ -19,6 +19,7 @@ import { Product, Shade } from "@/types/product";
 import { useCartStore } from "@/store/useCartStore";
 import ProductCard from "@/components/ProductCard";
 import { getProductOverride } from "@/lib/adminStore";
+import { resolveProductImageUrl } from "@/lib/r2";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -46,7 +47,7 @@ export default function ProductDetailClient({
   );
 
   const [activeImage, setActiveImage] = useState<string>(
-    selectedShade?.image || product.images[0] || "/brand/logo.png"
+    resolveProductImageUrl(selectedShade?.image || product.images[0])
   );
 
   useEffect(() => {
@@ -208,7 +209,7 @@ export default function ProductDetailClient({
     ...(currentShadeTexture ? [currentShadeTexture] : []),
     ...(product.images || []),
     ...(product.shades || []).map((s) => s.image).filter(Boolean),
-  ];
+  ].map((img) => resolveProductImageUrl(img));
 
   // Strictly deduplicate by URL path and filter out known broken images
   const allGalleryImages = Array.from(new Set(rawGalleryList)).filter(

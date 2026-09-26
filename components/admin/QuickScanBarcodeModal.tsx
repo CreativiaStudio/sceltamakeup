@@ -37,6 +37,7 @@ import {
   createAdminOrder,
 } from "@/lib/adminStore";
 import { logAdminActivity } from "@/lib/auditLogger";
+import { resolveProductImageUrl } from "@/lib/r2";
 
 interface QuickScanBarcodeModalProps {
   onOpenManualOrderWithItem?: (item: {
@@ -60,7 +61,9 @@ const DEFAULT_IMAGE = "/brand/logo.png";
  */
 function safeImageSrc(...candidates: Array<string | null | undefined>): string {
   for (const candidate of candidates) {
-    if (typeof candidate === "string" && candidate.trim()) return candidate.trim();
+    if (typeof candidate === "string" && candidate.trim()) {
+      return resolveProductImageUrl(candidate.trim());
+    }
   }
   return DEFAULT_IMAGE;
 }
@@ -1353,14 +1356,14 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       howToUse: "Applicare secondo le indicazioni del prodotto.",
       inci: "Formula dermatologicamente testata.",
       features: ["Prodotto professionale salone", "Testato dermatologicamente"],
-      images: ["/products/eveline-cosmetics-packshot.jpg"],
+      images: ["https://pub-4fbc134b2050432b8f5963ac1c49741a.r2.dev/products/eveline-cosmetics-packshot.jpg"],
       shades: [
         {
           id: `var-${scannedBarcode}`,
           name: "Standard",
           code: scannedBarcode,
           hex: "#FAF7FC",
-          image: "/products/eveline-cosmetics-packshot.jpg",
+          image: "https://pub-4fbc134b2050432b8f5963ac1c49741a.r2.dev/products/eveline-cosmetics-packshot.jpg",
           price: priceNum,
           inStock: stockNum > 0,
           stock: stockNum,
@@ -1373,7 +1376,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
           sku: scannedBarcode,
           ean: scannedBarcode,
           colorHex: null,
-          image: "/products/eveline-cosmetics-packshot.jpg",
+          image: "https://pub-4fbc134b2050432b8f5963ac1c49741a.r2.dev/products/eveline-cosmetics-packshot.jpg",
           inStock: stockNum > 0,
           price: priceNum,
           stock: stockNum,

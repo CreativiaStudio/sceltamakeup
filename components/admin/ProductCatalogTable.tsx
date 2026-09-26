@@ -26,6 +26,7 @@ import {
 } from "@/lib/adminStore";
 import ProductEditorModal from "./ProductEditorModal";
 import { logAdminActivity } from "@/lib/auditLogger";
+import { resolveProductImageUrl } from "@/lib/r2";
 
 const ALL_PRODUCTS = rawCatalog as Product[];
 
@@ -34,7 +35,9 @@ const DEFAULT_IMAGE = "/brand/logo.png";
 /** Valid, non-empty image source or the brand logo fallback. */
 function safeImageSrc(...candidates: Array<string | null | undefined>): string {
   for (const candidate of candidates) {
-    if (typeof candidate === "string" && candidate.trim()) return candidate.trim();
+    if (typeof candidate === "string" && candidate.trim()) {
+      return resolveProductImageUrl(candidate.trim());
+    }
   }
   return DEFAULT_IMAGE;
 }

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { ShoppingBag, Check } from "lucide-react";
 import { Product, Shade } from "@/types/product";
 import { useCartStore } from "@/store/useCartStore";
+import { resolveProductImageUrl } from "@/lib/r2";
 
 interface ProductCardProps {
   product: Product;
@@ -24,8 +25,9 @@ export default function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem);
 
   // Active image: if shade has specific image, or fallback to product images
-  const activeImage =
-    selectedShade?.image || product.images[0] || "/brand/logo.png";
+  const activeImage = resolveProductImageUrl(
+    selectedShade?.image || product.images[0]
+  );
 
   // Price (can vary per shade if specified)
   const currentPrice = selectedShade?.price ?? product.price;
