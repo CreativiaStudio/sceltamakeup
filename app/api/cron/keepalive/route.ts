@@ -2,8 +2,15 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-const DEDICATED_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const DEDICATED_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+// Resilienza produzione (pattern identico a lib/r2.ts): il keep-alive anti-pausa
+// deve funzionare anche se le variabili non sono ancora nel pannello Vercel.
+const DEFAULT_DEDICATED_URL = "https://zsycaulbamdxqhcukrvn.supabase.co";
+const DEFAULT_DEDICATED_SERVICE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpzeWNhdWxiYW1keHFoY3VrcnZuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODg1MTA4NSwiZXhwIjoyMTA0NDI3MDg1fQ.Czr2EkjwAA7m5J7LLrCq3caDMZSuMSUIbPYISe6X_o0";
+
+const DEDICATED_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_DEDICATED_URL;
+const DEDICATED_SERVICE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_DEDICATED_SERVICE_KEY;
 const HEARTBEAT_TABLE = "scelta_heartbeat";
 const OVERRIDES_TABLE = "scelta_catalog_overrides";
 

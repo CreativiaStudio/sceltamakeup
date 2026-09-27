@@ -37,8 +37,16 @@ export interface CentralCatalogState {
 // Backend configuration
 // ------------------------------------------------------------------------------
 
-const DEDICATED_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const DEDICATED_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+// Resilienza produzione (pattern identico a lib/r2.ts): se le variabili non sono
+// ancora configurate nel pannello Vercel, l'app continua a usare il progetto
+// Supabase dedicato `zsycaulbamdxqhcukrvn` invece di fallire a runtime.
+const DEFAULT_DEDICATED_URL = "https://zsycaulbamdxqhcukrvn.supabase.co";
+const DEFAULT_DEDICATED_SERVICE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpzeWNhdWxiYW1keHFoY3VrcnZuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODg1MTA4NSwiZXhwIjoyMTA0NDI3MDg1fQ.Czr2EkjwAA7m5J7LLrCq3caDMZSuMSUIbPYISe6X_o0";
+
+const DEDICATED_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_DEDICATED_URL;
+const DEDICATED_SERVICE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_DEDICATED_SERVICE_KEY;
 
 const OVERRIDES_TABLE = "scelta_catalog_overrides";
 const SINGLETON_ID = "singleton";
