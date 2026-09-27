@@ -49,7 +49,11 @@ export default function AnalyticsTab({ kpis }: AnalyticsTabProps) {
     // Fetch iniziale al mount (il loading è gestito asincronamente in fetchTraffic)
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTraffic();
-    const interval = setInterval(fetchTraffic, 30000); // Polling ogni 30s
+    const interval = setInterval(() => {
+      // Nessun polling a schermo spento / scheda in background.
+      if (typeof document !== "undefined" && document.hidden) return;
+      fetchTraffic();
+    }, 30000); // Polling ogni 30s
     return () => clearInterval(interval);
   }, []);
 

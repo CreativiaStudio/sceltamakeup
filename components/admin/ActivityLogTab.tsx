@@ -568,7 +568,7 @@ export default function ActivityLogTab() {
           <div className="flex items-center gap-2 text-gray-500">
             <Database className="w-3.5 h-3.5 text-[#5E1788]" />
             <span>
-              Persistenza locale + cloud Supabase / Creativia Hub <span className="text-gray-400">(max 1000 eventi)</span>
+              Persistenza locale + cloud Supabase dedicato <span className="text-gray-400">(max 1000 eventi)</span>
             </span>
           </div>
           <div className="flex items-center gap-2">

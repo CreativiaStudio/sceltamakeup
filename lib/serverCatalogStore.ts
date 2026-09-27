@@ -5,18 +5,14 @@
  * Single source of truth for product overrides and variant giacenze, shared
  * across all devices (Mario's remote admin + Federica's point-of-sale laptop).
  *
- * Primary backend:
+ * Backend (isolato):
  *   - Dedicated Supabase project (`zsycaulbamdxqhcukrvn`) via REST API using
  *     `SUPABASE_SERVICE_ROLE_KEY`. Table: `scelta_catalog_overrides` (singleton
- *     JSONB document).
- *
- * Resilient fallback:
- *   - Creativia Hub (`https://ekfnekrjpumjpetzgwzy.supabase.co`), storing the
- *     same document inside `clients.preferences.catalog_overrides` for the
- *     `scelta_makeup` client (`14fa9b24-8991-4150-a1fe-d60adbabd469`).
+ *     JSONB document). Nessuna dipendenza da altri progetti o hub esterni.
  *
  * In-memory cache with 5s TTL keeps reads instant without redundant round-trips;
- * writes are serialized through a promise queue to avoid lost updates.
+ * writes are serialized through a promise queue to avoid lost updates. La cache
+ * viene aggiornata solo dopo una scrittura confermata.
  */
 
 import rawCatalog from "@/data/catalog.json";
@@ -43,14 +39,6 @@ export interface CentralCatalogState {
 
 const DEDICATED_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const DEDICATED_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
-
-const CREATIVIA_HUB_URL =
-  process.env.CREATIVIA_HUB_SUPABASE_URL || "https://ekfnekrjpumjpetzgwzy.supabase.co";
-const CREATIVIA_HUB_SERVICE_KEY =
-  process.env.CREATIVIA_HUB_SERVICE_ROLE_KEY ||
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVrZm5la3JqcHVtanBldHpnd3p5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MzgyNjAxNiwiZXhwIjoyMDk5NDAyMDE2fQ.Ne-jtSPB8NP-79_pV1KsGubYbCDtQVhQAXRtC-PzT-8";
-const SCELTA_MAKEUP_CLIENT_ID =
-  process.env.SCELTA_MAKEUP_CLIENT_ID || "14fa9b24-8991-4150-a1fe-d60adbabd469";
 
 const OVERRIDES_TABLE = "scelta_catalog_overrides";
 const SINGLETON_ID = "singleton";
@@ -135,21 +123,39 @@ function headersFor(serviceKey: string): Record<string, string> {
 // Primary backend: dedicated Supabase
 // ------------------------------------------------------------------------------
 
-async function readFromDedicated(): Promise<CentralCatalogState | null> {
-  if (!DEDICATED_URL || !DEDICATED_SERVICE_KEY) return null;
+async function readFromDedicated(): Promise<CentralCatalogState> {
+  if (!DEDICATED_URL || !DEDICATED_SERVICE_KEY) {
+    throw new Error(
+      "Configurazione Supabase dedicata mancante (NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY)."
+    );
+  }
+
+  const url = `${DEDICATED_URL}/rest/v1/${OVERRIDES_TABLE}?id=eq.${SINGLETON_ID}&select=data`;
+
+  let res: Response;
   try {
-    const url = `${DEDICATED_URL}/rest/v1/${OVERRIDES_TABLE}?id=eq.${SINGLETON_ID}&select=data`;
-    const res = await fetch(url, {
+    res = await fetch(url, {
       headers: headersFor(DEDICATED_SERVICE_KEY),
       cache: "no-store",
     });
-    if (!res.ok) return null;
-    const rows = (await res.json()) as Array<{ data?: unknown }>;
-    if (!Array.isArray(rows) || rows.length === 0) return null;
-    return normalizeState(rows[0].data);
-  } catch {
-    return null;
+  } catch (err) {
+    throw new Error(
+      `Lettura catalogo centralizzato fallita (rete): ${
+        err instanceof Error ? err.message : String(err)
+      }`
+    );
   }
+
+  if (!res.ok) {
+    throw new Error(`Lettura catalogo centralizzato fallita (HTTP ${res.status}).`);
+  }
+
+  const rows = (await res.json()) as Array<{ data?: unknown }>;
+  // 200 OK con array vuoto: il singleton non esiste ancora.
+  if (!Array.isArray(rows) || rows.length === 0) {
+    return emptyState();
+  }
+  return normalizeState(rows[0].data);
 }
 
 async function writeToDedicated(state: CentralCatalogState): Promise<boolean> {
@@ -167,77 +173,8 @@ async function writeToDedicated(state: CentralCatalogState): Promise<boolean> {
         updated_at: state.updatedAt,
       }),
     });
-    return res.ok;
-  } catch {
-    return false;
-  }
-}
-
-// ------------------------------------------------------------------------------
-// Fallback backend: Creativia Hub clients.preferences.catalog_overrides
-// ------------------------------------------------------------------------------
-
-async function readFromCreativia(): Promise<CentralCatalogState | null> {
-  if (!CREATIVIA_HUB_SERVICE_KEY) return null;
-  try {
-    const url = `${CREATIVIA_HUB_URL}/rest/v1/clients?id=eq.${SCELTA_MAKEUP_CLIENT_ID}&select=preferences`;
-    const res = await fetch(url, {
-      headers: headersFor(CREATIVIA_HUB_SERVICE_KEY),
-      cache: "no-store",
-    });
-    if (!res.ok) return null;
-    const rows = (await res.json()) as Array<{ preferences?: unknown }>;
-    if (!Array.isArray(rows) || rows.length === 0) return null;
-    const preferences = rows[0].preferences;
-    if (!preferences || typeof preferences !== "object") return null;
-    const overrides = (preferences as Record<string, unknown>).catalog_overrides;
-    if (!overrides || typeof overrides !== "object") return null;
-    return normalizeState(overrides);
-  } catch {
-    return null;
-  }
-}
-
-async function writeToCreativia(state: CentralCatalogState): Promise<boolean> {
-  if (!CREATIVIA_HUB_SERVICE_KEY) return false;
-  try {
-    // Preserve any sibling preference keys while updating only catalog_overrides.
-    let existingPreferences: Record<string, unknown> = {};
-    try {
-      const readUrl = `${CREATIVIA_HUB_URL}/rest/v1/clients?id=eq.${SCELTA_MAKEUP_CLIENT_ID}&select=preferences`;
-      const readRes = await fetch(readUrl, {
-        headers: headersFor(CREATIVIA_HUB_SERVICE_KEY),
-        cache: "no-store",
-      });
-      if (readRes.ok) {
-        const rows = (await readRes.json()) as Array<{ preferences?: unknown }>;
-        if (
-          Array.isArray(rows) &&
-          rows.length > 0 &&
-          rows[0].preferences &&
-          typeof rows[0].preferences === "object"
-        ) {
-          existingPreferences = rows[0].preferences as Record<string, unknown>;
-        }
-      }
-    } catch {
-      // Continue with an empty base if the read fails.
-    }
-
-    const patchRes = await fetch(
-      `${CREATIVIA_HUB_URL}/rest/v1/clients?id=eq.${SCELTA_MAKEUP_CLIENT_ID}`,
-      {
-        method: "PATCH",
-        headers: {
-          ...headersFor(CREATIVIA_HUB_SERVICE_KEY),
-          Prefer: "return=minimal",
-        },
-        body: JSON.stringify({
-          preferences: { ...existingPreferences, catalog_overrides: state },
-        }),
-      }
-    );
-    return patchRes.ok;
+    // Successo solo con 200/201/204: la cache viene aggiornata solo in questo caso.
+    return res.status === 200 || res.status === 201 || res.status === 204;
   } catch {
     return false;
   }
@@ -285,9 +222,21 @@ export async function getCentralCatalogState(): Promise<CentralCatalogState> {
     return memoryCache;
   }
 
-  let state = await readFromDedicated();
-  if (!state) state = await readFromCreativia();
-  if (!state) state = memoryCache ?? emptyState();
+  let state: CentralCatalogState;
+  try {
+    state = await readFromDedicated();
+  } catch (err) {
+    // Fallback in memoria: se il DB dedicato è momentaneamente irraggiungibile
+    // manteniamo l'ultimo snapshot valido invece di interrompere il servizio.
+    if (memoryCache) {
+      console.warn(
+        "[serverCatalogStore] Lettura cloud fallita, uso la cache in memoria:",
+        err instanceof Error ? err.message : err
+      );
+      return memoryCache;
+    }
+    throw err;
+  }
 
   memoryCache = state;
   cacheFetchedAt = Date.now();
@@ -295,14 +244,13 @@ export async function getCentralCatalogState(): Promise<CentralCatalogState> {
 }
 
 async function persist(state: CentralCatalogState): Promise<void> {
-  // Update in-memory cache immediately for instant local consistency.
-  memoryCache = state;
-  cacheFetchedAt = Date.now();
-
+  // La cache viene aggiornata SOLO dopo una scrittura confermata dal cloud.
   const ok = await writeToDedicated(state);
   if (!ok) {
-    await writeToCreativia(state);
+    throw new Error("Scrittura del catalogo centralizzato non riuscita.");
   }
+  memoryCache = state;
+  cacheFetchedAt = Date.now();
 }
 
 export async function saveProductOverride(

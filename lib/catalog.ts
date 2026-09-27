@@ -14,7 +14,7 @@ export const CATEGORIES: CategoryKey[] = [
 ];
 
 /**
- * Applica gli override centralizzati salvati nel cloud (Supabase / Creativia Hub)
+ * Applica gli override centralizzati salvati nel cloud (Supabase dedicato)
  */
 function applyOverrides(baseProducts: Product[], overrides: Record<string, Partial<Product>>): Product[] {
   if (!overrides || Object.keys(overrides).length === 0) return baseProducts;

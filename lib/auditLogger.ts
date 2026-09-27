@@ -12,7 +12,7 @@
  *     (`scelta_admin_audit_logs_v1`) → la cassa continua a lavorare anche senza
  *     rete e la timeline si aggiorna all'istante.
  *  2. Notifica asincrona best-effort a `/api/admin/audit-log` (POST) → il cloud
- *     Supabase / Creativia Hub conserva la storia completa (max 1000 eventi) ed
+ *     Supabase dedicato conserva la storia completa (max 1000 eventi) ed
  *     è consultabile da remoto.
  *  3. Evento window `scelta_audit_log_added` → la tab "Registro Attività" si
  *     ridisegna in tempo reale senza polling ad alta frequenza.

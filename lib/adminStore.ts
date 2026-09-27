@@ -721,21 +721,37 @@ export async function syncAdminStoreFromCloud(): Promise<boolean> {
  * focus. Reconciliation is idempotent, so it is safe to call from multiple
  * components.
  */
-export function useAdminCatalogSync(intervalMs = 5000): void {
+export function useAdminCatalogSync(intervalMs = 30000): void {
   useEffect(() => {
+    let inFlight = false;
+
     const runSync = () => {
-      void syncAdminStoreFromCloud();
+      // Nessun polling a schermo spento / scheda in background.
+      if (typeof document !== "undefined" && document.hidden) return;
+      // Evita richieste sovrapposte se la precedente è ancora in corso.
+      if (inFlight) return;
+      inFlight = true;
+      void syncAdminStoreFromCloud().finally(() => {
+        inFlight = false;
+      });
     };
 
     runSync();
 
     const interval = setInterval(runSync, intervalMs);
     const onFocus = () => runSync();
+    // Al ritorno in primo piano forza un sync immediato.
+    const onVisibilityChange = () => {
+      if (typeof document !== "undefined" && !document.hidden) runSync();
+    };
+
     window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => {
       clearInterval(interval);
       window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [intervalMs]);
 }
@@ -1407,7 +1423,7 @@ export function createAdminOrder(
   state.orders = [newOrder, ...state.orders];
   saveAdminStoreState(state);
 
-  // Synchronize immediately to cloud (Creativia Hub / Supabase)
+  // Synchronize immediately to cloud (Supabase dedicato)
   postCatalogUpdate(ORDERS_API, { order: newOrder });
 
   return newOrder;

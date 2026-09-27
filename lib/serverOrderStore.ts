@@ -5,10 +5,10 @@
  * Single source of truth for all boutique orders and in-store Cassa RT receipts,
  * synchronized across all devices (remote admin + in-store POS laptop in Naples).
  *
- * Central Hub:
- *   - Creativia Hub (PostgreSQL / Supabase `ekfnekrjpumjpetzgwzy.supabase.co`)
- *     storing orders inside `clients.preferences.orders` for Scelta Makeup
- *     (`14fa9b24-8991-4150-a1fe-d60adbabd469`).
+ * Backend (isolato):
+ *   - Dedicated Supabase project (`zsycaulbamdxqhcukrvn`), table
+ *     `scelta_admin_orders` (id, data JSONB, status, created_at, updated_at).
+ *     Nessuna dipendenza da hub o progetti esterni.
  *
  * Features:
  *   - Promise write queue to serialize concurrent checkouts (zero lost updates).
@@ -18,14 +18,10 @@
 
 import type { SceltaAdminOrder } from "@/lib/adminStore";
 
-const CREATIVIA_HUB_URL =
-  process.env.CREATIVIA_HUB_SUPABASE_URL || "https://ekfnekrjpumjpetzgwzy.supabase.co";
-const CREATIVIA_HUB_SERVICE_KEY =
-  process.env.CREATIVIA_HUB_SERVICE_ROLE_KEY ||
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVrZm5la3JqcHVtanBldHpnd3p5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MzgyNjAxNiwiZXhwIjoyMDk5NDAyMDE2fQ.Ne-jtSPB8NP-79_pV1KsGubYbCDtQVhQAXRtC-PzT-8";
-const SCELTA_MAKEUP_CLIENT_ID =
-  process.env.SCELTA_MAKEUP_CLIENT_ID || "14fa9b24-8991-4150-a1fe-d60adbabd469";
+const DEDICATED_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const DEDICATED_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 
+const ORDERS_TABLE = "scelta_admin_orders";
 const CACHE_TTL_MS = 3000;
 
 let memoryCache: SceltaAdminOrder[] | null = null;
@@ -48,91 +44,10 @@ function headersFor(serviceKey: string): Record<string, string> {
   };
 }
 
-async function readFromCreativia(): Promise<SceltaAdminOrder[] | null> {
-  try {
-    const url = `${CREATIVIA_HUB_URL}/rest/v1/clients?id=eq.${SCELTA_MAKEUP_CLIENT_ID}&select=preferences`;
-    const res = await fetch(url, {
-      method: "GET",
-      headers: headersFor(CREATIVIA_HUB_SERVICE_KEY),
-      cache: "no-store",
-    });
-
-    if (!res.ok) return null;
-    const rows = (await res.json()) as Array<{ preferences?: Record<string, unknown> }>;
-    if (!rows || rows.length === 0) return null;
-
-    const ordersRaw = rows[0]?.preferences?.orders;
-    if (Array.isArray(ordersRaw)) {
-      return ordersRaw as SceltaAdminOrder[];
-    }
-    return [];
-  } catch (err) {
-    console.error("[serverOrderStore] Read error:", err);
-    return null;
-  }
-}
-
-async function writeToCreativia(orders: SceltaAdminOrder[]): Promise<boolean> {
-  try {
-    let existingPreferences: Record<string, unknown> = {};
-
-    try {
-      const getRes = await fetch(
-        `${CREATIVIA_HUB_URL}/rest/v1/clients?id=eq.${SCELTA_MAKEUP_CLIENT_ID}&select=preferences`,
-        {
-          headers: headersFor(CREATIVIA_HUB_SERVICE_KEY),
-          cache: "no-store",
-        }
-      );
-      if (getRes.ok) {
-        const rows = (await getRes.json()) as Array<{ preferences?: Record<string, unknown> }>;
-        if (rows && rows[0]?.preferences && typeof rows[0].preferences === "object") {
-          existingPreferences = rows[0].preferences as Record<string, unknown>;
-        }
-      }
-    } catch {
-      // Continue with empty base
-    }
-
-    const patchRes = await fetch(
-      `${CREATIVIA_HUB_URL}/rest/v1/clients?id=eq.${SCELTA_MAKEUP_CLIENT_ID}`,
-      {
-        method: "PATCH",
-        headers: {
-          ...headersFor(CREATIVIA_HUB_SERVICE_KEY),
-          Prefer: "return=minimal",
-        },
-        body: JSON.stringify({
-          preferences: { ...existingPreferences, orders },
-        }),
-      }
-    );
-    return patchRes.ok;
-  } catch (err) {
-    console.error("[serverOrderStore] Write error:", err);
-    return false;
-  }
-}
-
-// ------------------------------------------------------------------------------
-// Public API
-// ------------------------------------------------------------------------------
-
-export async function getCentralOrders(): Promise<SceltaAdminOrder[]> {
-  const now = Date.now();
-  if (memoryCache && now - cacheFetchedAt < CACHE_TTL_MS) {
-    return memoryCache;
-  }
-
-  let orders = await readFromCreativia();
-  if (!orders) orders = memoryCache ?? [];
-
-  // Always keep sorted descending by creation date
-  orders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
-  memoryCache = orders;
-  cacheFetchedAt = Date.now();
-  return orders;
+function sortOrders(orders: SceltaAdminOrder[]): SceltaAdminOrder[] {
+  return [...orders].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 }
 
 function normalizeOrder(order: SceltaAdminOrder): SceltaAdminOrder {
@@ -152,6 +67,103 @@ function normalizeOrder(order: SceltaAdminOrder): SceltaAdminOrder {
   return order;
 }
 
+/** Maps a domain order to the `scelta_admin_orders` row shape. */
+function toRow(order: SceltaAdminOrder): Record<string, unknown> {
+  return {
+    id: order.id,
+    data: order,
+    status: order.status ?? null,
+    created_at: order.createdAt,
+    updated_at: order.updatedAt || order.createdAt,
+  };
+}
+
+async function readFromDedicated(): Promise<SceltaAdminOrder[] | null> {
+  if (!DEDICATED_URL || !DEDICATED_SERVICE_KEY) return null;
+  try {
+    const url = `${DEDICATED_URL}/rest/v1/${ORDERS_TABLE}?select=data&order=created_at.desc`;
+    const res = await fetch(url, {
+      method: "GET",
+      headers: headersFor(DEDICATED_SERVICE_KEY),
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      console.error("[serverOrderStore] Read error: HTTP", res.status, res.statusText);
+      return null;
+    }
+
+    const rows = (await res.json()) as Array<{ data?: SceltaAdminOrder }>;
+    if (!Array.isArray(rows)) return [];
+    return rows
+      .map((r) => r?.data)
+      .filter((o): o is SceltaAdminOrder => Boolean(o && typeof o === "object"));
+  } catch (err) {
+    console.error("[serverOrderStore] Read error:", err);
+    return null;
+  }
+}
+
+async function upsertRows(rows: Array<Record<string, unknown>>): Promise<boolean> {
+  if (rows.length === 0) return true;
+  if (!DEDICATED_URL || !DEDICATED_SERVICE_KEY) return false;
+  try {
+    const res = await fetch(`${DEDICATED_URL}/rest/v1/${ORDERS_TABLE}`, {
+      method: "POST",
+      headers: {
+        ...headersFor(DEDICATED_SERVICE_KEY),
+        Prefer: "resolution=merge-duplicates",
+      },
+      body: JSON.stringify(rows),
+    });
+    return res.ok;
+  } catch (err) {
+    console.error("[serverOrderStore] Write error:", err);
+    return false;
+  }
+}
+
+async function patchRow(order: SceltaAdminOrder): Promise<boolean> {
+  if (!DEDICATED_URL || !DEDICATED_SERVICE_KEY) return false;
+  try {
+    const url = `${DEDICATED_URL}/rest/v1/${ORDERS_TABLE}?id=eq.${encodeURIComponent(order.id)}`;
+    const res = await fetch(url, {
+      method: "PATCH",
+      headers: {
+        ...headersFor(DEDICATED_SERVICE_KEY),
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({
+        data: order,
+        status: order.status ?? null,
+        updated_at: order.updatedAt || order.createdAt,
+      }),
+    });
+    return res.ok;
+  } catch (err) {
+    console.error("[serverOrderStore] PATCH error:", err);
+    return false;
+  }
+}
+
+// ------------------------------------------------------------------------------
+// Public API
+// ------------------------------------------------------------------------------
+
+export async function getCentralOrders(): Promise<SceltaAdminOrder[]> {
+  const now = Date.now();
+  if (memoryCache && now - cacheFetchedAt < CACHE_TTL_MS) {
+    return memoryCache;
+  }
+
+  const read = await readFromDedicated();
+  const orders = sortOrders(read ?? memoryCache ?? []);
+
+  memoryCache = orders;
+  cacheFetchedAt = Date.now();
+  return orders;
+}
+
 export async function saveCentralOrder(newOrder: SceltaAdminOrder): Promise<SceltaAdminOrder[]> {
   return enqueue(async () => {
     const current = await getCentralOrders();
@@ -167,14 +179,14 @@ export async function saveCentralOrder(newOrder: SceltaAdminOrder): Promise<Scel
       }
     }
 
-    const updated = Array.from(map.values()).sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+    const updated = sortOrders(Array.from(map.values()));
 
-    memoryCache = updated;
-    cacheFetchedAt = Date.now();
+    const ok = await upsertRows([toRow(safeOrder)]);
+    if (ok) {
+      memoryCache = updated;
+      cacheFetchedAt = Date.now();
+    }
 
-    await writeToCreativia(updated);
     return updated;
   });
 }
@@ -195,14 +207,15 @@ export async function saveCentralOrders(ordersBatch: SceltaAdminOrder[]): Promis
       }
     }
 
-    const updated = Array.from(map.values()).sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+    const updated = sortOrders(Array.from(map.values()));
+    const rows = ordersBatch.map((o) => toRow(normalizeOrder(o)));
 
-    memoryCache = updated;
-    cacheFetchedAt = Date.now();
+    const ok = await upsertRows(rows);
+    if (ok) {
+      memoryCache = updated;
+      cacheFetchedAt = Date.now();
+    }
 
-    await writeToCreativia(updated);
     return updated;
   });
 }
@@ -213,16 +226,24 @@ export async function updateCentralOrderStatus(
 ): Promise<SceltaAdminOrder[]> {
   return enqueue(async () => {
     const current = await getCentralOrders();
-    const updated = current.map((o) =>
-      o.id.toLowerCase() === orderId.toLowerCase()
-        ? { ...o, status, updatedAt: new Date().toISOString() }
-        : o
-    );
+    let target: SceltaAdminOrder | undefined;
 
-    memoryCache = updated;
-    cacheFetchedAt = Date.now();
+    const updated = current.map((o) => {
+      if (o.id.toLowerCase() === orderId.toLowerCase()) {
+        target = { ...o, status, updatedAt: new Date().toISOString() };
+        return target;
+      }
+      return o;
+    });
 
-    await writeToCreativia(updated);
-    return updated;
+    if (target) {
+      const ok = await patchRow(target);
+      if (ok) {
+        memoryCache = sortOrders(updated);
+        cacheFetchedAt = Date.now();
+      }
+    }
+
+    return sortOrders(updated);
   });
 }

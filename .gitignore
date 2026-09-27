@@ -47,4 +47,5 @@ Logo/
 Negozio fisico.png
 scratch/
 scripts/scan_catalog_jev.js
+scripts/migrate-from-creativia.mjs
 data/*.backup*.json
