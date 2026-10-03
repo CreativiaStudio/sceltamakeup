@@ -122,3 +122,45 @@ export function uploadDeviceSnapshotOnce(): void {
     // Offline o endpoint non disponibile: si ritenta al prossimo avvio.
   });
 }
+
+/**
+ * Invio forzato (ignora la finestra delle 6 ore). Usato prima del passaggio al
+ * catalogo per-riga, per conservare la copia locale legacy del dispositivo.
+ * Restituisce true solo se il server ha confermato la ricezione.
+ */
+export async function forceUploadDeviceSnapshot(reason: string): Promise<boolean> {
+  try {
+    if (typeof window === "undefined" || typeof fetch !== "function") return false;
+    const now = Date.now();
+    const userAgent = typeof navigator !== "undefined" ? navigator.userAgent : "";
+    const pageUrl = window.location.href;
+    const res = await fetch(DEVICE_SNAPSHOT_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        device: getAuditDevice(),
+        operator: getAuditOperator(),
+        userAgent,
+        pageUrl,
+        payload: {
+          reason,
+          capturedAt: new Date(now).toISOString(),
+          localStorage: collectLocalStorageSnapshot(),
+          userAgent,
+          pageUrl,
+        },
+      }),
+      cache: "no-store",
+    });
+    if (res.ok) {
+      try {
+        localStorage.setItem(DEVICE_SNAPSHOT_LAST_UPLOAD_KEY, String(now));
+      } catch {
+        // ignorato
+      }
+    }
+    return res.ok;
+  } catch {
+    return false;
+  }
+}

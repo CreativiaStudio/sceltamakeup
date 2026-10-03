@@ -6,7 +6,7 @@ import {
   type ActivityCategory,
   type AdminActivityLogItem,
 } from "@/lib/auditLogger";
-import { appendAuditLogs, getCentralCatalogState } from "@/lib/serverCatalogStore";
+import { appendAuditLogs, getAuditLogs } from "@/lib/serverCatalogStore";
 
 export const dynamic = "force-dynamic";
 
@@ -46,47 +46,43 @@ function collectIncomingLogs(body: AuditLogPostBody | null): AdminActivityLogIte
 /** GET: restituisce la timeline cloud completa con intestazioni no-store. */
 export async function GET() {
   try {
-    const state = await getCentralCatalogState();
-    return NextResponse.json(
-      { success: true, logs: state.auditLogs || [] },
-      { headers: NO_STORE_HEADERS }
-    );
+    const logs = await getAuditLogs(MAX_CLOUD_AUDIT_LOGS);
+    return NextResponse.json({ success: true, logs }, { headers: NO_STORE_HEADERS });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Errore interno";
     return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }
 
-/** POST: appende uno o più eventi alla scatola nera e persiste nel singleton. */
+/** POST: appende uno o più eventi alla scatola nera (tabella append-only, solo INSERT). */
 export async function POST(req: Request) {
+  const body = (await req.json().catch(() => null)) as AuditLogPostBody | null;
+  const incoming = collectIncomingLogs(body);
+
+  if (incoming.length === 0) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Nessun evento valido ricevuto (attesi: log oppure logs[]).",
+        acceptedCategories: ACTIVITY_CATEGORIES as readonly ActivityCategory[],
+      },
+      { status: 400 }
+    );
+  }
+
   try {
-    const body = (await req.json().catch(() => null)) as AuditLogPostBody | null;
-    const incoming = collectIncomingLogs(body);
-
-    if (incoming.length === 0) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Nessun evento valido ricevuto (attesi: log oppure logs[]).",
-          acceptedCategories: ACTIVITY_CATEGORIES as readonly ActivityCategory[],
-        },
-        { status: 400 }
-      );
-    }
-
-    const state = await appendAuditLogs(incoming);
+    const received = await appendAuditLogs(incoming);
     return NextResponse.json(
       {
         success: true,
-        received: incoming.length,
-        total: (state.auditLogs || []).length,
+        received,
         maxCloudEvents: MAX_CLOUD_AUDIT_LOGS,
-        updatedAt: state.updatedAt,
+        updatedAt: new Date().toISOString(),
       },
       { headers: NO_STORE_HEADERS }
     );
   } catch (err) {
     const message = err instanceof Error ? err.message : "Errore interno";
-    return NextResponse.json({ success: false, error: message }, { status: 400 });
+    return NextResponse.json({ success: false, error: message }, { status: 502 });
   }
 }

@@ -171,6 +171,38 @@ function ProductEditorModalDialog({
     };
   });
 
+  // Copia congelata della scheda all'apertura: al salvataggio si inviano SOLO i
+  // campi che Federica ha cambiato rispetto a questa (niente valori vecchi).
+  const [initialFormData] = useState(() => JSON.parse(JSON.stringify(formData)) as typeof formData);
+
+  const formToUpdates = (fd: typeof formData): Partial<Product> => {
+    const shades: Shade[] = fd.variants.map((v, i) => ({
+      id: v.id,
+      name: v.name,
+      code: (i + 1).toString().padStart(2, "0"),
+      hex: v.colorHex || "#CCCCCC",
+      image: v.image || fd.images[0] || "/brand/logo.png",
+      price: v.price ?? fd.price,
+      stock: v.stock ?? 0,
+      inStock: (v.stock ?? 0) > 0,
+    }));
+    return {
+      name: fd.name.trim(),
+      brand: fd.brand,
+      category: fd.category,
+      price: fd.price,
+      isLocalOnly: fd.isLocalOnly,
+      shortDescription: fd.shortDescription.trim(),
+      description: fd.description.trim(),
+      howToUse: fd.howToUse.trim(),
+      formulaBenefits: fd.formulaBenefits.trim(),
+      inci: fd.inci.trim(),
+      images: fd.images,
+      variants: fd.variants,
+      shades,
+    };
+  };
+
   const [newImageUrl, setNewImageUrl] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -335,35 +367,10 @@ function ProductEditorModalDialog({
     setErrorMessage(null);
     setSaveSuccess(false);
 
-    // Build shades list matching variants for backward compatibility with frontend
-    const updatedShades: Shade[] = formData.variants.map((v, i) => ({
-      id: v.id,
-      name: v.name,
-      code: (i + 1).toString().padStart(2, "0"),
-      hex: v.colorHex || "#CCCCCC",
-      image: v.image || formData.images[0] || "/brand/logo.png",
-      price: v.price ?? formData.price,
-      stock: v.stock ?? 0,
-      inStock: (v.stock ?? 0) > 0,
-    }));
-
-    const updates: Partial<Product> = {
-      name: formData.name.trim(),
-      brand: formData.brand,
-      category: formData.category,
-      price: formData.price,
-      isLocalOnly: formData.isLocalOnly,
-      shortDescription: formData.shortDescription.trim(),
-      description: formData.description.trim(),
-      howToUse: formData.howToUse.trim(),
-      formulaBenefits: formData.formulaBenefits.trim(),
-      inci: formData.inci.trim(),
-      images: formData.images,
-      variants: formData.variants,
-      shades: updatedShades,
-    };
-
-    const res = await saveProductDetailsToCloud(product.id, updates);
+    const updates = formToUpdates(formData);
+    const res = await saveProductDetailsToCloud(product.id, updates, {
+      baseline: formToUpdates(initialFormData),
+    });
     if (!res.success) {
       // Keep the modal open so Federica can see exactly what went wrong.
       setIsSaving(false);

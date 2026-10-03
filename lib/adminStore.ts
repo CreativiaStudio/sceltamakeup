@@ -17,6 +17,7 @@
 import { useEffect } from "react";
 import rawCatalog from "@/data/catalog.json";
 import { Product, ProductVariant } from "@/types/product";
+import { forceUploadDeviceSnapshot } from "@/lib/deviceSnapshot";
 
 export const STORAGE_ADMIN_STORE_KEY = "scelta_makeup_admin_store_v7";
 
@@ -439,8 +440,14 @@ export function getAdminStoreState(): SceltaAdminStoreState {
             if (prod.category && !overrides[prod.id]?.category) {
               vStock.category = prod.category;
             }
-            // Sync image if not custom overridden
-            if (!overrides[vStock.productId]?.images || (overrides[vStock.productId]?.images?.length ?? 0) === 0) {
+            // Sync image if not custom overridden (neither product images nor variant image)
+            const overrideVariantImage = overrides[vStock.productId]?.variants?.find(
+              (ov) => ov && ov.id === vStock.variantId
+            )?.image;
+            if (
+              !overrideVariantImage &&
+              (!overrides[vStock.productId]?.images || (overrides[vStock.productId]?.images?.length ?? 0) === 0)
+            ) {
               const freshImg = freshVariant.image || (prod.images && prod.images[0]);
               if (freshImg && vStock.image !== freshImg) {
                 vStock.image = freshImg;
@@ -543,8 +550,8 @@ export function saveAdminStoreState(state: SceltaAdminStoreState): boolean {
 
 /**
  * Fire-and-forget POST to a Next.js API route. Never throws and never blocks the
- * caller: the optimistic local update always wins, and network failures are
- * silently ignored so the point-of-sale keeps working even when offline.
+ * caller. Usato SOLO per gli ordini (già una riga per ordine lato server).
+ * Le scritture del catalogo passano invece dalla outbox persistente qui sotto.
  */
 function postCatalogUpdate(path: string, body: unknown): void {
   if (typeof window === "undefined") return;
@@ -561,6 +568,341 @@ function postCatalogUpdate(path: string, body: unknown): void {
   }
 }
 
+// ------------------------------------------------------------------------------
+// Outbox persistente — consegna garantita delle modifiche al catalogo
+// ------------------------------------------------------------------------------
+// Ogni modifica (prezzo, foto, nome, giacenza) viene messa in coda in
+// localStorage e inviata in ordine FIFO. Esce dalla coda SOLO quando il server
+// conferma il salvataggio (HTTP 2xx). In caso di rete assente o errore del
+// server resta in coda e viene ritentata (intervallo, focus, ritorno online).
+// Finché è in coda, la modifica viene sovrapposta ai dati cloud in locale, così
+// Federica non la vede mai "tornare indietro" e non viene mai persa.
+
+export const CATALOG_OUTBOX_STORAGE_KEY = "scelta_catalog_outbox_v1";
+export const CATALOG_SYNC_EVENT = "scelta_catalog_sync_status";
+
+interface OutboxEntry {
+  id: string;
+  path: string;
+  body: Record<string, unknown>;
+  productId?: string;
+  createdAt: string;
+  attempts: number;
+  lastError?: string;
+}
+
+export interface CatalogSyncStatus {
+  pending: number;
+  attempts: number;
+  lastError?: string;
+  oldestPendingAt?: string;
+}
+
+let outboxMemory: OutboxEntry[] = [];
+const deliveredOutboxIds = new Set<string>();
+const rejectedOutboxIds = new Map<string, string>();
+let outboxFlushPromise: Promise<void> | null = null;
+/** Incrementato a ogni conferma del server (protegge la sync da snapshot in volo). */
+let outboxDeliveryCounter = 0;
+/** productId -> `_updatedAt` (epoch ms) dell'ultima riga confermata in questa sessione. */
+const confirmedOverrideTimestamps: Record<string, number> = {};
+
+function readOutbox(): OutboxEntry[] {
+  if (typeof window === "undefined") return outboxMemory;
+  try {
+    const raw = localStorage.getItem(CATALOG_OUTBOX_STORAGE_KEY);
+    const parsed = raw ? (JSON.parse(raw) as unknown) : [];
+    outboxMemory = Array.isArray(parsed)
+      ? (parsed as OutboxEntry[]).filter((e) => e && typeof e.id === "string" && typeof e.path === "string")
+      : [];
+  } catch {
+    // Storage illeggibile: si usa la copia in memoria.
+  }
+  return outboxMemory;
+}
+
+function writeOutbox(entries: OutboxEntry[]): void {
+  outboxMemory = entries;
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(CATALOG_OUTBOX_STORAGE_KEY, JSON.stringify(entries));
+  } catch {
+    // Quota piena: la coda resta comunque in memoria per questa sessione.
+  }
+  try {
+    window.dispatchEvent(new CustomEvent(CATALOG_SYNC_EVENT, { detail: getCatalogSyncStatus() }));
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Stato della sincronizzazione (modifiche ancora da confermare dal server). */
+export function getCatalogSyncStatus(): CatalogSyncStatus {
+  const queue = typeof window === "undefined" ? outboxMemory : readOutbox();
+  if (queue.length === 0) return { pending: 0, attempts: 0 };
+  return {
+    pending: queue.length,
+    attempts: Math.max(...queue.map((e) => e.attempts || 0)),
+    lastError: queue.find((e) => e.lastError)?.lastError,
+    oldestPendingAt: queue[0]?.createdAt,
+  };
+}
+
+/** Numero di modifiche in attesa di conferma dal server. */
+export function getPendingCatalogSyncCount(): number {
+  return getCatalogSyncStatus().pending;
+}
+
+function enqueueCatalogWrite(path: string, body: Record<string, unknown>, productId?: string): string {
+  const entry: OutboxEntry = {
+    id: `ob_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+    path,
+    body,
+    productId,
+    createdAt: new Date().toISOString(),
+    attempts: 0,
+  };
+  writeOutbox([...readOutbox(), entry]);
+  void flushCatalogOutbox();
+  return entry.id;
+}
+
+/**
+ * Invia la coda in ordine. Si ferma al primo errore temporaneo (riprova più
+ * tardi) per non applicare mai le modifiche fuori ordine.
+ */
+export function flushCatalogOutbox(): Promise<void> {
+  if (typeof window === "undefined") return Promise.resolve();
+  if (outboxFlushPromise) return outboxFlushPromise;
+
+  outboxFlushPromise = (async () => {
+    try {
+      for (let guard = 0; guard < 500; guard += 1) {
+        const queue = readOutbox();
+        if (queue.length === 0) break;
+        const entry = queue[0];
+
+        let res: Response | null = null;
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15_000);
+        try {
+          res = await fetch(entry.path, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(entry.body),
+            cache: "no-store",
+            signal: controller.signal,
+          });
+        } catch {
+          res = null;
+        } finally {
+          clearTimeout(timeoutId);
+        }
+
+        if (res && res.ok) {
+          const payload = (await res.json().catch(() => null)) as {
+            success?: boolean;
+            productOverrides?: Record<string, Partial<Product>>;
+            variantStocks?: Record<string, SceltaVariantStock>;
+          } | null;
+          writeOutbox(readOutbox().filter((e) => e.id !== entry.id));
+          deliveredOutboxIds.add(entry.id);
+          outboxDeliveryCounter += 1;
+          if (payload?.success) applyConfirmedServerRows(payload);
+          continue;
+        }
+
+        if (res && res.status >= 400 && res.status < 500 && res.status !== 408 && res.status !== 429) {
+          // Richiesta non valida: scartata per non bloccare la coda (errore registrato).
+          writeOutbox(readOutbox().filter((e) => e.id !== entry.id));
+          rejectedOutboxIds.set(entry.id, `HTTP ${res.status}`);
+          continue;
+        }
+
+        writeOutbox(
+          readOutbox().map((e) =>
+            e.id === entry.id
+              ? { ...e, attempts: (e.attempts || 0) + 1, lastError: res ? `HTTP ${res.status}` : "rete non disponibile" }
+              : e
+          )
+        );
+        break;
+      }
+    } finally {
+      outboxFlushPromise = null;
+    }
+  })();
+
+  return outboxFlushPromise;
+}
+
+/** Attende la conferma del server per una specifica voce della coda. */
+async function waitForOutboxDelivery(
+  entryId: string,
+  timeoutMs = 15_000
+): Promise<{ delivered: boolean; error?: string }> {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    await flushCatalogOutbox();
+    if (deliveredOutboxIds.has(entryId)) return { delivered: true };
+    if (rejectedOutboxIds.has(entryId)) return { delivered: false, error: rejectedOutboxIds.get(entryId) };
+    if (!readOutbox().some((e) => e.id === entryId)) return { delivered: true };
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+  }
+  return { delivered: false, error: "timeout" };
+}
+
+// ------------------------------------------------------------------------------
+// Patch locali (stessa semantica delle funzioni SQL lato server)
+// ------------------------------------------------------------------------------
+
+function jsonEqual(a: unknown, b: unknown): boolean {
+  return JSON.stringify(a) === JSON.stringify(b);
+}
+
+function catalogBaseVariants(productId: string): ProductVariant[] | undefined {
+  const p = (rawCatalog as Product[]).find((x) => x.id === productId);
+  return p && Array.isArray(p.variants) ? p.variants : undefined;
+}
+
+/** Merge varianti per id (identico a `scelta_merge_variants` in Postgres). */
+function mergeVariantsLocal(
+  base: ProductVariant[] | undefined,
+  patch: Array<Partial<ProductVariant>>,
+  replaceMode: boolean
+): ProductVariant[] {
+  const baseList = (Array.isArray(base) ? base : []).filter((v) => v && isNonEmptyString(v.id));
+  const patchList = patch.filter((v) => v && isNonEmptyString(v.id));
+  if (replaceMode) {
+    return patchList.map((pv) => ({ ...(baseList.find((b) => b.id === pv.id) || {}), ...pv }) as ProductVariant);
+  }
+  const merged = baseList.map((bv) => {
+    const pv = patchList.find((p) => p.id === bv.id);
+    return pv ? ({ ...bv, ...pv } as ProductVariant) : bv;
+  });
+  for (const pv of patchList) {
+    if (!baseList.some((b) => b.id === pv.id)) merged.push(pv as ProductVariant);
+  }
+  return merged;
+}
+
+function applyOverridePatchLocally(
+  productId: string,
+  base: Partial<Product> | undefined,
+  patch: Record<string, unknown>,
+  replaceVariants: boolean
+): Partial<Product> {
+  const { variants: vpatch, ...rest } = patch as { variants?: unknown } & Record<string, unknown>;
+  const merged = { ...(base || {}), ...rest } as Partial<Product>;
+  if (Array.isArray(vpatch)) {
+    merged.variants = mergeVariantsLocal(
+      base?.variants ?? catalogBaseVariants(productId),
+      vpatch as Array<Partial<ProductVariant>>,
+      replaceVariants
+    );
+  }
+  return merged;
+}
+
+/** Sovrappone alle righe cloud le modifiche ancora in coda (non ancora confermate). */
+function overlayPendingOutbox(
+  overrides: Record<string, Partial<Product>>,
+  stocks: Record<string, SceltaVariantStock>,
+  onlyProductId?: string
+): void {
+  for (const entry of readOutbox()) {
+    const body = entry.body || {};
+    if (entry.path === CATALOG_OVERRIDES_API) {
+      const pid = typeof body.productId === "string" ? body.productId : "";
+      if (!pid || (onlyProductId && pid !== onlyProductId)) continue;
+      const updates = (body.updates && typeof body.updates === "object" ? body.updates : {}) as Record<string, unknown>;
+      if (Object.keys(updates).length > 0) {
+        overrides[pid] = applyOverridePatchLocally(pid, overrides[pid], updates, body.replaceVariants === true);
+      }
+      const vs = (body.variantStocks && typeof body.variantStocks === "object" ? body.variantStocks : {}) as Record<
+        string,
+        Partial<SceltaVariantStock>
+      >;
+      for (const [vid, patch] of Object.entries(vs)) {
+        if (stocks[vid]) stocks[vid] = { ...stocks[vid], ...patch } as SceltaVariantStock;
+      }
+    } else if (entry.path === CATALOG_STOCK_API) {
+      const vid = typeof body.variantId === "string" ? body.variantId : "";
+      if (!vid || !stocks[vid]) continue;
+      if (onlyProductId && stocks[vid].productId !== onlyProductId) continue;
+      const patch = (body.variantStock && typeof body.variantStock === "object" ? body.variantStock : {}) as Partial<SceltaVariantStock>;
+      const next = { ...stocks[vid], ...patch } as SceltaVariantStock;
+      if (typeof body.newQuantity === "number") {
+        next.stockQuantity = Math.max(0, Math.floor(body.newQuantity));
+        next.stockStatus = computeStockStatus(next.stockQuantity);
+      }
+      stocks[vid] = next;
+    }
+  }
+}
+
+/** Applica al negozio locale le righe confermate dal server (+ coda ancora pendente). */
+function applyConfirmedServerRows(payload: {
+  productOverrides?: Record<string, Partial<Product>>;
+  variantStocks?: Record<string, SceltaVariantStock>;
+}): void {
+  const state = getAdminStoreState();
+  let changed = false;
+
+  const serverOverrides = payload.productOverrides ? sanitizeProductOverrides(payload.productOverrides) : {};
+  for (const [pid, row] of Object.entries(serverOverrides)) {
+    const confirmedAt = getOverrideUpdatedAt(row);
+    if (confirmedAt !== null) confirmedOverrideTimestamps[pid] = confirmedAt;
+    const tmp: Record<string, Partial<Product>> = { [pid]: row };
+    overlayPendingOutbox(tmp, state.variantStocks, pid);
+    if (!jsonEqual(state.productOverrides[pid], tmp[pid])) {
+      state.productOverrides[pid] = tmp[pid];
+      changed = true;
+    }
+  }
+
+  if (payload.variantStocks) {
+    for (const [vid, row] of Object.entries(payload.variantStocks)) {
+      if (!row || typeof row !== "object") continue;
+      const next = { ...(state.variantStocks[vid] || {}), ...row, variantId: vid } as SceltaVariantStock;
+      const tmpStocks: Record<string, SceltaVariantStock> = { [vid]: next };
+      overlayPendingOutbox({}, tmpStocks);
+      if (!jsonEqual(state.variantStocks[vid], tmpStocks[vid])) {
+        state.variantStocks[vid] = tmpStocks[vid];
+        changed = true;
+      }
+    }
+  }
+
+  if (changed) saveAdminStoreState(state);
+}
+
+// ------------------------------------------------------------------------------
+// Cutover sicuro: prima di lasciare che il cloud diventi l'unica verità su
+// questo dispositivo, si invia UNA copia forense dei dati locali (contengono le
+// modifiche mai arrivate al server con il vecchio sistema). Finché l'invio non
+// riesce, resta attiva la vecchia logica che preserva i dati locali.
+// ------------------------------------------------------------------------------
+const ROW_LEVEL_CUTOVER_FLAG = "scelta_rowlevel_cutover_v1";
+
+async function ensureLegacyLocalDataCaptured(): Promise<boolean> {
+  if (typeof window === "undefined") return false;
+  try {
+    if (localStorage.getItem(ROW_LEVEL_CUTOVER_FLAG)) return true;
+  } catch {
+    return false;
+  }
+  const ok = await forceUploadDeviceSnapshot("pre-cutover-row-level");
+  if (ok) {
+    try {
+      localStorage.setItem(ROW_LEVEL_CUTOVER_FLAG, new Date().toISOString());
+    } catch {
+      /* ignore */
+    }
+  }
+  return ok;
+}
+
 /**
  * Fetches the centralized catalog overrides from the cloud and reconciles them
  * into the local admin store (productOverrides + variantStocks). Local cache is
@@ -571,7 +913,12 @@ export async function syncAdminStoreFromCloud(): Promise<boolean> {
   if (typeof window === "undefined") return false;
 
   try {
-    const res = await fetch(CATALOG_OVERRIDES_API, {
+    // Prima consegna eventuali modifiche in coda, poi legge lo stato cloud.
+    await flushCatalogOutbox();
+    const cloudIsAuthoritative = await ensureLegacyLocalDataCaptured();
+    const deliveryCounterAtStart = outboxDeliveryCounter;
+
+    const res = await fetch(`${CATALOG_OVERRIDES_API}?fresh=1`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       // Explicitly bypass any browser/HTTP cache so reconciliation always sees
@@ -587,73 +934,102 @@ export async function syncAdminStoreFromCloud(): Promise<boolean> {
     };
     if (!payload || !payload.success) return false;
 
+    // Una conferma è arrivata mentre la GET era in volo: questo snapshot potrebbe
+    // non includerla. Si salta il giro (il prossimo arriva a breve).
+    if (outboxDeliveryCounter !== deliveryCounterAtStart) return false;
+
     const state = getAdminStoreState();
     let changed = false;
     const now = Date.now();
 
-    if (payload.productOverrides && typeof payload.productOverrides === "object") {
-      // Sanitize cloud payloads before merging: a poisoned row (null variants)
-      // must never reach the local catalog and crash the products table.
-      const cloudOverrides = sanitizeProductOverrides(payload.productOverrides);
-      const localOverrides = state.productOverrides || {};
-      const mergedOverrides: Record<string, Partial<Product>> = { ...localOverrides };
+    if (cloudIsAuthoritative) {
+      // ---------------- Modalità row-level: il cloud è l'unica verità ----------------
+      const cloudOverrides =
+        payload.productOverrides && typeof payload.productOverrides === "object"
+          ? sanitizeProductOverrides(payload.productOverrides)
+          : {};
+      const mergedOverrides: Record<string, Partial<Product>> = { ...cloudOverrides };
 
-      for (const [productId, cloudOverride] of Object.entries(cloudOverrides)) {
-        const localOverride = localOverrides[productId];
-        const preserveLocal = shouldPreserveLocal({
-          productId,
-          localUpdatedAt: getOverrideUpdatedAt(localOverride),
-          cloudUpdatedAt: getOverrideUpdatedAt(cloudOverride),
-          now,
-        });
-
-        if (localOverride && preserveLocal) {
-          // A stale GET resolved while Federica's POST was still in flight:
-          // keep her freshly typed override instead of reverting it.
-          continue;
-        }
-        mergedOverrides[productId] = cloudOverride;
+      // Riga confermata in questa sessione più recente di quella appena letta
+      // (lettura servita da un'istanza in ritardo): si tiene quella confermata.
+      for (const [pid, confirmedAt] of Object.entries(confirmedOverrideTimestamps)) {
+        const local = state.productOverrides[pid];
+        const cloudAt = getOverrideUpdatedAt(cloudOverrides[pid]);
+        if (local && (cloudAt === null || confirmedAt > cloudAt)) mergedOverrides[pid] = local;
       }
 
-      if (JSON.stringify(mergedOverrides) !== JSON.stringify(state.productOverrides || {})) {
+      const localStocks = state.variantStocks || {};
+      const mergedStocks: Record<string, SceltaVariantStock> = { ...localStocks };
+      if (payload.variantStocks && typeof payload.variantStocks === "object") {
+        for (const [variantId, cloudStock] of Object.entries(payload.variantStocks)) {
+          if (!cloudStock || typeof cloudStock !== "object") continue;
+          mergedStocks[variantId] = { ...(localStocks[variantId] || {}), ...cloudStock, variantId } as SceltaVariantStock;
+        }
+      }
+
+      overlayPendingOutbox(mergedOverrides, mergedStocks);
+
+      if (!jsonEqual(mergedOverrides, state.productOverrides || {})) {
         state.productOverrides = mergedOverrides;
         changed = true;
       }
-    }
-
-    if (payload.variantStocks && typeof payload.variantStocks === "object") {
-      const localStocks = state.variantStocks || {};
-      const mergedStocks: Record<string, SceltaVariantStock> = { ...localStocks };
-
-      for (const [variantId, cloudStock] of Object.entries(
-        payload.variantStocks as Record<string, SceltaVariantStock>
-      )) {
-        if (!cloudStock || typeof cloudStock !== "object") continue;
-        const localStock = localStocks[variantId];
-
-        if (!localStock) {
-          mergedStocks[variantId] = cloudStock;
-          continue;
-        }
-
-        const productId = localStock.productId || cloudStock.productId;
-        const preserveLocal = shouldPreserveLocal({
-          productId,
-          localUpdatedAt: parseUpdatedAt(localStock.updatedAt),
-          cloudUpdatedAt: parseUpdatedAt(cloudStock.updatedAt),
-          now,
-        });
-
-        if (preserveLocal) {
-          // Never blind-overwrite giacenze with an obsolete cloud snapshot.
-          continue;
-        }
-        mergedStocks[variantId] = cloudStock;
-      }
-
-      if (JSON.stringify(mergedStocks) !== JSON.stringify(state.variantStocks || {})) {
+      if (!jsonEqual(mergedStocks, state.variantStocks || {})) {
         state.variantStocks = mergedStocks;
         changed = true;
+      }
+    } else {
+      // ---- Modalità legacy (copia forense non ancora inviata): preserva i dati locali ----
+      if (payload.productOverrides && typeof payload.productOverrides === "object") {
+        const cloudOverrides = sanitizeProductOverrides(payload.productOverrides);
+        const localOverrides = state.productOverrides || {};
+        const mergedOverrides: Record<string, Partial<Product>> = { ...localOverrides };
+
+        for (const [productId, cloudOverride] of Object.entries(cloudOverrides)) {
+          const localOverride = localOverrides[productId];
+          const preserveLocal = shouldPreserveLocal({
+            productId,
+            localUpdatedAt: getOverrideUpdatedAt(localOverride),
+            cloudUpdatedAt: getOverrideUpdatedAt(cloudOverride),
+            now,
+          });
+          if (localOverride && preserveLocal) continue;
+          mergedOverrides[productId] = cloudOverride;
+        }
+
+        if (JSON.stringify(mergedOverrides) !== JSON.stringify(state.productOverrides || {})) {
+          state.productOverrides = mergedOverrides;
+          changed = true;
+        }
+      }
+
+      if (payload.variantStocks && typeof payload.variantStocks === "object") {
+        const localStocks = state.variantStocks || {};
+        const mergedStocks: Record<string, SceltaVariantStock> = { ...localStocks };
+
+        for (const [variantId, cloudStock] of Object.entries(
+          payload.variantStocks as Record<string, SceltaVariantStock>
+        )) {
+          if (!cloudStock || typeof cloudStock !== "object") continue;
+          const localStock = localStocks[variantId];
+          if (!localStock) {
+            mergedStocks[variantId] = cloudStock;
+            continue;
+          }
+          const productId = localStock.productId || cloudStock.productId;
+          const preserveLocal = shouldPreserveLocal({
+            productId,
+            localUpdatedAt: parseUpdatedAt(localStock.updatedAt),
+            cloudUpdatedAt: parseUpdatedAt(cloudStock.updatedAt),
+            now,
+          });
+          if (preserveLocal) continue;
+          mergedStocks[variantId] = cloudStock;
+        }
+
+        if (JSON.stringify(mergedStocks) !== JSON.stringify(state.variantStocks || {})) {
+          state.variantStocks = mergedStocks;
+          changed = true;
+        }
       }
     }
 
@@ -748,9 +1124,23 @@ export function useAdminCatalogSync(intervalMs = 30000): void {
     window.addEventListener("focus", onFocus);
     document.addEventListener("visibilitychange", onVisibilityChange);
 
+    // Coda modifiche: ritenta ogni 10s se c'è qualcosa in attesa (anche a scheda
+    // in background) e subito al ritorno della connessione.
+    const flushIfPending = () => {
+      if (getPendingCatalogSyncCount() > 0) void flushCatalogOutbox();
+    };
+    const outboxInterval = setInterval(flushIfPending, 10_000);
+    const onOnline = () => {
+      flushIfPending();
+      runSync();
+    };
+    window.addEventListener("online", onOnline);
+
     return () => {
       clearInterval(interval);
+      clearInterval(outboxInterval);
       window.removeEventListener("focus", onFocus);
+      window.removeEventListener("online", onOnline);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [intervalMs]);
@@ -828,13 +1218,13 @@ export function updateVariantStockCount(variantId: string, quantity: number): Sc
   state.variantStocks[variantId] = updated;
   saveAdminStoreState(state);
 
-  // Real-time cloud sync of the giacenza scarico/carico (e.g. vendita al banco).
-  postCatalogUpdate(CATALOG_STOCK_API, {
-    variantId,
-    delta: safeQuantity - (existing?.stockQuantity ?? 0),
-    newQuantity: safeQuantity,
-    variantStock: updated,
-  });
+  // Solo la quantità (valore assoluto) viaggia verso il cloud: prezzo e altri
+  // campi NON vengono mai reinviati da una copia locale potenzialmente vecchia.
+  enqueueCatalogWrite(
+    CATALOG_STOCK_API,
+    { variantId, newQuantity: safeQuantity, seed: updated },
+    updated.productId
+  );
 
   return updated;
 }
@@ -847,44 +1237,103 @@ export function updateVariantStock(variantId: string, quantity: number): SceltaV
 }
 
 /**
+ * Varianti effettive di un prodotto (override locale, altrimenti catalogo), con
+ * la quantità attuale presa dalle giacenze (che è ciò che le vendite aggiornano).
+ */
+function effectiveVariants(state: SceltaAdminStoreState, productId: string): ProductVariant[] {
+  const fromOverride = state.productOverrides?.[productId]?.variants;
+  const base =
+    Array.isArray(fromOverride) && fromOverride.length > 0 ? fromOverride : catalogBaseVariants(productId) || [];
+  return base
+    .filter((v) => v && isNonEmptyString(v.id))
+    .map((v) => {
+      const s = state.variantStocks?.[v.id];
+      return s ? { ...v, stock: s.stockQuantity, inStock: s.stockQuantity > 0 } : v;
+    });
+}
+
+/**
+ * Riduce `updates` alle SOLE modifiche fatte dall'operatrice rispetto alla copia
+ * da cui è partita (`baseline`, es. il prodotto mostrato nel popup o la scheda
+ * all'apertura dell'editor) e le applica sopra lo stato ATTUALE del dispositivo.
+ * Così una copia vecchia in memoria non può mai reinviare prezzi/foto/giacenze
+ * superati.
+ */
+function resolveUpdatesAgainstBaseline(
+  productId: string,
+  updates: Partial<Product>,
+  baseline: Partial<Product>
+): Partial<Product> {
+  const norm: Partial<Product> = { ...updates };
+  let safeVariants: ProductVariant[] | undefined;
+  if ("variants" in norm) {
+    safeVariants = sanitizeVariantsArray(updates.variants);
+    if (safeVariants) norm.variants = safeVariants;
+    else delete norm.variants;
+  }
+  const base: Partial<Product> = { ...baseline };
+  if ("variants" in base) {
+    const cleanedBase = sanitizeVariantsArray(baseline.variants);
+    if (cleanedBase) base.variants = cleanedBase;
+    else delete base.variants;
+  }
+
+  const { patch, replaceVariants } = buildOverridePatch(productId, base, norm, safeVariants);
+  const { variants: vpatch, ...rest } = patch as { variants?: unknown } & Record<string, unknown>;
+  const out = { ...rest } as Partial<Product>;
+  if (Array.isArray(vpatch)) {
+    out.variants = mergeVariantsLocal(
+      effectiveVariants(getAdminStoreState(), productId),
+      vpatch as Array<Partial<ProductVariant>>,
+      replaceVariants
+    );
+  }
+  return out;
+}
+
+/**
  * Updates the price for a specific variant.
  */
 export function updateVariantPrice(variantId: string, price: number): SceltaVariantStock {
   const state = getAdminStoreState();
   const existing = state.variantStocks[variantId];
-
   const safePrice = Math.max(0, Math.round(price * 100) / 100);
-  const now = new Date().toISOString();
+  const productId = existing?.productId;
 
-  let updated: SceltaVariantStock;
-
-  if (existing) {
-    updated = {
-      ...existing,
-      price: safePrice,
-      updatedAt: now,
-    };
-  } else {
-    updated = {
-      variantId,
-      productId: "unknown",
-      sku: variantId,
-      name: "Variante",
-      stockQuantity: 10,
-      stockStatus: "available",
-      price: safePrice,
-      updatedAt: now,
-    };
+  // Se la variante appartiene a un prodotto noto, il prezzo va nell'override
+  // (unica fonte letta da vetrina e cassa) + giacenza, con patch a livello di campo.
+  if (productId && productId !== "unknown") {
+    const variants = effectiveVariants(state, productId);
+    if (variants.some((v) => v.id === variantId)) {
+      updateProductDetails(productId, {
+        variants: variants.map((v) => (v.id === variantId ? { ...v, price: safePrice } : v)),
+      });
+      return getAdminStoreState().variantStocks[variantId];
+    }
   }
+
+  const now = new Date().toISOString();
+  const updated: SceltaVariantStock = existing
+    ? { ...existing, price: safePrice, updatedAt: now }
+    : {
+        variantId,
+        productId: "unknown",
+        sku: variantId,
+        name: "Variante",
+        stockQuantity: 10,
+        stockStatus: "available",
+        price: safePrice,
+        updatedAt: now,
+      };
 
   state.variantStocks[variantId] = updated;
   saveAdminStoreState(state);
 
-  // Sync variant price to the centralized cloud giacenze record.
-  postCatalogUpdate(CATALOG_STOCK_API, {
-    variantId,
-    variantStock: updated,
-  });
+  enqueueCatalogWrite(
+    CATALOG_STOCK_API,
+    { variantId, variantStock: { price: safePrice, productId: updated.productId }, seed: updated },
+    updated.productId
+  );
 
   return updated;
 }
@@ -932,19 +1381,122 @@ export function getProductOverride(idOrSlug: string): Partial<Product> | undefin
   return undefined;
 }
 
+/** Copia profonda delle giacenze di un prodotto (per calcolare le differenze). */
+function snapshotProductStocks(
+  state: SceltaAdminStoreState,
+  productId: string
+): Record<string, SceltaVariantStock> {
+  const out: Record<string, SceltaVariantStock> = {};
+  for (const [vid, s] of Object.entries(state.variantStocks)) {
+    if (s && s.productId === productId) out[vid] = JSON.parse(JSON.stringify(s)) as SceltaVariantStock;
+  }
+  return out;
+}
+
 /**
- * Atomically updates product details (texts, photos, variants) and updates
- * synchronized variantStocks in the admin store. Emits scelta_admin_store_updated.
- *
- * @param options.skipCloudSync When true, skips the fire-and-forget background
- *   POST. Used by `saveProductDetailsToCloud`, which performs its own awaited POST
- *   so the caller gets a definitive success/failure result.
+ * Differenze campo-per-campo tra giacenze prima/dopo. Restituisce solo i campi
+ * realmente cambiati (+ productId) e i record completi come seed (usati dal
+ * server SOLO se la riga non esiste ancora).
  */
-export function updateProductDetails(
+function diffProductStocks(
+  before: Record<string, SceltaVariantStock>,
+  after: Record<string, SceltaVariantStock>
+): {
+  patches: Record<string, Partial<SceltaVariantStock>>;
+  seeds: Record<string, SceltaVariantStock>;
+} {
+  const patches: Record<string, Partial<SceltaVariantStock>> = {};
+  const seeds: Record<string, SceltaVariantStock> = {};
+  for (const [vid, a] of Object.entries(after)) {
+    const b = before[vid] as unknown as Record<string, unknown> | undefined;
+    const diff: Record<string, unknown> = {};
+    for (const [k, val] of Object.entries(a as unknown as Record<string, unknown>)) {
+      if (k === "updatedAt" || k === "variantId") continue;
+      if (!b || !jsonEqual(val, b[k])) diff[k] = val;
+    }
+    if (Object.keys(diff).length > 0) {
+      diff.productId = a.productId;
+      patches[vid] = diff as Partial<SceltaVariantStock>;
+      seeds[vid] = a;
+    }
+  }
+  return { patches, seeds };
+}
+
+/**
+ * Costruisce la PATCH cloud: SOLO i campi che l'operatrice ha davvero cambiato
+ * rispetto a quanto vedeva il dispositivo. Così una vendita, una rettifica di
+ * giacenza o una finestra aperta da tempo non reinviano mai prezzi/foto/nomi
+ * vecchi sopra modifiche fatte altrove.
+ */
+function buildOverridePatch(
   productId: string,
-  updates: Partial<Product>,
-  options?: { skipCloudSync?: boolean }
-): Partial<Product> & { error?: string } {
+  beforeOverride: Partial<Product> | undefined,
+  normalizedUpdates: Partial<Product>,
+  safeVariants: ProductVariant[] | undefined
+): { patch: Record<string, unknown>; replaceVariants: boolean } {
+  const rawProduct = (rawCatalog as Product[]).find((p) => p.id === productId);
+  const beforeEffective = {
+    ...((rawProduct || {}) as unknown as Record<string, unknown>),
+    ...((beforeOverride || {}) as unknown as Record<string, unknown>),
+  };
+
+  const patch: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(normalizedUpdates as Record<string, unknown>)) {
+    if (k === "variants" || k === "_updatedAt" || k === "id" || v === undefined) continue;
+    if (!jsonEqual(v, beforeEffective[k])) patch[k] = v;
+  }
+
+  let replaceVariants = false;
+  if (safeVariants) {
+    const beforeVariants: ProductVariant[] =
+      (Array.isArray(beforeOverride?.variants) ? beforeOverride?.variants : undefined) ||
+      rawProduct?.variants ||
+      [];
+    const beforeIds = beforeVariants.filter((v) => v && isNonEmptyString(v.id)).map((v) => v.id);
+    const newIds = safeVariants.map((v) => v.id);
+    const kept = beforeIds.filter((id) => newIds.includes(id));
+    const added = newIds.filter((id) => !beforeIds.includes(id));
+    const removed = kept.length !== beforeIds.length;
+    const reordered = !jsonEqual(newIds, [...kept, ...added]);
+
+    if (removed || reordered) {
+      // Eliminazione/riordino varianti (azione esplicita in editor): elenco completo.
+      patch.variants = safeVariants;
+      replaceVariants = true;
+    } else {
+      const newPrice = typeof patch.price === "number" ? patch.price : undefined;
+      const variantPatches: Array<Partial<ProductVariant>> = [];
+      for (const v of safeVariants) {
+        const b = beforeVariants.find((x) => x && x.id === v.id) as unknown as Record<string, unknown> | undefined;
+        if (!b) {
+          variantPatches.push(v);
+          continue;
+        }
+        const diff: Record<string, unknown> = { id: v.id };
+        for (const [k, val] of Object.entries(v as unknown as Record<string, unknown>)) {
+          if (val === undefined) continue;
+          if (!jsonEqual(val, b[k])) diff[k] = val;
+        }
+        // Prezzo prodotto cambiato: le varianti allineate lo ricevono esplicitamente.
+        if (newPrice !== undefined && v.price === newPrice) diff.price = v.price;
+        if (Object.keys(diff).length > 1) variantPatches.push(diff as Partial<ProductVariant>);
+      }
+      if (variantPatches.length > 0) patch.variants = variantPatches;
+    }
+  }
+
+  return { patch, replaceVariants };
+}
+
+/**
+ * Applica la modifica in locale (istantanea) e prepara il corpo della richiesta
+ * cloud con le sole differenze. `body` è null se non è cambiato nulla.
+ */
+function applyProductUpdateLocally(
+  productId: string,
+  updates: Partial<Product>
+): { merged: TimestampedProductOverride; isSaved: boolean; body: Record<string, unknown> | null } {
   const state = getAdminStoreState();
   if (!state.productOverrides) {
     state.productOverrides = {};
@@ -965,13 +1517,16 @@ export function updateProductDetails(
     }
   }
 
+  const beforeOverride = state.productOverrides[productId]
+    ? (JSON.parse(JSON.stringify(state.productOverrides[productId])) as Partial<Product>)
+    : undefined;
+  const beforeStocks = snapshotProductStocks(state, productId);
+
   const existing = state.productOverrides[productId] || {};
   const writeTimestamp = new Date().toISOString();
   const merged: TimestampedProductOverride = {
     ...existing,
     ...normalizedUpdates,
-    // Per-product write timestamp used by the anti-clobber reconciler so a stale
-    // cloud snapshot can never revert this change.
     _updatedAt: writeTimestamp,
   };
 
@@ -1044,16 +1599,48 @@ export function updateProductDetails(
 
   const isSaved = saveAdminStoreState(state);
 
-  // Synchronize the affected variant giacenze + product override to the cloud so
-  // every device (admin remote + point-of-sale laptop) stays aligned in real-time.
-  // When the caller performs its own awaited POST (saveProductDetailsToCloud),
-  // this background fire-and-forget is skipped to avoid a duplicate request.
-  if (!options?.skipCloudSync) {
-    postCatalogUpdate(CATALOG_OVERRIDES_API, {
-      productId,
-      updates: merged,
-      variantStocks: collectProductVariantStocks(state, productId),
-    });
+  const { patch, replaceVariants } = buildOverridePatch(productId, beforeOverride, normalizedUpdates, safeVariants);
+  const { patches, seeds } = diffProductStocks(beforeStocks, snapshotProductStocks(state, productId));
+
+  const hasOverridePatch = Object.keys(patch).length > 0;
+  const hasStockPatch = Object.keys(patches).length > 0;
+  const body =
+    hasOverridePatch || hasStockPatch
+      ? {
+          productId,
+          updates: patch,
+          variantStocks: patches,
+          variantStockSeeds: seeds,
+          replaceVariants,
+        }
+      : null;
+
+  return { merged, isSaved, body };
+}
+
+/**
+ * Atomically updates product details (texts, photos, variants) and updates
+ * synchronized variantStocks in the admin store. Emits scelta_admin_store_updated.
+ *
+ * Il cloud riceve SOLO i campi cambiati, tramite la coda persistente (consegna
+ * garantita con ritentativi automatici, anche dopo un riavvio del browser).
+ *
+ * @param options.skipCloudSync When true, only the local store is updated.
+ * @param options.baseline La copia del prodotto da cui il chiamante è partito:
+ *   se presente, vengono applicati/inviati SOLO i campi cambiati rispetto ad essa.
+ */
+export function updateProductDetails(
+  productId: string,
+  updates: Partial<Product>,
+  options?: { skipCloudSync?: boolean; baseline?: Partial<Product> | null }
+): Partial<Product> & { error?: string } {
+  const effectiveUpdates = options?.baseline
+    ? resolveUpdatesAgainstBaseline(productId, updates, options.baseline)
+    : updates;
+  const { merged, isSaved, body } = applyProductUpdateLocally(productId, effectiveUpdates);
+
+  if (!options?.skipCloudSync && body) {
+    enqueueCatalogWrite(CATALOG_OVERRIDES_API, body, productId);
   }
 
   if (!isSaved) {
@@ -1065,18 +1652,14 @@ export function updateProductDetails(
   return merged;
 }
 
-/** Collects every variant stock belonging to a product (for cloud payloads). */
-function collectProductVariantStocks(
-  state: SceltaAdminStoreState,
-  productId: string
-): Record<string, SceltaVariantStock> {
-  const affected: Record<string, SceltaVariantStock> = {};
-  for (const [varId, vStock] of Object.entries(state.variantStocks)) {
-    if (vStock.productId === productId) {
-      affected[varId] = vStock;
-    }
+const CLOUD_PENDING_MESSAGE =
+  "Modifica salvata su questo dispositivo ma NON ancora confermata dal cloud: il sistema riprova da solo ogni pochi secondi. Non svuotare la cache del browser finché l'indicatore di sincronizzazione non sparisce.";
+
+function describeDeliveryFailure(error?: string): string {
+  if (error && /^HTTP 4/.test(error)) {
+    return `Il server ha rifiutato la modifica (${error}). Riprova o contatta l'assistenza.`;
   }
-  return affected;
+  return CLOUD_PENDING_MESSAGE;
 }
 
 /**
@@ -1084,216 +1667,132 @@ function collectProductVariantStocks(
  *
  * Flow:
  *   1. Applies the change locally first (optimistic, instant UI update).
- *   2. POSTs to the centralized `/api/catalog/overrides` endpoint and AWAITS
- *      the HTTP response, so the caller can display honest feedback.
- *   3. On success, reconciles the server-confirmed snapshot into the local store
- *      (newer-timestamp wins, protecting the local write).
- *   4. On failure, returns `{ success: false, error }` but keeps the local data,
- *      so nothing typed by Federica is ever lost.
+ *   2. Mette in coda la PATCH (solo campi cambiati) e ATTENDE la conferma del
+ *      server, così la UI mostra un esito onesto.
+ *   3. Se il server non risponde, la modifica resta in coda e viene ritentata
+ *      automaticamente: non si perde mai.
  */
 export async function saveProductDetailsToCloud(
   productId: string,
-  updates: Partial<Product>
+  updates: Partial<Product>,
+  options?: { baseline?: Partial<Product> | null }
 ): Promise<{ success: boolean; error?: string }> {
-  // 1. Optimistic local update (records the anti-clobber timestamp).
-  const localResult = updateProductDetails(productId, updates, { skipCloudSync: true });
-  if (localResult && localResult.error) {
-    return { success: false, error: localResult.error };
+  const effectiveUpdates = options?.baseline
+    ? resolveUpdatesAgainstBaseline(productId, updates, options.baseline)
+    : updates;
+  const { isSaved, body } = applyProductUpdateLocally(productId, effectiveUpdates);
+  if (!isSaved) {
+    return {
+      success: false,
+      error: "Memoria del browser esaurita (QuotaExceeded). L'immagine caricata è troppo pesante.",
+    };
   }
 
   if (typeof window === "undefined") {
     return { success: true };
   }
 
-  // 2. Awaited POST with a hard timeout so the UI can never hang forever.
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 15_000);
-  try {
-    const state = getAdminStoreState();
-    const confirmedOverride = state.productOverrides[productId] || {};
-    const affectedStocks = collectProductVariantStocks(state, productId);
-
-    const res = await fetch(CATALOG_OVERRIDES_API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      cache: "no-store",
-      signal: controller.signal,
-      body: JSON.stringify({
-        productId,
-        updates: confirmedOverride,
-        variantStocks: affectedStocks,
-      }),
-    });
-
-    if (!res.ok) {
-      return {
-        success: false,
-        error: `Salvataggio cloud non riuscito (HTTP ${res.status}). Il dato resta salvato in locale.`,
-      };
-    }
-
-    const payload = (await res.json().catch(() => null)) as {
-      success?: boolean;
-      productOverrides?: Record<string, Partial<Product>>;
-      variantStocks?: Record<string, SceltaVariantStock>;
-    } | null;
-
-    if (payload?.success) {
-      reconcileConfirmedServerSnapshot(productId, payload);
-      // Keep the anti-clobber guard active a while longer so the next polling
-      // GET (which may still be cached upstream) cannot revert this save.
-      markProductLocallyModified(productId);
-    }
-
-    return { success: true };
-  } catch (err) {
-    const aborted = err instanceof Error && err.name === "AbortError";
-    return {
-      success: false,
-      error: aborted
-        ? "Timeout di salvataggio cloud. Il dato resta salvato in locale."
-        : "Errore di rete durante il salvataggio. Il dato resta salvato in locale.",
-    };
-  } finally {
-    clearTimeout(timeoutId);
-  }
-}
-
-/**
- * Reconciles the server-confirmed snapshot returned by POST into the local store.
- * Newer timestamps win; a locally recorded change is never overwritten by an
- * older record.
- */
-function reconcileConfirmedServerSnapshot(
-  productId: string,
-  payload: {
-    productOverrides?: Record<string, Partial<Product>>;
-    variantStocks?: Record<string, SceltaVariantStock>;
-  }
-): void {
-  const state = getAdminStoreState();
-  let changed = false;
-  const now = Date.now();
-
-  if (payload.productOverrides) {
-    for (const [id, serverOverride] of Object.entries(
-      sanitizeProductOverrides(payload.productOverrides)
-    )) {
-      const localOverride = state.productOverrides[id];
-      const preserveLocal = shouldPreserveLocal({
-        productId: id,
-        localUpdatedAt: getOverrideUpdatedAt(localOverride),
-        cloudUpdatedAt: getOverrideUpdatedAt(serverOverride),
-        now,
-      });
-      if (localOverride && preserveLocal) continue;
-      state.productOverrides[id] = serverOverride;
-      changed = true;
-    }
+  if (!body) {
+    // Nessun campo cambiato rispetto a quanto già salvato: attende solo che
+    // eventuali modifiche precedenti dello stesso prodotto siano consegnate.
+    const pendingForProduct = readOutbox().filter((e) => e.productId === productId);
+    const last = pendingForProduct[pendingForProduct.length - 1];
+    if (!last) return { success: true };
+    const result = await waitForOutboxDelivery(last.id);
+    return result.delivered ? { success: true } : { success: false, error: describeDeliveryFailure(result.error) };
   }
 
-  if (payload.variantStocks) {
-    for (const [variantId, serverStock] of Object.entries(payload.variantStocks)) {
-      if (!serverStock || typeof serverStock !== "object") continue;
-      const localStock = state.variantStocks[variantId];
-      if (!localStock) {
-        state.variantStocks[variantId] = serverStock;
-        changed = true;
-        continue;
-      }
-      const preserveLocal = shouldPreserveLocal({
-        productId: localStock.productId || serverStock.productId || productId,
-        localUpdatedAt: parseUpdatedAt(localStock.updatedAt),
-        cloudUpdatedAt: parseUpdatedAt(serverStock.updatedAt),
-        now,
-      });
-      if (preserveLocal) continue;
-      state.variantStocks[variantId] = serverStock;
-      changed = true;
-    }
-  }
-
-  if (changed) {
-    saveAdminStoreState(state);
-  }
+  const entryId = enqueueCatalogWrite(CATALOG_OVERRIDES_API, body, productId);
+  const result = await waitForOutboxDelivery(entryId);
+  return result.delivered ? { success: true } : { success: false, error: describeDeliveryFailure(result.error) };
 }
 
 /**
  * Persists a batch of variant stock/price edits for a single product in ONE
- * atomic local pass and ONE awaited POST request.
+ * atomic local pass and ONE cloud request (patch a livello di campo).
  *
- * Replaces the old per-variant loop that fired 2×N uncoordinated HTTP requests
- * (16 requests for an 8-variant product), which saturated the salon network and
- * made saves feel slow/unreliable.
+ * Il prezzo viene scritto sia nella variante dell'override (fonte letta da
+ * vetrina e cassa) sia nella giacenza.
  *
- * @returns `true` when the cloud write succeeded, `false` otherwise. Local data
- *   is always written first and preserved even when the network fails.
+ * @returns `true` when the cloud write was confirmed, `false` otherwise (the
+ *   change stays queued and is retried automatically).
  */
 export async function batchUpdateProductVariants(
   productId: string,
-  items: Array<{ variantId: string; stockQuantity: number; price: number }>
+  items: Array<{ variantId: string; stockQuantity?: number; price?: number }>
 ): Promise<boolean> {
   const state = getAdminStoreState();
-  const now = new Date().toISOString();
-  const affectedStocks: Record<string, SceltaVariantStock> = {};
+  const validItems = items.filter((i) => i && isNonEmptyString(i.variantId));
+  const byId = new Map(validItems.map((i) => [i.variantId, i]));
+  const qtyOf = (n: number) => Math.max(0, Math.floor(n));
+  const priceOf = (n: number) => Math.max(0, Math.round(n * 100) / 100);
 
-  for (const item of items) {
-    if (!item || !isNonEmptyString(item.variantId)) continue;
-    const existing = state.variantStocks[item.variantId];
-    const safeQuantity = Math.max(0, Math.floor(item.stockQuantity));
-    const safePrice = Math.max(0, Math.round(item.price * 100) / 100);
+  const variants = effectiveVariants(state, productId);
+  const inVariantList = validItems.filter((i) => variants.some((v) => v.id === i.variantId));
+  const orphanItems = validItems.filter((i) => !variants.some((v) => v.id === i.variantId));
 
-    const updated: SceltaVariantStock = existing
-      ? {
-          ...existing,
-          stockQuantity: safeQuantity,
-          stockStatus: computeStockStatus(safeQuantity),
-          price: safePrice,
-          updatedAt: now,
-        }
-      : {
-          variantId: item.variantId,
-          productId,
-          sku: item.variantId,
-          name: "Variante",
-          stockQuantity: safeQuantity,
-          stockStatus: computeStockStatus(safeQuantity),
-          price: safePrice,
-          updatedAt: now,
-        };
+  const entryIds: string[] = [];
 
-    state.variantStocks[item.variantId] = updated;
-    affectedStocks[item.variantId] = updated;
-  }
-
-  markProductLocallyModified(productId);
-  saveAdminStoreState(state);
-
-  if (typeof window === "undefined") {
-    return true;
-  }
-
-  // Single awaited POST carrying every edited variant at once.
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 15_000);
-  try {
-    const res = await fetch(CATALOG_OVERRIDES_API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      cache: "no-store",
-      signal: controller.signal,
-      body: JSON.stringify({
-        productId,
-        updates: state.productOverrides[productId] || {},
-        variantStocks: affectedStocks,
-      }),
+  if (inVariantList.length > 0) {
+    const nextVariants = variants.map((v) => {
+      const item = byId.get(v.id);
+      if (!item) return v;
+      const next: ProductVariant = { ...v };
+      if (typeof item.stockQuantity === "number") {
+        next.stock = qtyOf(item.stockQuantity);
+        next.inStock = next.stock > 0;
+      }
+      if (typeof item.price === "number") next.price = priceOf(item.price);
+      return next;
     });
-    return res.ok;
-  } catch {
-    return false;
-  } finally {
-    clearTimeout(timeoutId);
+    const { body } = applyProductUpdateLocally(productId, { variants: nextVariants });
+    if (body) entryIds.push(enqueueCatalogWrite(CATALOG_OVERRIDES_API, body, productId));
   }
+
+  if (orphanItems.length > 0) {
+    // Varianti presenti solo in giacenza (caso raro): patch diretta delle giacenze.
+    const fresh = getAdminStoreState();
+    const before = snapshotProductStocks(fresh, productId);
+    const now = new Date().toISOString();
+    for (const item of orphanItems) {
+      const existing = fresh.variantStocks[item.variantId];
+      const safeQuantity =
+        typeof item.stockQuantity === "number" ? qtyOf(item.stockQuantity) : (existing?.stockQuantity ?? 0);
+      const safePrice = typeof item.price === "number" ? priceOf(item.price) : (existing?.price ?? 0);
+      fresh.variantStocks[item.variantId] = existing
+        ? { ...existing, stockQuantity: safeQuantity, stockStatus: computeStockStatus(safeQuantity), price: safePrice, updatedAt: now }
+        : {
+            variantId: item.variantId,
+            productId,
+            sku: item.variantId,
+            name: "Variante",
+            stockQuantity: safeQuantity,
+            stockStatus: computeStockStatus(safeQuantity),
+            price: safePrice,
+            updatedAt: now,
+          };
+    }
+    markProductLocallyModified(productId);
+    saveAdminStoreState(fresh);
+    const { patches, seeds } = diffProductStocks(before, snapshotProductStocks(fresh, productId));
+    if (Object.keys(patches).length > 0) {
+      entryIds.push(
+        enqueueCatalogWrite(
+          CATALOG_OVERRIDES_API,
+          { productId, updates: {}, variantStocks: patches, variantStockSeeds: seeds, replaceVariants: false },
+          productId
+        )
+      );
+    }
+  }
+
+  if (typeof window === "undefined") return true;
+
+  for (const id of entryIds) {
+    const result = await waitForOutboxDelivery(id);
+    if (!result.delivered) return false;
+  }
+  return true;
 }
 
 

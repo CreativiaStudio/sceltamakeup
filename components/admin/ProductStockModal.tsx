@@ -63,6 +63,7 @@ function ProductStockModalDialog({
         };
       });
   });
+  const [initialVariantStates] = useState<VariantEditState[]>(() => variantStates.map((v) => ({ ...v })));
 
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -90,19 +91,25 @@ function ProductStockModalDialog({
     setErrorMessage(null);
     setSaveSuccess(false);
 
-    const success = await batchUpdateProductVariants(
-      product.id,
-      variantStates.map((v) => ({
-        variantId: v.variantId,
-        stockQuantity: v.stockQuantity,
-        price: v.price,
-      }))
-    );
+    // Solo le varianti e i campi davvero modificati in questa finestra.
+    const changedItems = variantStates
+      .map((v) => {
+        const initial = initialVariantStates.find((i) => i.variantId === v.variantId);
+        const item: { variantId: string; stockQuantity?: number; price?: number } = { variantId: v.variantId };
+        if (!initial || initial.stockQuantity !== v.stockQuantity) item.stockQuantity = v.stockQuantity;
+        if (!initial || Math.abs(initial.price - v.price) > 0.0001) item.price = v.price;
+        return item;
+      })
+      .filter((item) => item.stockQuantity !== undefined || item.price !== undefined);
+
+    const success = changedItems.length === 0 ? true : await batchUpdateProductVariants(product.id, changedItems);
 
     if (!success) {
       // Local data is preserved; surface the issue without closing the modal.
       setIsSaving(false);
-      setErrorMessage("Salvataggio cloud non riuscito. Le giacenze restano salvate in locale: riprova.");
+      setErrorMessage(
+        "Modifica salvata su questo dispositivo ma NON ancora confermata dal cloud: il sistema riprova da solo ogni pochi secondi."
+      );
       return;
     }
 

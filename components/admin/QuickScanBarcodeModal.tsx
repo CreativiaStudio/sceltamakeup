@@ -864,7 +864,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
               variants: updatedVariants,
               stock: updatedVariants.reduce((sum, it) => sum + (it?.stock || 0), 0),
               inStock: updatedVariants.some((it) => (it?.stock || 0) > 0),
-            });
+            }, { baseline: currentProd });
           }
         }
       }
@@ -1192,7 +1192,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       variants: updatedVariants,
       stock: updatedVariants.reduce((sum, item) => sum + (item?.stock || 0), 0),
       inStock: newQty > 0,
-    });
+    }, { baseline: matchedProduct });
     markCloudSaved();
 
     logAdminActivity({
@@ -1242,7 +1242,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         variants: updatedVariants,
         stock: updatedVariants.reduce((sum, item) => sum + (item?.stock || 0), 0),
         inStock: newQty > 0,
-      });
+      }, { baseline: matchedProduct });
 
       // 2. Emit SOAP XML to Cassa RT (Epson FP-81II RT on 192.168.68.63)
       // When effectivePayment > price, Epson RT automatically computes and prints RESTO!
@@ -1535,7 +1535,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     const result = updateProductDetails(matchedProduct.id, {
       ...(updatedVariants.length ? { variants: updatedVariants } : {}),
       images: updatedImages,
-    });
+    }, { baseline: matchedProduct });
 
     if (result && (result as { error?: string }).error) {
       setSuccessToast(makeToast((result as { error?: string }).error || "Errore durante il salvataggio della foto.", "error"));
@@ -1671,6 +1671,12 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       if (!raw || !raw.trim()) return;
       const newPrice = parseFloat(raw.replace(",", "."));
       if (isNaN(newPrice) || newPrice < 0) return;
+      // Un codice a barre finito per errore nel campo prezzo non va mai salvato.
+      if (/^\d{7,}$/.test(raw.trim()) || newPrice >= 10000) {
+        setSuccessToast(makeToast("Valore non valido come prezzo (sembra un codice a barre). Prezzo NON salvato.", "error"));
+        setTimeout(() => setSuccessToast(null), 3000);
+        return;
+      }
       const rounded = Math.round(newPrice * 100) / 100;
 
       const currentPrice =
@@ -1690,7 +1696,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         updates.variants = updatedVariants;
       }
 
-      const result = updateProductDetails(matchedProduct.id, updates);
+      const result = updateProductDetails(matchedProduct.id, updates, { baseline: matchedProduct });
       if (result && (result as { error?: string }).error) {
         setSuccessToast(makeToast((result as { error?: string }).error || "Errore durante il salvataggio del prezzo.", "error"));
         setIsUpdatingPrice(false);
@@ -1739,7 +1745,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       setCloudSyncStatus("saving");
       priceDebounceTimerRef.current = setTimeout(() => {
         commitPriceChange(val);
-      }, 700);
+      }, 1200);
     }
   };
 

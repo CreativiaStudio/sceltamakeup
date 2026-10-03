@@ -20,6 +20,7 @@ import NotificationQueueTab from "./NotificationQueueTab";
 import AnalyticsTab from "./AnalyticsTab";
 import ActivityLogTab from "./ActivityLogTab";
 import QuickScanBarcodeModal from "./QuickScanBarcodeModal";
+import CatalogSyncIndicator from "./CatalogSyncIndicator";
 import { AdminTab } from "@/types/admin";
 import {
   getAdminKpis,
@@ -251,6 +252,7 @@ export default function AdminClientWrapper() {
 
       {/* Global Hardware Barcode Scanner Listener & Modal */}
       <QuickScanBarcodeModal />
+      <CatalogSyncIndicator />
     </div>
   );
 }
