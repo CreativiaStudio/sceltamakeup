@@ -22,6 +22,7 @@ import ActivityLogTab from "./ActivityLogTab";
 import QuickScanBarcodeModal from "./QuickScanBarcodeModal";
 import CatalogSyncIndicator from "./CatalogSyncIndicator";
 import { AdminTab } from "@/types/admin";
+import { startAuditOutboxAutoFlush } from "@/lib/auditLogger";
 import {
   getAdminKpis,
   getAdminOrders,
@@ -48,6 +49,9 @@ export default function AdminClientWrapper() {
 
   // Real-time multi-device cloud sync of catalog overrides & giacenze.
   useAdminCatalogSync();
+
+  // Scatola nera: coda persistente con reinvio automatico (nessun evento perso).
+  useEffect(() => startAuditOutboxAutoFlush(), []);
 
   // Derive active tab directly from URL query param with fallback to panoramica
   const queryTab = searchParams.get("tab") as AdminTab | null;

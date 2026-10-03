@@ -11,9 +11,13 @@
  *  1. Ring buffer in memoria (max 500 eventi) specchiato in localStorage
  *     (`scelta_admin_audit_logs_v1`) → la cassa continua a lavorare anche senza
  *     rete e la timeline si aggiorna all'istante.
- *  2. Notifica asincrona best-effort a `/api/admin/audit-log` (POST) → il cloud
- *     Supabase dedicato conserva la storia completa (max 1000 eventi) ed
- *     è consultabile da remoto.
+ *  2. Coda persistente di invio ("outbox", max 3000 eventi) in localStorage
+ *     (`scelta_audit_outbox_v1`): ogni evento viene accodato e inviato in batch
+ *     a `/api/admin/audit-log` (POST) con retry automatici (interval 15s, evento
+ *     `online`, ritorno in primo piano) finché il server non ne conferma la
+ *     ricezione. Il cloud Supabase dedicato conserva la storia completa
+ *     (max 1000 eventi) ed è consultabile da remoto. L'invio è idempotente
+ *     sugli id: un eventuale reinvio non genera duplicati.
  *  3. Evento window `scelta_audit_log_added` → la tab "Registro Attività" si
  *     ridisegna in tempo reale senza polling ad alta frequenza.
  *
@@ -66,6 +70,16 @@ export const REMOTE_OPERATOR_LABEL = "Admin Remoto";
 export const MAX_LOCAL_AUDIT_LOGS = 500;
 export const MAX_CLOUD_AUDIT_LOGS = 1000;
 
+/** Coda persistente di eventi in attesa di conferma dal cloud. */
+export const AUDIT_OUTBOX_STORAGE_KEY = "scelta_audit_outbox_v1";
+export const MAX_AUDIT_OUTBOX_ITEMS = 3000;
+
+/** Parametri del flush: dimensione batch, timeout e intervallo di ritentativo. */
+const AUDIT_OUTBOX_BATCH_SIZE = 100;
+const AUDIT_OUTBOX_TIMEOUT_MS = 15_000;
+const AUDIT_OUTBOX_FLUSH_INTERVAL_MS = 15_000;
+const AUDIT_OUTBOX_KEEPALIVE_MAX_BYTES = 60 * 1024;
+
 export const ACTIVITY_CATEGORIES: readonly ActivityCategory[] = [
   "cassa_rt",
   "prezzo",
@@ -82,6 +96,9 @@ export const ACTIVITY_CATEGORIES: readonly ActivityCategory[] = [
 // ------------------------------------------------------------------------------
 
 let memoryLogs: AdminActivityLogItem[] = [];
+
+/** Coda outbox in memoria (fallback quando localStorage non è disponibile). */
+let memoryOutbox: AdminActivityLogItem[] = [];
 
 function isBrowser(): boolean {
   return typeof window !== "undefined";
@@ -213,6 +230,79 @@ function writeStoredLogs(logs: AdminActivityLogItem[]): void {
 }
 
 // ------------------------------------------------------------------------------
+// Coda outbox persistente (invio garantito al cloud)
+// ------------------------------------------------------------------------------
+
+/**
+ * Legge la coda di invio dallo storage, scartando le voci malformate. In assenza
+ * o con storage corrotto ricade sulla copia in memoria.
+ */
+function readOutbox(): AdminActivityLogItem[] {
+  if (isBrowser()) {
+    const raw = safeGetStorage(AUDIT_OUTBOX_STORAGE_KEY);
+    if (raw !== null) {
+      try {
+        memoryOutbox = sanitizeLogList(JSON.parse(raw));
+        return memoryOutbox;
+      } catch {
+        // Storage corrotto: si conserva la copia in memoria.
+      }
+    }
+  }
+  return memoryOutbox;
+}
+
+/** Scrive la coda in localStorage; senza storage disponibile resta solo in memoria. */
+function writeOutbox(items: AdminActivityLogItem[]): void {
+  memoryOutbox = items;
+  if (!isBrowser()) return;
+  try {
+    if (typeof localStorage === "undefined") return;
+    localStorage.setItem(AUDIT_OUTBOX_STORAGE_KEY, JSON.stringify(items));
+  } catch (err) {
+    // Quota piena o storage disabilitato: la coda in memoria mantiene gli eventi.
+    console.warn("[Scelta Makeup · Audit] Impossibile salvare l'outbox locale:", err);
+  }
+}
+
+/**
+ * Mantiene la coda entro il limite scartando le voci più vecchie: sono già state
+ * conservate nel ring buffer locale (`scelta_admin_audit_logs_v1`).
+ */
+function trimOutbox(items: AdminActivityLogItem[]): AdminActivityLogItem[] {
+  if (items.length <= MAX_AUDIT_OUTBOX_ITEMS) return items;
+  return items.slice(items.length - MAX_AUDIT_OUTBOX_ITEMS);
+}
+
+/** Accoda un singolo evento (dedup per id) e aggiorna la coda persistente. */
+function enqueueOutboxItem(item: AdminActivityLogItem): void {
+  const current = readOutbox();
+  if (current.some((existing) => existing.id === item.id)) return;
+  writeOutbox(trimOutbox([...current, item]));
+}
+
+/** Accoda più eventi deduplicandoli per id rispetto alla coda corrente. */
+function enqueueOutboxItems(items: AdminActivityLogItem[]): void {
+  const current = readOutbox();
+  const seen = new Set(current.map((existing) => existing.id));
+  const additions: AdminActivityLogItem[] = [];
+  for (const item of items) {
+    if (seen.has(item.id)) continue;
+    seen.add(item.id);
+    additions.push(item);
+  }
+  if (additions.length === 0) return;
+  writeOutbox(trimOutbox([...current, ...additions]));
+}
+
+/** Rimuove dalla coda (rileggendola dallo storage) esattamente gli id confermati. */
+function removeOutboxItemsById(ids: Set<string>): void {
+  const current = readOutbox();
+  const next = current.filter((item) => !ids.has(item.id));
+  if (next.length !== current.length) writeOutbox(next);
+}
+
+// ------------------------------------------------------------------------------
 // Identità operatore / dispositivo
 // ------------------------------------------------------------------------------
 
@@ -295,20 +385,133 @@ function emitAuditLogAdded(item?: AdminActivityLogItem): void {
   }
 }
 
-/** Notifica asincrona best-effort al cloud: se fallisce, resta la copia locale. */
-async function postAuditLogToCloud(item: AdminActivityLogItem): Promise<void> {
+/** Flag di modulo: auto-flush e recupero storico avviati una sola volta per pagina. */
+let didScheduleAutoFlush = false;
+let didRecoverHistoricalLogs = false;
+let activeFlush: Promise<void> | null = null;
+
+/**
+ * Svuota la coda verso il cloud a piccoli batch. Un solo flush alla volta: le
+ * chiamate concorrenti condividono la stessa promise. Non lancia mai eccezioni.
+ */
+export function flushAuditOutbox(): Promise<void> {
+  if (activeFlush) return activeFlush;
+  activeFlush = runAuditOutboxFlush().finally(() => {
+    activeFlush = null;
+  });
+  return activeFlush;
+}
+
+async function runAuditOutboxFlush(): Promise<void> {
   if (typeof fetch !== "function") return;
   try {
-    await fetch(AUDIT_LOG_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ log: item }),
-      // `keepalive` protegge l'evento anche se la pagina viene ricaricata/chiusa subito.
-      keepalive: true,
-      cache: "no-store",
-    });
+    while (true) {
+      const queue = readOutbox();
+      if (queue.length === 0) return;
+
+      const batch = queue.slice(0, AUDIT_OUTBOX_BATCH_SIZE);
+      const body = JSON.stringify({ logs: batch });
+      const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+      const timeoutId = controller
+        ? setTimeout(() => controller.abort(), AUDIT_OUTBOX_TIMEOUT_MS)
+        : null;
+
+      let response: Response;
+      try {
+        response = await fetch(AUDIT_LOG_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body,
+          // `keepalive` protegge l'evento se la pagina viene chiusa subito, ma solo
+          // quando il body è piccolo: oltre i 60KB il browser rifiuterebbe la richiesta.
+          keepalive: body.length < AUDIT_OUTBOX_KEEPALIVE_MAX_BYTES,
+          cache: "no-store",
+          signal: controller ? controller.signal : undefined,
+        });
+      } catch {
+        // Errore di rete, timeout o abort: si riprova al prossimo flush.
+        return;
+      } finally {
+        if (timeoutId !== null) clearTimeout(timeoutId);
+      }
+
+      if (response.ok) {
+        // Rilegge la coda: nel frattempo altri eventi possono essere stati aggiunti.
+        removeOutboxItemsById(new Set(batch.map((item) => item.id)));
+        continue;
+      }
+
+      if (response.status >= 500 || response.status === 408 || response.status === 429) {
+        // Server/rete temporaneamente non disponibile: si ferma e riprova più tardi.
+        return;
+      }
+
+      // Altro 4xx: payload rifiutato dal server, rimuove il batch per non bloccare la coda.
+      console.warn(
+        `[Scelta Makeup · Audit] Outbox: batch scartato dal server (HTTP ${response.status}).`
+      );
+      removeOutboxItemsById(new Set(batch.map((item) => item.id)));
+    }
+  } catch (err) {
+    console.warn("[Scelta Makeup · Audit] Flush outbox non riuscito:", err);
+  }
+}
+
+/**
+ * Recupera una sola volta per pagina gli eventi già presenti nel ring buffer
+ * locale (anche persi in passato da questo dispositivo), accodandoli. Grazie
+ * all'idempotenza del server il reinvio di eventuali duplicati è innocuo.
+ */
+function recoverHistoricalLogsOnce(): void {
+  if (didRecoverHistoricalLogs) return;
+  didRecoverHistoricalLogs = true;
+  try {
+    enqueueOutboxItems(readStoredLogs());
   } catch {
-    // Offline: il ring buffer locale conserva l'evento, il cloud lo riceverà nei prossimi invii.
+    // Storage illeggibile: nessun recupero, la coda corrente resta intatta.
+  }
+}
+
+/**
+ * Avvia i tentativi di invio automatici (solo nel browser): interval di 15s,
+ * evento `online` e ritorno in primo piano della pagina. Idempotente: una sola
+ * installazione per pagina. Ritorna la funzione di cleanup.
+ */
+export function startAuditOutboxAutoFlush(): () => void {
+  if (!isBrowser()) return () => {};
+  recoverHistoricalLogsOnce();
+  if (didScheduleAutoFlush) return () => {};
+
+  const timer = window.setInterval(() => {
+    if (getAuditOutboxPendingCount() > 0) void flushAuditOutbox();
+  }, AUDIT_OUTBOX_FLUSH_INTERVAL_MS);
+
+  const handleOnline = () => {
+    void flushAuditOutbox();
+  };
+  const handleVisibilityChange = () => {
+    if (document.visibilityState === "visible") void flushAuditOutbox();
+  };
+
+  window.addEventListener("online", handleOnline);
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+  didScheduleAutoFlush = true;
+
+  return () => {
+    if (!didScheduleAutoFlush) return;
+    window.clearInterval(timer);
+    window.removeEventListener("online", handleOnline);
+    document.removeEventListener("visibilitychange", handleVisibilityChange);
+    didScheduleAutoFlush = false;
+  };
+}
+
+/** Numero di eventi attualmente in attesa di conferma dal cloud. */
+export function getAuditOutboxPendingCount(): number {
+  try {
+    return readOutbox().length;
+  } catch {
+    return 0;
   }
 }
 
@@ -318,7 +521,8 @@ async function postAuditLogToCloud(item: AdminActivityLogItem): Promise<void> {
  * - Assegna ID univoco `act_${Date.now()}_${random}` e timestamp ISO.
  * - Aggiorna il ring buffer in memoria + localStorage (max 500 eventi).
  * - Emette `scelta_audit_log_added` per l'aggiornamento reattivo della UI.
- * - Invia la notifica asincrona a `/api/admin/audit-log` (POST, best-effort).
+ * - Accoda l'evento nell'outbox persistente e avvia l'invio batch a
+ *   `/api/admin/audit-log`, con retry automatici finché il cloud non conferma.
  */
 export function logAdminActivity(
   entry: Omit<AdminActivityLogItem, "id" | "timestamp">
@@ -339,7 +543,10 @@ export function logAdminActivity(
     );
     writeStoredLogs(memoryLogs);
     emitAuditLogAdded(item);
-    void postAuditLogToCloud(item);
+    // Accoda l'evento e tenta subito l'invio: la coda persiste finché il cloud non conferma.
+    enqueueOutboxItem(item);
+    startAuditOutboxAutoFlush();
+    void flushAuditOutbox();
   } catch (err) {
     // Il registro non deve MAI interrompere una vendita o un salvataggio.
     console.warn("[Scelta Makeup · Audit] Registrazione evento non riuscita:", err);
