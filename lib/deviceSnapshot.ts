@@ -36,8 +36,14 @@ function collectLocalStorageSnapshot(): Record<string, unknown> {
     for (let i = 0; i < localStorage.length; i += 1) {
       const key = localStorage.key(i);
       if (!key || !key.startsWith("scelta")) continue;
-      const raw = localStorage.getItem(key);
-      if (raw === null) continue;
+      const original = localStorage.getItem(key);
+      if (original === null) continue;
+      // Le immagini base64 (residuo del vecchio upload) possono superare il
+      // limite di 4.5 MB del body su Vercel: non contengono prezzi, le omettiamo.
+      const raw = original.replace(
+        /data:image\/[a-zA-Z0-9.+-]+;base64,[A-Za-z0-9+/=]+/g,
+        (m) => `[base64 omesso ${m.length} caratteri]`
+      );
       try {
         entries[key] = JSON.parse(raw) as unknown;
       } catch {
