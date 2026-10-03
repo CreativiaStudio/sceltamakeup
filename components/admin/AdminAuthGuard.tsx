@@ -9,6 +9,7 @@ import {
   setAuditOperatorSession,
   setupGlobalErrorTelemetry,
 } from "@/lib/auditLogger";
+import { uploadDeviceSnapshotOnce } from "@/lib/deviceSnapshot";
 
 const STORAGE_AUTH_KEY = "scelta_admin_unlocked_session";
 
@@ -56,10 +57,23 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
   // Telemetria Scatola Nera: qualunque eccezione runtime non gestita sul
   // dispositivo della cliente (laptop salone YASHI) viene catturata e inviata
   // automaticamente alla Scatola Nera, così Mario interviene prima della segnalazione.
+  // Nello stesso effetto, a sessione admin autenticata, parte dopo 3 secondi lo
+  // snapshot forense dei dati locali del browser (fire-and-forget, max 1/6h).
   useEffect(() => {
     const teardown = setupGlobalErrorTelemetry();
-    return teardown;
-  }, []);
+
+    let snapshotTimer: ReturnType<typeof setTimeout> | undefined;
+    if (isAuthenticated === true) {
+      snapshotTimer = setTimeout(() => {
+        uploadDeviceSnapshotOnce();
+      }, 3000);
+    }
+
+    return () => {
+      teardown();
+      if (snapshotTimer !== undefined) clearTimeout(snapshotTimer);
+    };
+  }, [isAuthenticated]);
 
   const handleKeyPress = (digit: string) => {
     setErrorMsg("");
