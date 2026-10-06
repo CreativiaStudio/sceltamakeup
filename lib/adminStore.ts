@@ -89,7 +89,7 @@ export function sanitizeProductOverride(override: unknown): Partial<Product> | u
   return clean;
 }
 
-/** Libera memoria da localStorage rimuovendo residui storici pesanti. */
+/** Libera memoria da localStorage rimuovendo residui storici pesanti e code orfane pregresse. */
 export function pruneOldLocalStorageArtifacts(): void {
   if (typeof window === "undefined") return;
   try {
@@ -101,6 +101,13 @@ export function pruneOldLocalStorageArtifacts(): void {
       }
     }
     localStorage.removeItem("scelta_admin_snapshot_backup");
+
+    // Purga una tantum di code outbox bloccate precedenti a questa release (cutover 6 Ottobre 2026)
+    const OUTBOX_PURGE_KEY = "scelta_outbox_purged_20261006";
+    if (!localStorage.getItem(OUTBOX_PURGE_KEY)) {
+      localStorage.removeItem("scelta_catalog_outbox_v1");
+      localStorage.setItem(OUTBOX_PURGE_KEY, "true");
+    }
   } catch {
     // ignore
   }
