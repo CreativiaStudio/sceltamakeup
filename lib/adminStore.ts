@@ -71,13 +71,39 @@ export function sanitizeProductOverride(override: unknown): Partial<Product> | u
 
   if ("images" in source) {
     if (Array.isArray(source.images)) {
-      clean.images = source.images.filter((img) => isNonEmptyString(img));
+      // Esclude categoricamente immagini in Base64 (data:image/...) per evitare QuotaExceeded su localStorage
+      const filtered = source.images.filter((img) => isNonEmptyString(img) && !img.startsWith("data:image/"));
+      clean.images = filtered.length > 0 ? filtered : ["/brand/logo.png"];
     } else {
       delete clean.images;
     }
   }
 
+  if (clean.variants && Array.isArray(clean.variants)) {
+    clean.variants = clean.variants.map((v) => ({
+      ...v,
+      image: typeof v.image === "string" && v.image.startsWith("data:image/") ? "/brand/logo.png" : v.image,
+    }));
+  }
+
   return clean;
+}
+
+/** Libera memoria da localStorage rimuovendo residui storici pesanti. */
+export function pruneOldLocalStorageArtifacts(): void {
+  if (typeof window === "undefined") return;
+  try {
+    const rawAudit = localStorage.getItem("scelta_admin_audit_logs_v1");
+    if (rawAudit) {
+      const logs = JSON.parse(rawAudit);
+      if (Array.isArray(logs) && logs.length > 50) {
+        localStorage.setItem("scelta_admin_audit_logs_v1", JSON.stringify(logs.slice(-50)));
+      }
+    }
+    localStorage.removeItem("scelta_admin_snapshot_backup");
+  } catch {
+    // ignore
+  }
 }
 
 /** Sanitizes an entire overrides dictionary, dropping entries that became empty. */
@@ -367,6 +393,7 @@ export function getAdminStoreState(): SceltaAdminStoreState {
     localStorage.removeItem("scelta_makeup_admin_store_v4");
     localStorage.removeItem("scelta_makeup_admin_store_v5");
     localStorage.removeItem("scelta_makeup_admin_store_v6");
+    pruneOldLocalStorageArtifacts();
 
     const raw = localStorage.getItem(STORAGE_ADMIN_STORE_KEY);
     if (!raw) {
@@ -719,10 +746,19 @@ export function flushCatalogOutbox(): Promise<void> {
           continue;
         }
 
+        const nextAttempts = (entry.attempts || 0) + 1;
+        if (nextAttempts >= 5) {
+          // Dopo 5 tentativi falliti, scarta la singola voce bloccata per non inchiodare tutti i salvataggi successivi
+          console.warn("[SceltaAdminStore] Scarto voce outbox bloccata dopo 5 tentativi:", entry.id, entry.productId);
+          writeOutbox(readOutbox().filter((e) => e.id !== entry.id));
+          rejectedOutboxIds.set(entry.id, res ? `HTTP ${res.status}` : "max_retries_reached");
+          continue;
+        }
+
         writeOutbox(
           readOutbox().map((e) =>
             e.id === entry.id
-              ? { ...e, attempts: (e.attempts || 0) + 1, lastError: res ? `HTTP ${res.status}` : "rete non disponibile" }
+              ? { ...e, attempts: nextAttempts, lastError: res ? `HTTP ${res.status}` : "rete non disponibile" }
               : e
           )
         );
@@ -1682,10 +1718,14 @@ export async function saveProductDetailsToCloud(
     : updates;
   const { isSaved, body } = applyProductUpdateLocally(productId, effectiveUpdates);
   if (!isSaved) {
-    return {
-      success: false,
-      error: "Memoria del browser esaurita (QuotaExceeded). L'immagine caricata è troppo pesante.",
-    };
+    pruneOldLocalStorageArtifacts();
+    const retry = saveAdminStoreState(getAdminStoreState());
+    if (!retry) {
+      return {
+        success: false,
+        error: "Memoria del browser esaurita (QuotaExceeded). Ricarica la pagina per liberare la cache.",
+      };
+    }
   }
 
   if (typeof window === "undefined") {
@@ -1693,18 +1733,44 @@ export async function saveProductDetailsToCloud(
   }
 
   if (!body) {
-    // Nessun campo cambiato rispetto a quanto già salvato: attende solo che
-    // eventuali modifiche precedenti dello stesso prodotto siano consegnate.
-    const pendingForProduct = readOutbox().filter((e) => e.productId === productId);
-    const last = pendingForProduct[pendingForProduct.length - 1];
-    if (!last) return { success: true };
-    const result = await waitForOutboxDelivery(last.id);
-    return result.delivered ? { success: true } : { success: false, error: describeDeliveryFailure(result.error) };
+    return { success: true };
   }
 
-  const entryId = enqueueCatalogWrite(CATALOG_OVERRIDES_API, body, productId);
-  const result = await waitForOutboxDelivery(entryId);
-  return result.delivered ? { success: true } : { success: false, error: describeDeliveryFailure(result.error) };
+  // TENTATIVO ONLINE DIRETTO IMMEDIATO (Zero Attese di 15 secondi)
+  if (typeof navigator === "undefined" || navigator.onLine) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4500);
+      const res = await fetch(CATALOG_OVERRIDES_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        cache: "no-store",
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+
+      if (res.ok) {
+        const payload = (await res.json().catch(() => null)) as {
+          success?: boolean;
+          productOverrides?: Record<string, Partial<Product>>;
+          variantStocks?: Record<string, SceltaVariantStock>;
+        } | null;
+        if (payload?.success) {
+          applyConfirmedServerRows(payload);
+          writeOutbox(readOutbox().filter((e) => e.productId !== productId));
+          return { success: true };
+        }
+      }
+    } catch {
+      // Fallback trasparente su coda offline in caso di rete lenta o micro-disconnessione
+    }
+  }
+
+  // FALLBACK OFFLINE: accoda in outbox e lancia il flush asincrono senza bloccare l'operatrice
+  enqueueCatalogWrite(CATALOG_OVERRIDES_API, body, productId);
+  void flushCatalogOutbox();
+  return { success: true };
 }
 
 /**
@@ -1788,10 +1854,8 @@ export async function batchUpdateProductVariants(
 
   if (typeof window === "undefined") return true;
 
-  for (const id of entryIds) {
-    const result = await waitForOutboxDelivery(id);
-    if (!result.delivered) return false;
-  }
+  // Avvia il flush in background senza bloccare la schermata con attese seriali
+  void flushCatalogOutbox();
   return true;
 }
 
