@@ -49,3 +49,5 @@ scratch/
 scripts/scan_catalog_jev.js
 scripts/migrate-from-creativia.mjs
 data/*.backup*.json
+/Foto Google Business Profile/
+

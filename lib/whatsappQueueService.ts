@@ -8,7 +8,7 @@ import {
 
 const STORAGE_QUEUE_KEY = "scelta_makeup_whatsapp_queue_v1";
 const STORE_PHONE = "+39 379 337 0322";
-const STORE_ADDRESS = "Via dei Pellegrini 28/29, 80132 Napoli";
+const STORE_ADDRESS = "Via Pellegrini 28/29, 80134 Napoli";
 
 // Anti-Ban Human Pacing Jitter: Strictly between 20 and 45 seconds
 export function calculateJitter(): number {
@@ -316,7 +316,7 @@ const INITIAL_DEMO_HISTORY: QueuedWhatsAppMessage[] = [
     recipientPhone: "+39 333 456 7890",
     recipientName: "Chiara Rossi",
     templateType: "booking_confirmation",
-    messageText: `🌸 *SCELTA MAKEUP — Conferma Prenotazione* 🌸\n\nGentile *Chiara Rossi*,\nabbiamo il piacere di confermarti la riservazione del tuo trattamento:\n\n✨ *Servizio:* Make-up Evento & Cerimonia\n📅 *Data:* Oggi\n⏰ *Orario:* 13:30\n👩‍🎨 *Professionista:* Federica Cesiano\n📍 *Salone:* Via dei Pellegrini 28/29, 80132 Napoli\n🔖 *Codice Prenotazione:* SC-260906-FC11\n\n💳 *Riepilogo:* Acconto versato €9.00 | Saldo in salone €36.00\n\nA presto in Salone!\n*Federica Cesiano — Scelta Makeup*`,
+    messageText: `🌸 *SCELTA MAKEUP — Conferma Prenotazione* 🌸\n\nGentile *Chiara Rossi*,\nabbiamo il piacere di confermarti la riservazione del tuo trattamento:\n\n✨ *Servizio:* Make-up Evento & Cerimonia\n📅 *Data:* Oggi\n⏰ *Orario:* 13:30\n👩‍🎨 *Professionista:* Federica Cesiano\n📍 *Salone:* Via Pellegrini 28/29, 80134 Napoli\n🔖 *Codice Prenotazione:* SC-260906-FC11\n\n💳 *Riepilogo:* Acconto versato €9.00 | Saldo in salone €36.00\n\nA presto in Salone!\n*Federica Cesiano — Scelta Makeup*`,
     checksum: "sha256_demo_a1b2c3d4",
     scheduledAt: new Date(Date.now() - 3600000 * 2).toISOString(),
     sentAt: new Date(Date.now() - 3600000 * 2 + 28000).toISOString(),

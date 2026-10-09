@@ -104,7 +104,7 @@ export default function OrderPrintModal({
 
             <div className="text-right text-xs text-gray-600 space-y-0.5">
               <div className="font-bold text-gray-900">Salone & Atelier Ufficiale Napoli</div>
-              <div>Via dei Pellegrini 28/29, 80121 Napoli (NA)</div>
+              <div>Via Pellegrini 28/29, 80134 Napoli (NA)</div>
               <div>Tel / WhatsApp: +39 081 123 4567</div>
               <div>Email: salone@sceltamakeup.it</div>
             </div>

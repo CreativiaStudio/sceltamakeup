@@ -9,7 +9,7 @@ import {
 
 const STORAGE_EMAILS_KEY = "scelta_makeup_dispatched_emails_v1";
 const STORE_NAME = "Scelta Makeup Salone";
-const STORE_ADDRESS = "Via dei Pellegrini 28/29, 80132 Napoli (NA)";
+const STORE_ADDRESS = "Via Pellegrini 28/29, 80134 Napoli (NA)";
 const OFFICIAL_FROM_EMAIL =
   process.env.RESEND_FROM_EMAIL || "Scelta Makeup <onboarding@resend.dev>";
 
@@ -550,7 +550,7 @@ export function renderOrderPlacedEmail(order: Order): EmailRenderOutput {
         📍 Ritiro Gratuito in Salone
       </div>
       <div style="font-size: 13px; color: #4F4656; line-height: 1.6;">
-        <strong>Sede:</strong> Scelta Makeup, Via dei Pellegrini 28/29, 80132 Napoli<br/>
+        <strong>Sede:</strong> Scelta Makeup, Via Pellegrini 28/29, 80134 Napoli<br/>
         <strong>Orari al pubblico:</strong> Martedì – Sabato: 09:30 – 14:00 / 16:00 – 19:30 (Lunedì e Domenica: Chiuso)<br/>
         Riceverai un messaggio non appena il tuo pacchetto profumato sarà confezionato e pronto al banco.
       </div>
