@@ -176,7 +176,21 @@ function ProductEditorModalDialog({
   const [initialFormData] = useState(() => JSON.parse(JSON.stringify(formData)) as typeof formData);
 
   const formToUpdates = (fd: typeof formData): Partial<Product> => {
-    const shades: Shade[] = fd.variants.map((v, i) => ({
+    const isSingleVariant = fd.variants.length <= 1;
+    // Per i prodotti a variante unica il prezzo base è la fonte di verità:
+    // la variante (e la sua tonalità) vengono sempre allineate ad esso. Per i
+    // prodotti multi-variante una variante senza prezzo eredita il prezzo base.
+    const normalizedVariants: ProductVariant[] = fd.variants.map((v, i) => {
+      if (isSingleVariant && i === 0) {
+        return { ...v, price: fd.price };
+      }
+      if (v.price === undefined || v.price === null) {
+        return { ...v, price: fd.price };
+      }
+      return v;
+    });
+
+    const shades: Shade[] = normalizedVariants.map((v, i) => ({
       id: v.id,
       name: v.name,
       code: (i + 1).toString().padStart(2, "0"),
@@ -186,6 +200,7 @@ function ProductEditorModalDialog({
       stock: v.stock ?? 0,
       inStock: (v.stock ?? 0) > 0,
     }));
+
     return {
       name: fd.name.trim(),
       brand: fd.brand,
@@ -198,7 +213,7 @@ function ProductEditorModalDialog({
       formulaBenefits: fd.formulaBenefits.trim(),
       inci: fd.inci.trim(),
       images: fd.images,
-      variants: fd.variants,
+      variants: normalizedVariants,
       shades,
     };
   };
@@ -734,12 +749,23 @@ function ProductEditorModalDialog({
                     step="0.01"
                     min="0"
                     value={formData.price}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const newPrice = parseFloat(e.target.value) || 0;
                       setFormData((prev) => ({
                         ...prev,
-                        price: parseFloat(e.target.value) || 0,
-                      }))
-                    }
+                        price: newPrice,
+                        // Con una sola variante il prezzo base è la fonte di verità:
+                        // la variante viene allineata per evitare che un vecchio
+                        // prezzo residuo scavalchi quello appena impostato.
+                        ...(prev.variants.length <= 1
+                          ? {
+                              variants: prev.variants.map((v, i) =>
+                                i === 0 ? { ...v, price: newPrice } : v
+                              ),
+                            }
+                          : {}),
+                      }));
+                    }}
                     className="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs text-gray-900 focus:outline-none focus:border-[#5E1788] font-bold"
                   />
                 </div>

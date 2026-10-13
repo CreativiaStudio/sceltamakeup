@@ -210,6 +210,31 @@ function computeDiscountAmount(
 }
 
 /**
+ * Resolves the effective selling price for a scanned product/variant.
+ *
+ * A quick-registered product starts with a single "Standard" variant carrying a
+ * default price; when Federica later edits the base price in ProductEditorModal
+ * the stale price left on that variant must never override the product's base
+ * price. Only a genuinely multi-variant product exposing a named (non-"Standard")
+ * variant is allowed to use its own variant price.
+ */
+function resolveScanUnitPrice(product: Product, variantIndex: number): number {
+  const variants = product.variants;
+  const variant = variants?.[variantIndex];
+  const variantPrice = variant?.price;
+  const basePrice =
+    typeof product.price === "number" && product.price > 0 ? product.price : undefined;
+  const hasDistinctVariantPrice =
+    !!variants &&
+    variants.length > 1 &&
+    variant?.name !== "Standard" &&
+    typeof variantPrice === "number";
+  return hasDistinctVariantPrice
+    ? (variantPrice as number)
+    : (basePrice ?? variantPrice ?? 0);
+}
+
+/**
  * Reads an image File and returns a resized base64 data URL (max edge = maxSize),
  * keeping localStorage / cloud payloads small and safe for the QuotaExceeded limit.
  */
@@ -616,8 +641,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
           setCurrentStock(vStock ? vStock.stockQuantity : (v.stock ?? 0));
         }
       }
-      const v = matchedProduct.variants?.[matchedVariantIndex];
-      const p = (v?.price ?? matchedProduct.price) || 0;
+      const p = resolveScanUnitPrice(matchedProduct, matchedVariantIndex);
       setPriceEditValue(p > 0 ? p.toFixed(2) : "");
       setTitleEditValue(matchedProduct.name);
       setIsEditingTitle(false);
@@ -641,7 +665,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         playPosBeep();
         if (isCurrentlyInMultiReceipt) {
           const v = match.product.variants?.[match.variantIndex];
-          const itemPrice = (v?.price ?? match.product.price) || 1.0;
+          const itemPrice = resolveScanUnitPrice(match.product, match.variantIndex) || 1.0;
           const itemId = `${match.product.id}-${match.variantIndex}-${itemPrice.toFixed(2)}`;
 
           setMultiCartItems((prev) => {
@@ -685,7 +709,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         activeScreenRef.current = "scan";
         setMatchedProduct(match.product);
         setMatchedVariantIndex(match.variantIndex);
-        const itemPrice = (match.product.variants?.[match.variantIndex]?.price ?? match.product.price) || 1.0;
+        const itemPrice = resolveScanUnitPrice(match.product, match.variantIndex) || 1.0;
         setCashTendered(itemPrice.toFixed(2));
         setPriceEditValue(itemPrice.toFixed(2));
         setTitleEditValue(match.product.name);
@@ -756,7 +780,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   const handleAddToMultiReceipt = useCallback(() => {
     if (!matchedProduct) return;
     const v = matchedProduct.variants?.[matchedVariantIndex];
-    const basePrice = (v?.price ?? matchedProduct.price) || 0;
+    const basePrice = resolveScanUnitPrice(matchedProduct, matchedVariantIndex) || 0;
     const discountApplied = computeDiscountAmount(basePrice, discountMode, discountPercent, discountAmount);
     const finalPrice = Math.max(0, Math.round((basePrice - discountApplied) * 100) / 100);
 
@@ -1494,7 +1518,8 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
 
   const currentVariant = matchedProduct?.variants?.[matchedVariantIndex];
   // Original catalog list price (before any counter discount)
-  const baseListPrice = (currentVariant?.price ?? matchedProduct?.price) || 1.0;
+  const baseListPrice =
+    (matchedProduct ? resolveScanUnitPrice(matchedProduct, matchedVariantIndex) : 0) || 1.0;
   const discountAmountValue = computeDiscountAmount(
     baseListPrice,
     discountMode,
@@ -1680,21 +1705,26 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       const rounded = Math.round(newPrice * 100) / 100;
 
       const currentPrice =
-        (matchedProduct.variants?.[matchedVariantIndex]?.price ?? matchedProduct.price) || 0;
+        resolveScanUnitPrice(matchedProduct, matchedVariantIndex) || 0;
       if (Math.abs(rounded - currentPrice) < 0.001) return;
 
       setCloudSyncStatus("saving");
       setIsUpdatingPrice(true);
 
       const updatedVariants = matchedProduct.variants ? [...matchedProduct.variants] : [];
-      const updates: Partial<Product> = { price: rounded };
-      if (updatedVariants[matchedVariantIndex]) {
+      const activeVariant = updatedVariants[matchedVariantIndex];
+
+      const updates: Partial<Product> = {};
+      if (activeVariant) {
         updatedVariants[matchedVariantIndex] = {
-          ...updatedVariants[matchedVariantIndex],
+          ...activeVariant,
           price: rounded,
         };
         updates.variants = updatedVariants;
       }
+      // Always realign the product base price with the edited variant price so a
+      // stale variant price can never override it on the next barcode scan.
+      updates.price = rounded;
 
       const result = updateProductDetails(matchedProduct.id, updates, { baseline: matchedProduct });
       if (result && (result as { error?: string }).error) {

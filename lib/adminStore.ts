@@ -1567,6 +1567,42 @@ function applyProductUpdateLocally(
 
   const existing = state.productOverrides[productId] || {};
   const writeTimestamp = new Date().toISOString();
+
+  // Synchronize variant stocks if relevant product metadata or variants were updated
+  const now = writeTimestamp;
+  const rawProduct = (rawCatalog as Product[]).find((p) => p.id === productId);
+
+  // Varianti note del prodotto: override locale se presente, altrimenti catalogo.
+  const knownVariants: ProductVariant[] =
+    (Array.isArray(normalizedUpdates.variants) &&
+      (normalizedUpdates.variants as ProductVariant[])) ||
+    (Array.isArray(existing.variants) && (existing.variants as ProductVariant[])) ||
+    rawProduct?.variants ||
+    [];
+  const isSingleVariantProduct = knownVariants.length <= 1;
+  const hasStandardVariant = knownVariants.some((v) => v && v.name === "Standard");
+
+  // Se cambia il prezzo base di un prodotto a variante unica (o con variante
+  // "Standard") e il chiamante NON ha passato le varianti, sintetizziamo l'elenco
+  // varianti allineato al nuovo prezzo: così sia variantStocks sia la variante
+  // dell'override ricevono il prezzo, evitando valori residui disallineati.
+  if (
+    !safeVariants &&
+    typeof updates.price === "number" &&
+    updates.price > 0 &&
+    (isSingleVariantProduct || hasStandardVariant)
+  ) {
+    const alignedVariants = knownVariants.map((v, i) => {
+      if (!v) return v;
+      const isTarget = isSingleVariantProduct ? i === 0 : v.name === "Standard";
+      return isTarget ? { ...v, price: updates.price } : v;
+    });
+    if (alignedVariants.length > 0) {
+      safeVariants = alignedVariants;
+      normalizedUpdates.variants = alignedVariants;
+    }
+  }
+
   const merged: TimestampedProductOverride = {
     ...existing,
     ...normalizedUpdates,
@@ -1575,10 +1611,6 @@ function applyProductUpdateLocally(
 
   state.productOverrides[productId] = merged;
   markProductLocallyModified(productId);
-
-  // Synchronize variant stocks if relevant product metadata or variants were updated
-  const now = writeTimestamp;
-  const rawProduct = (rawCatalog as Product[]).find((p) => p.id === productId);
 
   // If variants array is explicitly passed in updates, update/add corresponding variantStocks
   if (safeVariants) {
