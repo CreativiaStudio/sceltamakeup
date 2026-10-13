@@ -5,20 +5,27 @@ import {
   AlertOctagon,
   AlertTriangle,
   Barcode,
+  CheckCircle2,
   ChevronDown,
   Clock,
+  CloudUpload,
   Database,
   DollarSign,
   Download,
   Eye,
   FileEdit,
+  FileText,
   Filter,
+  FlaskConical,
   History,
+  Image as ImageIcon,
   Loader2,
   Package,
   Receipt,
   RefreshCw,
+  ScanBarcode,
   Search,
+  Tag,
   Trash2,
   WifiOff,
   X,
@@ -28,10 +35,13 @@ import {
   AUDIT_LOG_EVENT_NAME,
   clearAdminActivityLogs,
   fetchCloudActivityLogs,
+  flushAuditOutbox,
   getAdminActivityLogs,
+  getAuditOutboxPendingCount,
   type ActivityCategory,
   type AdminActivityLogItem,
 } from "@/lib/auditLogger";
+import { flushCatalogOutbox, getPendingCatalogSyncCount } from "@/lib/adminStore";
 
 // ------------------------------------------------------------------------------
 // Metadati categoria (label, icona, colori badge/icona)
@@ -176,6 +186,57 @@ function buildSearchHaystack(item: AdminActivityLogItem): string {
     .toLowerCase();
 }
 
+const EURO_FORMATTER = new Intl.NumberFormat("it-IT", {
+  style: "currency",
+  currency: "EUR",
+});
+
+function formatEuro(value: number): string {
+  return EURO_FORMATTER.format(value);
+}
+
+/** Legge il primo valore stringa non vuoto tra i campi indicati dei dettagli. */
+function detailString(
+  details: Record<string, unknown> | undefined,
+  ...keys: string[]
+): string | undefined {
+  if (!details) return undefined;
+  for (const key of keys) {
+    const value = details[key];
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+  return undefined;
+}
+
+/** Legge il primo valore numerico valido tra i campi indicati dei dettagli. */
+function detailNumber(
+  details: Record<string, unknown> | undefined,
+  ...keys: string[]
+): number | undefined {
+  if (!details) return undefined;
+  for (const key of keys) {
+    const value = details[key];
+    if (typeof value === "number" && Number.isFinite(value)) return value;
+    if (typeof value === "string" && value.trim() && !Number.isNaN(Number(value))) {
+      return Number(value);
+    }
+  }
+  return undefined;
+}
+
+/** Ricava la miniatura da `imageUrl`, `image` oppure dal primo elemento di `images`. */
+function detailImageUrl(details: Record<string, unknown> | undefined): string | undefined {
+  const direct = detailString(details, "imageUrl", "image");
+  if (direct) return direct;
+  const images = details?.images;
+  if (Array.isArray(images)) {
+    for (const entry of images) {
+      if (typeof entry === "string" && entry.trim()) return entry.trim();
+    }
+  }
+  return undefined;
+}
+
 // ------------------------------------------------------------------------------
 // Card evento espandibile
 // ------------------------------------------------------------------------------
@@ -196,6 +257,25 @@ function ActivityEventCard({
   const remote = isRemoteOperator(item.operator);
   const today = startOfDay(new Date()) === startOfDay(new Date(item.timestamp));
   const isAnomaly = item.category === "errore" || item.level === "error";
+  const [inciExpanded, setInciExpanded] = useState(false);
+
+  // Dettagli chiave resi visivi (foto, prezzo, INCI, descrizione, barcode):
+  // così Federica non deve aprire il JSON grezzo per "vedere" l'operazione.
+  const details = item.details;
+  const imageUrl = detailImageUrl(details);
+  const variantLabel = detailString(details, "variantName", "variant", "shadeName", "colorName");
+  const oldPrice = detailNumber(details, "oldPrice");
+  const newPrice = detailNumber(details, "newPrice");
+  const singlePrice = detailNumber(details, "price");
+  const hasPriceChange =
+    oldPrice !== undefined && newPrice !== undefined && oldPrice !== newPrice;
+  const inci = detailString(details, "inci");
+  const descriptionDetail = detailString(details, "description");
+  const howToUse = detailString(details, "howToUse");
+  const barcode = detailString(details, "barcode", "ean");
+  const hasVisualDetails = Boolean(
+    imageUrl || hasPriceChange || singlePrice !== undefined || inci || descriptionDetail || howToUse || barcode
+  );
 
   return (
     <article
@@ -257,6 +337,116 @@ function ActivityEventCard({
               </span>
             )}
           </div>
+
+          {/* Dettagli visivi chiave: foto, prezzo, barcode, INCI, descrizione */}
+          {hasVisualDetails && (
+            <div className="mt-3 space-y-2">
+              <div className="flex flex-wrap items-stretch gap-2">
+                {imageUrl && (
+                  <div className="flex items-center gap-2.5 rounded-2xl border border-[#D8C2E7]/70 bg-[#FAF7FC] p-2 pr-3.5">
+                    <span className="relative w-14 h-14 rounded-xl overflow-hidden border border-[#D8C2E7]/60 bg-white shrink-0 flex items-center justify-center">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={imageUrl}
+                        alt={variantLabel ? `Foto Variante ${variantLabel}` : "Foto Prodotto"}
+                        loading="lazy"
+                        className="w-full h-full object-contain p-0.5"
+                      />
+                    </span>
+                    <span className="flex flex-col leading-tight min-w-0">
+                      <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-[#5E1788]">
+                        <ImageIcon className="w-3 h-3" />
+                        {variantLabel ? "Foto Variante" : "Foto Prodotto"}
+                      </span>
+                      <span className="text-[10px] text-gray-500 truncate max-w-[9rem]">
+                        {variantLabel || "Anteprima salvata"}
+                      </span>
+                    </span>
+                  </div>
+                )}
+
+                {oldPrice !== undefined && newPrice !== undefined && oldPrice !== newPrice ? (
+                  <div className="inline-flex items-center gap-1.5 self-center rounded-2xl border border-amber-300 bg-amber-50 px-3 py-2">
+                    <DollarSign className="w-3.5 h-3.5 text-amber-600" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800">
+                      Variazione:
+                    </span>
+                    <span className="text-xs font-mono text-gray-500 line-through">
+                      {formatEuro(oldPrice)}
+                    </span>
+                    <span className="text-amber-500 font-bold">&#10148;</span>
+                    <span className="text-sm font-bold font-mono text-amber-900">
+                      {formatEuro(newPrice)}
+                    </span>
+                  </div>
+                ) : singlePrice !== undefined ? (
+                  <span className="inline-flex items-center gap-1.5 self-center rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-800">
+                    <DollarSign className="w-3.5 h-3.5 text-emerald-600" />
+                    Prezzo: {formatEuro(singlePrice)}
+                  </span>
+                ) : null}
+
+                {barcode && (
+                  <span className="inline-flex items-center gap-1.5 self-center rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-xs font-mono font-semibold text-indigo-800">
+                    <ScanBarcode className="w-3.5 h-3.5 text-indigo-600" />
+                    {barcode}
+                  </span>
+                )}
+              </div>
+
+              {inci && (
+                <div className="rounded-xl border border-violet-200 bg-violet-50/70 p-2.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#5E1788]">
+                      <FlaskConical className="w-3.5 h-3.5" />
+                      INCI Registrato
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setInciExpanded((prev) => !prev)}
+                      className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#5E1788] hover:text-[#D462A6] transition-colors cursor-pointer"
+                    >
+                      <ChevronDown
+                        className={`w-3 h-3 transition-transform ${inciExpanded ? "rotate-180" : ""}`}
+                      />
+                      {inciExpanded ? "Riduci" : "Leggi tutto"}
+                    </button>
+                  </div>
+                  <p
+                    className={`mt-1 text-[11px] text-gray-700 leading-relaxed break-words whitespace-pre-wrap ${
+                      inciExpanded ? "" : "line-clamp-2"
+                    }`}
+                  >
+                    {inci}
+                  </p>
+                </div>
+              )}
+
+              {descriptionDetail && (
+                <div className="rounded-xl border border-gray-200 bg-gray-50 p-2.5">
+                  <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                    <FileText className="w-3.5 h-3.5" />
+                    Descrizione
+                  </span>
+                  <p className="mt-1 text-[11px] text-gray-700 leading-relaxed break-words whitespace-pre-wrap">
+                    {descriptionDetail}
+                  </p>
+                </div>
+              )}
+
+              {howToUse && (
+                <div className="rounded-xl border border-teal-200 bg-teal-50/70 p-2.5">
+                  <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-teal-700">
+                    <Tag className="w-3.5 h-3.5" />
+                    Modo d&apos;uso
+                  </span>
+                  <p className="mt-1 text-[11px] text-gray-700 leading-relaxed break-words whitespace-pre-wrap">
+                    {howToUse}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Espansione dettagli */}
@@ -323,11 +513,19 @@ export default function ActivityLogTab() {
   const [lastSyncAt, setLastSyncAt] = useState<number | null>(null);
   const [syncError, setSyncError] = useState<string | null>(null);
   const [nowTick, setNowTick] = useState(() => Date.now());
+  const [pendingCount, setPendingCount] = useState(0);
+  const [isForceSyncing, setIsForceSyncing] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: "success" | "warning" } | null>(null);
 
   // Illustrazione live: aggiorna i tempi relativi ("2 min fa") ogni minuto.
   useEffect(() => {
     const id = window.setInterval(() => setNowTick(Date.now()), 60000);
     return () => window.clearInterval(id);
+  }, []);
+
+  /** Modifiche totali in attesa: catalogo (prezzi/giacenze/foto) + attività audit. */
+  const refreshPendingCount = useCallback(() => {
+    setPendingCount(getPendingCatalogSyncCount() + getAuditOutboxPendingCount());
   }, []);
 
   const refreshFromCloud = useCallback(async (showSpinner: boolean) => {
@@ -348,7 +546,10 @@ export default function ActivityLogTab() {
   // Idratazione dal ring buffer locale + sottoscrizione agli aggiornamenti
   // istantanei (stessa tab via evento custom, altre tab via `storage`).
   useEffect(() => {
-    const sync = () => setLogs(getAdminActivityLogs());
+    const sync = () => {
+      setLogs(getAdminActivityLogs());
+      refreshPendingCount();
+    };
     sync();
 
     window.addEventListener(AUDIT_LOG_EVENT_NAME, sync);
@@ -363,15 +564,27 @@ export default function ActivityLogTab() {
       window.removeEventListener(AUDIT_LOG_EVENT_NAME, sync);
       window.removeEventListener("storage", sync);
     };
-  }, [refreshFromCloud]);
+  }, [refreshFromCloud, refreshPendingCount]);
 
   // Auto-aggiornamento discreto: solo quando la tab è visibile (nessun traffico in background).
   useEffect(() => {
     const id = window.setInterval(() => {
+      refreshPendingCount();
       if (document.visibilityState === "visible") void refreshFromCloud(false);
     }, 45000);
     return () => window.clearInterval(id);
-  }, [refreshFromCloud]);
+  }, [refreshFromCloud, refreshPendingCount]);
+
+  // Conteggio delle modifiche pendenti sempre aggiornato (outbox locale, nessun traffico).
+  useEffect(() => {
+    // Primo aggiornamento differito al tick successivo (evita setState sincrono nell'effetto).
+    const kickoff = window.setTimeout(refreshPendingCount, 0);
+    const id = window.setInterval(refreshPendingCount, 5000);
+    return () => {
+      window.clearTimeout(kickoff);
+      window.clearInterval(id);
+    };
+  }, [refreshPendingCount]);
 
   const categoryCounts = useMemo(() => {
     const counts: Record<ActivityCategory, number> = {
@@ -483,6 +696,33 @@ export default function ActivityLogTab() {
     clearAdminActivityLogs();
   }, []);
 
+  // Forza l'invio immediato al cloud di TUTTE le modifiche in attesa: prima il
+  // catalogo (prezzi/giacenze/foto), poi il registro attività, quindi rilegge
+  // la timeline remota. Federica vede subito un esito chiaro (toast).
+  const handleForceSync = useCallback(async () => {
+    if (isForceSyncing) return;
+    setIsForceSyncing(true);
+    setToast(null);
+    try {
+      await Promise.allSettled([flushCatalogOutbox(), flushAuditOutbox()]);
+      await refreshFromCloud(true);
+      refreshPendingCount();
+      setToast({
+        message: "✅ Tutte le modifiche e le attività sono state sincronizzate con successo nel Cloud!",
+        type: "success",
+      });
+    } catch {
+      refreshPendingCount();
+      setToast({
+        message: "⚠️ Sincronizzazione non completata: alcune modifiche restano in attesa di connessione.",
+        type: "warning",
+      });
+    } finally {
+      setIsForceSyncing(false);
+      window.setTimeout(() => setToast(null), 5000);
+    }
+  }, [isForceSyncing, refreshFromCloud, refreshPendingCount]);
+
   return (
     <div className="space-y-5">
       {/* ============================ HEADER ============================ */}
@@ -537,6 +777,26 @@ export default function ActivityLogTab() {
 
             <button
               type="button"
+              onClick={() => void handleForceSync()}
+              disabled={isForceSyncing}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white text-xs font-bold shadow-sm transition-colors disabled:opacity-70 disabled:cursor-wait cursor-pointer"
+              title="Invia subito al Cloud tutte le modifiche in attesa (prezzi, giacenze, foto e registro attività)"
+            >
+              {isForceSyncing ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <CloudUpload className="w-3.5 h-3.5" />
+              )}
+              <span>Forza Sincronizzazione Cloud</span>
+              {pendingCount > 0 && (
+                <span className="inline-flex items-center justify-center min-w-4 h-4 px-1 rounded-full bg-white text-emerald-700 text-[9px] font-bold">
+                  {pendingCount}
+                </span>
+              )}
+            </button>
+
+            <button
+              type="button"
               onClick={() => void refreshFromCloud(true)}
               disabled={isSyncing}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white text-[#5E1788] text-xs font-bold shadow-sm hover:bg-[#F3E7F8] transition-colors disabled:opacity-70 disabled:cursor-wait cursor-pointer"
@@ -572,6 +832,12 @@ export default function ActivityLogTab() {
             </span>
           </div>
           <div className="flex items-center gap-2">
+            {pendingCount > 0 && (
+              <span className="inline-flex items-center gap-1 font-semibold text-amber-700 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full">
+                <CloudUpload className="w-3 h-3" />
+                {pendingCount} {pendingCount === 1 ? "modifica in attesa di connessione" : "modifiche in attesa di connessione"}
+              </span>
+            )}
             {syncError ? (
               <span className="inline-flex items-center gap-1 font-semibold text-amber-700">
                 <WifiOff className="w-3.5 h-3.5" />
@@ -735,6 +1001,31 @@ export default function ActivityLogTab() {
           </div>
         )}
       </section>
+
+      {/* Toast di conferma sincronizzazione cloud */}
+      {toast && (
+        <div className="fixed bottom-5 right-5 z-[80] max-w-sm">
+          <div
+            className={`flex items-start gap-2.5 rounded-2xl border px-4 py-3 shadow-xl text-white ${
+              toast.type === "success"
+                ? "border-emerald-300 bg-emerald-600"
+                : "border-amber-300 bg-amber-600"
+            }`}
+            role="status"
+          >
+            <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" />
+            <span className="text-xs font-semibold leading-relaxed">{toast.message}</span>
+            <button
+              type="button"
+              onClick={() => setToast(null)}
+              className="shrink-0 text-white/80 hover:text-white transition-colors cursor-pointer"
+              aria-label="Chiudi messaggio"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

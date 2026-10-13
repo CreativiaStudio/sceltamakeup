@@ -436,6 +436,19 @@ function ProductEditorModalDialog({
         price: formData.price,
         isLocalOnly: formData.isLocalOnly,
         variantsCount: formData.variants.length,
+        // Foto, INCI e descrizione anche nel registro attività: così Federica
+        // li "vede" subito nella card senza aprire il JSON grezzo.
+        imageUrl: formData.images[0] || undefined,
+        inci: formData.inci
+          ? formData.inci.length > 200
+            ? formData.inci.slice(0, 200) + "..."
+            : formData.inci
+          : undefined,
+        description: formData.description
+          ? formData.description.length > 200
+            ? formData.description.slice(0, 200) + "..."
+            : formData.description
+          : undefined,
       },
     });
 
