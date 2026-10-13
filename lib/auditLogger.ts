@@ -281,20 +281,6 @@ function enqueueOutboxItem(item: AdminActivityLogItem): void {
   writeOutbox(trimOutbox([...current, item]));
 }
 
-/** Accoda più eventi deduplicandoli per id rispetto alla coda corrente. */
-function enqueueOutboxItems(items: AdminActivityLogItem[]): void {
-  const current = readOutbox();
-  const seen = new Set(current.map((existing) => existing.id));
-  const additions: AdminActivityLogItem[] = [];
-  for (const item of items) {
-    if (seen.has(item.id)) continue;
-    seen.add(item.id);
-    additions.push(item);
-  }
-  if (additions.length === 0) return;
-  writeOutbox(trimOutbox([...current, ...additions]));
-}
-
 /** Rimuove dalla coda (rileggendola dallo storage) esattamente gli id confermati. */
 function removeOutboxItemsById(ids: Set<string>): void {
   const current = readOutbox();
@@ -458,18 +444,20 @@ async function runAuditOutboxFlush(): Promise<void> {
 }
 
 /**
- * Recupera una sola volta per pagina gli eventi già presenti nel ring buffer
- * locale (anche persi in passato da questo dispositivo), accodandoli. Grazie
- * all'idempotenza del server il reinvio di eventuali duplicati è innocuo.
+ * Recupero storico DISATTIVATO intenzionalmente.
+ *
+ * In passato questa funzione ri-accodava a ogni ricaricamento di pagina tutti i
+ * 500 eventi del ring buffer locale (`readStoredLogs()`) dentro l'outbox. Il
+ * risultato era un contatore gonfiato da telemetria di background (beep del
+ * barcode, click, pagine viste) che faceva credere all'operatore di avere
+ * centinaia di modifiche di catalogo non salvate. I nuovi eventi generati
+ * offline vengono già accodati istantaneamente in `logAdminActivity()`, quindi
+ * lo storico NON va mai ricaricato a tappeto nell'outbox.
  */
 function recoverHistoricalLogsOnce(): void {
   if (didRecoverHistoricalLogs) return;
   didRecoverHistoricalLogs = true;
-  try {
-    enqueueOutboxItems(readStoredLogs());
-  } catch {
-    // Storage illeggibile: nessun recupero, la coda corrente resta intatta.
-  }
+  // Nessun accodamento massivo dello storico: vedi nota sopra.
 }
 
 /**
@@ -513,6 +501,18 @@ export function getAuditOutboxPendingCount(): number {
   } catch {
     return 0;
   }
+}
+
+/**
+ * Svuota completamente l'outbox dell'audit (memoria + localStorage).
+ *
+ * Strumento di manutenzione: da usare dopo un flush forzato confermato, quando
+ * si vuole azzerare la telemetria residua accumulata, o prima di interventi
+ * manuali. NON tocca il ring buffer locale (`clearAdminActivityLogs`) né la
+ * storia cloud.
+ */
+export function clearAuditOutbox(): void {
+  writeOutbox([]);
 }
 
 /**

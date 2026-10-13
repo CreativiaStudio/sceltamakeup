@@ -37,7 +37,6 @@ import {
   fetchCloudActivityLogs,
   flushAuditOutbox,
   getAdminActivityLogs,
-  getAuditOutboxPendingCount,
   type ActivityCategory,
   type AdminActivityLogItem,
 } from "@/lib/auditLogger";
@@ -513,7 +512,7 @@ export default function ActivityLogTab() {
   const [lastSyncAt, setLastSyncAt] = useState<number | null>(null);
   const [syncError, setSyncError] = useState<string | null>(null);
   const [nowTick, setNowTick] = useState(() => Date.now());
-  const [pendingCount, setPendingCount] = useState(0);
+  const [catalogPendingCount, setCatalogPendingCount] = useState(0);
   const [isForceSyncing, setIsForceSyncing] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "warning" } | null>(null);
 
@@ -523,9 +522,14 @@ export default function ActivityLogTab() {
     return () => window.clearInterval(id);
   }, []);
 
-  /** Modifiche totali in attesa: catalogo (prezzi/giacenze/foto) + attività audit. */
+  /**
+   * Modifiche di CATALOGO in attesa (prezzi, giacenze, foto, schede prodotto).
+   * NON include la telemetria di audit di background (beep barcode, click,
+   * pagine viste): quella non è una modifica del gestionale e non deve generare
+   * allarmismi nell'interfaccia di Federica.
+   */
   const refreshPendingCount = useCallback(() => {
-    setPendingCount(getPendingCatalogSyncCount() + getAuditOutboxPendingCount());
+    setCatalogPendingCount(getPendingCatalogSyncCount());
   }, []);
 
   const refreshFromCloud = useCallback(async (showSpinner: boolean) => {
@@ -707,10 +711,20 @@ export default function ActivityLogTab() {
       await Promise.allSettled([flushCatalogOutbox(), flushAuditOutbox()]);
       await refreshFromCloud(true);
       refreshPendingCount();
-      setToast({
-        message: "✅ Tutte le modifiche e le attività sono state sincronizzate con successo nel Cloud!",
-        type: "success",
-      });
+      // L'esito si basa SOLO sulle modifiche di catalogo: la telemetria di audit
+      // non deve mai far credere all'operatore che restino cambiamenti non salvati.
+      if (getPendingCatalogSyncCount() === 0) {
+        setToast({
+          message: "✅ Il gestionale e il Cloud sono perfettamente allineati e aggiornati!",
+          type: "success",
+        });
+      } else {
+        setToast({
+          message:
+            "⚠️ Sincronizzazione non completata: alcune modifiche di catalogo restano in attesa di connessione.",
+          type: "warning",
+        });
+      }
     } catch {
       refreshPendingCount();
       setToast({
@@ -788,9 +802,14 @@ export default function ActivityLogTab() {
                 <CloudUpload className="w-3.5 h-3.5" />
               )}
               <span>Forza Sincronizzazione Cloud</span>
-              {pendingCount > 0 && (
-                <span className="inline-flex items-center justify-center min-w-4 h-4 px-1 rounded-full bg-white text-emerald-700 text-[9px] font-bold">
-                  {pendingCount}
+              {catalogPendingCount > 0 ? (
+                <span className="inline-flex items-center justify-center min-w-4 h-4 px-1.5 rounded-full bg-amber-400 text-amber-950 text-[9px] font-bold">
+                  {catalogPendingCount} in attesa
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 h-4 px-1.5 rounded-full bg-white/20 text-white text-[9px] font-bold">
+                  <CheckCircle2 className="w-2.5 h-2.5" />
+                  0 · Tutto sincronizzato
                 </span>
               )}
             </button>
@@ -832,10 +851,15 @@ export default function ActivityLogTab() {
             </span>
           </div>
           <div className="flex items-center gap-2">
-            {pendingCount > 0 && (
+            {catalogPendingCount > 0 ? (
               <span className="inline-flex items-center gap-1 font-semibold text-amber-700 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full">
                 <CloudUpload className="w-3 h-3" />
-                {pendingCount} {pendingCount === 1 ? "modifica in attesa di connessione" : "modifiche in attesa di connessione"}
+                {catalogPendingCount} {catalogPendingCount === 1 ? "modifica di catalogo in attesa di connessione" : "modifiche di catalogo in attesa di connessione"}
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                <CheckCircle2 className="w-3 h-3" />
+                Tutto sincronizzato
               </span>
             )}
             {syncError ? (
