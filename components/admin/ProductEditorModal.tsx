@@ -72,6 +72,24 @@ export default function ProductEditorModal({
   );
 }
 
+/**
+ * Per i prodotti a variante unica o con variante "Standard", la foto principale
+ * è anche la foto della variante: allinea `variants` alla copertina così
+ * anteprima, cassa e vetrina non mostrano più il vecchio packshot segnaposto.
+ */
+function alignPrimaryImageWithVariants(
+  variants: ProductVariant[],
+  primaryImage: string
+): ProductVariant[] {
+  if (!primaryImage || variants.length === 0) return variants;
+  const standardIndex = variants.findIndex(
+    (v) => v?.name?.trim().toLowerCase() === "standard"
+  );
+  const targetIndex = variants.length <= 1 ? 0 : standardIndex;
+  if (targetIndex < 0 || targetIndex >= variants.length) return variants;
+  return variants.map((v, i) => (i === targetIndex ? { ...v, image: primaryImage } : v));
+}
+
 function compressImage(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -234,10 +252,14 @@ function ProductEditorModalDialog({
   const handleAddImageUrl = () => {
     const trimmed = newImageUrl.trim();
     if (!trimmed) return;
-    setFormData((prev) => ({
-      ...prev,
-      images: [...prev.images, trimmed],
-    }));
+    setFormData((prev) => {
+      const images = [...prev.images, trimmed];
+      return {
+        ...prev,
+        images,
+        variants: alignPrimaryImageWithVariants(prev.variants, images[0]),
+      };
+    });
     setNewImageUrl("");
   };
 
@@ -261,10 +283,14 @@ function ProductEditorModalDialog({
       if (!res.ok || !data.success || !data.url) {
         throw new Error(data.error || "Errore durante l'upload su Cloud Storage");
       }
-      setFormData((prev) => ({
-        ...prev,
-        images: [data.url, ...prev.images],
-      }));
+      setFormData((prev) => {
+        const images = [data.url, ...prev.images];
+        return {
+          ...prev,
+          images,
+          variants: alignPrimaryImageWithVariants(prev.variants, images[0]),
+        };
+      });
     } catch (err) {
       console.error("Errore caricamento immagine:", err);
       const msg = err instanceof Error ? err.message : "Errore";
@@ -294,9 +320,11 @@ function ProductEditorModalDialog({
     setFormData((prev) => {
       const copy = [...prev.images];
       const [selected] = copy.splice(index, 1);
+      const images = [selected, ...copy];
       return {
         ...prev,
-        images: [selected, ...copy],
+        images,
+        variants: alignPrimaryImageWithVariants(prev.variants, images[0]),
       };
     });
   };
@@ -304,9 +332,11 @@ function ProductEditorModalDialog({
   const handleRemoveImage = (index: number) => {
     setFormData((prev) => {
       const copy = prev.images.filter((_, idx) => idx !== index);
+      const images = copy.length > 0 ? copy : ["/brand/logo.png"];
       return {
         ...prev,
-        images: copy.length > 0 ? copy : ["/brand/logo.png"],
+        images,
+        variants: alignPrimaryImageWithVariants(prev.variants, images[0]),
       };
     });
   };

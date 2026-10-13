@@ -38,7 +38,7 @@ import {
   createAdminOrder,
 } from "@/lib/adminStore";
 import { logAdminActivity, logAdminError } from "@/lib/auditLogger";
-import { resolveProductImageUrl } from "@/lib/r2";
+import { safeImageSrc } from "@/lib/r2";
 
 interface QuickScanBarcodeModalProps {
   onOpenManualOrderWithItem?: (item: {
@@ -53,21 +53,6 @@ interface QuickScanBarcodeModalProps {
 }
 
 const ALL_PRODUCTS = rawCatalog as Product[];
-
-const DEFAULT_IMAGE = "/brand/logo.png";
-
-/**
- * Returns a valid, non-empty image source or the brand logo fallback.
- * Guards against `undefined`, `null` and whitespace-only strings.
- */
-function safeImageSrc(...candidates: Array<string | null | undefined>): string {
-  for (const candidate of candidates) {
-    if (typeof candidate === "string" && candidate.trim()) {
-      return resolveProductImageUrl(candidate.trim());
-    }
-  }
-  return DEFAULT_IMAGE;
-}
 
 /**
  * Clamps an arbitrary index inside `product.variants` so it can never point
@@ -1469,14 +1454,14 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       howToUse: "Applicare secondo le indicazioni del prodotto.",
       inci: "Formula dermatologicamente testata.",
       features: ["Prodotto professionale salone", "Testato dermatologicamente"],
-      images: ["https://pub-4fbc134b2050432b8f5963ac1c49741a.r2.dev/products/eveline-cosmetics-packshot.jpg"],
+      images: [],
       shades: [
         {
           id: `var-${scannedBarcode}`,
           name: "Standard",
           code: scannedBarcode,
           hex: "#FAF7FC",
-          image: "https://pub-4fbc134b2050432b8f5963ac1c49741a.r2.dev/products/eveline-cosmetics-packshot.jpg",
+          image: "",
           price: priceNum,
           inStock: stockNum > 0,
           stock: stockNum,
@@ -1489,7 +1474,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
           sku: scannedBarcode,
           ean: scannedBarcode,
           colorHex: null,
-          image: "https://pub-4fbc134b2050432b8f5963ac1c49741a.r2.dev/products/eveline-cosmetics-packshot.jpg",
+          image: "",
           inStock: stockNum > 0,
           price: priceNum,
           stock: stockNum,
@@ -1550,15 +1535,26 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       };
     }
 
+    // La foto appena scattata è la copertina reale del prodotto: va sempre in
+    // posizione [0], sostituendo qualsiasi segnaposto precedente.
     const updatedImages = [...(matchedProduct.images || [])];
     if (updatedImages.length === 0) {
       updatedImages.push(imgSrc);
-    } else if (matchedVariantIndex === 0 || updatedVariants.length <= 1) {
+    } else {
       updatedImages[0] = imgSrc;
     }
 
+    // Allinea anche le tonalità (se presenti), così catalogo, cassa e vetrina
+    // mostrano la foto reale e non il packshot segnaposto.
+    const updatedShades = Array.isArray(matchedProduct.shades)
+      ? matchedProduct.shades.map((shade, index) =>
+          index === 0 ? { ...shade, image: imgSrc } : shade
+        )
+      : undefined;
+
     const result = updateProductDetails(matchedProduct.id, {
       ...(updatedVariants.length ? { variants: updatedVariants } : {}),
+      ...(updatedShades && updatedShades.length ? { shades: updatedShades } : {}),
       images: updatedImages,
     }, { baseline: matchedProduct });
 
@@ -1571,6 +1567,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     setMatchedProduct({
       ...matchedProduct,
       variants: updatedVariants.length ? updatedVariants : matchedProduct.variants,
+      shades: updatedShades && updatedShades.length ? updatedShades : matchedProduct.shades,
       images: updatedImages,
     });
     markCloudSaved();
