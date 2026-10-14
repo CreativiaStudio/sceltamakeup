@@ -65,8 +65,8 @@ export interface TrackingStep {
 
 export const COURIER_STEPS: TrackingStep[] = [
   { key: "confirmed", label: "Confermato" },
-  { key: "preparing", label: "In Preparazione in Salone" },
-  { key: "handed", label: "Affidato a Packlink / Corriere" },
+  { key: "preparing", label: "In Preparazione in Atelier" },
+  { key: "handed", label: "Affidato al corriere" },
   { key: "transit", label: "In Transito" },
   { key: "delivery", label: "In Consegna" },
   { key: "delivered", label: "Consegnato" },

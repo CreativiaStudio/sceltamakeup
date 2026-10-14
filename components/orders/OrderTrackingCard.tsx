@@ -18,6 +18,7 @@ import {
   type PublicOrder,
 } from "@/lib/orderTracking";
 import type { PacklinkTracking } from "@/lib/packlink";
+import { resolveProductImageUrl } from "@/lib/r2";
 
 const euro = new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" });
 
@@ -144,7 +145,7 @@ export default function OrderTrackingCard({ order, tracking }: OrderTrackingCard
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
                   Corriere incaricato
                 </p>
-                <p className="mt-1 text-base font-semibold text-[#1F1B24]">{courier || "Packlink PRO"}</p>
+                <p className="mt-1 text-base font-semibold text-[#1F1B24]">{courier || "Corriere Espresso"}</p>
               </div>
               <div className="rounded-2xl bg-white p-4">
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
@@ -234,7 +235,7 @@ export default function OrderTrackingCard({ order, tracking }: OrderTrackingCard
             <li key={`${item.productId}-${i}`} className="flex items-center gap-4 py-4">
               <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[#FAF7FC]">
                 {item.image ? (
-                  <Image src={item.image} alt={item.productTitle} fill sizes="64px" className="object-cover" unoptimized />
+                  <Image src={resolveProductImageUrl(item.image)} alt={item.productTitle} fill sizes="64px" className="object-cover" unoptimized />
                 ) : (
                   <Package className="absolute inset-0 m-auto h-6 w-6 text-[#D8C2E7]" />
                 )}

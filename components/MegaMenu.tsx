@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Product, CategoryKey } from "@/types/product";
+import { resolveProductImageUrl } from "@/lib/r2";
 import {
   MEGAMENU_CATEGORIES,
   MegaMenuCategoryConfig,
@@ -291,9 +292,7 @@ export default function MegaMenu({
                       >
                         <div className="relative aspect-square w-full max-w-[200px] mx-auto mb-4 rounded-2xl bg-white border border-[#D8C2E7]/30 overflow-hidden shadow-sm group-hover:shadow-lg group-hover:shadow-purple-900/10 transition-shadow duration-300">
                           <Image
-                            src={
-                              featuredProduct.images[0] || "/placeholder.jpg"
-                            }
+                            src={resolveProductImageUrl(featuredProduct.images[0])}
                             alt={featuredProduct.name}
                             fill
                             className="object-contain p-2 group-hover:scale-105 transition-transform duration-500"
