@@ -228,6 +228,31 @@ export async function saveCentralOrders(ordersBatch: SceltaAdminOrder[]): Promis
   });
 }
 
+/** Applies a partial update (e.g. shipping/tracking fields) to a single order. */
+export async function updateCentralOrderFields(
+  orderId: string,
+  patch: Partial<Omit<SceltaAdminOrder, "id" | "createdAt">>
+): Promise<SceltaAdminOrder | null> {
+  return enqueue(async () => {
+    const current = await getCentralOrders();
+    const index = current.findIndex((o) => o.id.toLowerCase() === orderId.toLowerCase());
+    if (index === -1) return null;
+
+    const target: SceltaAdminOrder = {
+      ...current[index],
+      ...patch,
+      updatedAt: new Date().toISOString(),
+    };
+    const updated = current.map((o, i) => (i === index ? target : o));
+
+    const ok = await patchRow(target);
+    if (!ok) throw new Error("Salvataggio ordine non riuscito");
+    memoryCache = sortOrders(updated);
+    cacheFetchedAt = Date.now();
+    return target;
+  });
+}
+
 export async function updateCentralOrderStatus(
   orderId: string,
   status: SceltaAdminOrder["status"]

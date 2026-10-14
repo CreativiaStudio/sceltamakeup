@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { CheckCircle2, AlertTriangle, Loader2, ArrowLeft, Sparkles } from "lucide-react";
+import { CheckCircle2, AlertTriangle, Loader2, ArrowLeft, Sparkles, Truck } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { createOrder, getPendingOrder, clearPendingOrder } from "@/lib/orderService";
 import { enqueueWhatsAppMessage } from "@/lib/whatsappQueueService";
@@ -47,6 +47,46 @@ export default function CheckoutSuccessClient() {
           const created = createOrder(draft);
           clearPendingOrder();
           clearCart();
+
+          // Sincronizza l'ordine nel database centrale Supabase per Area Clienti e Gestionale Spedizioni
+          try {
+            fetch("/api/admin/orders", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                order: {
+                  id: created.orderNumber,
+                  customerName: `${created.customer.nome} ${created.customer.cognome}`.trim(),
+                  customerEmail: created.customer.email,
+                  customerPhone: created.customer.telefono,
+                  total: created.total,
+                  status: created.deliveryMethod === "boutique" ? "ready_for_pickup" : "processing",
+                  fulfillmentType: created.deliveryMethod === "boutique" ? "store_pickup" : "courier",
+                  paymentMethod: "stripe",
+                  shippingAddress: created.customer.indirizzo
+                    ? {
+                        street: created.customer.indirizzo,
+                        city: created.customer.citta || "Napoli",
+                        postalCode: created.customer.cap || "80134",
+                        province: "NA",
+                      }
+                    : undefined,
+                  items: created.items.map((item) => ({
+                    productId: item.productId,
+                    productTitle: item.name,
+                    variantName: item.shade?.name,
+                    quantity: item.quantity,
+                    price: item.price,
+                    image: item.image,
+                  })),
+                  createdAt: created.createdAt,
+                  updatedAt: created.updatedAt || created.createdAt,
+                },
+              }),
+            }).catch((syncErr) => console.warn("Failed to sync order to central DB:", syncErr));
+          } catch (syncErr) {
+            console.warn("Failed to dispatch order sync:", syncErr);
+          }
 
           if (!cancelled) setOrder(created);
 
@@ -148,20 +188,30 @@ export default function CheckoutSuccessClient() {
         </div>
 
         {order && (
-          <div className="p-4 rounded-2xl bg-[#FAF7FC] border border-neutral-200 text-left text-xs space-y-1.5 text-neutral-600">
-            <p>
-              <strong>Metodo di consegna:</strong>{" "}
-              {order.deliveryMethod === "boutique"
-                ? "Ritiro in Salone (Via dei Pellegrini 28/29, Napoli)"
-                : "Corriere Espresso Tracciato 24/48h"}
-            </p>
-            <p>
-              <strong>Totale pagato:</strong> €{order.total.toFixed(2)}
-            </p>
-            <p>
-              <strong>Packaging:</strong> Confezione protetta con cura artigianale
-            </p>
-          </div>
+          <>
+            <div className="p-4 rounded-2xl bg-[#FAF7FC] border border-neutral-200 text-left text-xs space-y-1.5 text-neutral-600">
+              <p>
+                <strong>Metodo di consegna:</strong>{" "}
+                {order.deliveryMethod === "boutique"
+                  ? "Ritiro in Salone (Via dei Pellegrini 28/29, Napoli)"
+                  : "Corriere Espresso Tracciato 24/48h"}
+              </p>
+              <p>
+                <strong>Totale pagato:</strong> €{order.total.toFixed(2)}
+              </p>
+              <p>
+                <strong>Packaging:</strong> Confezione protetta con cura artigianale
+              </p>
+            </div>
+
+            <Link
+              href={`/account?order=${encodeURIComponent(order.orderNumber)}&email=${encodeURIComponent(order.customer.email)}`}
+              className="inline-flex items-center justify-center w-full py-3.5 px-4 rounded-xl border-2 border-[#5E1788] text-[#5E1788] font-semibold text-xs tracking-wider uppercase hover:bg-[#5E1788] hover:text-white transition-colors"
+            >
+              <Truck className="h-4 w-4 mr-2" />
+              Traccia il tuo ordine in tempo reale
+            </Link>
+          </>
         )}
 
         <Link

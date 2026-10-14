@@ -173,6 +173,7 @@ export interface SceltaAdminOrder {
   };
   trackingCode?: string;
   courierName?: string;
+  packlinkReference?: string;
   items: Array<{
     productId: string;
     productTitle: string;
@@ -1955,7 +1956,8 @@ export function updateOrderStatus(
 export function updateOrderTracking(
   orderId: string,
   trackingCode: string,
-  courierName?: string
+  courierName?: string,
+  packlinkReference?: string
 ): SceltaAdminOrder {
   const state = getAdminStoreState();
   const index = state.orders.findIndex((o) => o.id.toLowerCase() === orderId.toLowerCase());
@@ -1969,6 +1971,7 @@ export function updateOrderTracking(
     ...existing,
     trackingCode,
     courierName: courierName || existing.courierName || "BRT Express",
+    packlinkReference: packlinkReference || existing.packlinkReference,
     status: existing.status === "processing" ? "shipped" : existing.status,
     updatedAt: new Date().toISOString(),
   };

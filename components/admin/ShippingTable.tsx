@@ -46,6 +46,14 @@ export default function ShippingTable() {
   });
   const [copiedOrderId, setCopiedOrderId] = useState<string | null>(null);
   const [savedTrackingId, setSavedTrackingId] = useState<string | null>(null);
+  const [packlinkLoadingId, setPacklinkLoadingId] = useState<string | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: "success" | "warning" | "error" } | null>(null);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(null), 5000);
+    return () => clearTimeout(timer);
+  }, [toast]);
 
   useEffect(() => {
     const handleStoreUpdate = () => {
@@ -95,6 +103,47 @@ export default function ShippingTable() {
     }
   };
 
+  const handleCreatePacklink = async (orderId: string) => {
+    setPacklinkLoadingId(orderId);
+    try {
+      const res = await fetch("/api/shipping/packlink", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId }),
+      });
+      const data = (await res.json()) as {
+        success: boolean;
+        error?: string;
+        mock?: boolean;
+        shipment?: { reference: string; carrier: string; trackingCode: string };
+      };
+
+      if (!res.ok || !data.success || !data.shipment) {
+        setToast({ message: data.error || "Creazione spedizione Packlink non riuscita", type: "error" });
+        return;
+      }
+
+      const { reference, carrier, trackingCode } = data.shipment;
+      updateOrderTracking(orderId, trackingCode, carrier, reference);
+      setOrders(getAdminOrders());
+      setTrackingInputs((prev) => ({ ...prev, [orderId]: trackingCode }));
+      setCourierInputs((prev) => ({ ...prev, [orderId]: carrier }));
+      setToast(
+        data.mock
+          ? {
+              message: `Packlink non raggiungibile: generata spedizione di prova ${reference}`,
+              type: "warning",
+            }
+          : { message: `Spedizione Packlink creata (${carrier}) · Rif. ${reference}`, type: "success" }
+      );
+    } catch (err) {
+      console.error("Errore creazione spedizione Packlink:", err);
+      setToast({ message: "Errore di rete durante la creazione della spedizione", type: "error" });
+    } finally {
+      setPacklinkLoadingId(null);
+    }
+  };
+
   const handlePickupStatus = (orderId: string, status: "ready_for_pickup" | "completed") => {
     try {
       updateOrderStatus(orderId, status);
@@ -134,6 +183,21 @@ export default function ShippingTable() {
 
   return (
     <div className="space-y-6">
+      {toast && (
+        <div
+          role="status"
+          className={`fixed bottom-6 right-6 z-50 max-w-sm px-4 py-3 rounded-xl shadow-lg border text-xs font-semibold ${
+            toast.type === "success"
+              ? "bg-emerald-600 text-white border-emerald-700"
+              : toast.type === "warning"
+                ? "bg-amber-50 text-amber-900 border-amber-300"
+                : "bg-rose-600 text-white border-rose-700"
+          }`}
+        >
+          {toast.message}
+        </div>
+      )}
+
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -386,6 +450,30 @@ export default function ShippingTable() {
                     {isCourier ? (
                       /* Courier Actions */
                       <div className="space-y-2.5">
+                        {order.packlinkReference ? (
+                          <div className="px-3 py-2 rounded-lg bg-purple-50 border border-purple-200 text-[11px] text-[#5E1788] font-medium flex items-center gap-1.5">
+                            <Sparkles className="w-3.5 h-3.5 text-[#D462A6]" />
+                            <span>
+                              Packlink PRO · Rif. <span className="font-mono font-bold">{order.packlinkReference}</span>
+                            </span>
+                          </div>
+                        ) : (
+                          !order.trackingCode &&
+                          order.status === "processing" && (
+                            <button
+                              type="button"
+                              onClick={() => handleCreatePacklink(order.id)}
+                              disabled={packlinkLoadingId === order.id}
+                              className="w-full py-2 rounded-xl bg-gradient-to-r from-[#7A3293] to-[#D462A6] hover:opacity-95 disabled:opacity-60 disabled:cursor-wait text-white text-xs font-semibold shadow-xs transition-opacity flex items-center justify-center gap-1.5"
+                            >
+                              <Truck className="w-3.5 h-3.5" />
+                              <span>
+                                {packlinkLoadingId === order.id ? "Creazione in corso..." : "Crea con Packlink PRO"}
+                              </span>
+                            </button>
+                          )
+                        )}
+
                         <div>
                           <label className="block text-[11px] font-medium text-gray-600 mb-1">
                             Seleziona Corriere:
@@ -446,15 +534,17 @@ export default function ShippingTable() {
                         {/* Direct Clickable Tracking Link & WhatsApp 1-Click Button */}
                         {Boolean((tracking || order.trackingCode || "").trim()) && (
                           <div className="pt-1.5 space-y-2">
-                            <a
-                              href={getCourierTrackingUrl(courier, (tracking || order.trackingCode || "").trim())}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="w-full py-2 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
-                            >
-                              <ExternalLink className="w-3.5 h-3.5 text-blue-600" />
-                              <span>Apri Portale Tracking ({courier})</span>
-                            </a>
+                            {(tracking || order.trackingCode || "").trim() !== order.packlinkReference && (
+                              <a
+                                href={getCourierTrackingUrl(courier, (tracking || order.trackingCode || "").trim())}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="w-full py-2 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
+                              >
+                                <ExternalLink className="w-3.5 h-3.5 text-blue-600" />
+                                <span>Apri Portale Tracking ({courier})</span>
+                              </a>
+                            )}
 
                             <a
                               href={getWhatsAppDirectUrl(

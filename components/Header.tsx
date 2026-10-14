@@ -10,6 +10,7 @@ import {
   Sparkles,
   X,
   Menu,
+  User,
 } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import SearchOverlay from "@/components/SearchOverlay";
@@ -221,6 +222,16 @@ function HeaderContent() {
                 <span>Prenota una Consulenza</span>
               </Link>
 
+              {/* Area Clienti & Traccia Ordine */}
+              <Link
+                href="/account"
+                title="Area Clienti & Traccia Ordine"
+                aria-label="Area Clienti & Traccia Ordine"
+                className="p-2 rounded-full text-[#1F1B24] hover:text-[#5E1788] hover:bg-[#FAF7FC] transition-colors"
+              >
+                <User className="h-4 w-4 sm:h-5 sm:w-5" />
+              </Link>
+
               {/* Reactive Cart Button */}
               <button
                 type="button"
@@ -293,6 +304,15 @@ function HeaderContent() {
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#FAF7FC] border border-[#D8C2E7]/60 text-[#5E1788] font-bold text-xs hover:bg-[#D8C2E7]/20"
               >
                 <span>Scopri Tutti i Servizi Atelier</span>
+              </Link>
+              <Link
+                href="/account"
+                title="Area Clienti & Traccia Ordine"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-white border border-[#D8C2E7]/60 text-[#5E1788] font-bold text-xs hover:bg-[#D8C2E7]/20"
+              >
+                <User className="w-4 h-4" />
+                <span>Area Clienti & Traccia Ordine</span>
               </Link>
             </div>
 
