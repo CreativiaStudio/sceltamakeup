@@ -33,6 +33,7 @@ export type ActivityCategory =
   | "barcode" // Scansioni ottiche, codici non trovati
   | "prodotto" // Modifiche scheda, descrizioni, foto, nuovo prodotto
   | "canale" // Toggle solo negozio vs online
+  | "crm" // Anagrafiche clienti e beauty profiling
   | "sistema" // Reset, errori, ripristini
   | "errore"; // Errori ed anomalie runtime (telemetria globale)
 
@@ -87,6 +88,7 @@ export const ACTIVITY_CATEGORIES: readonly ActivityCategory[] = [
   "barcode",
   "prodotto",
   "canale",
+  "crm",
   "sistema",
   "errore",
 ] as const;

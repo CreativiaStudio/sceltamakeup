@@ -18,6 +18,7 @@ import {
   Filter,
   FlaskConical,
   History,
+  Heart,
   Image as ImageIcon,
   Loader2,
   Package,
@@ -96,6 +97,13 @@ const CATEGORY_META: Record<ActivityCategory, CategoryMeta> = {
     badgeClass: "bg-fuchsia-50 text-fuchsia-800 border-fuchsia-300 hover:bg-fuchsia-100",
     activeClass: "bg-fuchsia-600 text-white border-fuchsia-600 shadow-sm",
     iconWrapClass: "bg-fuchsia-100 text-fuchsia-700 border-fuchsia-200",
+  },
+  crm: {
+    label: "Clienti & CRM",
+    icon: Heart,
+    badgeClass: "bg-pink-50 text-pink-800 border-pink-300 hover:bg-pink-100",
+    activeClass: "bg-[#D462A6] text-white border-[#D462A6] shadow-sm",
+    iconWrapClass: "bg-pink-100 text-[#D462A6] border-pink-200",
   },
   sistema: {
     label: "Sistema & Ripristini",
@@ -598,6 +606,7 @@ export default function ActivityLogTab() {
       barcode: 0,
       prodotto: 0,
       canale: 0,
+      crm: 0,
       sistema: 0,
       errore: 0,
     };

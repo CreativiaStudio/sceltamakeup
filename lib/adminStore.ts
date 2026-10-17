@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import rawCatalog from "@/data/catalog.json";
 import { Product, ProductVariant } from "@/types/product";
 import { forceUploadDeviceSnapshot } from "@/lib/deviceSnapshot";
+import { logAdminActivity } from "@/lib/auditLogger";
 
 export const STORAGE_ADMIN_STORE_KEY = "scelta_makeup_admin_store_v7";
 
@@ -198,6 +199,11 @@ export interface SceltaCrmCustomer {
   notes: string;
   skinType?: string;
   preferredBrands?: string[];
+  beautyInterests?: string[]; // e.g. ['Trucco Occhi', 'Labbra', 'Base Viso', 'Skincare', 'Anti-Age']
+  favoriteColors?: string[]; // e.g. ['Rosa / Malva', 'Nude Caldo', 'Rosso Classico', 'Toni Terra']
+  purchasedProductsNotes?: string; // e.g. 'Ha preso il siero HA Hero, rossetto malva 04 e pennello blush'
+  colorSeason?: string; // 'Inverno' | 'Estate' | 'Autunno' | 'Primavera'
+  undertone?: string; // 'Freddo' | 'Caldo' | 'Neutro'
 }
 
 export interface SceltaAdminStoreState {
@@ -2084,8 +2090,24 @@ export function updateCustomerNotes(customerId: string, notes: string): SceltaCr
 }
 
 /**
- * Adds or updates a CRM customer.
+ * Normalizes a free-form list coming from the UI or localStorage: trims every
+ * entry, drops empties/duplicates and returns a fresh array.
  */
+function sanitizeStringList(input: unknown): string[] {
+  if (!Array.isArray(input)) return [];
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const value of input) {
+    if (typeof value !== "string") continue;
+    const trimmed = value.trim();
+    if (!trimmed || seen.has(trimmed)) continue;
+    seen.add(trimmed);
+    result.push(trimmed);
+  }
+  return result;
+}
+
+/** Adds or updates a CRM customer. */
 export function createAdminCustomer(
   customerInput: Partial<SceltaCrmCustomer> & {
     name: string;
@@ -2097,22 +2119,133 @@ export function createAdminCustomer(
   const now = new Date().toISOString();
   const newCustomer: SceltaCrmCustomer = {
     id: customerInput.id || `crm-cust-${Date.now()}`,
-    name: customerInput.name,
-    email: customerInput.email,
-    phone: customerInput.phone,
+    name: customerInput.name.trim(),
+    email: (customerInput.email || "").trim(),
+    phone: (customerInput.phone || "").trim(),
     totalSpend: customerInput.totalSpend || 0,
     ordersCount: customerInput.ordersCount || 0,
     appointmentsCount: customerInput.appointmentsCount || 0,
     lastActive: customerInput.lastActive || now,
     notes: customerInput.notes || "",
     skinType: customerInput.skinType || "Normale",
-    preferredBrands: customerInput.preferredBrands || ["Diego dalla Palma"],
+    preferredBrands:
+      customerInput.preferredBrands !== undefined
+        ? sanitizeStringList(customerInput.preferredBrands)
+        : ["Diego dalla Palma"],
+    beautyInterests: sanitizeStringList(customerInput.beautyInterests),
+    favoriteColors: sanitizeStringList(customerInput.favoriteColors),
+    purchasedProductsNotes: customerInput.purchasedProductsNotes || "",
+    colorSeason: customerInput.colorSeason || "",
+    undertone: customerInput.undertone || "",
   };
 
   state.customers = [newCustomer, ...state.customers];
   saveAdminStoreState(state);
+
+  logAdminActivity({
+    category: "crm",
+    action: "customer_created",
+    title: "Nuovo Cliente CRM",
+    description: "Registrata nuova scheda cliente: " + newCustomer.name,
+    details: {
+      customerId: newCustomer.id,
+      skinType: newCustomer.skinType,
+      beautyInterests: newCustomer.beautyInterests,
+      favoriteColors: newCustomer.favoriteColors,
+    },
+  });
+
   return newCustomer;
 }
+
+/**
+ * Aggiorna una scheda cliente (anagrafica + beauty profiling) in modo atomico.
+ * Le liste vengono normalizzate e `lastActive` viene riallineato al momento
+ * dell'ultima consulenza registrata al banco.
+ */
+export function updateAdminCustomer(
+  customerId: string,
+  updates: Partial<SceltaCrmCustomer>
+): SceltaCrmCustomer {
+  const state = getAdminStoreState();
+  const index = state.customers.findIndex((c) => c.id === customerId);
+
+  if (index === -1) {
+    throw new Error(`[SceltaAdminStore] Cliente CRM ${customerId} non trovato`);
+  }
+
+  const existing = state.customers[index];
+  const merged: SceltaCrmCustomer = {
+    ...existing,
+    ...updates,
+    // L'id non può mai essere sovrascritto da un update proveniente dalla UI.
+    id: existing.id,
+    lastActive: new Date().toISOString(),
+  };
+
+  if (updates.name !== undefined) merged.name = updates.name.trim();
+  if (updates.email !== undefined) merged.email = (updates.email || "").trim();
+  if (updates.phone !== undefined) merged.phone = (updates.phone || "").trim();
+  if (updates.notes !== undefined) merged.notes = updates.notes || "";
+  if (updates.purchasedProductsNotes !== undefined) {
+    merged.purchasedProductsNotes = updates.purchasedProductsNotes || "";
+  }
+  if (updates.preferredBrands !== undefined) {
+    merged.preferredBrands = sanitizeStringList(updates.preferredBrands);
+  }
+  if (updates.beautyInterests !== undefined) {
+    merged.beautyInterests = sanitizeStringList(updates.beautyInterests);
+  }
+  if (updates.favoriteColors !== undefined) {
+    merged.favoriteColors = sanitizeStringList(updates.favoriteColors);
+  }
+
+  state.customers[index] = merged;
+  saveAdminStoreState(state);
+
+  logAdminActivity({
+    category: "crm",
+    action: "customer_updated",
+    title: "Modifica Scheda Cliente CRM",
+    description: "Aggiornati dati e profilo beauty per: " + merged.name,
+    details: {
+      customerId: merged.id,
+      updatedFields: Object.keys(updates),
+    },
+  });
+
+  return merged;
+}
+
+/**
+ * Elimina definitivamente una scheda cliente dal CRM locale.
+ * Ritorna `false` quando l'id non esiste (nessuna attività registrata).
+ */
+export function deleteAdminCustomer(customerId: string): boolean {
+  const state = getAdminStoreState();
+  const index = state.customers.findIndex((c) => c.id === customerId);
+
+  if (index === -1) return false;
+
+  const [removed] = state.customers.splice(index, 1);
+  saveAdminStoreState(state);
+
+  logAdminActivity({
+    category: "crm",
+    action: "customer_deleted",
+    title: "Eliminazione Scheda Cliente CRM",
+    description: "Rimossa scheda cliente: " + removed.name,
+    level: "warning",
+    details: {
+      customerId: removed.id,
+      email: removed.email,
+      phone: removed.phone,
+    },
+  });
+
+  return true;
+}
+
 
 // ------------------------------------------------------------------------------
 // Executive KPI Calculations
