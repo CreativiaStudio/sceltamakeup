@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import AccountClient from "./AccountClient";
 
 export const metadata: Metadata = {
-  title: "Area Clienti & Traccia Ordine",
+  title: "Area Riservata Clienti & Dashboard",
   description:
-    "Consulta i tuoi ordini Scelta Makeup e segui la spedizione in tempo reale, dall'Atelier di Napoli a casa tua.",
+    "Accedi alla tua Area Personale Scelta Makeup: i tuoi ordini con tracking live, il riordino rapido dei preferiti e gli appuntamenti in Atelier a Napoli.",
 };
 
 export default function AccountPage() {
