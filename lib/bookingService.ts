@@ -299,7 +299,7 @@ export function markAppointmentPaid(
     <printerFiscalReceipt>
       <beginFiscalReceipt operator="1" />
       <printRecItem operator="1" description="${app.serviceName.slice(0, 22)}" quantity="1" unitPrice="${app.pricing.balanceDue.toFixed(2)}" department="1" />
-      <printRecTotal operator="1" description="${method === "mypos_card" ? "CARTA" : "CONTANTI"}" payment="${app.pricing.balanceDue.toFixed(2)}" />
+      <printRecTotal operator="1" description="${method === "mypos_card" ? "PAGAMENTO ELETTRONICO" : "CONTANTI"}" payment="${app.pricing.balanceDue.toFixed(2)}" paymentType="${method === "mypos_card" ? "2" : "0"}" index="${method === "mypos_card" ? "2" : "0"}" />
       <endFiscalReceipt operator="1" />
     </printerFiscalReceipt>
   </soapenv:Body>

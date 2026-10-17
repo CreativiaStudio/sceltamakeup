@@ -893,25 +893,45 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         })
         .join("\n      ");
 
-      const paymentFormatted = effectivePayment.toFixed(2);
+      // Sum of the fiscal item lines actually printed, computed in exact cents.
+      // For Carta the RT requires payment to match the items sum exactly, otherwise it rejects the receipt.
+      const itemsSum =
+        multiItemsWithDiscount.reduce(
+          (sum, item) => sum + Math.round(item.finalUnitPrice * 100) * item.quantity,
+          0
+        ) / 100;
+      // Contanti may exceed the total (the RT computes the change); Carta must strictly match itemsSum.
+      const paymentFormatted = (multiPaymentMethod === "card" ? itemsSum : effectivePayment).toFixed(2);
       const fiscalReceiptXml = `<?xml version="1.0" encoding="utf-8"?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
   <soapenv:Body>
     <printerFiscalReceipt>
       <beginFiscalReceipt operator="1" />
       ${itemsXml}
-      <printRecTotal operator="1" description="${multiPaymentMethod === "card" ? "CARTA" : "CONTANTI"}" payment="${paymentFormatted}" paymentType="${multiPaymentMethod === "card" ? "1" : "0"}" />
+      <printRecTotal operator="1" description="${multiPaymentMethod === "card" ? "PAGAMENTO ELETTRONICO" : "CONTANTI"}" payment="${paymentFormatted}" paymentType="${multiPaymentMethod === "card" ? "2" : "0"}" index="${multiPaymentMethod === "card" ? "2" : "0"}" />
       <endFiscalReceipt operator="1" />
     </printerFiscalReceipt>
   </soapenv:Body>
 </soapenv:Envelope>`;
 
+      let hardwarePrintOk = false;
       try {
-        await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=10000", {
+        const res = await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=10000", {
           method: "POST",
           headers: { "Content-Type": "text/xml; charset=utf-8" },
           body: fiscalReceiptXml,
         });
+        const resText = await res.text();
+        hardwarePrintOk = res.ok && resText.includes('success="true"');
+        if (!hardwarePrintOk) {
+          console.warn("[Cassa RT] Stampa hardware rifiutata:", resText);
+          logAdminError({
+            action: "fiscal_receipt_multi_rejected",
+            title: "Cassa RT: Risposta Stampa Non Riuscita",
+            description: `La cassa fiscale ha risposto con esito negativo: ${resText.slice(0, 150)}`,
+            details: { response: resText, total: multiTotal, paymentMethod: multiPaymentMethod },
+          });
+        }
 
         if (multiPaymentMethod === "cash") {
           const drawerKickXml = `<?xml version="1.0" encoding="utf-8"?>
@@ -932,6 +952,13 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         }
       } catch (hardwareErr) {
         console.warn("[Cassa RT] Stampa hardware:", hardwareErr);
+        logAdminError({
+          action: "fiscal_receipt_multi_network_failed",
+          title: "Cassa RT: Connessione Non Riuscita",
+          description: "Impossibile raggiungere la cassa RT all'indirizzo 192.168.68.63",
+          error: hardwareErr,
+          details: { total: multiTotal, paymentMethod: multiPaymentMethod },
+        });
       }
 
       // 3. Record verified in-store order with cloud synchronization
@@ -1263,7 +1290,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     <printerFiscalReceipt>
       <beginFiscalReceipt operator="1" />
       <printRecItem operator="1" description="${itemDesc}" quantity="1" unitPrice="${priceFormatted}" department="1" />
-      <printRecTotal operator="1" description="${checkoutPaymentMethod === "card" ? "CARTA" : "CONTANTI"}" payment="${paymentFormatted}" paymentType="${checkoutPaymentMethod === "card" ? "1" : "0"}" />
+      <printRecTotal operator="1" description="${checkoutPaymentMethod === "card" ? "PAGAMENTO ELETTRONICO" : "CONTANTI"}" payment="${paymentFormatted}" paymentType="${checkoutPaymentMethod === "card" ? "2" : "0"}" index="${checkoutPaymentMethod === "card" ? "2" : "0"}" />
       <endFiscalReceipt operator="1" />
     </printerFiscalReceipt>
   </soapenv:Body>
@@ -2544,7 +2571,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                       </button>
                     </div>
 
-                    {/* Azioni secondarie in griglia 2x2 */}
+                    {/* Azioni secondarie */}
                     <div className="grid grid-cols-2 gap-2 pt-1">
                       <button
                         type="button"
@@ -2566,6 +2593,17 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
 
                       <button
                         type="button"
+                        onClick={handleVoidOpenReceipt}
+                        disabled={isMultiCheckingOut}
+                        className="w-full px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                        title="Annulla scontrino rimasto aperto sulla cassa fisica"
+                      >
+                        <AlertCircle className="w-3.5 h-3.5 text-amber-600" />
+                        <span>Sblocco cassa</span>
+                      </button>
+
+                      <button
+                        type="button"
                         onClick={handleClearMultiReceipt}
                         className="w-full px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
                       >
@@ -2576,7 +2614,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
                       <button
                         type="button"
                         onClick={handleCloseModal}
-                        className="w-full px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300 text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                        className="col-span-2 w-full px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300 text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
                       >
                         <X className="w-3.5 h-3.5 text-gray-500" />
                         <span>Esci</span>
