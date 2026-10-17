@@ -20,6 +20,7 @@ import {
   Palette,
   Tag,
   Check,
+  MoreHorizontal,
 } from "lucide-react";
 import {
   createAdminCustomer,
@@ -120,6 +121,20 @@ function customerFirstName(name: string): string {
   return trimmed.split(/\s+/)[0] || trimmed;
 }
 
+/** Riepilogo compatto del profilo beauty, mostrato in una sola riga in tabella. */
+function beautyProfileSummary(customer: SceltaCrmCustomer): string {
+  const parts: string[] = [];
+  const colors = customer.favoriteColors?.length ?? 0;
+  const interests = customer.beautyInterests?.length ?? 0;
+  const brands = customer.preferredBrands?.length ?? 0;
+  if (colors > 0) parts.push(`${colors} ${colors === 1 ? "colore" : "colori"}`);
+  if (interests > 0) parts.push(`${interests} ${interests === 1 ? "interesse" : "interessi"}`);
+  if (brands > 0) parts.push(`${brands} ${brands === 1 ? "brand" : "brand"}`);
+  if (customer.purchasedProductsNotes) parts.push("acquisti");
+  if (customer.notes) parts.push("note");
+  return parts.join(" · ");
+}
+
 /** Toni/trucchi citati nei template WhatsApp (con fallback elegante). */
 function customerToneLabel(customer: SceltaCrmCustomer): string {
   if (customer.favoriteColors && customer.favoriteColors.length > 0) {
@@ -210,6 +225,9 @@ export default function CrmTable() {
 
   // Delete confirmation
   const [deleteTarget, setDeleteTarget] = useState<SceltaCrmCustomer | null>(null);
+
+  // Popup dettagli "Profilo Bellezza" (compattazione della riga in tabella)
+  const [beautyDetailsCustomer, setBeautyDetailsCustomer] = useState<SceltaCrmCustomer | null>(null);
 
   // Timer di chiusura del modal dopo il feedback di salvataggio.
   const closeTimerRef = useRef<number | null>(null);
@@ -608,74 +626,41 @@ export default function CrmTable() {
                         </div>
                       </td>
 
-                      {/* Beauty Profile */}
-                      <td className="py-3.5 px-4 max-w-sm">
-                        <div className="space-y-1.5">
-                          {customer.skinType && (
-                            <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold bg-pink-50 text-[#D462A6] border border-pink-200">
-                              Pelle: {customer.skinType}
-                            </span>
-                          )}
-
-                          {(customer.favoriteColors?.length ?? 0) > 0 && (
-                            <div className="flex flex-wrap items-center gap-1">
-                              <Palette className="w-3 h-3 text-[#D462A6] shrink-0" />
-                              {customer.favoriteColors!.map((color) => (
-                                <span
-                                  key={color}
-                                  className={`text-[9px] px-1.5 py-0.5 rounded-full border font-semibold ${colorChipClass(color)}`}
+                      {/* Beauty Profile — display ultra-compatto + popup dettagli */}
+                      <td className="py-3.5 px-4 align-top">
+                        <div className="max-w-[260px]">
+                          {hasBeautyProfile ? (
+                            <>
+                              <div className="flex flex-wrap items-center gap-1.5">
+                                {customer.skinType && (
+                                  <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold bg-pink-50 text-[#D462A6] border border-pink-200">
+                                    Pelle {customer.skinType}
+                                  </span>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={() => setBeautyDetailsCustomer(customer)}
+                                  title="Vedi i dettagli del profilo bellezza"
+                                  aria-label={`Apri dettagli profilo bellezza di ${customer.name}`}
+                                  className="inline-flex items-center gap-0.5 pl-1.5 pr-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#D8C2E7]/35 text-[#5E1788] border border-[#D8C2E7] hover:bg-[#D8C2E7]/70 transition-colors"
                                 >
-                                  {color}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-
-                          {(customer.beautyInterests?.length ?? 0) > 0 && (
-                            <div className="flex flex-wrap items-center gap-1">
-                              <Heart className="w-3 h-3 text-[#7A3293] shrink-0" />
-                              {customer.beautyInterests!.map((interest) => (
-                                <span
-                                  key={interest}
-                                  className="text-[9px] px-1.5 py-0.5 rounded-full bg-[#D8C2E7]/35 text-[#5E1788] border border-[#D8C2E7] font-semibold"
-                                >
-                                  {interest}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-
-                          {customer.purchasedProductsNotes && (
-                            <p className="text-[10px] text-gray-600 line-clamp-2 break-words bg-gray-50 border border-gray-100 rounded-lg px-2 py-1">
-                              💄 <strong className="font-semibold">Acquistati:</strong>{" "}
-                              {customer.purchasedProductsNotes}
-                            </p>
-                          )}
-
-                          {(customer.preferredBrands?.length ?? 0) > 0 && (
-                            <div className="flex flex-wrap items-center gap-1">
-                              <Tag className="w-3 h-3 text-gray-400 shrink-0" />
-                              {customer.preferredBrands!.map((brand) => (
-                                <span
-                                  key={brand}
-                                  className="text-[9px] px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-600 border border-gray-200 font-medium"
-                                >
-                                  {brand}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-
-                          {customer.notes && (
-                            <p className="text-[11px] text-gray-500 line-clamp-2 italic">
-                              &quot;{customer.notes}&quot;
-                            </p>
-                          )}
-
-                          {!hasBeautyProfile && (
-                            <span className="inline-block text-[10px] text-gray-400 italic">
+                                  <MoreHorizontal className="w-3.5 h-3.5" />
+                                  Dettagli
+                                </button>
+                              </div>
+                              <p className="text-[10px] text-gray-400 mt-1 truncate">
+                                {beautyProfileSummary(customer)}
+                              </p>
+                            </>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => openEditModal(customer)}
+                              title="Completa il profilo bellezza"
+                              className="inline-flex items-center gap-1 text-[10px] text-gray-400 italic hover:text-[#5E1788] hover:not-italic transition-colors"
+                            >
                               Profilo beauty da completare
-                            </span>
+                            </button>
                           )}
                         </div>
                       </td>
@@ -1317,6 +1302,170 @@ export default function CrmTable() {
                   <span>Apri WhatsApp su PC</span>
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ==================================================================== */}
+      {/* Popup — Dettagli Profilo Bellezza (riga tabella compattata)          */}
+      {/* ==================================================================== */}
+      {beautyDetailsCustomer && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div
+            className="fixed inset-0 bg-[#1F1B24]/60 backdrop-blur-sm"
+            onClick={() => setBeautyDetailsCustomer(null)}
+          />
+
+          <div className="relative w-full max-w-md max-h-[85vh] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col">
+            {/* Header */}
+            <div className="flex items-start justify-between gap-4 px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-[#5E1788] via-[#6B1F91] to-[#7A3293]">
+              <div>
+                <h3 className="font-serif text-base font-bold text-white flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-[#D8C2E7]" />
+                  Profilo Bellezza
+                </h3>
+                <p className="text-[11px] text-[#D8C2E7] mt-0.5">
+                  {beautyDetailsCustomer.name}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setBeautyDetailsCustomer(null)}
+                aria-label="Chiudi"
+                className="p-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+              {/* Pelle / Sottotono / Stagione */}
+              {(beautyDetailsCustomer.skinType ||
+                beautyDetailsCustomer.undertone ||
+                beautyDetailsCustomer.colorSeason) && (
+                <div className="flex flex-wrap gap-1.5">
+                  {beautyDetailsCustomer.skinType && (
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-pink-50 text-[#D462A6] border border-pink-200 font-semibold">
+                      Pelle: {beautyDetailsCustomer.skinType}
+                    </span>
+                  )}
+                  {beautyDetailsCustomer.undertone && (
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-white text-gray-600 border border-gray-200 font-medium">
+                      Sottotono {beautyDetailsCustomer.undertone}
+                    </span>
+                  )}
+                  {beautyDetailsCustomer.colorSeason && (
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-white text-gray-600 border border-gray-200 font-medium">
+                      Stagione {beautyDetailsCustomer.colorSeason}
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {/* Colori preferiti */}
+              {(beautyDetailsCustomer.favoriteColors?.length ?? 0) > 0 && (
+                <section className="space-y-1.5">
+                  <div className="text-[11px] font-semibold text-gray-700 flex items-center gap-1.5">
+                    <Palette className="w-3 h-3 text-[#D462A6]" />
+                    Colori preferiti
+                  </div>
+                  <div className="flex flex-wrap gap-1">
+                    {beautyDetailsCustomer.favoriteColors!.map((color) => (
+                      <span
+                        key={color}
+                        className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold ${colorChipClass(color)}`}
+                      >
+                        {color}
+                      </span>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {/* Interessi beauty */}
+              {(beautyDetailsCustomer.beautyInterests?.length ?? 0) > 0 && (
+                <section className="space-y-1.5">
+                  <div className="text-[11px] font-semibold text-gray-700 flex items-center gap-1.5">
+                    <Heart className="w-3 h-3 text-[#7A3293]" />
+                    Interessi beauty
+                  </div>
+                  <div className="flex flex-wrap gap-1">
+                    {beautyDetailsCustomer.beautyInterests!.map((interest) => (
+                      <span
+                        key={interest}
+                        className="text-[10px] px-2 py-0.5 rounded-full bg-[#D8C2E7]/35 text-[#5E1788] border border-[#D8C2E7] font-semibold"
+                      >
+                        {interest}
+                      </span>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {/* Brand preferiti */}
+              {(beautyDetailsCustomer.preferredBrands?.length ?? 0) > 0 && (
+                <section className="space-y-1.5">
+                  <div className="text-[11px] font-semibold text-gray-700 flex items-center gap-1.5">
+                    <Tag className="w-3 h-3 text-gray-400" />
+                    Brand amati
+                  </div>
+                  <div className="flex flex-wrap gap-1">
+                    {beautyDetailsCustomer.preferredBrands!.map((brand) => (
+                      <span
+                        key={brand}
+                        className="text-[10px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 border border-gray-200 font-medium"
+                      >
+                        {brand}
+                      </span>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {/* Prodotti acquistati */}
+              {beautyDetailsCustomer.purchasedProductsNotes && (
+                <section className="space-y-1.5">
+                  <div className="text-[11px] font-semibold text-gray-700">Acquistati</div>
+                  <p className="text-[11px] text-gray-600 leading-relaxed break-words bg-gray-50 border border-gray-100 rounded-lg px-3 py-2">
+                    💄 {beautyDetailsCustomer.purchasedProductsNotes}
+                  </p>
+                </section>
+              )}
+
+              {/* Note */}
+              {beautyDetailsCustomer.notes && (
+                <section className="space-y-1.5">
+                  <div className="text-[11px] font-semibold text-gray-700">Note</div>
+                  <p className="text-[11px] text-gray-500 leading-relaxed italic break-words">
+                    &quot;{beautyDetailsCustomer.notes}&quot;
+                  </p>
+                </section>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="px-5 py-3 border-t border-gray-100 bg-gray-50/60 flex items-center justify-between gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  const target = beautyDetailsCustomer;
+                  setBeautyDetailsCustomer(null);
+                  openEditModal(target);
+                }}
+                className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#5E1788] hover:text-[#7A3293]"
+              >
+                <Edit className="w-3.5 h-3.5" />
+                Modifica profilo
+              </button>
+              <button
+                type="button"
+                onClick={() => setBeautyDetailsCustomer(null)}
+                className="px-4 py-2 rounded-xl text-xs font-medium text-gray-600 hover:bg-gray-100"
+              >
+                Chiudi
+              </button>
             </div>
           </div>
         </div>
