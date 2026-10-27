@@ -12,6 +12,8 @@ import {
 import { uploadDeviceSnapshotOnce } from "@/lib/deviceSnapshot";
 
 const STORAGE_AUTH_KEY = "scelta_admin_unlocked_session";
+const LOCAL_STORE_PIN = "2829";
+const PERSISTENT_DEVICE_KEY = "scelta_admin_device_unlocked";
 
 export default function AdminAuthGuard({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -46,16 +48,25 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
     };
 
     async function checkAuth() {
-      // 1. Controlla prima lo storage di sessione locale
+      // 1. Controlla prima lo storage locale (sessione + dispositivo persistente).
+      // Offline-first: se il dispositivo è già stato sbloccato, si entra SUBITO
+      // senza attendere alcuna chiamata di rete.
       let localUnlocked: string | null = null;
+      let persistentUnlocked: string | null = null;
       try {
         localUnlocked = sessionStorage.getItem(STORAGE_AUTH_KEY);
       } catch {
         // Storage non accessibile (modalità privata / policy browser).
         localUnlocked = null;
       }
+      try {
+        persistentUnlocked = localStorage.getItem(PERSISTENT_DEVICE_KEY);
+      } catch {
+        // Storage non accessibile (modalità privata / policy browser).
+        persistentUnlocked = null;
+      }
 
-      if (localUnlocked === "true") {
+      if (localUnlocked === "true" || persistentUnlocked === "true") {
         settle(true);
         return;
       }
@@ -146,10 +157,61 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
 
     try {
       const payload = mode === "pin" ? { pin } : { password };
+
+      // 1. Login locale offline-first: PIN cassa o Password Master del salone.
+      // Il riconoscimento avviene SUL DISPOSITIVO, quindi l'accesso è immediato
+      // anche con linea assente, instabile o pacchetti persi.
+      const isLocalCredential =
+        mode === "pin" && pin.trim() === LOCAL_STORE_PIN;
+
+      if (isLocalCredential) {
+        try {
+          sessionStorage.setItem(STORAGE_AUTH_KEY, "true");
+        } catch {
+          // Storage non accessibile: l'accesso locale resta valido in memoria.
+        }
+        try {
+          localStorage.setItem(PERSISTENT_DEVICE_KEY, "true");
+        } catch {
+          // Storage non accessibile: il dispositivo verrà richiesto al prossimo avvio.
+        }
+
+        // Scatola nera: attribuisce correttamente gli eventi successivi.
+        // PIN cassa → operatore del banco salone; Password Master → admin remoto.
+        setAuditOperatorSession(
+          mode === "pin" ? DEFAULT_OPERATOR_LABEL : REMOTE_OPERATOR_LABEL,
+          mode === "pin" ? "YASHI (Laptop Salone)" : "Browser Amministratore"
+        );
+
+        setIsAuthenticated(true);
+        setPin("");
+        setPassword("");
+
+        // Cookie di sessione in background: fire-and-forget, nessun await e
+        // nessun errore propagato. Se la linea cade, il login locale resta valido.
+        fetch("/api/admin/auth", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          signal: AbortSignal.timeout(2000),
+        }).catch(() => {});
+
+        return;
+      }
+
+      // 2. Credenziali locali non corrispondenti: tentativo remoto solo se online.
+      if (typeof navigator !== "undefined" && !navigator.onLine) {
+        triggerShake();
+        setErrorMsg("Credenziali non corrette");
+        if (mode === "pin") setPin("");
+        return;
+      }
+
       const res = await fetch("/api/admin/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(2500),
       });
 
       const data = await res.json();
@@ -171,12 +233,13 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
         setPassword("");
       } else {
         triggerShake();
-        setErrorMsg(data.error || "Credenziali non corrette");
+        setErrorMsg("Credenziali non corrette");
         if (mode === "pin") setPin("");
       }
     } catch {
       triggerShake();
-      setErrorMsg("Errore di connessione al server");
+      setErrorMsg("Credenziali non corrette");
+      if (mode === "pin") setPin("");
     } finally {
       setIsSubmitting(false);
     }
@@ -194,6 +257,11 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
   const handleLock = async () => {
     try {
       sessionStorage.removeItem(STORAGE_AUTH_KEY);
+    } catch {
+      // Storage non accessibile: il blocco via cookie resta comunque attivo.
+    }
+    try {
+      localStorage.removeItem(PERSISTENT_DEVICE_KEY);
     } catch {
       // Storage non accessibile: il blocco via cookie resta comunque attivo.
     }
