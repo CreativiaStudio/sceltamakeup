@@ -19,9 +19,19 @@ interface OrdersPatchBody {
   status?: SceltaAdminOrder["status"];
 }
 
+function isValidOrder(o: unknown): o is SceltaAdminOrder {
+  return (
+    !!o &&
+    typeof o === "object" &&
+    typeof (o as SceltaAdminOrder).id === "string" &&
+    (o as SceltaAdminOrder).id.trim().length > 0 &&
+    Array.isArray((o as SceltaAdminOrder).items)
+  );
+}
+
 export async function GET() {
   try {
-    const orders = await getCentralOrders();
+    const orders = (await getCentralOrders()).filter(isValidOrder);
     return NextResponse.json({
       success: true,
       orders,
@@ -37,20 +47,21 @@ export async function POST(req: Request) {
   try {
     const body = (await req.json().catch(() => ({}))) as OrdersPostBody;
 
-    if (body.order && typeof body.order === "object") {
+    if (isValidOrder(body.order)) {
       const updatedOrders = await saveCentralOrder(body.order);
       return NextResponse.json({
         success: true,
-        orders: updatedOrders,
+        orders: updatedOrders.filter(isValidOrder),
         updatedAt: new Date().toISOString(),
       });
     }
 
-    if (Array.isArray(body.orders) && body.orders.length > 0) {
-      const updatedOrders = await saveCentralOrders(body.orders);
+    const validOrders = Array.isArray(body.orders) ? body.orders.filter(isValidOrder) : [];
+    if (validOrders.length > 0) {
+      const updatedOrders = await saveCentralOrders(validOrders);
       return NextResponse.json({
         success: true,
-        orders: updatedOrders,
+        orders: updatedOrders.filter(isValidOrder),
         updatedAt: new Date().toISOString(),
       });
     }

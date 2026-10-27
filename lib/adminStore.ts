@@ -1101,10 +1101,12 @@ export async function syncAdminStoreFromCloud(): Promise<boolean> {
           const map = new Map<string, SceltaAdminOrder>();
           // Cloud orders are the primary source of truth
           for (const co of cloudOrders) {
+            if (!co || typeof co.id !== "string" || !Array.isArray(co.items)) continue;
             map.set(co.id, co);
           }
           // Preserve any locally created orders not yet on cloud and push them up
           for (const lo of state.orders) {
+            if (!lo || typeof lo.id !== "string") continue;
             if (
               lo.fulfillmentType !== "pos_receipt" &&
               (lo.customerEmail === "banco@sceltamakeup.it" ||
@@ -1957,7 +1959,18 @@ export async function batchUpdateProductVariants(
  */
 export function getAdminOrders(): SceltaAdminOrder[] {
   const state = getAdminStoreState();
-  return [...state.orders].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  const rawOrders: unknown[] = Array.isArray(state.orders) ? state.orders : [];
+  // Ordini incompleti (es. salvati durante uno spegnimento brusco o arrivati dal cloud
+  // senza righe) non devono mai far crashare il cockpit.
+  return rawOrders
+    .filter((o): o is SceltaAdminOrder => !!o && typeof o === "object" && typeof (o as SceltaAdminOrder).id === "string")
+    .map((o) => ({
+      ...o,
+      items: Array.isArray(o.items) ? o.items.filter((i) => !!i && typeof i === "object") : [],
+      total: Number.isFinite(Number(o.total)) ? Number(o.total) : 0,
+      customerName: o.customerName ?? "",
+    }))
+    .sort((a, b) => (new Date(b.createdAt).getTime() || 0) - (new Date(a.createdAt).getTime() || 0));
 }
 
 /**
@@ -2321,8 +2334,8 @@ export interface AdminKpiSummary {
 
 export function getAdminKpis(): AdminKpiSummary {
   const state = getAdminStoreState();
-  const orders = state.orders;
-  const stocks = Object.values(state.variantStocks);
+  const orders = getAdminOrders();
+  const stocks = Object.values(state.variantStocks ?? {}).filter(Boolean);
 
   let totalRevenue = 0;
   let pendingOrdersCount = 0;
