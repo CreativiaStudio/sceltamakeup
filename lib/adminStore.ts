@@ -131,6 +131,7 @@ export function sanitizeProductOverrides(
 const CATALOG_OVERRIDES_API = "/api/catalog/overrides";
 const CATALOG_STOCK_API = "/api/catalog/stock";
 const ORDERS_API = "/api/admin/orders";
+const CUSTOMERS_API = "/api/admin/customers";
 
 // ------------------------------------------------------------------------------
 // Interface Contracts (PROJECT.md)
@@ -1124,6 +1125,47 @@ export async function syncAdminStoreFromCloud(): Promise<boolean> {
           );
           if (JSON.stringify(merged) !== JSON.stringify(state.orders)) {
             state.orders = merged;
+            changed = true;
+          }
+        }
+      }
+    } catch {
+      // Offline fallback
+    }
+
+    // Reconcile centralized cloud CRM customers & beauty profiling
+    try {
+      const customersRes = await fetch(CUSTOMERS_API, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+      });
+      if (customersRes.ok) {
+        const customersPayload = (await customersRes.json()) as {
+          success?: boolean;
+          customers?: SceltaCrmCustomer[];
+        };
+        if (customersPayload?.success && Array.isArray(customersPayload.customers)) {
+          const cloudCustomers = customersPayload.customers;
+          const map = new Map<string, SceltaCrmCustomer>();
+          // Cloud customers are the primary source of truth
+          for (const cc of cloudCustomers) {
+            if (cc && typeof cc === "object" && cc.id) map.set(cc.id, cc);
+          }
+          // Preserve any locally created customer not yet on cloud and push it up
+          const localCustomers = Array.isArray(state.customers) ? state.customers : [];
+          for (const localCust of localCustomers) {
+            if (!localCust || typeof localCust !== "object" || !localCust.id) continue;
+            if (!map.has(localCust.id)) {
+              map.set(localCust.id, localCust);
+              postCatalogUpdate(CUSTOMERS_API, { customer: localCust });
+            }
+          }
+          const mergedCustomers = Array.from(map.values()).sort(
+            (a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime()
+          );
+          if (JSON.stringify(mergedCustomers) !== JSON.stringify(localCustomers)) {
+            state.customers = mergedCustomers;
             changed = true;
           }
         }
@@ -2141,6 +2183,7 @@ export function createAdminCustomer(
 
   state.customers = [newCustomer, ...state.customers];
   saveAdminStoreState(state);
+  postCatalogUpdate(CUSTOMERS_API, { customer: newCustomer });
 
   logAdminActivity({
     category: "crm",
@@ -2202,6 +2245,7 @@ export function updateAdminCustomer(
 
   state.customers[index] = merged;
   saveAdminStoreState(state);
+  postCatalogUpdate(CUSTOMERS_API, { customer: merged });
 
   logAdminActivity({
     category: "crm",
@@ -2229,6 +2273,16 @@ export function deleteAdminCustomer(customerId: string): boolean {
 
   const [removed] = state.customers.splice(index, 1);
   saveAdminStoreState(state);
+
+  // Rimozione cloud best-effort (fire-and-forget). Se la rete manca il DELETE
+  // non viene ritentato: la scheda ricomparirà al prossimo sync cloud.
+  try {
+    fetch(`${CUSTOMERS_API}?id=${encodeURIComponent(customerId)}`, {
+      method: "DELETE",
+    }).catch(() => {});
+  } catch {
+    /* Ignore network/hardware errors during background sync */
+  }
 
   logAdminActivity({
     category: "crm",

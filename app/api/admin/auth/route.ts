@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
+// La verifica di sessione deve sempre leggere il cookie a runtime:
+// nessuna cache statica su CDN/edge (evita 401/stati stale sul laptop salone).
+export const dynamic = "force-dynamic";
+
 const DEFAULT_PIN = "2829"; // Via dei Pellegrini 28/29, Napoli
 const DEFAULT_MASTER = "%sceltamakeup%2026";
 const AUTH_COOKIE_NAME = "scelta_admin_session";

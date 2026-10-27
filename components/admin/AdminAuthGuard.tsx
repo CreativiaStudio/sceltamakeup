@@ -25,33 +25,76 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
 
   // Verifica sessione all'avvio
   useEffect(() => {
+    let isSettled = false;
+
+    // Timer di sicurezza tassativo: se entro 3 secondi lo stato è ancora
+    // indeterminato, si mostra SEMPRE il tastierino PIN (2829) del salone.
+    // Il cockpit non deve mai restare bloccato su "Verifica Sicurezza Cockpit...".
+    const safetyTimer = setTimeout(() => {
+      if (!isSettled) {
+        isSettled = true;
+        setIsAuthenticated(false);
+      }
+    }, 3000);
+
+    // Chiude la verifica una sola volta e spegne il timer di sicurezza.
+    const settle = (authenticated: boolean) => {
+      if (isSettled) return;
+      isSettled = true;
+      clearTimeout(safetyTimer);
+      setIsAuthenticated(authenticated);
+    };
+
     async function checkAuth() {
       // 1. Controlla prima lo storage di sessione locale
-      const localUnlocked = sessionStorage.getItem(STORAGE_AUTH_KEY);
+      let localUnlocked: string | null = null;
+      try {
+        localUnlocked = sessionStorage.getItem(STORAGE_AUTH_KEY);
+      } catch {
+        // Storage non accessibile (modalità privata / policy browser).
+        localUnlocked = null;
+      }
+
       if (localUnlocked === "true") {
-        setIsAuthenticated(true);
+        settle(true);
         return;
       }
 
       // 2. Controlla il cookie di sessione HTTP
       try {
-        const res = await fetch("/api/admin/auth");
-        if (res.ok) {
-          const data = await res.json();
-          if (data.authenticated) {
+        const res = await fetch("/api/admin/auth", {
+          cache: "no-store",
+          signal: AbortSignal.timeout(2500),
+        });
+
+        // 401 (o qualunque risposta non OK) → tastierino PIN immediato.
+        if (!res.ok) {
+          settle(false);
+          return;
+        }
+
+        const data = await res.json();
+        if (data.authenticated) {
+          try {
             sessionStorage.setItem(STORAGE_AUTH_KEY, "true");
-            setIsAuthenticated(true);
-            return;
+          } catch {
+            // Storage non accessibile: la sessione via cookie resta valida.
           }
+          settle(true);
+          return;
         }
       } catch {
-        // Ignora
+        // Fetch fallita o in timeout: si prosegue verso il tastierino PIN.
       }
 
-      setIsAuthenticated(false);
+      settle(false);
     }
 
     checkAuth();
+
+    return () => {
+      clearTimeout(safetyTimer);
+    };
   }, []);
 
   // Telemetria Scatola Nera: qualunque eccezione runtime non gestita sul
@@ -112,7 +155,11 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
       const data = await res.json();
 
       if (res.ok && data.success) {
-        sessionStorage.setItem(STORAGE_AUTH_KEY, "true");
+        try {
+          sessionStorage.setItem(STORAGE_AUTH_KEY, "true");
+        } catch {
+          // Storage non accessibile: la sessione via cookie HTTP resta valida.
+        }
         // Scatola nera: attribuisce correttamente gli eventi successivi.
         // PIN cassa → operatore del banco salone; Password Master → admin remoto.
         setAuditOperatorSession(
@@ -145,7 +192,11 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
   }, [pin, mode, handleLogin]);
 
   const handleLock = async () => {
-    sessionStorage.removeItem(STORAGE_AUTH_KEY);
+    try {
+      sessionStorage.removeItem(STORAGE_AUTH_KEY);
+    } catch {
+      // Storage non accessibile: il blocco via cookie resta comunque attivo.
+    }
     try {
       await fetch("/api/admin/auth", { method: "DELETE" });
     } catch {
