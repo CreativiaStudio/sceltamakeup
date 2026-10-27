@@ -16,7 +16,14 @@ const LOCAL_STORE_PIN = "2829";
 const PERSISTENT_DEVICE_KEY = "scelta_admin_device_unlocked";
 
 export default function AdminAuthGuard({ children }: { children: React.ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      if (sessionStorage.getItem(STORAGE_AUTH_KEY) === "true") return true;
+      if (localStorage.getItem(PERSISTENT_DEVICE_KEY) === "true") return true;
+    } catch {}
+    return false;
+  });
   const [mode, setMode] = useState<"pin" | "password">("pin");
   const [pin, setPin] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -275,19 +282,7 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
     setPassword("");
   };
 
-  // Schermata di caricamento iniziale
-  if (isAuthenticated === null) {
-    return (
-      <div className="min-h-screen bg-[#FAF7FC] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-3 border-[#5E1788] border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs font-semibold text-[#5E1788] tracking-wider uppercase">
-            Verifica Sicurezza Cockpit...
-          </span>
-        </div>
-      </div>
-    );
-  }
+  // Zero-wait offline first: schermata di verifica eliminata
 
   // Se autenticato, mostra il cockpit con il tasto rapido di blocco schermo
   if (isAuthenticated) {
