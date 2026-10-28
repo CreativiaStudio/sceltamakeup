@@ -81,7 +81,7 @@ export default function CartDrawer() {
     <>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/40 backdrop-blur-xs z-50 transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-black/50 backdrop-blur-xs z-[100] transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={closeCart}
@@ -93,7 +93,7 @@ export default function CartDrawer() {
         role="dialog"
         aria-modal="true"
         aria-label="Carrello della Spesa"
-        className={`fixed inset-y-0 right-0 max-w-full w-full sm:w-[460px] bg-white shadow-2xl z-50 flex flex-col transition-transform duration-300 ease-out transform ${
+        className={`fixed inset-y-0 right-0 max-w-full w-full sm:w-[460px] bg-white shadow-2xl z-[101] flex flex-col transition-transform duration-300 ease-out transform ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -259,7 +259,7 @@ export default function CartDrawer() {
 
         {/* Footer Summary, Coupon Box & Checkout */}
         {items.length > 0 && (
-          <div className="p-6 border-t border-[#D8C2E7]/40 bg-[#FAF7FC] space-y-4">
+          <div className="p-5 sm:p-6 pb-8 sm:pb-6 border-t border-[#D8C2E7]/40 bg-[#FAF7FC] space-y-3.5 shrink-0 shadow-lg">
             {/* Box Codice Sconto / Coupon */}
             <div className="bg-white rounded-xl p-3 border border-[#D8C2E7]/60 shadow-xs space-y-2">
               {appliedCoupon ? (

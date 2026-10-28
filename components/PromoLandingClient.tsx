@@ -45,6 +45,7 @@ export default function PromoLandingClient({
   const applyCoupon = useCartStore((state) => state.applyCoupon);
   const addItem = useCartStore((state) => state.addItem);
   const openCart = useCartStore((state) => state.openCart);
+  const isCartOpen = useCartStore((state) => state.isOpen);
   const cartItems = useCartStore((state) => state.items);
   const getTotalPrice = useCartStore((state) => state.getTotalPrice);
   const getDiscountAmount = useCartStore((state) => state.getDiscountAmount);
@@ -111,7 +112,7 @@ export default function PromoLandingClient({
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7FC] text-[#1F1B24] pb-24 sm:pb-16 selection:bg-[#5E1788] selection:text-white">
+    <div className="min-h-screen bg-[#FAF7FC] text-[#1F1B24] pb-36 sm:pb-24 selection:bg-[#5E1788] selection:text-white">
       {/* Top Banner Announcement */}
       <div className="bg-gradient-to-r from-[#5E1788] via-[#7A3293] to-[#5E1788] text-white text-xs py-2.5 px-4 text-center font-medium shadow-xs">
         <div className="max-w-4xl mx-auto flex items-center justify-center gap-2">
@@ -380,30 +381,34 @@ export default function PromoLandingClient({
       </div>
 
       {/* Floating Bottom Cart Bar (Mobile & Desktop) */}
-      {cartCount > 0 && (
-        <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-8 sm:w-96 z-40 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-[#5E1788]/30 flex items-center justify-between gap-3 animate-in slide-in-from-bottom duration-300">
-          <div>
-            <span className="text-[11px] font-bold text-neutral-500 uppercase block">
-              Carrello ({cartCount} {cartCount === 1 ? "articolo" : "articoli"})
+      {cartCount > 0 && !isCartOpen && (
+        <div className="fixed bottom-4 left-3 right-3 sm:left-auto sm:right-8 sm:w-[400px] z-40 bg-white/95 backdrop-blur-md rounded-2xl p-3.5 sm:p-4 shadow-2xl border border-[#5E1788]/30 flex items-center justify-between gap-3 animate-in slide-in-from-bottom duration-300">
+          <button
+            type="button"
+            onClick={openCart}
+            className="flex flex-col text-left cursor-pointer group"
+          >
+            <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider block group-hover:text-[#5E1788] transition-colors">
+              Carrello ({cartCount} {cartCount === 1 ? "art." : "art."}) • Vedi dettagli
             </span>
-            <div className="flex items-center gap-1.5">
-              <span className="text-lg font-serif font-bold text-[#5E1788]">
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <span className="text-base sm:text-lg font-serif font-bold text-[#5E1788]">
                 €{finalCartTotal.toFixed(2)}
               </span>
               {discountAmount > 0 && (
-                <span className="text-xs text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">
+                <span className="text-[11px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
                   -€{discountAmount.toFixed(2)}
                 </span>
               )}
             </div>
-          </div>
+          </button>
 
           <Link
             href="/checkout"
-            className="px-5 py-3 rounded-xl bg-gradient-to-r from-[#5E1788] to-[#7A3293] text-white text-xs font-bold uppercase tracking-wider hover:shadow-lg transition-all flex items-center gap-1.5 shadow-md"
+            className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-[#5E1788] via-[#7A3293] to-[#5E1788] text-white text-xs font-bold uppercase tracking-wider hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-1.5 shadow-md shrink-0 cursor-pointer"
           >
             <span>Vai al Checkout</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
       )}
