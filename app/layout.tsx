@@ -8,6 +8,7 @@ import CartDrawer from "@/components/CartDrawer";
 import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
 import CookieBanner from "@/components/CookieBanner";
 import VisitTrackerClient from "@/components/VisitTrackerClient";
+import PromoBannerListener from "@/components/PromoBannerListener";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -101,6 +102,9 @@ export default function RootLayout({
         <WhatsAppFloatingButton />
         <CookieBanner />
         <VisitTrackerClient />
+        <Suspense fallback={null}>
+          <PromoBannerListener />
+        </Suspense>
       </body>
     </html>
   );

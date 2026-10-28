@@ -11,6 +11,7 @@ import {
   Lock,
   ArrowLeft,
   Sparkles,
+  Tag,
 } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 
@@ -27,6 +28,8 @@ export default function CheckoutPage() {
   const getTotalPrice = useCartStore((state) => state.getTotalPrice);
   const getShippingProgress = useCartStore((state) => state.getShippingProgress);
   const clearCart = useCartStore((state) => state.clearCart);
+  const appliedCoupon = useCartStore((state) => state.appliedCoupon);
+  const getDiscountAmount = useCartStore((state) => state.getDiscountAmount);
 
   const [deliveryMethod, setDeliveryMethod] = useState<"shipping" | "boutique">("shipping");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
@@ -49,12 +52,13 @@ export default function CheckoutPage() {
   if (!mounted) return null;
 
   const subtotal = getTotalPrice();
+  const discountAmount = getDiscountAmount();
   const shippingInfo = getShippingProgress();
   const shippingCost =
     deliveryMethod === "boutique" || shippingInfo.isFree || items.length === 0
       ? 0
       : 4.90;
-  const total = subtotal + shippingCost;
+  const total = Math.max(0, subtotal - discountAmount) + shippingCost;
 
   const buildOrderInput = () => {
     const orderItems: OrderItem[] = items.map((item) => ({
@@ -160,6 +164,8 @@ export default function CheckoutPage() {
           deliveryMethod: orderInput.deliveryMethod,
           paymentMethod: orderInput.paymentMethod,
           shippingCost: orderInput.shippingCost,
+          couponCode: appliedCoupon?.code,
+          discountAmount,
           total: orderInput.total,
         }),
       });
@@ -490,6 +496,17 @@ export default function CheckoutPage() {
                   €{subtotal.toFixed(2)}
                 </span>
               </div>
+              {appliedCoupon && discountAmount > 0 && (
+                <div className="flex justify-between text-emerald-700 bg-emerald-50 px-2.5 py-1.5 rounded-xl border border-emerald-200">
+                  <span className="font-medium flex items-center gap-1.5">
+                    <Tag className="h-3.5 w-3.5" />
+                    Coupon <strong className="font-mono">{appliedCoupon.code}</strong>
+                  </span>
+                  <span className="font-bold">
+                    -€{discountAmount.toFixed(2)}
+                  </span>
+                </div>
+              )}
               <div className="flex justify-between text-neutral-600">
                 <span>Spedizione</span>
                 <span className="font-medium">

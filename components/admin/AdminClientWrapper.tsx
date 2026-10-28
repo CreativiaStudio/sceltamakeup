@@ -22,6 +22,7 @@ import ActivityLogTab from "./ActivityLogTab";
 import QuickScanBarcodeModal from "./QuickScanBarcodeModal";
 import CatalogSyncIndicator from "./CatalogSyncIndicator";
 import ServicesManagementTab from "./ServicesManagementTab";
+import CouponsManagementTab from "./CouponsManagementTab";
 import { AdminTab } from "@/types/admin";
 import { startAuditOutboxAutoFlush } from "@/lib/auditLogger";
 import {
@@ -39,6 +40,7 @@ const VALID_TABS: AdminTab[] = [
   "spedizioni",
   "clienti",
   "pacchetti",
+  "promozioni",
   "appuntamenti",
   "notifiche",
   "registro",
@@ -121,6 +123,8 @@ export default function AdminClientWrapper() {
         return "Clienti & CRM Omnichannel";
       case "pacchetti":
         return "Pacchetti & Servizi Web (/prenota)";
+      case "promozioni":
+        return "Coupon Promozionali & Locandine QR";
       case "appuntamenti":
         return "Appuntamenti Cabina & Cassa RT";
       case "notifiche":
@@ -249,6 +253,8 @@ export default function AdminClientWrapper() {
           {activeTab === "clienti" && <CrmTable />}
 
           {activeTab === "pacchetti" && <ServicesManagementTab />}
+
+          {activeTab === "promozioni" && <CouponsManagementTab />}
 
           {activeTab === "appuntamenti" && <AppointmentsBridgeTab />}
 

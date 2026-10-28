@@ -2,9 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
 import type { DeliveryMethod, PaymentMethod } from "@/types/order";
+import {
+  validateCouponForCart,
+  incrementCouponUsage,
+} from "@/lib/serverCouponStore";
 
 interface CheckoutItemInput {
   name: string;
+  brand?: string;
+  category?: string;
   price: number;
   quantity: number;
   image?: string;
@@ -29,6 +35,7 @@ interface CheckoutRequestBody {
   paymentMethod: PaymentMethod;
   shippingCost: number;
   total: number;
+  couponCode?: string;
 }
 
 function toCents(euros: number): number {
@@ -53,7 +60,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Corpo richiesta non valido" }, { status: 400 });
   }
 
-  const { items, customer, deliveryMethod, paymentMethod, shippingCost } = body;
+  const { items, customer, deliveryMethod, paymentMethod, shippingCost, couponCode } = body;
 
   if (!Array.isArray(items) || items.length === 0) {
     return NextResponse.json({ error: "Carrello vuoto" }, { status: 400 });
@@ -64,17 +71,46 @@ export async function POST(req: NextRequest) {
 
   const origin = req.nextUrl.origin;
 
-  const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => ({
-    price_data: {
-      currency: "eur",
-      unit_amount: toCents(item.price),
-      product_data: {
-        name: item.shade ? `${item.name} — ${item.shade}` : item.name,
-        images: absoluteUrl(item.image, origin) ? [absoluteUrl(item.image, origin)!] : undefined,
+  // Validazione coupon server-side
+  let validatedDiscount = 0;
+  let validCouponCode: string | undefined = undefined;
+
+  if (couponCode && typeof couponCode === "string" && couponCode.trim()) {
+    const val = await validateCouponForCart(couponCode.trim(), items);
+    if (val.valid && val.discountAmount > 0) {
+      validatedDiscount = val.discountAmount;
+      validCouponCode = val.coupon?.code;
+      await incrementCouponUsage(couponCode.trim());
+    }
+  }
+
+  // Calcolo ripartizione sconto sui prodotti eleggibili
+  const subtotalBeforeDiscount = items.reduce((s, i) => s + i.price * i.quantity, 0);
+  const discountRatio =
+    subtotalBeforeDiscount > 0
+      ? Math.max(0, 1 - validatedDiscount / subtotalBeforeDiscount)
+      : 1;
+
+  const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => {
+    // Se è presente uno sconto valido, il prezzo unitario riflette lo sconto
+    const netPrice = validatedDiscount > 0 ? item.price * discountRatio : item.price;
+
+    return {
+      price_data: {
+        currency: "eur",
+        unit_amount: toCents(netPrice),
+        product_data: {
+          name: validCouponCode
+            ? `${item.shade ? `${item.name} — ${item.shade}` : item.name} [Promo ${validCouponCode}]`
+            : item.shade
+            ? `${item.name} — ${item.shade}`
+            : item.name,
+          images: absoluteUrl(item.image, origin) ? [absoluteUrl(item.image, origin)!] : undefined,
+        },
       },
-    },
-    quantity: item.quantity,
-  }));
+      quantity: item.quantity,
+    };
+  });
 
   if (shippingCost > 0) {
     lineItems.push({
@@ -105,6 +141,8 @@ export async function POST(req: NextRequest) {
         deliveryMethod,
         paymentMethod,
         itemsSummary,
+        couponCode: validCouponCode || "",
+        discountAmount: String(validatedDiscount),
       },
       shipping_address_collection:
         deliveryMethod === "shipping" ? { allowed_countries: ["IT"] } : undefined,

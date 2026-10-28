@@ -13,6 +13,7 @@ import {
   BarChart3,
   ExternalLink,
   Sparkles,
+  Tag,
   X,
   Store,
   History,
@@ -89,6 +90,14 @@ export default function AdminSidebar({
       icon: Sparkles,
       badge: "Sito Web",
       badgeColor: "bg-purple-100 text-[#5E1788] border-purple-200",
+      category: "Store & Servizi",
+    },
+    {
+      id: "promozioni",
+      label: "Coupon & Locandine QR",
+      icon: Tag,
+      badge: "Promo",
+      badgeColor: "bg-pink-100 text-[#D462A6] border-pink-200",
       category: "Store & Servizi",
     },
     {

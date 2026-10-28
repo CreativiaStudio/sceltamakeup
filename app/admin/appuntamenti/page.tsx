@@ -23,6 +23,8 @@ import QuickScanBarcodeModal from "@/components/admin/QuickScanBarcodeModal";
 import { Appointment } from "@/types/booking";
 import { SERVICES } from "@/data/services";
 import ServicesManagementTab from "@/components/admin/ServicesManagementTab";
+import CouponsManagementTab from "@/components/admin/CouponsManagementTab";
+import { Tag } from "lucide-react";
 import { useServicesSync } from "@/lib/servicesStore";
 import {
   getAllAppointments,
@@ -40,7 +42,7 @@ export default function AdminAppuntamentiPage() {
   );
   const [selectedOperator, setSelectedOperator] = useState<"all" | "op-federica-cesiano" | "op-beauty-cabina">("all");
   const [blockedRevision, setBlockedRevision] = useState<number>(0);
-  const [activeTab, setActiveTab] = useState<"appuntamenti" | "disponibilita" | "notifiche" | "pacchetti">("appuntamenti");
+  const [activeTab, setActiveTab] = useState<"appuntamenti" | "disponibilita" | "notifiche" | "pacchetti" | "promozioni">("appuntamenti");
   const { services: liveServices } = useServicesSync();
 
   // Support direct linking via ?tab=pacchetti
@@ -48,8 +50,8 @@ export default function AdminAppuntamentiPage() {
     if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
       const tabParam = urlParams.get("tab");
-      if (tabParam === "pacchetti" || tabParam === "disponibilita" || tabParam === "notifiche") {
-        setActiveTab(tabParam as "appuntamenti" | "disponibilita" | "notifiche" | "pacchetti");
+      if (tabParam === "pacchetti" || tabParam === "disponibilita" || tabParam === "notifiche" || tabParam === "promozioni") {
+        setActiveTab(tabParam as "appuntamenti" | "disponibilita" | "notifiche" | "pacchetti" | "promozioni");
       }
     }
   }, []);
@@ -461,6 +463,17 @@ export default function AdminAppuntamentiPage() {
             📡 Canali Notifiche & Coda
           </button>
           <button
+            onClick={() => setActiveTab("promozioni")}
+            className={`py-2.5 px-4 font-bold text-xs border-b-2 transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === "promozioni"
+                ? "border-[#5E1788] text-[#5E1788]"
+                : "border-transparent text-[#1F1B24]/60 hover:text-[#1F1B24]"
+            }`}
+          >
+            <Tag className="w-3.5 h-3.5 text-[#D462A6]" />
+            🏷️ Coupon & Locandine QR
+          </button>
+          <button
             onClick={() => setActiveTab("pacchetti")}
             className={`py-2.5 px-4 font-bold text-xs border-b-2 transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === "pacchetti"
@@ -472,6 +485,13 @@ export default function AdminAppuntamentiPage() {
             ✨ Pacchetti & Servizi Web
           </button>
         </div>
+
+        {/* TAB 5: COUPON & LOCANDINE QR */}
+        {activeTab === "promozioni" && (
+          <div className="space-y-4">
+            <CouponsManagementTab />
+          </div>
+        )}
 
         {/* TAB 4: PACCHETTI & SERVIZI WEB */}
         {activeTab === "pacchetti" && (
