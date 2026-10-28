@@ -43,9 +43,7 @@ export default function QrCodeLocandinaModal({
   const printRef = useRef<HTMLDivElement>(null);
 
   const targetUrl = typeof window !== "undefined" && coupon
-    ? coupon.scope === "products" || coupon.slug
-      ? `${window.location.origin}/promo/${coupon.slug || coupon.code.toLowerCase()}`
-      : `${window.location.origin}/?coupon=${coupon.code}`
+    ? `${window.location.origin}/promo/${coupon.slug || coupon.code.toLowerCase()}`
     : "";
 
   useEffect(() => {
@@ -53,10 +51,7 @@ export default function QrCodeLocandinaModal({
 
     const generateQr = async () => {
       try {
-        const urlToEncode =
-          coupon.scope === "products" || coupon.slug
-            ? `https://www.sceltamakeup.it/promo/${coupon.slug || coupon.code.toLowerCase()}`
-            : `https://www.sceltamakeup.it/?coupon=${coupon.code}`;
+        const urlToEncode = `https://www.sceltamakeup.it/promo/${coupon.slug || coupon.code.toLowerCase()}`;
 
         const dataUrl = await QRCode.toDataURL(urlToEncode, {
           width: 1024,

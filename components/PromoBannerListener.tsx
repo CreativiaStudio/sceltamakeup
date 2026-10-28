@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Sparkles, X, ShoppingBag } from "lucide-react";
+import { Sparkles, X, ShoppingBag, ArrowRight } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 
 export default function PromoBannerListener() {
@@ -48,6 +49,15 @@ export default function PromoBannerListener() {
           <p className="text-[#D8C2E7] mt-0.5 font-light">{displayMessage}</p>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
+          {appliedCoupon && (
+            <Link
+              href={`/promo/${appliedCoupon.slug || appliedCoupon.code.toLowerCase()}`}
+              className="flex items-center gap-1 rounded-lg bg-pink-100 px-2.5 py-1.5 text-[11px] font-bold text-[#5E1788] shadow-sm hover:bg-white transition active:scale-95 cursor-pointer"
+            >
+              <span>Vedi Prodotti</span>
+              <ArrowRight className="h-3 w-3" />
+            </Link>
+          )}
           <button
             type="button"
             onClick={openCart}

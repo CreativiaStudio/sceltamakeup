@@ -115,10 +115,7 @@ export default function CouponsManagementTab() {
 
   const handleCopySmartLink = (c: PromoCoupon) => {
     const base = typeof window !== "undefined" ? window.location.origin : "https://www.sceltamakeup.it";
-    const link =
-      c.scope === "products" || c.slug
-        ? `${base}/promo/${c.slug || c.code.toLowerCase()}`
-        : `${base}/?coupon=${c.code}`;
+    const link = `${base}/promo/${c.slug || c.code.toLowerCase()}`;
 
     navigator.clipboard.writeText(link);
     setCopiedCode(c.code);
@@ -127,10 +124,7 @@ export default function CouponsManagementTab() {
 
   const handleWhatsAppShare = (c: PromoCoupon) => {
     const base = typeof window !== "undefined" ? window.location.origin : "https://www.sceltamakeup.it";
-    const link =
-      c.scope === "products" || c.slug
-        ? `${base}/promo/${c.slug || c.code.toLowerCase()}`
-        : `${base}/?coupon=${c.code}`;
+    const link = `${base}/promo/${c.slug || c.code.toLowerCase()}`;
 
     const text = `Ciao cara! Ecco il tuo link promozionale per "${c.name}" su Scelta Makeup:\n${link}\n\nLo sconto si attiva subito al carrello! ✨\nFederica - Scelta Makeup Napoli`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");

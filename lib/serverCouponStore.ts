@@ -51,6 +51,7 @@ export const INITIAL_DEMO_COUPONS: PromoCoupon[] = [
   {
     id: "cpn-diego10",
     code: "DIEGO10",
+    slug: "diego10",
     name: "10% Speciale Diego dalla Palma",
     discountType: "percentage",
     discountValue: 10,
@@ -69,6 +70,7 @@ export const INITIAL_DEMO_COUPONS: PromoCoupon[] = [
   {
     id: "cpn-benvenuto5",
     code: "BENVENUTO5",
+    slug: "benvenuto",
     name: "5€ di Benvenuto su tutto il catalogo",
     discountType: "fixed",
     discountValue: 5,
