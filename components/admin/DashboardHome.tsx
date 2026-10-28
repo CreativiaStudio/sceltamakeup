@@ -73,7 +73,7 @@ export default function DashboardHome({
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-white/20 text-[#D8C2E7] border border-white/20">
-              Cockpit E-Commerce & Atelier
+              Cockpit E-Commerce & Salone
             </span>
             <span className="text-xs text-[#D8C2E7]/90 font-medium">
               Via dei Pellegrini 28/29, Napoli
@@ -94,6 +94,13 @@ export default function DashboardHome({
           >
             <Package className="w-4 h-4" />
             <span>Gestisci Stock</span>
+          </button>
+          <button
+            onClick={() => onNavigateTab("pacchetti")}
+            className="px-4 py-2.5 rounded-xl bg-white/20 hover:bg-white text-white hover:text-[#5E1788] border border-white/30 text-xs font-semibold shadow-md transition-all flex items-center gap-2"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>Pacchetti Web</span>
           </button>
           <button
             onClick={() => onNavigateTab("ordini")}
@@ -516,7 +523,29 @@ export default function DashboardHome({
       </div>
 
       {/* Quick Module Shortcuts Banner */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Pacchetti & Servizi Web */}
+        <div
+          onClick={() => onNavigateTab("pacchetti")}
+          className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm hover:border-[#5E1788] cursor-pointer transition-all group"
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-xl bg-purple-50 text-[#5E1788] group-hover:bg-[#5E1788] group-hover:text-white transition-colors flex items-center justify-center">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-[#1F1B24]">
+                Pacchetti & Servizi Web
+              </h3>
+              <p className="text-[11px] text-gray-500">
+                Listino Salone & Online
+              </p>
+            </div>
+          </div>
+          <p className="text-xs text-gray-600">
+            Modifica prezzi, sconti, descrizioni e pacchetti speciali (feste, Halloween) sincronizzati col cloud Supabase.
+          </p>
+        </div>
         {/* Salon Appointments & RT Cash */}
         <div
           onClick={() => onNavigateTab("appuntamenti")}

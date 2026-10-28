@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
 import {
   Clock,
   CheckCircle2,
@@ -14,11 +15,15 @@ import {
   X,
   Radio,
   Filter,
+  Sparkles,
+  LayoutDashboard,
 } from "lucide-react";
 import NotificationQueueTab from "@/components/admin/NotificationQueueTab";
 import QuickScanBarcodeModal from "@/components/admin/QuickScanBarcodeModal";
 import { Appointment } from "@/types/booking";
 import { SERVICES } from "@/data/services";
+import ServicesManagementTab from "@/components/admin/ServicesManagementTab";
+import { useServicesSync } from "@/lib/servicesStore";
 import {
   getAllAppointments,
   markAppointmentPaid,
@@ -35,7 +40,19 @@ export default function AdminAppuntamentiPage() {
   );
   const [selectedOperator, setSelectedOperator] = useState<"all" | "op-federica-cesiano" | "op-beauty-cabina">("all");
   const [blockedRevision, setBlockedRevision] = useState<number>(0);
-  const [activeTab, setActiveTab] = useState<"appuntamenti" | "disponibilita" | "notifiche">("appuntamenti");
+  const [activeTab, setActiveTab] = useState<"appuntamenti" | "disponibilita" | "notifiche" | "pacchetti">("appuntamenti");
+  const { services: liveServices } = useServicesSync();
+
+  // Support direct linking via ?tab=pacchetti
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tabParam = urlParams.get("tab");
+      if (tabParam === "pacchetti" || tabParam === "disponibilita" || tabParam === "notifiche") {
+        setActiveTab(tabParam as "appuntamenti" | "disponibilita" | "notifiche" | "pacchetti");
+      }
+    }
+  }, []);
 
   // Balance checkout modal state
   const [activeCheckoutApp, setActiveCheckoutApp] = useState<Appointment | null>(null);
@@ -241,6 +258,26 @@ export default function AdminAppuntamentiPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <Link
+              href="/admin"
+              className="px-3.5 py-2 rounded-xl bg-white border border-[#D8C2E7] text-[#5E1788] text-xs font-bold hover:bg-[#FAF7FC] transition-all flex items-center gap-1.5 shadow-sm"
+              title="Torna al Cockpit Generale E-commerce"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5 text-[#5E1788]" />
+              <span className="hidden sm:inline">Cockpit Generale</span>
+            </Link>
+            <button
+              onClick={() => setActiveTab("pacchetti")}
+              className={`px-3.5 py-2 rounded-xl border text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm ${
+                activeTab === "pacchetti"
+                  ? "bg-[#5E1788] text-white border-[#5E1788]"
+                  : "bg-white border-[#D8C2E7] text-[#5E1788] hover:bg-[#FAF7FC]"
+              }`}
+              title="Gestisci pacchetti e listino prezzi salone e web"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-[#D462A6]" />
+              <span>Pacchetti & Servizi</span>
+            </button>
             <input
               type="date"
               value={selectedDate}
@@ -423,7 +460,25 @@ export default function AdminAppuntamentiPage() {
             <Radio className="w-3.5 h-3.5 text-[#D462A6]" />
             📡 Canali Notifiche & Coda
           </button>
+          <button
+            onClick={() => setActiveTab("pacchetti")}
+            className={`py-2.5 px-4 font-bold text-xs border-b-2 transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === "pacchetti"
+                ? "border-[#5E1788] text-[#5E1788]"
+                : "border-transparent text-[#1F1B24]/60 hover:text-[#1F1B24]"
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#D462A6]" />
+            ✨ Pacchetti & Servizi Web
+          </button>
         </div>
+
+        {/* TAB 4: PACCHETTI & SERVIZI WEB */}
+        {activeTab === "pacchetti" && (
+          <div className="space-y-4">
+            <ServicesManagementTab />
+          </div>
+        )}
 
         {/* TAB 1: SIMPLIFIED HOURLY AGENDA VIEW (09:30 - 20:30) */}
         {activeTab === "appuntamenti" && (
@@ -917,7 +972,7 @@ export default function AdminAppuntamentiPage() {
                   className="w-full px-3 py-2 rounded-xl border border-[#D8C2E7]/60 text-xs focus:outline-none focus:border-[#5E1788] bg-white"
                 >
                   <option value="">Seleziona trattamento...</option>
-                  {SERVICES.filter(
+                  {liveServices.filter(
                     (s) =>
                       s.active &&
                       (manualOperatorId === "op-beauty-cabina"
@@ -956,7 +1011,7 @@ export default function AdminAppuntamentiPage() {
 
               {/* Live Financial Breakdown Preview */}
               {(() => {
-                const selectedService = SERVICES.find((s) => s.id === manualServiceId);
+                const selectedService = liveServices.find((s) => s.id === manualServiceId) || SERVICES.find((s) => s.id === manualServiceId);
                 if (!selectedService) return null;
                 return (
                   <div className="bg-[#FAF7FC] p-3.5 rounded-xl border border-[#D8C2E7]/50 text-xs space-y-1.5 animate-in fade-in duration-150">
