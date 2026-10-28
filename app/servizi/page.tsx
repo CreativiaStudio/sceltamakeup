@@ -11,7 +11,9 @@ import {
   Heart,
   Lock,
 } from "lucide-react";
-import { getAllServicesWithFuture } from "@/lib/bookingService";
+import { getCentralServices } from "@/lib/serverServicesStore";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Servizi Make-up & Beauty Bar | Scelta Makeup Napoli",
@@ -19,8 +21,8 @@ export const metadata: Metadata = {
     "Scopri i nostri trattamenti make-up esclusivi a Napoli curati da Federica Cesiano. Prenota online con il 10% di sconto immediato.",
 };
 
-export default function ServiziPage() {
-  const allServices = getAllServicesWithFuture();
+export default async function ServiziPage() {
+  const allServices = await getCentralServices();
   const makeupServices = allServices.filter((s) => s.channel === "makeup");
   const beautyServices = allServices.filter((s) => s.channel === "beauty");
 

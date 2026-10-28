@@ -377,7 +377,7 @@ export default function ServicesManagementTab() {
                     className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#D8C2E7] bg-white px-3 py-2 text-xs font-semibold text-[#5E1788] transition hover:bg-[#D8C2E7]/40"
                   >
                     <ExternalLink className="h-3.5 w-3.5" />
-                    Vedi su /prenota
+                    Vedi sito
                   </a>
                   <button
                     type="button"

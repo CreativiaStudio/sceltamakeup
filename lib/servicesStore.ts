@@ -315,7 +315,14 @@ async function deliverSaveToCloud(service: ClientService): Promise<boolean> {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ service }),
     });
-    return response.ok;
+    if (response.ok) {
+      const data = await response.json();
+      if (data && data.success && Array.isArray(data.services)) {
+        writeStoredState(data.services);
+      }
+      return true;
+    }
+    return false;
   } catch {
     // Offline-first: la modifica resta salvata in locale e verrà ripresa.
     return false;
@@ -385,9 +392,15 @@ export async function deleteClientService(id: string): Promise<boolean> {
 
   if (typeof window !== "undefined") {
     try {
-      await fetch(`${SERVICES_API_ENDPOINT}?id=${encodeURIComponent(id)}`, {
+      const response = await fetch(`${SERVICES_API_ENDPOINT}?id=${encodeURIComponent(id)}`, {
         method: "DELETE",
       });
+      if (response.ok) {
+        const data = await response.json();
+        if (data && data.success && Array.isArray(data.services)) {
+          writeStoredState(data.services);
+        }
+      }
     } catch {
       /* Offline: la rimozione locale resta valida. */
     }
