@@ -84,6 +84,14 @@ export default function AdminSidebar({
       category: "Gestione Principale",
     },
     {
+      id: "pacchetti",
+      label: "Pacchetti & Servizi Web",
+      icon: Sparkles,
+      badge: "Sito Web",
+      badgeColor: "bg-purple-100 text-[#5E1788] border-purple-200",
+      category: "Store & Servizi",
+    },
+    {
       id: "appuntamenti",
       label: "Appuntamenti & Cassa RT",
       icon: Calendar,

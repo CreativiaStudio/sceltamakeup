@@ -32,7 +32,7 @@ export default function ServiziPage() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#D8C2E7]/60 text-xs font-semibold text-[#5E1788] shadow-sm mb-6">
               <Sparkles className="w-3.5 h-3.5 text-[#D462A6]" />
-              Atelier Make-Up & Beauty Bar • Napoli
+              Salone Make-Up & Beauty Bar • Napoli
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-[#1F1B24] tracking-tight max-w-4xl mx-auto leading-tight">
@@ -75,7 +75,7 @@ export default function ServiziPage() {
                 Canale 1 — Postazione Trucco Salone
               </div>
               <h2 className="text-3xl font-serif font-bold text-[#1F1B24] mt-1">
-                Servizi Make-Up & Atelier Viso
+                Servizi Make-Up & Salone Viso
               </h2>
               <p className="text-sm text-[#1F1B24]/70 mt-1">
                 Eseguiti da Federica Cesiano con cosmetici professionali Diego della Palma e Cipria Milano.

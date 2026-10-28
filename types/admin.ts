@@ -16,6 +16,7 @@ export type AdminTab =
   | "ordini"
   | "spedizioni"
   | "clienti"
+  | "pacchetti"
   | "appuntamenti"
   | "notifiche"
   | "registro"

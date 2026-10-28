@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
 import {
   Calendar as CalendarIcon,
@@ -25,6 +25,7 @@ import {
   createAppointment,
   isStoreClosedOnDate,
 } from "@/lib/bookingService";
+import { syncServicesFromCloud, getClientServices } from "@/lib/servicesStore";
 import { enqueueWhatsAppMessage } from "@/lib/whatsappQueueService";
 import { sendBookingConfirmationEmail } from "@/lib/resendService";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
@@ -64,13 +65,41 @@ interface BookingWizardProps {
 }
 
 export default function BookingWizard({ preselectedServiceId }: BookingWizardProps) {
-  const services = useMemo(() => getServices("makeup"), []);
+  const [services, setServices] = useState<Service[]>(() => {
+    if (typeof window !== "undefined") {
+      const stored = getClientServices().filter((s) => s.channel === "makeup" && s.active);
+      if (stored.length > 0) return stored;
+    }
+    return getServices("makeup");
+  });
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      const stored = getClientServices().filter((s) => s.channel === "makeup" && s.active);
+      if (stored.length > 0) setServices(stored);
+    };
+    window.addEventListener("scelta_services_updated", handleUpdate);
+    void syncServicesFromCloud().then((cloudList) => {
+      if (cloudList && Array.isArray(cloudList)) {
+        const filtered = cloudList.filter((s) => s.channel === "makeup" && s.active);
+        if (filtered.length > 0) setServices(filtered);
+      }
+    });
+    return () => window.removeEventListener("scelta_services_updated", handleUpdate);
+  }, []);
 
   const [selectedService, setSelectedService] = useState<Service | null>(() => {
     if (!preselectedServiceId) return null;
     const srvs = getServices("makeup");
     return srvs.find((s) => s.id === preselectedServiceId || s.slug === preselectedServiceId) || null;
   });
+
+  useEffect(() => {
+    if (preselectedServiceId && (!selectedService || (selectedService.id !== preselectedServiceId && selectedService.slug !== preselectedServiceId))) {
+      const match = services.find((s) => s.id === preselectedServiceId || s.slug === preselectedServiceId);
+      if (match) setSelectedService(match);
+    }
+  }, [preselectedServiceId, services, selectedService]);
 
   // Flow steps: 1 = Service, 2 = Date & Slot, 3 = Customer, 4 = Review & Deposit, 5 = Confirmed
   const [step, setStep] = useState<number>(() => {
@@ -566,7 +595,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                       Sessione Serale
                     </span>
                     <span className="text-xs text-[#1F1B24]/70 font-medium">
-                      Atelier esclusivo post-chiusura (dalle 19:30)
+                      Salone esclusivo post-chiusura (dalle 19:30)
                     </span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -588,7 +617,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                         >
                           <span className="block text-sm font-bold">{slot.time}</span>
                           <span className="block text-xs font-medium opacity-80 mt-0.5">
-                            {slot.available ? "Atelier Serale" : slot.reason}
+                            {slot.available ? "Salone Serale" : slot.reason}
                           </span>
                         </button>
                       );

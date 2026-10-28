@@ -160,6 +160,33 @@ export const SERVICES: Service[] = [
     ],
     recommendedFor: "Chi ha dubbi sul proprio colore o desidera rinnovare la propria beauty routine",
   },
+  {
+    id: "srv-makeup-feste-halloween",
+    slug: "makeup-feste-halloween",
+    name: "Make-up per Feste & Halloween",
+    channel: "makeup",
+    description: "Look speciale d'impatto ad altissima tenuta per feste private, party a tema e la notte di Halloween. Dettagli grafici personalizzati, sfumature intense e finish no-transfer a prova di brindisi.",
+    durationMinutes: 45,
+    priceList: 35.0,
+    priceOnline: 31.5, // Sconto 10% web (-3.50€)
+    discountOnline: 3.5,
+    depositPercent: 0.2,
+    depositAmount: 6.3,
+    balanceAmount: 25.2,
+    active: true,
+    image: "/products/rvb-rossetto-matt-velvet.jpg",
+    benefits: [
+      "Tenuta estrema garantita no-transfer per tutta la serata",
+      "Prodotti professionali dermocosmetici anallergici di alta gamma",
+      "Grafismi, dettagli e sfumature a tema personalizzati su misura",
+    ],
+    includes: [
+      "Preparazione cutanea con primer a lunga tenuta",
+      "Make-up occhi, labbra e dettagli grafici/festa sartoriali",
+      "Fissaggio professionale con vaporizzazione spray ultra-hold",
+    ],
+    recommendedFor: "Party a tema, serate speciali, cene di festa e notte di Halloween",
+  },
   // Canale Beauty (Disattivato per ora, pronto per il lancio cabina)
   {
     id: "srv-beauty-mesofill",

@@ -12,7 +12,7 @@ export default function PrenotaPage() {
   return (
     <div className="min-h-screen bg-[#FAF7FC] text-[#1F1B24] flex flex-col font-sans">
       <main className="flex-grow py-8">
-        <Suspense fallback={<div className="text-center py-20 text-sm text-[#5E1788]">Caricamento atelier booking...</div>}>
+        <Suspense fallback={<div className="text-center py-20 text-sm text-[#5E1788]">Caricamento salone booking...</div>}>
           <BookingWizardClient />
         </Suspense>
       </main>
