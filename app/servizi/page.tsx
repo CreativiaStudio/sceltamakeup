@@ -159,39 +159,102 @@ export default async function ServiziPage() {
           </div>
         </section>
 
-        {/* Channel 2: BEAUTY CABIN (FUTURE-READY) */}
+        {/* Channel 2: BEAUTY CABIN */}
         <section className="py-16 bg-white border-t border-[#D8C2E7]/40">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#7A3293] mb-1">
-              <Lock className="w-3.5 h-3.5" />
-              Canale 2 — Stanza Cabina Estetica Privata (In Arrivo)
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#D462A6] mb-1">
+                  <span className="w-2.5 h-2.5 rounded-full bg-pink-500 animate-pulse" />
+                  Canale 2 — Stanza Cabina Estetica Privata
+                </div>
+                <h2 className="text-3xl font-serif font-bold text-[#1F1B24]">
+                  Trattamenti Dermocosmetici in Cabina
+                </h2>
+                <p className="text-sm text-[#1F1B24]/70 mt-1 max-w-2xl">
+                  Percorsi di rigenerazione cutanea avanzata Diego della Palma Professional e trattamenti viso intensivi in cabina privata riservata.
+                </p>
+              </div>
+              <Link
+                href="/prenota"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#D462A6] hover:underline"
+              >
+                Prenota in cabina
+                <ChevronRight className="w-4 h-4" />
+              </Link>
             </div>
-            <h2 className="text-3xl font-serif font-bold text-[#1F1B24]">
-              Trattamenti Dermocosmetici in Cabina
-            </h2>
-            <p className="text-sm text-[#1F1B24]/70 mt-1 max-w-2xl">
-              Stiamo allestendo per te una stanza cabina riservata per percorsi di rigenerazione cutanea avanzata Diego della Palma Professional. Questo canale viaggerà su orari e personale dedicato in parallelo al make-up.
-            </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {beautyServices.map((service) => (
                 <div
                   key={service.id}
-                  className="rounded-2xl border border-dashed border-[#D8C2E7] p-6 bg-[#FAF7FC]/60 opacity-80 relative overflow-hidden"
+                  className={`bg-white rounded-2xl border p-6 shadow-sm transition-all flex flex-col justify-between ${
+                    service.active
+                      ? "border-pink-200/80 hover:shadow-xl hover:border-[#D462A6]"
+                      : "border-dashed border-[#D8C2E7] bg-[#FAF7FC]/60 opacity-80"
+                  }`}
                 >
-                  <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-[#1F1B24] text-white text-[10px] font-bold uppercase tracking-wider">
-                    Prossima Apertura
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-pink-100 text-xs font-bold text-[#D462A6]">
+                        <Sparkles className="w-3 h-3 text-[#D462A6]" />
+                        -10% Online
+                      </span>
+                      <span className="text-xs text-[#1F1B24]/60 flex items-center gap-1">
+                        <Clock className="w-3.5 h-3.5" />
+                        {service.durationMinutes} min
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl font-serif font-bold text-[#1F1B24]">
+                      {service.name}
+                    </h3>
+                    <p className="mt-2 text-xs text-[#1F1B24]/70 line-clamp-3">
+                      {service.description}
+                    </p>
+
+                    {service.benefits && service.benefits.length > 0 && (
+                      <div className="mt-4 pt-3 border-t border-pink-100">
+                        <ul className="space-y-1.5">
+                          {service.benefits.slice(0, 3).map((b, idx) => (
+                            <li key={idx} className="text-xs text-[#1F1B24]/80 flex items-start gap-1.5">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-[#D462A6] shrink-0 mt-0.5" />
+                              <span>{b}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
-                  <h3 className="text-xl font-serif font-bold text-[#1F1B24]">
-                    {service.name}
-                  </h3>
-                  <p className="mt-2 text-xs text-[#1F1B24]/70">
-                    {service.description}
-                  </p>
-                  <div className="mt-4 flex items-center gap-4 text-xs text-[#1F1B24]/60">
-                    <span>Durata: {service.durationMinutes} min</span>
-                    <span>•</span>
-                    <span>Tariffa lancio stimata: €{service.priceOnline.toFixed(2)}</span>
+
+                  <div className="mt-6 pt-4 border-t border-pink-100">
+                    <div className="flex items-baseline justify-between mb-3">
+                      <div>
+                        <span className="text-xs text-[#1F1B24]/50 line-through mr-1.5">
+                          €{service.priceList.toFixed(2)}
+                        </span>
+                        <span className="text-2xl font-serif font-bold text-[#5E1788]">
+                          €{service.priceOnline.toFixed(2)}
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#1F1B24]/60">
+                        Acconto: <strong>€{service.depositAmount.toFixed(2)}</strong>
+                      </span>
+                    </div>
+
+                    {service.active ? (
+                      <Link
+                        href={`/prenota?servizio=${service.id}`}
+                        className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#D462A6] to-[#7A3293] text-white text-xs font-bold hover:shadow-lg transition-all flex items-center justify-center gap-1.5 shadow-md shadow-[#D462A6]/20"
+                      >
+                        <Calendar className="w-3.5 h-3.5" />
+                        Riserva in Cabina
+                      </Link>
+                    ) : (
+                      <div className="text-center py-2 text-xs text-neutral-400 font-bold uppercase tracking-wider">
+                        Prossima Apertura
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

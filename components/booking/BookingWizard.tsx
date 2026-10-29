@@ -67,21 +67,21 @@ interface BookingWizardProps {
 export default function BookingWizard({ preselectedServiceId }: BookingWizardProps) {
   const [services, setServices] = useState<Service[]>(() => {
     if (typeof window !== "undefined") {
-      const stored = getClientServices().filter((s) => s.channel === "makeup" && s.active);
+      const stored = getClientServices().filter((s) => s.active);
       if (stored.length > 0) return stored;
     }
-    return getServices("makeup");
+    return getServices();
   });
 
   useEffect(() => {
     const handleUpdate = () => {
-      const stored = getClientServices().filter((s) => s.channel === "makeup" && s.active);
+      const stored = getClientServices().filter((s) => s.active);
       if (stored.length > 0) setServices(stored);
     };
     window.addEventListener("scelta_services_updated", handleUpdate);
     void syncServicesFromCloud().then((cloudList) => {
       if (cloudList && Array.isArray(cloudList)) {
-        const filtered = cloudList.filter((s) => s.channel === "makeup" && s.active);
+        const filtered = cloudList.filter((s) => s.active);
         if (filtered.length > 0) setServices(filtered);
       }
     });
@@ -90,7 +90,7 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
 
   const [selectedService, setSelectedService] = useState<Service | null>(() => {
     if (!preselectedServiceId) return null;
-    const srvs = getServices("makeup");
+    const srvs = typeof window !== "undefined" ? getClientServices() : getServices();
     return srvs.find((s) => s.id === preselectedServiceId || s.slug === preselectedServiceId) || null;
   });
 
@@ -104,10 +104,21 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
   // Flow steps: 1 = Service, 2 = Date & Slot, 3 = Customer, 4 = Review & Deposit, 5 = Confirmed
   const [step, setStep] = useState<number>(() => {
     if (!preselectedServiceId) return 1;
-    const srvs = getServices("makeup");
+    const srvs = typeof window !== "undefined" ? getClientServices() : getServices();
     const match = srvs.find((s) => s.id === preselectedServiceId || s.slug === preselectedServiceId);
     return match ? 2 : 1;
   });
+
+  const [channelFilter, setChannelFilter] = useState<"all" | "makeup" | "beauty">("all");
+
+  const makeupCount = useMemo(() => services.filter((s) => s.channel === "makeup").length, [services]);
+  const beautyCount = useMemo(() => services.filter((s) => s.channel === "beauty").length, [services]);
+
+  const displayedServices = useMemo(() => {
+    if (channelFilter === "makeup") return services.filter((s) => s.channel === "makeup");
+    if (channelFilter === "beauty") return services.filter((s) => s.channel === "beauty");
+    return services;
+  }, [services, channelFilter]);
 
   // Date selection (next 14 days)
   const availableDates = useMemo(() => {
@@ -331,34 +342,84 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
       {/* STEP 1: SELECT SERVICE */}
       {step === 1 && (
         <div className="space-y-6">
-          <div className="text-center max-w-2xl mx-auto mb-8">
+          <div className="text-center max-w-2xl mx-auto mb-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF7FC] border border-[#D8C2E7]/60 text-xs font-semibold text-[#5E1788] mb-3">
               <Sparkles className="w-3.5 h-3.5 text-[#D462A6]" />
               Vantaggio Esclusivo Web
             </div>
             <h1 className="text-3xl sm:text-4xl font-serif text-[#1F1B24] tracking-tight">
-              Scegli il tuo Trattamento Make-Up
+              Scegli il tuo Trattamento in Salone
             </h1>
             <p className="mt-3 text-[#1F1B24]/70 text-sm sm:text-base leading-relaxed">
-              Tutte le sedute sono eseguite personalmente da <strong>Federica Cesiano</strong> presso il nostro salone di Napoli. Prenotando online ricevi subito il <strong>10% di sconto</strong> sul listino ufficiale.
+              Trattamenti viso, make-up professionale e percorsi estetici in cabina privata presso il nostro Salone di Napoli. Prenotando online ricevi subito il <strong>10% di sconto</strong> sul listino ufficiale.
             </p>
           </div>
 
+          {/* Channel Filter Pills */}
+          {beautyCount > 0 && (
+            <div className="flex justify-center flex-wrap gap-2 mb-6">
+              <button
+                type="button"
+                onClick={() => setChannelFilter("all")}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  channelFilter === "all"
+                    ? "bg-[#5E1788] text-white shadow-md shadow-[#5E1788]/20"
+                    : "bg-white text-neutral-600 border border-neutral-200 hover:bg-[#FAF7FC]"
+                }`}
+              >
+                Tutti i Servizi ({services.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setChannelFilter("makeup")}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  channelFilter === "makeup"
+                    ? "bg-[#5E1788] text-white shadow-md shadow-[#5E1788]/20"
+                    : "bg-white text-neutral-600 border border-neutral-200 hover:bg-[#FAF7FC]"
+                }`}
+              >
+                💄 Make-Up Salone ({makeupCount})
+              </button>
+              <button
+                type="button"
+                onClick={() => setChannelFilter("beauty")}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  channelFilter === "beauty"
+                    ? "bg-[#D462A6] text-white shadow-md shadow-[#D462A6]/20"
+                    : "bg-white text-neutral-600 border border-neutral-200 hover:bg-[#FAF7FC]"
+                }`}
+              >
+                💆‍♀️ Cabina Estetica & Viso ({beautyCount})
+              </button>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {services.map((service) => (
+            {displayedServices.map((service) => (
               <div
                 key={service.id}
                 onClick={() => handleSelectService(service)}
                 className="group relative bg-white rounded-2xl p-6 border border-[#D8C2E7]/50 shadow-sm hover:shadow-xl hover:border-[#5E1788] transition-all cursor-pointer flex flex-col justify-between"
               >
                 <div>
-                  {/* Badge 10% Off */}
+                  {/* Badge 10% Off & Channel */}
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#5E1788]/10 text-xs font-bold text-[#5E1788]">
-                      <Sparkles className="w-3 h-3 text-[#D462A6]" />
-                      -10% Online
-                    </span>
-                    <span className="text-xs text-[#1F1B24]/60 flex items-center gap-1">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#5E1788]/10 text-xs font-bold text-[#5E1788]">
+                        <Sparkles className="w-3 h-3 text-[#D462A6]" />
+                        -10% Online
+                      </span>
+                      {service.channel === "beauty" ? (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-pink-100 text-[10px] font-bold text-[#D462A6] border border-pink-200">
+                          Cabina Estetica
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-purple-50 text-[10px] font-bold text-[#5E1788] border border-purple-200">
+                          Make-Up
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-xs text-[#1F1B24]/60 flex items-center gap-1 shrink-0">
                       <Clock className="w-3.5 h-3.5" />
                       {service.durationMinutes} min
                     </span>
@@ -424,7 +485,10 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
                 {selectedService.name}
               </h2>
               <span className="text-xs text-[#1F1B24]/70">
-                Durata: {selectedService.durationMinutes} min • Operatrice: Federica Cesiano
+                Durata: {selectedService.durationMinutes} min •{" "}
+                {selectedService.channel === "beauty"
+                  ? "Postazione: Cabina Estetica Riservata"
+                  : "Operatrice: Federica Cesiano"}
               </span>
             </div>
             <div className="text-right sm:border-l sm:border-[#FAF7FC] sm:pl-6">
