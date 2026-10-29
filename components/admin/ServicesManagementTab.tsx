@@ -1,15 +1,107 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Sparkles, Plus, RefreshCw, CheckCircle2, Clock, Eye, Edit3, Trash2, Filter, Search, Check, AlertCircle, ExternalLink } from 'lucide-react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { Sparkles, Plus, RefreshCw, CheckCircle2, Clock, Eye, Edit3, Trash2, Filter, Search, Check, AlertCircle, ExternalLink, MessageCircle, Copy, FileText } from 'lucide-react';
 import { useServicesSync, getClientServices, saveClientService, toggleClientServiceActive, deleteClientService, syncServicesFromCloud, ClientService } from '@/lib/servicesStore';
 import { ServiceChannel } from '@/types/booking';
+import { WHATSAPP_DISPLAY_NUMBER, WHATSAPP_OWNER } from '@/lib/whatsapp';
 import ServiceEditorModal from './ServiceEditorModal';
 
 type FilterChannel = 'all' | 'makeup' | 'beauty';
+type ShareTone = 'whatsapp' | 'social';
 
 const euro = (value: number) =>
   new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(Number.isFinite(value) ? value : 0);
+
+const BOOKING_BASE_URL = 'https://www.sceltamakeup.it/prenota';
+const SALON_SITE_URL = 'https://www.sceltamakeup.it';
+const SALON_ADDRESS = 'Via Pellegrini 28/29, 80134 Napoli';
+
+function buildServiceBookingUrl(service: ClientService): string {
+  const slugOrId = service.slug ?? service.id;
+  return `${BOOKING_BASE_URL}?servizio=${encodeURIComponent(slugOrId)}`;
+}
+
+/** Messaggio promozionale pronto da incollare su WhatsApp, Telegram o Instagram. */
+function buildServiceShareMessage(service: ClientService, tone: ShareTone): string {
+  const isMakeup = service.channel === ('makeup' as ServiceChannel);
+  const channelLabel = isMakeup ? 'Make-up Salone' : 'Cabina Estetica Riservata';
+  const listPrice = service.priceList ?? 0;
+  const webDiscount = service.discountOnline ?? 0;
+  const finalPrice = service.priceOnline ?? Math.max(listPrice - webDiscount, 0);
+  const deposit = service.depositAmount ?? Math.round(finalPrice * 0.2 * 100) / 100;
+  const balance = service.balanceAmount ?? Math.round((finalPrice - deposit) * 100) / 100;
+  const savings = Math.max(listPrice - finalPrice, 0);
+  const topBenefits = (service.benefits ?? []).slice(0, 3);
+  const bold = (value: string) => (tone === 'whatsapp' ? `*${value}*` : value);
+
+  const lines: string[] = [
+    `✨ ${bold('SCELTA MAKEUP')} ✨`,
+    'La bellezza che valorizza la tua unicità',
+    '',
+    `💄 ${bold(service.name)}`,
+    `🏷️ ${channelLabel}`,
+  ];
+
+  const description = (service.description ?? '').trim();
+  if (description) {
+    lines.push('', description);
+  }
+
+  lines.push(
+    '',
+    `⏱️ ${bold('Durata:')} ${service.durationMinutes ?? 0} min`,
+    `💶 ${bold('Prezzo listino:')} ${euro(listPrice)}`,
+    savings > 0
+      ? `🎁 ${bold('Prezzo online:')} ${euro(finalPrice)} — risparmi ${euro(savings)}`
+      : `🎁 ${bold('Prezzo online:')} ${euro(finalPrice)}`,
+    `💳 ${bold('Acconto online 20%:')} ${euro(deposit)}`,
+    `🏦 ${bold('Saldo in Salone:')} ${euro(balance)}`
+  );
+
+  if (topBenefits.length > 0) {
+    lines.push('', `✅ ${bold('Cosa include:')}`, ...topBenefits.map((benefit) => `• ${benefit}`));
+  }
+
+  lines.push(
+    '',
+    `📅 ${bold('Prenota ora:')} ${buildServiceBookingUrl(service)}`,
+    '',
+    `📍 ${bold('Salone:')} ${SALON_ADDRESS}`,
+    `📞 ${bold('Contatti:')} ${WHATSAPP_DISPLAY_NUMBER} · ${WHATSAPP_OWNER}`,
+    `🌐 ${SALON_SITE_URL}`
+  );
+
+  return lines.join('\n');
+}
+
+async function copyTextToClipboard(text: string): Promise<boolean> {
+  try {
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {
+    /* Fallback per contesti senza Clipboard API. */
+  }
+
+  if (typeof document === 'undefined') return false;
+
+  try {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    const copied = document.execCommand('copy');
+    document.body.removeChild(textarea);
+    return copied;
+  } catch {
+    return false;
+  }
+}
 
 export default function ServicesManagementTab() {
   useServicesSync();
@@ -21,6 +113,28 @@ export default function ServicesManagementTab() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isManualSyncing, setIsManualSyncing] = useState<boolean>(false);
   const [syncNotification, setSyncNotification] = useState<string | null>(null);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const copyTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (copyTimerRef.current) {
+        window.clearTimeout(copyTimerRef.current);
+        copyTimerRef.current = null;
+      }
+    };
+  }, []);
+
+  const markCopied = useCallback((key: string) => {
+    setCopiedKey(key);
+    if (copyTimerRef.current) {
+      window.clearTimeout(copyTimerRef.current);
+    }
+    copyTimerRef.current = window.setTimeout(() => {
+      setCopiedKey(null);
+      copyTimerRef.current = null;
+    }, 2500);
+  }, []);
 
   useEffect(() => {
     const handleUpdate = () => {
@@ -110,6 +224,41 @@ export default function ServicesManagementTab() {
       }
     },
     [refreshFromStore]
+  );
+
+  const handleShareWhatsApp = useCallback((service: ClientService) => {
+    const message = buildServiceShareMessage(service, 'whatsapp');
+    window.open(
+      `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`,
+      '_blank',
+      'noopener,noreferrer'
+    );
+  }, []);
+
+  const handleCopyServiceLink = useCallback(
+    async (service: ClientService) => {
+      const copied = await copyTextToClipboard(buildServiceBookingUrl(service));
+      if (copied) {
+        markCopied(`${service.id}:link`);
+        setSyncNotification('Link di prenotazione copiato negli appunti.');
+      } else {
+        setSyncNotification('Copia non riuscita: riprova dal browser.');
+      }
+    },
+    [markCopied]
+  );
+
+  const handleCopyServiceText = useCallback(
+    async (service: ClientService) => {
+      const copied = await copyTextToClipboard(buildServiceShareMessage(service, 'social'));
+      if (copied) {
+        markCopied(`${service.id}:text`);
+        setSyncNotification('Testo promozionale copiato: pronto per Instagram e Telegram.');
+      } else {
+        setSyncNotification('Copia non riuscita: riprova dal browser.');
+      }
+    },
+    [markCopied]
   );
 
   const filteredServices = useMemo(() => {
@@ -359,6 +508,55 @@ export default function ServicesManagementTab() {
                     ))}
                   </ul>
                 )}
+
+                {/* Condivisione rapida */}
+                <div className="space-y-2 px-6 pt-5">
+                  <button
+                    type="button"
+                    onClick={() => handleShareWhatsApp(service)}
+                    aria-label={`Condividi ${service.name} su WhatsApp`}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-3 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:brightness-110"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    Condividi WhatsApp
+                  </button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleCopyServiceLink(service)}
+                      aria-label={`Copia il link di prenotazione di ${service.name}`}
+                      className={`inline-flex items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-semibold transition ${
+                        copiedKey === `${service.id}:link`
+                          ? 'border-[#5E1788] bg-[#D8C2E7]/50 text-[#5E1788]'
+                          : 'border-[#D8C2E7] bg-white text-[#5E1788] hover:bg-[#D8C2E7]/40'
+                      }`}
+                    >
+                      {copiedKey === `${service.id}:link` ? (
+                        <Check className="h-3.5 w-3.5" />
+                      ) : (
+                        <Copy className="h-3.5 w-3.5" />
+                      )}
+                      {copiedKey === `${service.id}:link` ? 'Copiato' : 'Copia link'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleCopyServiceText(service)}
+                      aria-label={`Copia il testo promozionale di ${service.name}`}
+                      className={`inline-flex items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-semibold transition ${
+                        copiedKey === `${service.id}:text`
+                          ? 'border-[#D462A6] bg-[#D462A6]/10 text-[#D462A6]'
+                          : 'border-[#D462A6]/40 bg-white text-[#D462A6] hover:bg-[#D462A6]/10'
+                      }`}
+                    >
+                      {copiedKey === `${service.id}:text` ? (
+                        <Check className="h-3.5 w-3.5" />
+                      ) : (
+                        <FileText className="h-3.5 w-3.5" />
+                      )}
+                      {copiedKey === `${service.id}:text` ? 'Copiato' : 'Copia testo'}
+                    </button>
+                  </div>
+                </div>
 
                 {/* Azioni */}
                 <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-[#D8C2E7] p-5">

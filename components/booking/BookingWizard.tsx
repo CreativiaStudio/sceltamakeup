@@ -488,28 +488,95 @@ export default function BookingWizard({ preselectedServiceId, initialServices }:
             Torna alla scelta servizio
           </button>
 
-          <div className="bg-white rounded-2xl p-6 border border-[#D8C2E7]/50 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#5E1788] uppercase tracking-wider">
-                Trattamento Selezionato
-              </span>
-              <h2 className="text-xl font-serif font-bold text-[#1F1B24]">
-                {selectedService.name}
-              </h2>
-              <span className="text-xs text-[#1F1B24]/70">
-                Durata: {selectedService.durationMinutes} min •{" "}
-                {selectedService.channel === "beauty"
-                  ? "Postazione: Cabina Estetica Riservata"
-                  : "Operatrice: Federica Cesiano"}
-              </span>
+          <div className="bg-white rounded-2xl p-6 border border-[#D8C2E7]/50 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs font-bold text-[#5E1788] uppercase tracking-wider">
+                    Trattamento Selezionato
+                  </span>
+                  {selectedService.channel === "beauty" ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-[#D462A6]/10 text-[10px] font-bold text-[#D462A6] border border-[#D462A6]/30 uppercase tracking-wide">
+                      Cabina Estetica Privata
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-[#5E1788]/10 text-[10px] font-bold text-[#5E1788] border border-[#5E1788]/25 uppercase tracking-wide">
+                      Make-Up Salone
+                    </span>
+                  )}
+                </div>
+                <h2 className="text-xl font-serif font-bold text-[#1F1B24] mt-1">
+                  {selectedService.name}
+                </h2>
+                <p className="mt-2 text-sm text-[#1F1B24]/70 leading-relaxed">
+                  {selectedService.description}
+                </p>
+                <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#1F1B24]/70">
+                  <span className="inline-flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-[#7A3293]" />
+                    Durata:{" "}
+                    <strong className="text-[#1F1B24]">
+                      {selectedService.durationMinutes} min
+                    </strong>
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <Store className="w-3.5 h-3.5 text-[#7A3293]" />
+                    {selectedService.channel === "beauty"
+                      ? "Cabina Estetica Privata"
+                      : "Salone Make-Up • Federica Cesiano"}
+                  </span>
+                </div>
+              </div>
+              <div className="text-left sm:text-right sm:border-l sm:border-[#FAF7FC] sm:pl-6 shrink-0">
+                <span className="text-xs text-[#1F1B24]/50 line-through block">
+                  Listino: €{selectedService.priceList.toFixed(2)}
+                </span>
+                <span className="text-2xl font-serif font-bold text-[#5E1788]">
+                  €{selectedService.priceOnline.toFixed(2)}
+                </span>
+                <span className="block text-[11px] font-semibold text-[#D462A6] mt-1">
+                  -10% prenotando online
+                </span>
+              </div>
             </div>
-            <div className="text-right sm:border-l sm:border-[#FAF7FC] sm:pl-6">
-              <span className="text-xs text-[#1F1B24]/50 line-through block">
-                Listino: €{selectedService.priceList.toFixed(2)}
-              </span>
-              <span className="text-2xl font-serif font-bold text-[#5E1788]">
-                €{selectedService.priceOnline.toFixed(2)}
-              </span>
+
+            {selectedService.benefits.length > 0 && (
+              <ul className="mt-5 pt-4 border-t border-[#FAF7FC] grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {selectedService.benefits.map((benefit, idx) => (
+                  <li
+                    key={idx}
+                    className="text-xs text-[#1F1B24]/80 flex items-start gap-2"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#5E1788] shrink-0 mt-0.5" />
+                    <span>{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="rounded-xl bg-[#FAF7FC] border border-[#5E1788]/20 p-3.5">
+                <span className="block text-[11px] font-bold uppercase tracking-wider text-[#5E1788]">
+                  Acconto online (20%)
+                </span>
+                <span className="block text-lg font-serif font-bold text-[#5E1788] mt-0.5">
+                  €{selectedService.depositAmount.toFixed(2)}
+                </span>
+                <span className="block text-[11px] text-[#1F1B24]/60 mt-0.5">
+                  Da versare ora per bloccare data e orario
+                </span>
+              </div>
+              <div className="rounded-xl bg-white border border-[#D8C2E7]/60 p-3.5">
+                <span className="block text-[11px] font-bold uppercase tracking-wider text-[#7A3293]">
+                  Saldo in Salone (80%)
+                </span>
+                <span className="block text-lg font-serif font-bold text-[#1F1B24] mt-0.5">
+                  €{selectedService.balanceAmount.toFixed(2)}
+                </span>
+                <span className="block text-[11px] text-[#1F1B24]/60 mt-0.5">
+                  Da corrispondere a fine seduta (Carta/POS o contanti)
+                </span>
+              </div>
             </div>
           </div>
 
