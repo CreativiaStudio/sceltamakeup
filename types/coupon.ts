@@ -40,6 +40,8 @@ export interface PromoCoupon {
   description?: string;
   /** Badge per la landing page (es. "Offerta Esclusiva Salone • Solo 20 Pezzi") */
   badgeText?: string;
+  /** Foto del Salone mostrata nell'hero della landing page (path es. "/boutique/salone-postazioni-makeup-frontale.webp") */
+  heroImage?: string;
 
   /** Spesa minima carrello (subtotale) per attivare lo sconto */
   minSpend?: number;

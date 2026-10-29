@@ -126,50 +126,126 @@ export default function PromoLandingClient({
       {/* Main Container */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 sm:pt-12 space-y-10">
         {/* Hero Section */}
-        <div className="text-center space-y-4 max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-100/80 text-[#5E1788] text-xs font-bold border border-purple-200">
-            <Tag className="w-3.5 h-3.5 text-[#D462A6]" />
-            <span>SCELTA MAKEUP • SALONE NAPOLI</span>
-          </div>
-
-          <h1 className="font-serif text-3xl sm:text-5xl font-bold text-[#1F1B24] leading-tight tracking-tight">
-            {coupon.headline || coupon.name}
-          </h1>
-
-          <p className="text-sm sm:text-base text-neutral-600 font-light leading-relaxed">
-            {coupon.description ||
-              "I prodotti essenziali selezionati personalmente da Federica Cesiano per un look professionale ed elegante a lunga tenuta."}
-          </p>
-
-          {/* Coupon Active Badge */}
-          <div className="p-4 rounded-3xl bg-white border border-[#D8C2E7]/80 shadow-sm inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-6 mx-auto">
-            <div className="flex items-center gap-2 text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
-              <Check className="w-4 h-4 text-emerald-600" />
-              <span>Sconto Attivo nel Carrello</span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          {/* Colonna Testo */}
+          <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-100/80 text-[#5E1788] text-[10px] sm:text-xs font-bold tracking-[0.14em] border border-purple-200">
+              <Tag className="w-3.5 h-3.5 text-[#D462A6]" />
+              <span>SCELTA MAKEUP • SALONE NAPOLI</span>
             </div>
 
-            <div className="text-xs text-neutral-600">
-              {coupon.discountValue > 0 ? (
-                <span>
-                  Sconto del{" "}
-                  <strong className="text-[#5E1788] font-bold">
-                    {coupon.discountType === "percentage"
-                      ? `${coupon.discountValue}%`
-                      : `€${coupon.discountValue.toFixed(2)}`}
-                  </strong>{" "}
-                  (Codice: <span className="font-mono font-bold">{coupon.code}</span>)
-                </span>
-              ) : (
-                <span>Selezione Ufficiale Salone Scelta Makeup</span>
+            <h1 className="font-serif text-3xl sm:text-5xl xl:text-[3.4rem] font-bold text-[#1F1B24] leading-[1.08] tracking-tight">
+              {coupon.headline || coupon.name}
+            </h1>
+
+            <p className="text-sm sm:text-base text-neutral-600 font-light leading-relaxed max-w-xl mx-auto lg:mx-0">
+              {coupon.description ||
+                "I prodotti essenziali selezionati personalmente da Federica Cesiano per un look professionale ed elegante a lunga tenuta."}
+            </p>
+
+            {/* Box Sconto Attivo */}
+            <div className="rounded-3xl bg-white border border-[#D8C2E7]/80 shadow-[0_18px_45px_-28px_rgba(94,23,136,0.55)] p-4 sm:p-5 space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
+                <div className="flex items-center gap-2 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 self-center sm:self-auto">
+                  <Check className="w-4 h-4 text-emerald-600" />
+                  <span>Sconto Attivo nel Carrello</span>
+                </div>
+
+                <div className="flex items-baseline justify-center sm:justify-start gap-2">
+                  {coupon.discountValue > 0 ? (
+                    <>
+                      <span className="font-serif text-3xl sm:text-4xl font-bold text-[#5E1788] leading-none">
+                        {coupon.discountType === "percentage"
+                          ? `${coupon.discountValue}%`
+                          : `€${coupon.discountValue.toFixed(2)}`}
+                      </span>
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-[#7A3293]/80">
+                        di sconto
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-xs font-semibold text-neutral-700">
+                      Selezione Ufficiale Salone Scelta Makeup
+                    </span>
+                  )}
+                </div>
+
+                {coupon.code && (
+                  <div className="sm:ml-auto flex items-center gap-2 rounded-xl border border-dashed border-[#5E1788]/40 bg-[#FAF7FC] px-3 py-1.5 self-center sm:self-auto">
+                    <span className="text-[10px] uppercase tracking-wider text-neutral-500 font-bold">
+                      Codice
+                    </span>
+                    <span className="font-mono text-xs sm:text-sm font-bold text-[#5E1788] tracking-wider">
+                      {coupon.code}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {coupon.endDate && (
+                <div className="flex items-center justify-center sm:justify-start gap-1.5 text-[11px] text-neutral-500 pt-1 border-t border-neutral-100">
+                  <Clock className="w-3.5 h-3.5 text-neutral-400" />
+                  <span>Valido fino al {coupon.endDate}</span>
+                </div>
               )}
             </div>
 
-            {coupon.endDate && (
-              <div className="flex items-center gap-1.5 text-[11px] text-neutral-500">
-                <Clock className="w-3.5 h-3.5 text-neutral-400" />
-                <span>Valido fino al {coupon.endDate}</span>
+            {/* Rassicurazioni */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-xl mx-auto lg:mx-0">
+              <div className="flex items-center gap-2.5 rounded-2xl bg-white/80 border border-[#D8C2E7]/60 px-3.5 py-3 text-left">
+                <Store className="w-4 h-4 text-[#5E1788] shrink-0" />
+                <div className="min-w-0">
+                  <span className="block text-[11px] font-bold text-[#1F1B24]">Salone a Napoli</span>
+                  <span className="block text-[11px] text-neutral-500">
+                    Via dei Pellegrini 28/29
+                  </span>
+                </div>
               </div>
-            )}
+
+              <div className="flex items-center gap-2.5 rounded-2xl bg-white/80 border border-[#D8C2E7]/60 px-3.5 py-3 text-left">
+                <Truck className="w-4 h-4 text-[#5E1788] shrink-0" />
+                <div className="min-w-0">
+                  <span className="block text-[11px] font-bold text-[#1F1B24]">
+                    Ritiro gratuito
+                  </span>
+                  <span className="block text-[11px] text-neutral-500">o Spedizione 24/48h</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Colonna Foto Salone */}
+          <div className="lg:col-span-5">
+            <div className="group relative w-full aspect-[4/5] sm:aspect-[16/11] lg:aspect-[4/5] overflow-hidden rounded-[2rem] border border-[#D8C2E7]/70 bg-[#1F1B24] shadow-[0_30px_70px_-40px_rgba(94,23,136,0.75)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_36px_80px_-38px_rgba(94,23,136,0.85)]">
+              <Image
+                src={safeImageSrc(
+                  coupon.heroImage || "/boutique/salone-postazioni-makeup-frontale.webp"
+                )}
+                alt="Salone Scelta Makeup — postazioni make-up e trattamenti a Napoli"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
+              />
+
+              {/* Overlay sfumato sul fondo */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1F1B24]/90 via-[#1F1B24]/25 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#5E1788]/25 via-transparent to-[#D462A6]/15" />
+
+              {/* Badge glassmorphic */}
+              <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/15 px-3 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.12em] text-white backdrop-blur-md shadow-sm">
+                <Sparkles className="w-3.5 h-3.5 text-[#D8C2E7]" />
+                <span>Salone &amp; Postazioni Trattamento</span>
+              </div>
+
+              {/* Didascalia */}
+              <div className="absolute bottom-0 inset-x-0 p-5 sm:p-6">
+                <p className="text-[11px] sm:text-xs font-semibold text-white leading-relaxed">
+                  📍 Via dei Pellegrini 28/29, Montesanto • Specchiere d&apos;autore per
+                  consulenze, trattamenti e trucco
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 

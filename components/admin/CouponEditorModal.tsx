@@ -60,6 +60,32 @@ const REAL_CATEGORIES = [
   "Beauty & Accessori",
 ];
 
+/** Foto del Salone selezionabili per l'hero della landing page promozionale */
+const SALON_HERO_OPTIONS = [
+  {
+    src: "/boutique/salone-postazioni-makeup-frontale.webp",
+    label: "Postazioni Make-Up & Trattamenti",
+  },
+  {
+    src: "/boutique/salone-area-diego-dalla-palma-rvb.webp",
+    label: "Corner Diego dalla Palma & RVB",
+  },
+  {
+    src: "/boutique/salone-postazioni-trucco-specchi.webp",
+    label: "Specchiere d'Autore",
+  },
+  {
+    src: "/boutique/salone-salottino-attesa-panoramico.webp",
+    label: "Salottino Relax Lounge",
+  },
+  {
+    src: "/boutique/salone-panoramica-boutique-completa.webp",
+    label: "Panoramica Salone",
+  },
+];
+
+const DEFAULT_HERO_IMAGE = SALON_HERO_OPTIONS[0].src;
+
 function playPosBeep() {
   if (typeof window === "undefined") return;
   try {
@@ -101,6 +127,7 @@ export default function CouponEditorModal({
   const [headline, setHeadline] = useState("");
   const [description, setDescription] = useState("");
   const [badgeText, setBadgeText] = useState("Offerta Esclusiva Salone");
+  const [heroImage, setHeroImage] = useState<string>(DEFAULT_HERO_IMAGE);
 
   // Restrictions
   const [minSpend, setMinSpend] = useState<string>("");
@@ -132,6 +159,7 @@ export default function CouponEditorModal({
       setHeadline(couponToEdit.headline || "");
       setDescription(couponToEdit.description || "");
       setBadgeText(couponToEdit.badgeText || "Offerta Esclusiva Salone");
+      setHeroImage(couponToEdit.heroImage || DEFAULT_HERO_IMAGE);
       setMinSpend(couponToEdit.minSpend ? String(couponToEdit.minSpend) : "");
       setStartDate(couponToEdit.startDate);
       setEndDate(couponToEdit.endDate || "");
@@ -151,6 +179,7 @@ export default function CouponEditorModal({
       setHeadline("");
       setDescription("");
       setBadgeText("Offerta Esclusiva Salone");
+      setHeroImage(DEFAULT_HERO_IMAGE);
       setMinSpend("");
       setStartDate(new Date().toISOString().split("T")[0]);
       setEndDate("");
@@ -368,6 +397,7 @@ export default function CouponEditorModal({
         headline: headline.trim() || name.trim(),
         description: description.trim() || undefined,
         badgeText: badgeText.trim() || "Offerta Esclusiva Salone",
+        heroImage: heroImage || DEFAULT_HERO_IMAGE,
         minSpend: minSpend ? parseFloat(minSpend) : undefined,
         startDate: startDate || nowIso.split("T")[0],
         endDate: endDate ? endDate : undefined,
@@ -822,6 +852,55 @@ export default function CouponEditorModal({
                 onChange={(e) => setDescription(e.target.value)}
                 className="w-full px-3 py-2 rounded-xl border border-neutral-200 text-xs focus:border-[#5E1788] focus:outline-none"
               />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-neutral-600 mb-1">
+                Foto del Salone nell&apos;Hero della Landing
+              </label>
+              <p className="text-[11px] text-neutral-500 mb-2">
+                Scegli l&apos;immagine che accompagna il titolo. Il contrasto viola royal e lilla valorizza gli ambienti
+                del Salone.
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                {SALON_HERO_OPTIONS.map((option) => {
+                  const isSelected = (heroImage || DEFAULT_HERO_IMAGE) === option.src;
+                  return (
+                    <button
+                      key={option.src}
+                      type="button"
+                      onClick={() => setHeroImage(option.src)}
+                      className={`relative overflow-hidden rounded-2xl border text-left transition-all cursor-pointer group ${
+                        isSelected
+                          ? "border-[#5E1788] ring-2 ring-[#5E1788]/40 shadow-md"
+                          : "border-neutral-200 hover:border-[#7A3293]/60"
+                      }`}
+                    >
+                      <div className="relative aspect-[4/3] w-full bg-neutral-100 overflow-hidden">
+                        <Image
+                          src={option.src}
+                          alt={option.label}
+                          fill
+                          sizes="(max-width: 640px) 50vw, 200px"
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                        {isSelected && (
+                          <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#5E1788] text-white flex items-center justify-center shadow-md">
+                            <Check className="w-3.5 h-3.5" />
+                          </div>
+                        )}
+                      </div>
+                      <div
+                        className={`px-2.5 py-2 text-[10px] font-bold leading-tight ${
+                          isSelected ? "bg-[#5E1788] text-white" : "bg-white text-neutral-700"
+                        }`}
+                      >
+                        {option.label}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             <div>
