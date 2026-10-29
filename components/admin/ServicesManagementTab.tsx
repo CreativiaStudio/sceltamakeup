@@ -39,7 +39,7 @@ function buildServiceShareMessage(service: ClientService, tone: ShareTone): stri
     `✨ ${bold('SCELTA MAKEUP')} ✨`,
     'La bellezza che valorizza la tua unicità',
     '',
-    `💄 ${bold(service.name)}`,
+    `✨ ${bold(service.name)}`,
     `🏷️ ${channelLabel}`,
   ];
 
@@ -51,12 +51,12 @@ function buildServiceShareMessage(service: ClientService, tone: ShareTone): stri
   lines.push(
     '',
     `⏱️ ${bold('Durata:')} ${service.durationMinutes ?? 0} min`,
-    `💶 ${bold('Prezzo listino:')} ${euro(listPrice)}`,
+    `🏷️ ${bold('Prezzo listino:')} ${euro(listPrice)}`,
     savings > 0
-      ? `🎁 ${bold('Prezzo online:')} ${euro(finalPrice)} — risparmi ${euro(savings)}`
-      : `🎁 ${bold('Prezzo online:')} ${euro(finalPrice)}`,
-    `💳 ${bold('Acconto online 20%:')} ${euro(deposit)}`,
-    `🏦 ${bold('Saldo in Salone:')} ${euro(balance)}`
+      ? `💫 ${bold('Prezzo online:')} ${euro(finalPrice)} — risparmi ${euro(savings)}`
+      : `💫 ${bold('Prezzo online:')} ${euro(finalPrice)}`,
+    `🔒 ${bold('Acconto online 20%:')} ${euro(deposit)}`,
+    `📍 ${bold('Saldo in Salone:')} ${euro(balance)}`
   );
 
   if (topBenefits.length > 0) {
@@ -65,7 +65,7 @@ function buildServiceShareMessage(service: ClientService, tone: ShareTone): stri
 
   lines.push(
     '',
-    `📅 ${bold('Prenota ora:')} ${buildServiceBookingUrl(service)}`,
+    `👉 ${bold('Prenota ora:')} ${buildServiceBookingUrl(service)}`,
     '',
     `📍 ${bold('Salone:')} ${SALON_ADDRESS}`,
     `📞 ${bold('Contatti:')} ${WHATSAPP_DISPLAY_NUMBER} · ${WHATSAPP_OWNER}`,
@@ -228,11 +228,11 @@ export default function ServicesManagementTab() {
 
   const handleShareWhatsApp = useCallback((service: ClientService) => {
     const message = buildServiceShareMessage(service, 'whatsapp');
-    window.open(
-      `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`,
-      '_blank',
-      'noopener,noreferrer'
-    );
+    const isMobile = typeof navigator !== 'undefined' && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const shareUrl = isMobile
+      ? `https://wa.me/?text=${encodeURIComponent(message)}`
+      : `https://web.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+    window.open(shareUrl, '_blank', 'noopener,noreferrer');
   }, []);
 
   const handleCopyServiceLink = useCallback(

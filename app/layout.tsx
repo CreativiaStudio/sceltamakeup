@@ -56,20 +56,20 @@ export const metadata: Metadata = {
       "Salone di bellezza e cosmesi professionale a Napoli. Rivenditore autorizzato Diego della Palma Milano e Cipria Make Up. Spedizioni 24/48h gratuite da 49€.",
     images: [
       {
+        url: "https://www.sceltamakeup.it/brand/og-square.jpg",
+        secureUrl: "https://www.sceltamakeup.it/brand/og-square.jpg",
+        width: 800,
+        height: 800,
+        type: "image/jpeg",
+        alt: "Scelta Makeup — Salone & Alta Cosmesi Napoli",
+      },
+      {
         url: "https://www.sceltamakeup.it/brand/og-image.jpg",
         secureUrl: "https://www.sceltamakeup.it/brand/og-image.jpg",
         width: 1200,
         height: 630,
         type: "image/jpeg",
         alt: "Scelta Makeup — Salone & Alta Cosmesi Napoli",
-      },
-      {
-        url: "https://www.sceltamakeup.it/brand/og-square.jpg",
-        secureUrl: "https://www.sceltamakeup.it/brand/og-square.jpg",
-        width: 800,
-        height: 800,
-        type: "image/jpeg",
-        alt: "Scelta Makeup Napoli Logo",
       },
     ],
   },

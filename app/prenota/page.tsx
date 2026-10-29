@@ -70,11 +70,30 @@ export async function generateMetadata({
         description,
         type: "website",
         siteName: "Scelta Makeup",
+        images: [
+          {
+            url: "https://www.sceltamakeup.it/brand/og-square.jpg",
+            secureUrl: "https://www.sceltamakeup.it/brand/og-square.jpg",
+            width: 800,
+            height: 800,
+            type: "image/jpeg",
+            alt: `${matchedService.name} — Scelta Makeup`,
+          },
+          {
+            url: "https://www.sceltamakeup.it/brand/og-image.jpg",
+            secureUrl: "https://www.sceltamakeup.it/brand/og-image.jpg",
+            width: 1200,
+            height: 630,
+            type: "image/jpeg",
+            alt: `${matchedService.name} — Scelta Makeup`,
+          },
+        ],
       },
       twitter: {
         card: "summary",
         title,
         description,
+        images: ["https://www.sceltamakeup.it/brand/og-square.jpg"],
       },
     };
   } catch {
@@ -86,6 +105,30 @@ export async function generateMetadata({
         description: DEFAULT_DESCRIPTION,
         type: "website",
         siteName: "Scelta Makeup",
+        images: [
+          {
+            url: "https://www.sceltamakeup.it/brand/og-square.jpg",
+            secureUrl: "https://www.sceltamakeup.it/brand/og-square.jpg",
+            width: 800,
+            height: 800,
+            type: "image/jpeg",
+            alt: "Scelta Makeup — Salone & Alta Cosmesi Napoli",
+          },
+          {
+            url: "https://www.sceltamakeup.it/brand/og-image.jpg",
+            secureUrl: "https://www.sceltamakeup.it/brand/og-image.jpg",
+            width: 1200,
+            height: 630,
+            type: "image/jpeg",
+            alt: "Scelta Makeup — Salone & Alta Cosmesi Napoli",
+          },
+        ],
+      },
+      twitter: {
+        card: "summary",
+        title: DEFAULT_TITLE,
+        description: DEFAULT_DESCRIPTION,
+        images: ["https://www.sceltamakeup.it/brand/og-square.jpg"],
       },
     };
   }

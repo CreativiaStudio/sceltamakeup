@@ -8,12 +8,12 @@ async function createOgImages() {
   const outJpg1200 = path.join(root, 'public/brand/og-image.jpg');
   const outJpg800 = path.join(root, 'public/brand/og-square.jpg');
 
+  // 1. BANNER 1200x630 (Safe Zone: Logo within central 630x630 square so no crop ever clips it)
   const bgWidth = 1200;
   const bgHeight = 630;
 
-  // Resize logo for 1200x630 banner
   const logoResized = await sharp(logoPath)
-    .resize({ width: 720, height: 420, fit: 'inside' })
+    .resize({ width: 480, height: 270, fit: 'inside' })
     .toBuffer();
 
   const logoMeta = await sharp(logoResized).metadata();
@@ -29,8 +29,8 @@ async function createOgImages() {
       </defs>
       <rect width="${bgWidth}" height="${bgHeight}" fill="url(#bg)" />
       <rect x="28" y="28" width="${bgWidth - 56}" height="${bgHeight - 56}" rx="20" fill="none" stroke="#5E1788" stroke-opacity="0.14" stroke-width="2" />
-      <text x="600" y="525" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="700" fill="#5E1788" letter-spacing="4" text-anchor="middle">BOUTIQUE D'AUTORE &amp; ALTA COSMESI</text>
-      <text x="600" y="560" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="500" fill="#7A3293" letter-spacing="2" text-anchor="middle">VIA DEI PELLEGRINI 28/29, NAPOLI • SPEDIZIONE RAPIDA 24/48H</text>
+      <text x="600" y="515" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="700" fill="#5E1788" letter-spacing="4" text-anchor="middle">SALONE &amp; ALTA COSMESI</text>
+      <text x="600" y="550" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="500" fill="#7A3293" letter-spacing="2" text-anchor="middle">VIA DEI PELLEGRINI 28/29, NAPOLI • PRENOTAZIONI &amp; SHOPPING ONLINE</text>
     </svg>
   `);
 
@@ -50,10 +50,10 @@ async function createOgImages() {
 
   console.log('og-image.jpg created:', fs.statSync(outJpg1200).size, 'bytes');
 
-  // Square 800x800 for WhatsApp compact card
+  // 2. SQUARE 800x800 for WhatsApp compact preview card (Ample padding so it never touches edges)
   const sqSize = 800;
   const logoSq = await sharp(logoPath)
-    .resize({ width: 600, height: 420, fit: 'inside' })
+    .resize({ width: 500, height: 300, fit: 'inside' })
     .toBuffer();
   const metaSq = await sharp(logoSq).metadata();
 
@@ -62,17 +62,18 @@ async function createOgImages() {
       <defs>
         <linearGradient id="bgSq" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stop-color="#FAF7FB" />
+          <stop offset="50%" stop-color="#F4EBF7" />
           <stop offset="100%" stop-color="#EFE2F3" />
         </linearGradient>
       </defs>
       <rect width="${sqSize}" height="${sqSize}" fill="url(#bgSq)" />
-      <rect x="24" y="24" width="${sqSize - 48}" height="${sqSize - 48}" rx="20" fill="none" stroke="#5E1788" stroke-opacity="0.14" stroke-width="2" />
-      <text x="400" y="655" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="700" fill="#5E1788" letter-spacing="3" text-anchor="middle">BOUTIQUE &amp; ALTA COSMESI</text>
-      <text x="400" y="690" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="500" fill="#7A3293" letter-spacing="2" text-anchor="middle">VIA DEI PELLEGRINI 28/29, NAPOLI</text>
+      <rect x="24" y="24" width="${sqSize - 48}" height="${sqSize - 48}" rx="24" fill="none" stroke="#5E1788" stroke-opacity="0.14" stroke-width="2" />
+      <text x="400" y="640" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="700" fill="#5E1788" letter-spacing="3" text-anchor="middle">SALONE &amp; ALTA COSMESI</text>
+      <text x="400" y="675" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="500" fill="#7A3293" letter-spacing="2" text-anchor="middle">VIA DEI PELLEGRINI 28/29, NAPOLI</text>
     </svg>
   `);
 
-  const topSqPos = Math.round((sqSize - metaSq.height - 100) / 2);
+  const topSqPos = Math.round((sqSize - metaSq.height - 90) / 2);
   const leftSqPos = Math.round((sqSize - metaSq.width) / 2);
 
   await sharp(svgSq)
