@@ -62,10 +62,14 @@ const DEPOSIT_METHODS: {
 
 interface BookingWizardProps {
   preselectedServiceId?: string;
+  initialServices?: Service[];
 }
 
-export default function BookingWizard({ preselectedServiceId }: BookingWizardProps) {
+export default function BookingWizard({ preselectedServiceId, initialServices }: BookingWizardProps) {
   const [services, setServices] = useState<Service[]>(() => {
+    if (initialServices && initialServices.length > 0) {
+      return initialServices.filter((s) => s.active);
+    }
     if (typeof window !== "undefined") {
       const stored = getClientServices().filter((s) => s.active);
       if (stored.length > 0) return stored;
@@ -90,6 +94,10 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
 
   const [selectedService, setSelectedService] = useState<Service | null>(() => {
     if (!preselectedServiceId) return null;
+    if (initialServices && initialServices.length > 0) {
+      const match = initialServices.find((s) => s.id === preselectedServiceId || s.slug === preselectedServiceId);
+      if (match) return match;
+    }
     const srvs = typeof window !== "undefined" ? getClientServices() : getServices();
     return srvs.find((s) => s.id === preselectedServiceId || s.slug === preselectedServiceId) || null;
   });
@@ -104,6 +112,10 @@ export default function BookingWizard({ preselectedServiceId }: BookingWizardPro
   // Flow steps: 1 = Service, 2 = Date & Slot, 3 = Customer, 4 = Review & Deposit, 5 = Confirmed
   const [step, setStep] = useState<number>(() => {
     if (!preselectedServiceId) return 1;
+    if (initialServices && initialServices.length > 0) {
+      const match = initialServices.find((s) => s.id === preselectedServiceId || s.slug === preselectedServiceId);
+      return match ? 2 : 1;
+    }
     const srvs = typeof window !== "undefined" ? getClientServices() : getServices();
     const match = srvs.find((s) => s.id === preselectedServiceId || s.slug === preselectedServiceId);
     return match ? 2 : 1;
