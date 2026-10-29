@@ -125,26 +125,47 @@ export default function PromoLandingClient({
 
       {/* Main Container */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 sm:pt-12 space-y-10">
-        {/* Hero Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-          {/* Colonna Testo */}
-          <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-100/80 text-[#5E1788] text-[10px] sm:text-xs font-bold tracking-[0.14em] border border-purple-200">
-              <Tag className="w-3.5 h-3.5 text-[#D462A6]" />
+        {/* Hero Section — Testata scenica ad alto impatto */}
+        <section className="group relative isolate overflow-hidden rounded-[2rem] border border-[#D8C2E7]/40 bg-[#1F1B24] shadow-[0_40px_95px_-45px_rgba(94,23,136,0.85)]">
+          {/* Foto del Salone come sfondo scenico */}
+          <Image
+            src={safeImageSrc(
+              coupon.heroImage || "/boutique/salone-postazioni-makeup-frontale.webp"
+            )}
+            alt="Salone Scelta Makeup — postazioni make-up e specchi illuminati a Napoli"
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 1024px"
+            className="object-cover object-center transition-transform duration-[1400ms] ease-out group-hover:scale-[1.04]"
+          />
+
+          {/* Overlay scuro/scenico: il salone si intravede maestoso */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1F1B24] via-[#1F1B24]/75 to-[#1F1B24]/65" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_15%,rgba(122,50,147,0.42),transparent_62%)]" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#5E1788]/35 via-transparent to-[#D462A6]/20" />
+
+          {/* Contenuto centrato sopra l'immagine */}
+          <div className="relative z-10 flex flex-col items-center gap-5 sm:gap-6 px-5 sm:px-8 lg:px-12 py-12 sm:py-16 lg:py-20 text-center">
+            {/* Pillola glassmorphic */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-4 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-[0.18em] text-white backdrop-blur-md shadow-[0_8px_30px_-12px_rgba(0,0,0,0.6)]">
+              <Sparkles className="w-3.5 h-3.5 text-[#D8C2E7]" />
               <span>SCELTA MAKEUP • SALONE NAPOLI</span>
+              <Tag className="w-3.5 h-3.5 text-[#D462A6]" />
             </div>
 
-            <h1 className="font-serif text-3xl sm:text-5xl xl:text-[3.4rem] font-bold text-[#1F1B24] leading-[1.08] tracking-tight">
+            {/* Titolo */}
+            <h1 className="font-serif text-[2rem] sm:text-5xl lg:text-[3.6rem] font-bold text-white leading-[1.08] tracking-tight max-w-3xl drop-shadow-[0_6px_24px_rgba(0,0,0,0.55)]">
               {coupon.headline || coupon.name}
             </h1>
 
-            <p className="text-sm sm:text-base text-neutral-600 font-light leading-relaxed max-w-xl mx-auto lg:mx-0">
+            {/* Descrizione */}
+            <p className="text-sm sm:text-base text-white/75 font-light leading-relaxed max-w-xl">
               {coupon.description ||
                 "I prodotti essenziali selezionati personalmente da Federica Cesiano per un look professionale ed elegante a lunga tenuta."}
             </p>
 
-            {/* Box Sconto Attivo */}
-            <div className="rounded-3xl bg-white border border-[#D8C2E7]/80 shadow-[0_18px_45px_-28px_rgba(94,23,136,0.55)] p-4 sm:p-5 space-y-3">
+            {/* Box Sconto Attivo — glassmorphic bianco in rilievo */}
+            <div className="w-full max-w-2xl rounded-3xl border border-white/60 bg-white/90 backdrop-blur-xl shadow-[0_28px_70px_-30px_rgba(0,0,0,0.8)] p-4 sm:p-5 space-y-3 text-left">
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
                 <div className="flex items-center gap-2 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 self-center sm:self-auto">
                   <Check className="w-4 h-4 text-emerald-600" />
@@ -183,71 +204,20 @@ export default function PromoLandingClient({
               </div>
 
               {coupon.endDate && (
-                <div className="flex items-center justify-center sm:justify-start gap-1.5 text-[11px] text-neutral-500 pt-1 border-t border-neutral-100">
+                <div className="flex items-center justify-center sm:justify-start gap-1.5 text-[11px] text-neutral-500 pt-1 border-t border-neutral-200/70">
                   <Clock className="w-3.5 h-3.5 text-neutral-400" />
                   <span>Valido fino al {coupon.endDate}</span>
                 </div>
               )}
             </div>
 
-            {/* Rassicurazioni */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-xl mx-auto lg:mx-0">
-              <div className="flex items-center gap-2.5 rounded-2xl bg-white/80 border border-[#D8C2E7]/60 px-3.5 py-3 text-left">
-                <Store className="w-4 h-4 text-[#5E1788] shrink-0" />
-                <div className="min-w-0">
-                  <span className="block text-[11px] font-bold text-[#1F1B24]">Salone a Napoli</span>
-                  <span className="block text-[11px] text-neutral-500">
-                    Via dei Pellegrini 28/29
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2.5 rounded-2xl bg-white/80 border border-[#D8C2E7]/60 px-3.5 py-3 text-left">
-                <Truck className="w-4 h-4 text-[#5E1788] shrink-0" />
-                <div className="min-w-0">
-                  <span className="block text-[11px] font-bold text-[#1F1B24]">
-                    Ritiro gratuito
-                  </span>
-                  <span className="block text-[11px] text-neutral-500">o Spedizione 24/48h</span>
-                </div>
-              </div>
-            </div>
+            {/* Didascalia location e consegna */}
+            <p className="text-[11px] sm:text-xs font-semibold text-white/85 leading-relaxed max-w-xl">
+              📍 Via dei Pellegrini 28/29, Montesanto (Napoli) • Ritiro gratuito in Salone o
+              Spedizione 24/48h
+            </p>
           </div>
-
-          {/* Colonna Foto Salone */}
-          <div className="lg:col-span-5">
-            <div className="group relative w-full aspect-[4/5] sm:aspect-[16/11] lg:aspect-[4/5] overflow-hidden rounded-[2rem] border border-[#D8C2E7]/70 bg-[#1F1B24] shadow-[0_30px_70px_-40px_rgba(94,23,136,0.75)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_36px_80px_-38px_rgba(94,23,136,0.85)]">
-              <Image
-                src={safeImageSrc(
-                  coupon.heroImage || "/boutique/salone-postazioni-makeup-frontale.webp"
-                )}
-                alt="Salone Scelta Makeup — postazioni make-up e trattamenti a Napoli"
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 40vw"
-                className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
-              />
-
-              {/* Overlay sfumato sul fondo */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1F1B24]/90 via-[#1F1B24]/25 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#5E1788]/25 via-transparent to-[#D462A6]/15" />
-
-              {/* Badge glassmorphic */}
-              <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/15 px-3 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.12em] text-white backdrop-blur-md shadow-sm">
-                <Sparkles className="w-3.5 h-3.5 text-[#D8C2E7]" />
-                <span>Salone &amp; Postazioni Trattamento</span>
-              </div>
-
-              {/* Didascalia */}
-              <div className="absolute bottom-0 inset-x-0 p-5 sm:p-6">
-                <p className="text-[11px] sm:text-xs font-semibold text-white leading-relaxed">
-                  📍 Via dei Pellegrini 28/29, Montesanto • Specchiere d&apos;autore per
-                  consulenze, trattamenti e trucco
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        </section>
 
         {/* Curated Products Showcase */}
         <div className="space-y-6">
