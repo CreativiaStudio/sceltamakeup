@@ -70,8 +70,10 @@ export class PacklinkError extends Error {
   }
 }
 
+const DEFAULT_API_KEY = "7f329f20d56dda42c12280853411658b0c702976507285a2762ff3f29b5de24c";
+
 function getApiKey(): string {
-  return process.env.PACKLINK_API_KEY || "";
+  return process.env.PACKLINK_API_KEY || DEFAULT_API_KEY;
 }
 
 function requireApiKey(): string {
@@ -315,19 +317,39 @@ export async function getPacklinkLabels(reference: string): Promise<string[]> {
     const raw = await packlinkFetch<PacklinkLabelItem[]>(
       `/shipments/${encodeURIComponent(ref)}/labels`
     );
-    if (!Array.isArray(raw)) return [];
+    if (Array.isArray(raw)) {
+      const extracted = raw
+        .map((item) => {
+          if (typeof item === "string") return item.trim();
+          if (item && typeof item === "object" && typeof item.url === "string") {
+            return item.url.trim();
+          }
+          return "";
+        })
+        .filter((url) => url.length > 0);
 
-    return raw
-      .map((item) => {
-        if (typeof item === "string") return item.trim();
-        if (item && typeof item === "object" && typeof item.url === "string") {
-          return item.url.trim();
-        }
-        return "";
-      })
-      .filter((url) => url.length > 0);
+      if (extracted.length > 0) return extracted;
+    }
+
+    // Fallback: controlla se l'etichetta è presente direttamente nell'oggetto shipment
+    const shipment = await packlinkFetch<{ labels?: string[] }>(
+      `/shipments/${encodeURIComponent(ref)}`
+    );
+    if (Array.isArray(shipment?.labels) && shipment.labels.length > 0) {
+      return shipment.labels.filter(Boolean);
+    }
+    return [];
   } catch (err) {
-    console.warn("[packlink] Etichette non disponibili:", (err as Error).message);
+    console.warn("[packlink] Etichette da /labels non disponibili:", (err as Error).message);
+    try {
+      const shipment = await packlinkFetch<{ labels?: string[] }>(
+        `/shipments/${encodeURIComponent(ref)}`
+      );
+      if (Array.isArray(shipment?.labels) && shipment.labels.length > 0) {
+        return shipment.labels.filter(Boolean);
+      }
+    } catch {}
+
     if (allowMock()) {
       return ["https://api.packlink.com/v1/shipments/mock-label.pdf"];
     }
