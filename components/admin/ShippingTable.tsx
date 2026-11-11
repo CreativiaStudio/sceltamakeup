@@ -13,6 +13,7 @@ import {
   MessageSquare,
   Sparkles,
   ExternalLink,
+  Printer,
 } from "lucide-react";
 import {
   getAdminOrders,
@@ -25,6 +26,15 @@ import {
   getWhatsAppTrackingMessage,
   getWhatsAppDirectUrl,
 } from "@/lib/trackingUtils";
+
+const PACKLINK_PRO_URL = "https://pro.packlink.it/private/shipments";
+
+const COURIER_OPTIONS = [
+  { value: "BRT Express", label: "BRT Express" },
+  { value: "GLS Italy", label: "GLS Italy" },
+  { value: "DHL Express", label: "DHL Express" },
+  { value: "Poste Italiane", label: "Poste Italiane SDA" },
+] as const;
 
 export default function ShippingTable() {
   const [orders, setOrders] = useState<SceltaAdminOrder[]>(() => getAdminOrders());
@@ -47,6 +57,7 @@ export default function ShippingTable() {
   const [copiedOrderId, setCopiedOrderId] = useState<string | null>(null);
   const [savedTrackingId, setSavedTrackingId] = useState<string | null>(null);
   const [packlinkLoadingId, setPacklinkLoadingId] = useState<string | null>(null);
+  const [labelLoadingId, setLabelLoadingId] = useState<string | null>(null);
   const [toast, setToast] = useState<{ message: string; type: "success" | "warning" | "error" } | null>(null);
 
   useEffect(() => {
@@ -141,6 +152,70 @@ export default function ShippingTable() {
       setToast({ message: "Errore di rete durante la creazione della spedizione", type: "error" });
     } finally {
       setPacklinkLoadingId(null);
+    }
+  };
+
+  const handlePrintPacklinkLabel = async (reference: string, orderId: string) => {
+    const ref = reference.trim();
+    if (!ref) {
+      setToast({ message: "Riferimento Packlink mancante: impossibile stampare l'etichetta", type: "error" });
+      return;
+    }
+
+    setLabelLoadingId(orderId);
+    try {
+      const res = await fetch(
+        `/api/shipping/packlink?reference=${encodeURIComponent(ref)}&labels=true`,
+        { cache: "no-store" }
+      );
+      const data = (await res.json().catch(() => ({}))) as {
+        success?: boolean;
+        labels?: unknown;
+        error?: string;
+      };
+
+      const labels = Array.isArray(data.labels)
+        ? data.labels.filter(
+            (item): item is string => typeof item === "string" && item.trim().length > 0
+          )
+        : [];
+      const labelUrl = labels[0];
+
+      if (res.ok && data.success !== false && labelUrl) {
+        window.open(labelUrl, "_blank");
+        setToast({ message: "Etichetta di spedizione aperta in una nuova scheda", type: "success" });
+        return;
+      }
+
+      setToast({
+        message:
+          data.error ||
+          (res.ok
+            ? "Nessuna etichetta disponibile: apro la gestione spedizioni Packlink PRO"
+            : "Recupero etichetta non riuscito: apro la gestione spedizioni Packlink PRO"),
+        type: "warning",
+      });
+      window.open(PACKLINK_PRO_URL, "_blank");
+    } catch (err) {
+      console.error("Errore stampa etichetta Packlink:", err);
+      setToast({
+        message: "Errore di rete nel recupero dell'etichetta: apro la gestione spedizioni Packlink PRO",
+        type: "error",
+      });
+      window.open(PACKLINK_PRO_URL, "_blank");
+    } finally {
+      setLabelLoadingId(null);
+    }
+  };
+
+  const handleCompleteCourierOrder = (orderId: string) => {
+    try {
+      updateOrderStatus(orderId, "completed");
+      setOrders(getAdminOrders());
+      setToast({ message: "Ordine chiuso e segnato come completato", type: "success" });
+    } catch (err) {
+      console.error("Errore chiusura ordine:", err);
+      setToast({ message: "Impossibile chiudere l'ordine: riprova", type: "error" });
     }
   };
 
@@ -291,7 +366,7 @@ export default function ShippingTable() {
         ) : (
           filteredOrders.map((order) => {
             const isCourier = order.fulfillmentType === "courier";
-            const tracking = trackingInputs[order.id] || "";
+            const tracking = trackingInputs[order.id] !== undefined ? trackingInputs[order.id] : (order.trackingCode || '');
             const courier = courierInputs[order.id] || order.courierName || "BRT Express";
             const isTrackingSaved = savedTrackingId === order.id;
 
@@ -409,7 +484,7 @@ export default function ShippingTable() {
                           <span>Ritiro Salone</span>
                         </div>
                         <p className="text-[11px] text-gray-600">
-                          Via dei Pellegrini 28/29, Napoli (Atelier Federica Cesiano).
+                          Via dei Pellegrini 28/29, Napoli (Salone Federica Cesiano).
                         </p>
                       </div>
                     )}
@@ -451,12 +526,27 @@ export default function ShippingTable() {
                       /* Courier Actions */
                       <div className="space-y-2.5">
                         {order.packlinkReference ? (
-                          <div className="px-3 py-2 rounded-lg bg-purple-50 border border-purple-200 text-[11px] text-[#5E1788] font-medium flex items-center gap-1.5">
-                            <Sparkles className="w-3.5 h-3.5 text-[#D462A6]" />
-                            <span>
-                              Packlink PRO · Rif. <span className="font-mono font-bold">{order.packlinkReference}</span>
-                            </span>
-                          </div>
+                          <>
+                            <div className="px-3 py-2 rounded-lg bg-purple-50 border border-purple-200 text-[11px] text-[#5E1788] font-medium flex items-center gap-1.5">
+                              <Sparkles className="w-3.5 h-3.5 text-[#D462A6]" />
+                              <span>
+                                Packlink PRO · Rif. <span className="font-mono font-bold">{order.packlinkReference}</span>
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => handlePrintPacklinkLabel(order.packlinkReference as string, order.id)}
+                              disabled={labelLoadingId === order.id}
+                              className="w-full py-2 rounded-xl bg-gradient-to-r from-[#5E1788] to-[#7A3293] hover:opacity-95 disabled:opacity-60 disabled:cursor-wait text-white text-xs font-semibold shadow-xs transition-opacity flex items-center justify-center gap-1.5"
+                            >
+                              <Printer className="w-3.5 h-3.5" />
+                              <span>
+                                {labelLoadingId === order.id
+                                  ? "Recupero Etichetta..."
+                                  : "Stampa Etichetta Spedizione (PDF)"}
+                              </span>
+                            </button>
+                          </>
                         ) : (
                           !order.trackingCode &&
                           order.status === "processing" && (
@@ -488,10 +578,15 @@ export default function ShippingTable() {
                             }
                             className="w-full px-2.5 py-1.5 bg-white border border-gray-300 rounded-lg text-xs font-medium text-gray-800 focus:outline-none focus:border-[#5E1788]"
                           >
-                            <option value="BRT Express">BRT Express</option>
-                            <option value="GLS Italy">GLS Italy</option>
-                            <option value="DHL Express">DHL Express</option>
-                            <option value="Poste Italiane">Poste Italiane SDA</option>
+                            {courier.trim() !== "" &&
+                              !COURIER_OPTIONS.some((option) => option.value === courier) && (
+                                <option value={courier}>{courier}</option>
+                              )}
+                            {COURIER_OPTIONS.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
                           </select>
                         </div>
 
@@ -560,6 +655,20 @@ export default function ShippingTable() {
                             </a>
                           </div>
                         )}
+
+                        {order.status !== "completed" &&
+                          order.status !== "cancelled" &&
+                          (order.status === "shipped" ||
+                            Boolean((tracking || order.trackingCode || "").trim())) && (
+                            <button
+                              type="button"
+                              onClick={() => handleCompleteCourierOrder(order.id)}
+                              className="w-full py-2 rounded-xl bg-[#1F1B24] hover:bg-black text-white text-xs font-semibold shadow-xs transition-colors flex items-center justify-center gap-1.5"
+                            >
+                              <CheckCircle2 className="w-3.5 h-3.5 text-[#D8C2E7]" />
+                              <span>Chiudi Ordine (Segna Completato)</span>
+                            </button>
+                          )}
                       </div>
                     ) : (
                       /* Boutique Pickup Actions */

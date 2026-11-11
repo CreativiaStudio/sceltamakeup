@@ -15,7 +15,6 @@
 import type { SceltaAdminOrder } from "@/lib/adminStore";
 
 const PACKLINK_BASE_URL = "https://api.packlink.com/v1";
-const DEFAULT_API_KEY = "7f329f20d56dda42c12280853411658b0c702976507285a2762ff3f29b5de24c";
 const REQUEST_TIMEOUT_MS = 12000;
 
 const SENDER = {
@@ -72,7 +71,17 @@ export class PacklinkError extends Error {
 }
 
 function getApiKey(): string {
-  return process.env.PACKLINK_API_KEY || DEFAULT_API_KEY;
+  return process.env.PACKLINK_API_KEY || "";
+}
+
+function requireApiKey(): string {
+  const apiKey = getApiKey().trim();
+  if (!apiKey) {
+    throw new PacklinkError(
+      "PACKLINK_API_KEY non configurata: imposta la chiave API Packlink PRO nelle variabili d'ambiente del server"
+    );
+  }
+  return apiKey;
 }
 
 function allowMock(): boolean {
@@ -86,7 +95,7 @@ async function packlinkFetch<T>(path: string, init: RequestInit = {}): Promise<T
     const res = await fetch(`${PACKLINK_BASE_URL}${path}`, {
       ...init,
       headers: {
-        Authorization: getApiKey(),
+        Authorization: requireApiKey(),
         "Content-Type": "application/json",
         Accept: "application/json",
         ...(init.headers ?? {}),
@@ -166,7 +175,12 @@ interface PacklinkService {
   base_price?: number;
   price?: number | { total_price?: number; base_price?: number };
   total_price?: number;
+  delivery_to_parcelshop?: boolean;
+  dropoff?: boolean;
+  labels_required?: boolean;
 }
+
+const MAX_FALLBACK_PRICE = 10;
 
 function servicePrice(service: PacklinkService): number {
   if (typeof service.total_price === "number") return service.total_price;
@@ -194,7 +208,32 @@ async function pickCheapestService(zipTo: string): Promise<PacklinkService> {
   if (!Array.isArray(services) || services.length === 0) {
     throw new PacklinkError("Nessun servizio Packlink disponibile per questa tratta");
   }
-  return [...services].sort((a, b) => servicePrice(a) - servicePrice(b))[0];
+
+  // Consegna esclusivamente a domicilio: mai locker o punti di ritiro.
+  const homeDeliveryServices = services.filter((service) => {
+    if (service.delivery_to_parcelshop !== false) return false;
+    const carrierName = (service.carrier_name || "").trim().toUpperCase();
+    return carrierName !== "UPS" && carrierName !== "TNT" && carrierName !== "DHL";
+  });
+
+  if (homeDeliveryServices.length > 0) {
+    return [...homeDeliveryServices].sort((a, b) => servicePrice(a) - servicePrice(b))[0];
+  }
+
+  // Fallback estremo: nessun servizio a domicilio idoneo, accetta qualsiasi
+  // servizio disponibile sotto la soglia di 10€.
+  const cheapFallback = services
+    .filter((service) => servicePrice(service) < MAX_FALLBACK_PRICE)
+    .sort((a, b) => servicePrice(a) - servicePrice(b));
+
+  if (cheapFallback.length > 0) {
+    console.warn("[packlink] Nessun servizio a domicilio idoneo: uso fallback sotto i 10€");
+    return cheapFallback[0];
+  }
+
+  throw new PacklinkError(
+    "Nessun servizio Packlink a domicilio disponibile sotto i 10€ per questa tratta"
+  );
 }
 
 // ------------------------------------------------------------------------------
@@ -259,6 +298,40 @@ export async function createPacklinkShipment(
       return { reference, carrier: "BRT Express", trackingCode: reference, mock: true };
     }
     throw err;
+  }
+}
+
+// ------------------------------------------------------------------------------
+// Labels
+// ------------------------------------------------------------------------------
+
+type PacklinkLabelItem = string | { url?: string };
+
+export async function getPacklinkLabels(reference: string): Promise<string[]> {
+  const ref = reference.trim();
+  if (!ref) throw new PacklinkError("Riferimento Packlink mancante");
+
+  try {
+    const raw = await packlinkFetch<PacklinkLabelItem[]>(
+      `/shipments/${encodeURIComponent(ref)}/labels`
+    );
+    if (!Array.isArray(raw)) return [];
+
+    return raw
+      .map((item) => {
+        if (typeof item === "string") return item.trim();
+        if (item && typeof item === "object" && typeof item.url === "string") {
+          return item.url.trim();
+        }
+        return "";
+      })
+      .filter((url) => url.length > 0);
+  } catch (err) {
+    console.warn("[packlink] Etichette non disponibili:", (err as Error).message);
+    if (allowMock()) {
+      return ["https://api.packlink.com/v1/shipments/mock-label.pdf"];
+    }
+    return [];
   }
 }
 

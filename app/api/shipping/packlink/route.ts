@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCentralOrders, updateCentralOrderFields } from "@/lib/serverOrderStore";
-import { createPacklinkShipment, getPacklinkTracking, PacklinkError } from "@/lib/packlink";
+import { createPacklinkShipment, getPacklinkLabels, getPacklinkTracking, PacklinkError } from "@/lib/packlink";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +45,17 @@ export async function POST(req: Request) {
 
     const shipment = await createPacklinkShipment(order);
 
+    let labels: string[] = [];
+    try {
+      labels = await getPacklinkLabels(shipment.reference);
+    } catch (err) {
+      console.warn(
+        "[packlink] Recupero etichette fallito:",
+        err instanceof Error ? err.message : err
+      );
+    }
+    const labelUrl = labels[0] ?? null;
+
     const updated = await updateCentralOrderFields(order.id, {
       packlinkReference: shipment.reference,
       trackingCode: shipment.trackingCode,
@@ -56,6 +67,8 @@ export async function POST(req: Request) {
       success: true,
       mock: shipment.mock,
       shipment,
+      labels,
+      labelUrl,
       order: updated,
     });
   } catch (err) {
@@ -67,12 +80,17 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   try {
-    const reference = new URL(req.url).searchParams.get("reference")?.trim();
+    const params = new URL(req.url).searchParams;
+    const reference = params.get("reference")?.trim();
     if (!reference) {
       return NextResponse.json(
         { success: false, error: "Parametro reference obbligatorio" },
         { status: 400 }
       );
+    }
+    if (params.get("labels") === "true") {
+      const labels = await getPacklinkLabels(reference);
+      return NextResponse.json({ success: true, labels });
     }
     const tracking = await getPacklinkTracking(reference);
     return NextResponse.json({ success: true, tracking });
