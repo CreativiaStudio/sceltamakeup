@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import {
   Truck,
   Store,
@@ -26,6 +26,7 @@ import {
   getWhatsAppTrackingMessage,
   getWhatsAppDirectUrl,
 } from "@/lib/trackingUtils";
+import ShippingLabelModal from "./ShippingLabelModal";
 
 const PACKLINK_PRO_URL = "https://pro.packlink.it/private/shipments";
 
@@ -57,7 +58,7 @@ export default function ShippingTable() {
   const [copiedOrderId, setCopiedOrderId] = useState<string | null>(null);
   const [savedTrackingId, setSavedTrackingId] = useState<string | null>(null);
   const [packlinkLoadingId, setPacklinkLoadingId] = useState<string | null>(null);
-  const [labelLoadingId, setLabelLoadingId] = useState<string | null>(null);
+  const [activeLabelOrder, setActiveLabelOrder] = useState<SceltaAdminOrder | null>(null);
   const [toast, setToast] = useState<{ message: string; type: "success" | "warning" | "error" } | null>(null);
 
   useEffect(() => {
@@ -155,58 +156,7 @@ export default function ShippingTable() {
     }
   };
 
-  const handlePrintPacklinkLabel = async (reference: string, orderId: string) => {
-    const ref = reference.trim();
-    if (!ref) {
-      setToast({ message: "Riferimento Packlink mancante: impossibile stampare l'etichetta", type: "error" });
-      return;
-    }
 
-    setLabelLoadingId(orderId);
-    try {
-      const res = await fetch(
-        `/api/shipping/packlink?reference=${encodeURIComponent(ref)}&labels=true`,
-        { cache: "no-store" }
-      );
-      const data = (await res.json().catch(() => ({}))) as {
-        success?: boolean;
-        labels?: unknown;
-        error?: string;
-      };
-
-      const labels = Array.isArray(data.labels)
-        ? data.labels.filter(
-            (item): item is string => typeof item === "string" && item.trim().length > 0
-          )
-        : [];
-      const labelUrl = labels[0];
-
-      if (res.ok && data.success !== false && labelUrl) {
-        window.open(labelUrl, "_blank");
-        setToast({ message: "Etichetta di spedizione aperta in una nuova scheda", type: "success" });
-        return;
-      }
-
-      setToast({
-        message:
-          data.error ||
-          (res.ok
-            ? "Nessuna etichetta disponibile: apro la gestione spedizioni Packlink PRO"
-            : "Recupero etichetta non riuscito: apro la gestione spedizioni Packlink PRO"),
-        type: "warning",
-      });
-      window.open(PACKLINK_PRO_URL, "_blank");
-    } catch (err) {
-      console.error("Errore stampa etichetta Packlink:", err);
-      setToast({
-        message: "Errore di rete nel recupero dell'etichetta: apro la gestione spedizioni Packlink PRO",
-        type: "error",
-      });
-      window.open(PACKLINK_PRO_URL, "_blank");
-    } finally {
-      setLabelLoadingId(null);
-    }
-  };
 
   const handleCompleteCourierOrder = (orderId: string) => {
     try {
@@ -535,16 +485,11 @@ export default function ShippingTable() {
                             </div>
                             <button
                               type="button"
-                              onClick={() => handlePrintPacklinkLabel(order.packlinkReference as string, order.id)}
-                              disabled={labelLoadingId === order.id}
-                              className="w-full py-2 rounded-xl bg-gradient-to-r from-[#5E1788] to-[#7A3293] hover:opacity-95 disabled:opacity-60 disabled:cursor-wait text-white text-xs font-semibold shadow-xs transition-opacity flex items-center justify-center gap-1.5"
+                              onClick={() => setActiveLabelOrder(order)}
+                              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#5E1788] via-[#7A3293] to-[#D462A6] hover:opacity-95 text-white text-xs font-semibold shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                             >
-                              <Printer className="w-3.5 h-3.5" />
-                              <span>
-                                {labelLoadingId === order.id
-                                  ? "Recupero Etichetta..."
-                                  : "Stampa Etichetta Spedizione (PDF)"}
-                              </span>
+                              <Printer className="w-4 h-4" />
+                              <span>Apri & Stampa Etichetta (PDF)</span>
                             </button>
                           </>
                         ) : (
@@ -717,6 +662,13 @@ export default function ShippingTable() {
           })
         )}
       </div>
+
+      {/* In-App Shipping Label PDF Modal */}
+      <ShippingLabelModal
+        order={activeLabelOrder}
+        isOpen={Boolean(activeLabelOrder)}
+        onClose={() => setActiveLabelOrder(null)}
+      />
     </div>
   );
 }

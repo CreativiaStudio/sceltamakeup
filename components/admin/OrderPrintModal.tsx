@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { X, Printer, MapPin, Phone, Mail, ShoppingBag, Sparkles, CheckCircle2 } from "lucide-react";
+import { X, Printer, MapPin, Phone, Mail, ShoppingBag, Sparkles, CheckCircle2, Truck } from "lucide-react";
 import { SceltaAdminOrder } from "@/lib/adminStore";
+import ShippingLabelModal from "./ShippingLabelModal";
 
 interface OrderPrintModalProps {
   order: SceltaAdminOrder | null;
@@ -16,6 +17,8 @@ export default function OrderPrintModal({
   isOpen,
   onClose,
 }: OrderPrintModalProps) {
+  const [showLabelModal, setShowLabelModal] = useState(false);
+
   if (!isOpen || !order) return null;
 
   const handlePrint = () => {
@@ -59,6 +62,17 @@ export default function OrderPrintModal({
           </div>
 
           <div className="flex items-center gap-2">
+            {order.fulfillmentType === "courier" && order.packlinkReference && (
+              <button
+                type="button"
+                onClick={() => setShowLabelModal(true)}
+                className="px-3.5 py-2 bg-gradient-to-r from-[#D462A6] to-[#7A3293] hover:opacity-95 text-white text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
+              >
+                <Truck className="w-4 h-4" />
+                <span>Etichetta Spedizione PDF</span>
+              </button>
+            )}
+
             <button
               type="button"
               onClick={handlePrint}
@@ -302,6 +316,13 @@ export default function OrderPrintModal({
           </div>
         </div>
       </div>
+
+      {/* In-App Shipping Label Modal */}
+      <ShippingLabelModal
+        order={order}
+        isOpen={showLabelModal}
+        onClose={() => setShowLabelModal(false)}
+      />
     </div>
   );
 }
