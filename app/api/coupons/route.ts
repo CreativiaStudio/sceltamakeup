@@ -9,6 +9,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/adminAuth";
 import {
   getCentralCoupons,
   saveCentralCoupon,
@@ -31,6 +32,11 @@ function json(body: Record<string, unknown>, status = 200): NextResponse {
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const code = req.nextUrl.searchParams.get("code");
 
+  if (!code) {
+    const authError = requireAdmin(req);
+    if (authError) return authError;
+  }
+
   try {
     const coupons = await getCentralCoupons({ fresh: true });
 
@@ -52,6 +58,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 }
 
 export async function POST(req: Request): Promise<NextResponse> {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   let body: unknown;
   try {
     body = await req.json();
@@ -77,6 +86,9 @@ export async function POST(req: Request): Promise<NextResponse> {
 }
 
 export async function DELETE(req: Request): Promise<NextResponse> {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   const id = new URL(req.url).searchParams.get("id");
   if (!id) {
     return json({ success: false, error: "Parametro 'id' mancante." }, 400);

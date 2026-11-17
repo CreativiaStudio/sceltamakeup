@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Product, CategoryKey } from "@/types/product";
-import { resolveProductImageUrl } from "@/lib/r2";
+import { resolveProductImageUrl } from "@/lib/r2Public";
 import {
   MEGAMENU_CATEGORIES,
   MegaMenuCategoryConfig,

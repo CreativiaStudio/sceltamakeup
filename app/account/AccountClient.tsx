@@ -32,7 +32,7 @@ import OrderTrackingCard from "@/components/orders/OrderTrackingCard";
 import { ORDER_STATUS_LABELS, normalizeEmail, type PublicOrder } from "@/lib/orderTracking";
 import type { PacklinkTracking } from "@/lib/packlink";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
-import { resolveProductImageUrl } from "@/lib/r2";
+import { resolveProductImageUrl } from "@/lib/r2Public";
 import { useCartStore } from "@/store/useCartStore";
 import { useIsMounted } from "@/lib/useIsMounted";
 import {

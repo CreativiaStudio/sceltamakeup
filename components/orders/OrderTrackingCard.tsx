@@ -18,7 +18,7 @@ import {
   type PublicOrder,
 } from "@/lib/orderTracking";
 import type { PacklinkTracking } from "@/lib/packlink";
-import { resolveProductImageUrl } from "@/lib/r2";
+import { resolveProductImageUrl } from "@/lib/r2Public";
 
 const euro = new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" });
 

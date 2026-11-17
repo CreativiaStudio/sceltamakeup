@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/adminAuth";
 import { SceltaCrmCustomer } from "@/lib/adminStore";
 import {
   deleteCentralCustomer,
@@ -16,7 +17,10 @@ interface CustomersPostBody {
 
 const NO_STORE_HEADERS = { "Cache-Control": "no-store, max-age=0" };
 
-export async function GET() {
+export async function GET(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   try {
     const customers = await getCentralCustomers();
     return NextResponse.json(
@@ -34,6 +38,9 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   try {
     const body = (await req.json().catch(() => ({}))) as CustomersPostBody;
 
@@ -72,6 +79,9 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   try {
     const { searchParams } = new URL(req.url);
     const id = (searchParams.get("id") || "").trim();

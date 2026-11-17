@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/adminAuth";
 import { Product } from "@/types/product";
 import type { SceltaVariantStock } from "@/lib/adminStore";
 import {
@@ -50,6 +51,9 @@ export async function GET(req: Request) {
  * 400 = richiesta non valida (il client non ritenta), 5xx = errore temporaneo (ritenta).
  */
 export async function POST(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   const body = (await req.json().catch(() => null)) as OverridesPostBody | null;
   const productId = typeof body?.productId === "string" ? body.productId : "";
   if (!productId) {
@@ -90,6 +94,9 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   const url = new URL(req.url);
   const productId = url.searchParams.get("productId") || "";
   if (!productId) {

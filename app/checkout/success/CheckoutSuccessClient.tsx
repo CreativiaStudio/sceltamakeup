@@ -48,40 +48,14 @@ export default function CheckoutSuccessClient() {
           clearPendingOrder();
           clearCart();
 
-          // Sincronizza l'ordine nel database centrale Supabase per Area Clienti e Gestionale Spedizioni
+          // Sincronizza l'ordine nel database centrale Supabase tramite verifica Stripe server-side
           try {
-            fetch("/api/admin/orders", {
+            fetch("/api/orders/confirm", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                order: {
-                  id: created.orderNumber,
-                  customerName: `${created.customer.nome} ${created.customer.cognome}`.trim(),
-                  customerEmail: created.customer.email,
-                  customerPhone: created.customer.telefono,
-                  total: created.total,
-                  status: created.deliveryMethod === "boutique" ? "ready_for_pickup" : "processing",
-                  fulfillmentType: created.deliveryMethod === "boutique" ? "store_pickup" : "courier",
-                  paymentMethod: "stripe",
-                  shippingAddress: created.customer.indirizzo
-                    ? {
-                        street: created.customer.indirizzo,
-                        city: created.customer.citta || "Napoli",
-                        postalCode: created.customer.cap || "80134",
-                        province: "NA",
-                      }
-                    : undefined,
-                  items: created.items.map((item) => ({
-                    productId: item.productId,
-                    productTitle: item.name,
-                    variantName: item.shade?.name,
-                    quantity: item.quantity,
-                    price: item.price,
-                    image: item.image,
-                  })),
-                  createdAt: created.createdAt,
-                  updatedAt: created.updatedAt || created.createdAt,
-                },
+                sessionId,
+                pendingOrder: created,
               }),
             }).catch((syncErr) => console.warn("Failed to sync order to central DB:", syncErr));
           } catch (syncErr) {

@@ -7,6 +7,11 @@ import {
   ServiceChannel,
 } from "@/types/booking";
 import { SERVICES, OPERATORS } from "@/data/services";
+import {
+  getClientServices,
+  getClientServiceById,
+  getClientServiceBySlug,
+} from "@/lib/servicesStore";
 
 // Standard solo-worker slots (Outside store counter hours)
 // Store opening hours: Martedì – Sabato: 09:30 - 14:00 / 16:00 - 19:30 (Lunedì e Domenica Chiuso)
@@ -55,20 +60,41 @@ const STORAGE_BLOCKED_SLOTS_KEY = "scelta_makeup_blocked_slots_v1";
 // Clean production state: zero fake demo appointments
 const INITIAL_DEMO_APPOINTMENTS: Appointment[] = [];
 
+function roundCurrency(value: number): number {
+  return Math.round((Number.isFinite(value) ? value : 0) * 100) / 100;
+}
+
 export function getServices(channel?: ServiceChannel): Service[] {
+  if (typeof window !== "undefined") {
+    const clientServices = getClientServices();
+    return clientServices.filter(
+      (s) => s.active && (!channel || s.channel === channel)
+    );
+  }
   if (!channel) return SERVICES.filter((s) => s.active);
   return SERVICES.filter((s) => s.channel === channel && s.active);
 }
 
 export function getAllServicesWithFuture(): Service[] {
+  if (typeof window !== "undefined") {
+    return getClientServices();
+  }
   return SERVICES;
 }
 
 export function getServiceBySlug(slug: string): Service | undefined {
+  if (typeof window !== "undefined") {
+    const clientService = getClientServiceBySlug(slug);
+    if (clientService) return clientService;
+  }
   return SERVICES.find((s) => s.slug === slug);
 }
 
 export function getServiceById(id: string): Service | undefined {
+  if (typeof window !== "undefined") {
+    const clientService = getClientServiceById(id);
+    if (clientService) return clientService;
+  }
   return SERVICES.find((s) => s.id === id);
 }
 
@@ -218,6 +244,12 @@ export function createAppointment(data: {
     operator = OPERATORS.find((o) => o.channel === service.channel && o.active) || OPERATORS[0];
   }
 
+  // Acconto e saldo sono sempre ricalcolati dal prezzo online del pacchetto
+  // selezionato: 20% ora, 80% in salone (vale anche per i servizi custom).
+  const priceOnline = roundCurrency(service.priceOnline);
+  const depositPaid = roundCurrency(priceOnline * 0.2);
+  const balanceDue = roundCurrency(priceOnline - depositPaid);
+
   const now = new Date();
   const codeSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
   const dateFormatted = data.date.replace(/-/g, "").slice(2);
@@ -238,9 +270,9 @@ export function createAppointment(data: {
     pricing: {
       priceList: service.priceList,
       discountOnline: service.discountOnline,
-      priceOnline: service.priceOnline,
-      depositPaid: service.depositAmount,
-      balanceDue: service.balanceAmount,
+      priceOnline,
+      depositPaid,
+      balanceDue,
     },
     status: "confirmed",
     paymentMethodDeposit: data.paymentMethodDeposit || "stripe_card",

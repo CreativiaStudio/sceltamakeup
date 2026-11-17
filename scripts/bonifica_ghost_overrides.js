@@ -2,7 +2,10 @@ const fs = require('fs');
 
 async function main() {
   const hubUrl = 'https://ekfnekrjpumjpetzgwzy.supabase.co/rest/v1/clients?id=eq.14fa9b24-8991-4150-a1fe-d60adbabd469&select=preferences';
-  const hubKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVrZm5la3JqcHVtanBldHpnd3p5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MzgyNjAxNiwiZXhwIjoyMDk5NDAyMDE2fQ.Ne-jtSPB8NP-79_pV1KsGubYbCDtQVhQAXRtC-PzT-8';
+  const hubKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  if (!hubKey) {
+    throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable.');
+  }
 
   const res = await fetch(hubUrl, { headers: { apikey: hubKey, Authorization: 'Bearer ' + hubKey } });
   const data = await res.json();

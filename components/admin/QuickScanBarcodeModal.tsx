@@ -38,7 +38,7 @@ import {
   createAdminOrder,
 } from "@/lib/adminStore";
 import { logAdminActivity, logAdminError } from "@/lib/auditLogger";
-import { safeImageSrc } from "@/lib/r2";
+import { safeImageSrc } from "@/lib/r2Public";
 
 interface QuickScanBarcodeModalProps {
   onOpenManualOrderWithItem?: (item: {

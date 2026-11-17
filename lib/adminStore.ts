@@ -176,6 +176,7 @@ export interface SceltaAdminOrder {
   trackingCode?: string;
   courierName?: string;
   packlinkReference?: string;
+  stripeSessionId?: string;
   items: Array<{
     productId: string;
     productTitle: string;

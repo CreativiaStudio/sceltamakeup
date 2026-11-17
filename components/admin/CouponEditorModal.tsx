@@ -32,7 +32,7 @@ import { Product } from "@/types/product";
 import { PromoCoupon, DiscountScope, DiscountType } from "@/types/coupon";
 import { saveClientCoupon } from "@/lib/couponStore";
 import { getAdminStoreState } from "@/lib/adminStore";
-import { safeImageSrc } from "@/lib/r2";
+import { safeImageSrc } from "@/lib/r2Public";
 
 interface CouponEditorModalProps {
   isOpen: boolean;

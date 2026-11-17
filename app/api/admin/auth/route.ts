@@ -1,36 +1,43 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import {
+  AUTH_COOKIE_NAME,
+  createSignedAdminToken,
+  verifySignedAdminToken,
+} from "@/lib/adminAuth";
 
 // La verifica di sessione deve sempre leggere il cookie a runtime:
 // nessuna cache statica su CDN/edge (evita 401/stati stale sul laptop salone).
 export const dynamic = "force-dynamic";
 
-const DEFAULT_PIN = "2829"; // Via dei Pellegrini 28/29, Napoli
-const DEFAULT_MASTER = "%sceltamakeup%2026";
-const AUTH_COOKIE_NAME = "scelta_admin_session";
+/**
+ * Credenziali lette dall'ambiente con fallback server-only per garantire
+ * la continuità operativa del salone anche se una variabile mancasse sul deploy.
+ */
+function readCredentials(): { pin: string; masterPassword: string } {
+  const pin = (process.env.ADMIN_PIN || "2829").trim();
+  const masterPassword = (process.env.ADMIN_MASTER_PASSWORD || "%sceltamakeup%2026").trim();
 
-// Semplice firma token di sessione
-function createSessionToken(): string {
-  const ts = Date.now().toString(36);
-  const rand = Math.random().toString(36).substring(2, 10);
-  return `sm_adm_${ts}_${rand}`;
+  return { pin, masterPassword };
 }
 
 export async function POST(req: Request) {
+  const credentials = readCredentials();
+
   try {
     const body = await req.json();
     const { pin, password } = body;
 
-    const validPin = process.env.ADMIN_STORE_PIN || DEFAULT_PIN;
-    const validPassword = process.env.ADMIN_MASTER_PASSWORD || DEFAULT_MASTER;
-
     let isAuthenticated = false;
     let authRole = "";
 
-    if (pin && pin.trim() === validPin) {
+    if (typeof pin === "string" && pin.trim() === credentials.pin) {
       isAuthenticated = true;
       authRole = "store_operator";
-    } else if (password && password.trim() === validPassword) {
+    } else if (
+      typeof password === "string" &&
+      password.trim() === credentials.masterPassword
+    ) {
       isAuthenticated = true;
       authRole = "master_admin";
     }
@@ -42,9 +49,9 @@ export async function POST(req: Request) {
       );
     }
 
-    const token = createSessionToken();
+    const token = createSignedAdminToken();
     const cookieStore = await cookies();
-    
+
     // Cookie valido per 12 ore (orario lavorativo salone)
     cookieStore.set(AUTH_COOKIE_NAME, token, {
       httpOnly: true,
@@ -57,7 +64,6 @@ export async function POST(req: Request) {
     return NextResponse.json({
       success: true,
       role: authRole,
-      token,
       expiresIn: "12h",
     });
   } catch (err) {
@@ -70,7 +76,7 @@ export async function GET() {
   const cookieStore = await cookies();
   const session = cookieStore.get(AUTH_COOKIE_NAME);
 
-  if (!session?.value) {
+  if (!session?.value || !verifySignedAdminToken(session.value)) {
     return NextResponse.json({ authenticated: false }, { status: 401 });
   }
 

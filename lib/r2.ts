@@ -1,73 +1,38 @@
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { R2_PUBLIC_BASE_URL } from "./r2Public";
 
-const DEFAULT_R2_ACCOUNT_ID = "cdc3d1bfef17f23cb453fe2737b2ede8";
-const DEFAULT_R2_ACCESS_KEY_ID = "a15ba732cf75ed7cb171a095e794a479";
-const DEFAULT_R2_SECRET_ACCESS_KEY =
-  "4f09e1eb767175bf174301dfb41ea4c38c9aac8648aafb78d9914239d6a6093f";
+// Gli helper client-safe (risoluzione URL immagini, filtri segnaposto) vivono in
+// `lib/r2Public.ts`, libero da `@aws-sdk` e da chiavi. Riesportati qui per non
+// rompere i consumer esistenti che importano da `@/lib/r2`.
+export {
+  R2_PUBLIC_BASE_URL,
+  resolveProductImageUrl,
+  isPlaceholderImage,
+  safeImageSrc,
+} from "./r2Public";
+
 const DEFAULT_R2_BUCKET_NAME = "scelta-makeup";
 
-/** Dominio pubblico (CDN) del bucket R2 `scelta-makeup`. */
-export const R2_PUBLIC_BASE_URL = "https://pub-4fbc134b2050432b8f5963ac1c49741a.r2.dev";
-
 export function getR2Config() {
-  const accountId = (process.env.R2_ACCOUNT_ID || DEFAULT_R2_ACCOUNT_ID).trim();
-  const accessKeyId = (process.env.R2_ACCESS_KEY_ID || DEFAULT_R2_ACCESS_KEY_ID).trim();
-  const secretAccessKey = (
-    process.env.R2_SECRET_ACCESS_KEY || DEFAULT_R2_SECRET_ACCESS_KEY
-  ).trim();
+  const accountId = (process.env.R2_ACCOUNT_ID ?? "").trim();
+  const accessKeyId = (process.env.R2_ACCESS_KEY_ID ?? "").trim();
+  const secretAccessKey = (process.env.R2_SECRET_ACCESS_KEY ?? "").trim();
   const bucketName = (process.env.R2_BUCKET_NAME || DEFAULT_R2_BUCKET_NAME).trim();
   const publicUrl = (process.env.R2_PUBLIC_URL || R2_PUBLIC_BASE_URL).trim();
 
-  return { accountId, accessKeyId, secretAccessKey, bucketName, publicUrl };
-}
-
-/**
- * Risolve il path immagine di un prodotto verso il CDN R2.
- *
- * - `null`/`undefined`/stringa vuota -> logo brand locale.
- * - path locale `/products/<file>`   -> URL assoluto su R2.
- * - qualsiasi altro valore (URL assoluto, path locale) viene restituito invariato.
- */
-export function resolveProductImageUrl(src?: string | null): string {
-  if (!src) return "/brand/logo.png";
-  if (src.startsWith("/products/")) {
-    return `${R2_PUBLIC_BASE_URL}${src}`;
+  const missing = [
+    !accountId && "R2_ACCOUNT_ID",
+    !accessKeyId && "R2_ACCESS_KEY_ID",
+    !secretAccessKey && "R2_SECRET_ACCESS_KEY",
+  ].filter(Boolean);
+  if (missing.length > 0) {
+    throw new Error(
+      `[r2] Variabili d'ambiente mancanti: ${missing.join(", ")}. ` +
+        "Configurarle nell'ambiente di deploy prima di usare il client R2."
+    );
   }
-  return src;
-}
 
-/**
- * Segnaposto noti: packshot generici di brand e logo del negozio. Un percorso
- * che contiene uno di questi marcatori NON è una foto reale caricata da Federica.
- */
-const PLACEHOLDER_IMAGE_MARKERS = [
-  "eveline-cosmetics-packshot",
-  "/brand/logo.png",
-  "brand/logo.png",
-  "placeholder",
-];
-
-/** True quando l'URL è vuoto oppure corrisponde a un segnaposto noto. */
-export function isPlaceholderImage(src?: string | null): boolean {
-  if (typeof src !== "string") return true;
-  const value = src.trim().toLowerCase();
-  if (!value) return true;
-  return PLACEHOLDER_IMAGE_MARKERS.some((marker) => value.includes(marker));
-}
-
-/**
- * Sceglie la migliore immagine tra i candidati: qualsiasi URL reale (la foto
- * scattata/caricata da Federica) vince SEMPRE sui segnaposto noti
- * (`eveline-cosmetics-packshot.jpg`, `/brand/logo.png`). Solo se nessun
- * candidato è una foto reale si ripiega sul primo valore valido e, in ultima
- * istanza, sul logo del brand.
- */
-export function safeImageSrc(...candidates: Array<string | null | undefined>): string {
-  const valid = candidates
-    .filter((candidate): candidate is string => typeof candidate === "string" && candidate.trim().length > 0)
-    .map((candidate) => candidate.trim());
-  const realImage = valid.find((candidate) => !isPlaceholderImage(candidate));
-  return resolveProductImageUrl(realImage ?? valid[0] ?? null);
+  return { accountId, accessKeyId, secretAccessKey, bucketName, publicUrl };
 }
 
 export function getR2Client(): S3Client {

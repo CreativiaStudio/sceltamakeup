@@ -25,7 +25,12 @@ import {
   createAppointment,
   isStoreClosedOnDate,
 } from "@/lib/bookingService";
-import { syncServicesFromCloud, getClientServices } from "@/lib/servicesStore";
+import {
+  syncServicesFromCloud,
+  getClientServices,
+  SERVICES_SYNC_EVENT,
+  SERVICES_STORAGE_KEY,
+} from "@/lib/servicesStore";
 import { enqueueWhatsAppMessage } from "@/lib/whatsappQueueService";
 import { sendBookingConfirmationEmail } from "@/lib/resendService";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
@@ -65,6 +70,43 @@ interface BookingWizardProps {
   initialServices?: Service[];
 }
 
+function roundCurrency(value: number): number {
+  return Math.round((Number.isFinite(value) ? value : 0) * 100) / 100;
+}
+
+/** Acconto 20% del prezzo online, sempre ricalcolato sul pacchetto selezionato. */
+function getServiceDeposit(service: Service): number {
+  return roundCurrency(service.priceOnline * 0.2);
+}
+
+/** Saldo 80% da versare in salone. */
+function getServiceBalance(service: Service): number {
+  return roundCurrency(service.priceOnline - getServiceDeposit(service));
+}
+
+/** Normalizza id/slug rimuovendo il prefisso "srv-" usato dai pacchetti custom. */
+function normalizeServiceReference(reference: string): string {
+  const normalized = reference.trim().toLowerCase();
+  return normalized.startsWith("srv-") ? normalized.slice(4) : normalized;
+}
+
+function matchesServiceReference(service: Service, reference: string): boolean {
+  const value = normalizeServiceReference(reference);
+  if (!value) return false;
+  return (
+    normalizeServiceReference(service.id) === value ||
+    normalizeServiceReference(service.slug) === value
+  );
+}
+
+/** Trova un pacchetto accettando indifferentemente id, slug o varianti con prefisso. */
+function findServiceByReference(
+  list: Service[],
+  reference: string
+): Service | undefined {
+  return list.find((service) => matchesServiceReference(service, reference));
+}
+
 export default function BookingWizard({ preselectedServiceId, initialServices }: BookingWizardProps) {
   const [services, setServices] = useState<Service[]>(() => {
     if (initialServices && initialServices.length > 0) {
@@ -77,49 +119,72 @@ export default function BookingWizard({ preselectedServiceId, initialServices }:
     return getServices();
   });
 
-  useEffect(() => {
-    const handleUpdate = () => {
-      const stored = getClientServices().filter((s) => s.active);
-      if (stored.length > 0) setServices(stored);
-    };
-    window.addEventListener("scelta_services_updated", handleUpdate);
-    void syncServicesFromCloud().then((cloudList) => {
-      if (cloudList && Array.isArray(cloudList)) {
-        const filtered = cloudList.filter((s) => s.active);
-        if (filtered.length > 0) setServices(filtered);
-      }
-    });
-    return () => window.removeEventListener("scelta_services_updated", handleUpdate);
-  }, []);
-
-  const [selectedService, setSelectedService] = useState<Service | null>(() => {
-    if (!preselectedServiceId) return null;
-    if (initialServices && initialServices.length > 0) {
-      const match = initialServices.find((s) => s.id === preselectedServiceId || s.slug === preselectedServiceId);
-      if (match) return match;
-    }
-    const srvs = typeof window !== "undefined" ? getClientServices() : getServices();
-    return srvs.find((s) => s.id === preselectedServiceId || s.slug === preselectedServiceId) || null;
-  });
-
-  useEffect(() => {
-    if (preselectedServiceId && (!selectedService || (selectedService.id !== preselectedServiceId && selectedService.slug !== preselectedServiceId))) {
-      const match = services.find((s) => s.id === preselectedServiceId || s.slug === preselectedServiceId);
-      if (match) setSelectedService(match);
-    }
-  }, [preselectedServiceId, services, selectedService]);
-
   // Flow steps: 1 = Service, 2 = Date & Slot, 3 = Customer, 4 = Review & Deposit, 5 = Confirmed
   const [step, setStep] = useState<number>(() => {
     if (!preselectedServiceId) return 1;
-    if (initialServices && initialServices.length > 0) {
-      const match = initialServices.find((s) => s.id === preselectedServiceId || s.slug === preselectedServiceId);
-      return match ? 2 : 1;
-    }
-    const srvs = typeof window !== "undefined" ? getClientServices() : getServices();
-    const match = srvs.find((s) => s.id === preselectedServiceId || s.slug === preselectedServiceId);
-    return match ? 2 : 1;
+    return findServiceByReference(services, preselectedServiceId) ? 2 : 1;
   });
+
+  const [selectedService, setSelectedService] = useState<Service | null>(() => {
+    if (!preselectedServiceId) return null;
+    return findServiceByReference(services, preselectedServiceId) ?? null;
+  });
+
+  const cloudSyncStartedRef = useRef(false);
+  const preselectionAppliedRef = useRef(false);
+
+  useEffect(() => {
+    const applyServices = (list: Service[]) => {
+      if (!Array.isArray(list) || list.length === 0) return;
+
+      const activeServices = list.filter((s) => s.active);
+      if (activeServices.length === 0) return;
+      setServices(activeServices);
+
+      if (!preselectedServiceId) return;
+      const match = findServiceByReference(activeServices, preselectedServiceId);
+      if (!match) return;
+
+      // Mantiene aggiornati i prezzi del pacchetto scelto senza perdere la
+      // selezione dell'utente; applica la pre-selezione una sola volta.
+      setSelectedService((current) =>
+        current
+          ? findServiceByReference(activeServices, current.id) ?? match
+          : match
+      );
+
+      if (!preselectionAppliedRef.current) {
+        preselectionAppliedRef.current = true;
+        setStep((current) => (current === 1 ? 2 : current));
+      }
+    };
+
+    const refreshServices = () => applyServices(getClientServices());
+
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key === SERVICES_STORAGE_KEY) refreshServices();
+    };
+
+    window.addEventListener(SERVICES_SYNC_EVENT, refreshServices);
+    window.addEventListener("storage", handleStorage);
+
+    // Un solo allineamento cloud all'avvio: poi restano attivi gli eventi
+    // locali/BroadcastChannel emessi da lib/servicesStore.ts.
+    if (!cloudSyncStartedRef.current) {
+      cloudSyncStartedRef.current = true;
+      void syncServicesFromCloud()
+        .then((cloudList) => applyServices(cloudList))
+        .catch(() => refreshServices());
+    }
+
+    return () => {
+      window.removeEventListener(SERVICES_SYNC_EVENT, refreshServices);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [preselectedServiceId]);
+
+  const selectedDeposit = selectedService ? getServiceDeposit(selectedService) : 0;
+  const selectedBalance = selectedService ? getServiceBalance(selectedService) : 0;
 
   const [channelFilter, setChannelFilter] = useState<"all" | "makeup" | "beauty">("all");
 
@@ -298,7 +363,7 @@ export default function BookingWizard({ preselectedServiceId, initialServices }:
             email: customer.email,
             notes: customer.notes,
           },
-          depositAmount: selectedService.depositAmount,
+          depositAmount: selectedDeposit,
           depositMethod,
         }),
       });
@@ -306,7 +371,7 @@ export default function BookingWizard({ preselectedServiceId, initialServices }:
       const data = await response.json();
 
       if (response.ok && data.url) {
-        window.location.href = data.url;
+        window.location.assign(data.url);
         return;
       }
 
@@ -463,7 +528,7 @@ export default function BookingWizard({ preselectedServiceId, initialServices }:
                       €{service.priceOnline.toFixed(2)}
                     </span>
                     <span className="block text-xs text-[#1F1B24]/70 mt-1">
-                      Acconto online: <strong>€{service.depositAmount.toFixed(2)}</strong> (saldo in store: €{service.balanceAmount.toFixed(2)})
+                      Acconto online: <strong>€{getServiceDeposit(service).toFixed(2)}</strong> (saldo in store: €{getServiceBalance(service).toFixed(2)})
                     </span>
                   </div>
                   <button className="px-4 py-2 rounded-xl bg-brand-royal text-white text-xs font-semibold group-hover:bg-[#7A3293] transition-colors flex items-center gap-1">
@@ -560,7 +625,7 @@ export default function BookingWizard({ preselectedServiceId, initialServices }:
                   Acconto online (20%)
                 </span>
                 <span className="block text-lg font-serif font-bold text-[#5E1788] mt-0.5">
-                  €{selectedService.depositAmount.toFixed(2)}
+                  €{selectedDeposit.toFixed(2)}
                 </span>
                 <span className="block text-[11px] text-[#1F1B24]/60 mt-0.5">
                   Da versare ora per bloccare data e orario
@@ -571,7 +636,7 @@ export default function BookingWizard({ preselectedServiceId, initialServices }:
                   Saldo in Salone (80%)
                 </span>
                 <span className="block text-lg font-serif font-bold text-[#1F1B24] mt-0.5">
-                  €{selectedService.balanceAmount.toFixed(2)}
+                  €{selectedBalance.toFixed(2)}
                 </span>
                 <span className="block text-[11px] text-[#1F1B24]/60 mt-0.5">
                   Da corrispondere a fine seduta (Carta/POS o contanti)
@@ -952,14 +1017,14 @@ export default function BookingWizard({ preselectedServiceId, initialServices }:
                     </span>
                   </div>
                   <span className="text-lg font-serif font-bold text-[#5E1788]">
-                    €{selectedService.depositAmount.toFixed(2)}
+                    €{selectedDeposit.toFixed(2)}
                   </span>
                 </div>
 
                 <div className="flex justify-between text-xs text-[#1F1B24]/70 px-2">
                   <span>Saldo rimanente da versare in negozio a fine seduta:</span>
                   <span className="font-semibold text-[#1F1B24]">
-                    €{selectedService.balanceAmount.toFixed(2)} (Carta/POS o Contanti)
+                    €{selectedBalance.toFixed(2)} (Carta/POS o Contanti)
                   </span>
                 </div>
               </div>
@@ -984,7 +1049,7 @@ export default function BookingWizard({ preselectedServiceId, initialServices }:
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-bold text-[#1F1B24] flex items-center gap-1.5">
                   <CreditCard className="w-4 h-4 text-[#5E1788]" />
-                  Metodo di Pagamento Acconto (€{selectedService.depositAmount.toFixed(2)})
+                  Metodo di Pagamento Acconto (€{selectedDeposit.toFixed(2)})
                 </span>
                 <span className="text-xs text-green-700 bg-green-50 px-2.5 py-1 rounded-full font-semibold border border-green-200/60">
                   Crittografia & Pagamento Protetto
@@ -1049,7 +1114,7 @@ export default function BookingWizard({ preselectedServiceId, initialServices }:
                 className="mt-0.5 rounded text-[#5E1788] focus:ring-[#5E1788]"
               />
               <span>
-                Accetto i termini di prenotazione e confermo che verserò il saldo di <strong>€{selectedService.balanceAmount.toFixed(2)}</strong> direttamente in salone.
+                Accetto i termini di prenotazione e confermo che verserò il saldo di <strong>€{selectedBalance.toFixed(2)}</strong> direttamente in salone.
               </span>
             </label>
 
@@ -1071,7 +1136,7 @@ export default function BookingWizard({ preselectedServiceId, initialServices }:
               ) : (
                 <>
                   <CreditCard className="w-4 h-4" />
-                  Conferma & Versa Acconto di €{selectedService.depositAmount.toFixed(2)}
+                  Conferma & Versa Acconto di €{selectedDeposit.toFixed(2)}
                 </>
               )}
             </button>

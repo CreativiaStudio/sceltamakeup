@@ -299,7 +299,9 @@ export async function syncServicesFromCloud(fresh = true): Promise<ClientService
       writeStoredState(data.services);
       return data.services;
     }
-  } catch (_) {}
+  } catch {
+    /* Offline: la cache locale resta valida. */
+  }
   return getClientServices();
 }
 
@@ -455,8 +457,6 @@ export function useServicesSync(intervalMs = 30000): ServicesSyncState {
   }, []);
 
   useEffect(() => {
-    refreshLocal();
-
     const handleLocalUpdate = (event: Event) => {
       const detail = (event as CustomEvent<ServicesUpdatedDetail>).detail;
       setServices(detail?.services ?? getClientServices());
@@ -495,7 +495,10 @@ export function useServicesSync(intervalMs = 30000): ServicesSyncState {
     document.addEventListener("visibilitychange", handleVisibility);
     channel?.addEventListener("message", handleBroadcast);
 
-    void syncNow();
+    const initialSync = window.setTimeout(() => {
+      void syncNow();
+    }, 0);
+
     const interval = window.setInterval(() => {
       if (typeof document !== "undefined" && document.hidden) return;
       void syncNow();
@@ -507,6 +510,7 @@ export function useServicesSync(intervalMs = 30000): ServicesSyncState {
       window.removeEventListener("focus", handleFocus);
       document.removeEventListener("visibilitychange", handleVisibility);
       channel?.removeEventListener("message", handleBroadcast);
+      window.clearTimeout(initialSync);
       window.clearInterval(interval);
     };
   }, [intervalMs, refreshLocal, syncNow]);

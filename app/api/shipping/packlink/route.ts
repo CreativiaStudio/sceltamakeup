@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/adminAuth";
 import { getCentralOrders, updateCentralOrderFields } from "@/lib/serverOrderStore";
 import { createPacklinkShipment, getPacklinkLabels, getPacklinkTracking, PacklinkError } from "@/lib/packlink";
 
@@ -9,6 +10,9 @@ interface PacklinkPostBody {
 }
 
 export async function POST(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   try {
     const body = (await req.json().catch(() => ({}))) as PacklinkPostBody;
     const orderId = body.orderId?.trim();
@@ -79,6 +83,9 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   try {
     const params = new URL(req.url).searchParams;
     const reference = params.get("reference")?.trim();

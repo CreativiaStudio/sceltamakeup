@@ -19,7 +19,7 @@ import { Product, Shade } from "@/types/product";
 import { useCartStore } from "@/store/useCartStore";
 import ProductCard from "@/components/ProductCard";
 import { getProductOverride } from "@/lib/adminStore";
-import { resolveProductImageUrl } from "@/lib/r2";
+import { resolveProductImageUrl } from "@/lib/r2Public";
 
 interface ProductDetailClientProps {
   product: Product;

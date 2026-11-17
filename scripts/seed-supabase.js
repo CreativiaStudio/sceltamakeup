@@ -1,7 +1,10 @@
 ﻿const fs = require('fs');
 
-const SUPABASE_URL = 'https://zsycaulbamdxqhcukrvn.supabase.co';
-const SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpzeWNhdWxiYW1keHFoY3VrcnZuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODg1MTA4NSwiZXhwIjoyMTA0NDI3MDg1fQ.Czr2EkjwAA7m5J7LLrCq3caDMZSuMSUIbPYISe6X_o0';
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://zsycaulbamdxqhcukrvn.supabase.co';
+const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+if (!SERVICE_KEY) {
+  throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable.');
+}
 
 const headers = {
   'apikey': SERVICE_KEY,

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/adminAuth";
 
 export const dynamic = "force-dynamic";
 
@@ -6,12 +7,9 @@ export const dynamic = "force-dynamic";
 // variabili non sono ancora configurate su Vercel, l'app continua a usare il
 // progetto Supabase dedicato `zsycaulbamdxqhcukrvn` invece di fallire a runtime.
 const DEFAULT_DEDICATED_URL = "https://zsycaulbamdxqhcukrvn.supabase.co";
-const DEFAULT_DEDICATED_SERVICE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpzeWNhdWxiYW1keHFoY3VrcnZuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODg1MTA4NSwiZXhwIjoyMTA0NDI3MDg1fQ.Czr2EkjwAA7m5J7LLrCq3caDMZSuMSUIbPYISe6X_o0";
 
 const DEDICATED_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_DEDICATED_URL;
-const DEDICATED_SERVICE_KEY =
-  process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_DEDICATED_SERVICE_KEY;
+const DEDICATED_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 
 const SNAPSHOTS_TABLE = "scelta_device_snapshots";
 
@@ -36,6 +34,9 @@ function optionalString(value: unknown): string | null {
  * nel progetto Supabase dedicato con una INSERT pura (nessun upsert).
  */
 export async function POST(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   try {
     const raw = await req.text();
 

@@ -70,10 +70,8 @@ export class PacklinkError extends Error {
   }
 }
 
-const DEFAULT_API_KEY = "7f329f20d56dda42c12280853411658b0c702976507285a2762ff3f29b5de24c";
-
 function getApiKey(): string {
-  return process.env.PACKLINK_API_KEY || DEFAULT_API_KEY;
+  return process.env.PACKLINK_API_KEY || "";
 }
 
 function requireApiKey(): string {

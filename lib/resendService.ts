@@ -827,7 +827,7 @@ export async function sendResendEmail(payload: {
   subject: string;
   html: string;
 }): Promise<EmailDispatchResult> {
-  const apiKey = process.env.RESEND_API_KEY || process.env.NEXT_PUBLIC_RESEND_API_KEY;
+  const apiKey = process.env.RESEND_API_KEY;
   const now = new Date().toISOString();
 
   // If apiKey is missing, empty, or set to demo/mock, enter realistic simulation mode

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/adminAuth";
 
 // Cache in-memory delle statistiche per risposta istantanea nel cockpit admin
 interface InMemAnalytics {
@@ -96,7 +97,10 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   const today = new Date().toISOString().split("T")[0];
   return NextResponse.json({
     date: today,

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/adminAuth";
 import { getPacklinkLabels, PacklinkError } from "@/lib/packlink";
 
 export const dynamic = "force-dynamic";
@@ -6,6 +7,9 @@ export const dynamic = "force-dynamic";
 const LABEL_FETCH_TIMEOUT_MS = 20000;
 
 export async function GET(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   try {
     const reference = new URL(req.url).searchParams.get("reference")?.trim();
     if (!reference) {

@@ -9,7 +9,6 @@ import {
   Award,
   ChevronRight,
   Heart,
-  Lock,
 } from "lucide-react";
 import { getCentralServices } from "@/lib/serverServicesStore";
 

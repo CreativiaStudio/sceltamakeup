@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { ShoppingBag, Check } from "lucide-react";
 import { Product, Shade } from "@/types/product";
 import { useCartStore } from "@/store/useCartStore";
-import { resolveProductImageUrl } from "@/lib/r2";
+import { resolveProductImageUrl } from "@/lib/r2Public";
 
 interface ProductCardProps {
   product: Product;

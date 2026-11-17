@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/adminAuth";
 import type { SceltaVariantStock } from "@/lib/adminStore";
 import { saveVariantStock } from "@/lib/serverCatalogStore";
 
@@ -13,6 +14,9 @@ interface StockPostBody {
 }
 
 export async function POST(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   const body = (await req.json().catch(() => null)) as StockPostBody | null;
   const variantId = typeof body?.variantId === "string" ? body.variantId : "";
 

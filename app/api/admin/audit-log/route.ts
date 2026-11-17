@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/adminAuth";
 import {
   ACTIVITY_CATEGORIES,
   MAX_CLOUD_AUDIT_LOGS,
@@ -44,7 +45,10 @@ function collectIncomingLogs(body: AuditLogPostBody | null): AdminActivityLogIte
 }
 
 /** GET: restituisce la timeline cloud completa con intestazioni no-store. */
-export async function GET() {
+export async function GET(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   try {
     const logs = await getAuditLogs(MAX_CLOUD_AUDIT_LOGS);
     return NextResponse.json({ success: true, logs }, { headers: NO_STORE_HEADERS });
@@ -56,6 +60,9 @@ export async function GET() {
 
 /** POST: appende uno o più eventi alla scatola nera (tabella append-only, solo INSERT). */
 export async function POST(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   const body = (await req.json().catch(() => null)) as AuditLogPostBody | null;
   const incoming = collectIncomingLogs(body);
 

@@ -31,7 +31,7 @@ import {
 import { PromoCoupon } from "@/types/coupon";
 import { Product, Shade } from "@/types/product";
 import { useCartStore } from "@/store/useCartStore";
-import { safeImageSrc } from "@/lib/r2";
+import { safeImageSrc } from "@/lib/r2Public";
 
 interface PromoLandingClientProps {
   coupon: PromoCoupon;

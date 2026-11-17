@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/adminAuth";
 import { SceltaAdminOrder } from "@/lib/adminStore";
 import {
   getCentralOrders,
@@ -29,7 +30,10 @@ function isValidOrder(o: unknown): o is SceltaAdminOrder {
   );
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   try {
     const orders = (await getCentralOrders()).filter(isValidOrder);
     return NextResponse.json({
@@ -44,6 +48,9 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   try {
     const body = (await req.json().catch(() => ({}))) as OrdersPostBody;
 
@@ -77,6 +84,9 @@ export async function POST(req: Request) {
 }
 
 export async function PATCH(req: Request) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   try {
     const body = (await req.json().catch(() => ({}))) as OrdersPatchBody;
     const { orderId, status } = body;

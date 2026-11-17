@@ -10,12 +10,9 @@
 import { PromoCoupon, CouponValidationResult } from "@/types/coupon";
 
 const DEFAULT_DEDICATED_URL = "https://zsycaulbamdxqhcukrvn.supabase.co";
-const DEFAULT_DEDICATED_SERVICE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpzeWNhdWxiYW1keHFoY3VrcnZuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODg1MTA4NSwiZXhwIjoyMTA0NDI3MDg1fQ.Czr2EkjwAA7m5J7LLrCq3caDMZSuMSUIbPYISe6X_o0";
 
 const DEDICATED_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_DEDICATED_URL;
-const DEDICATED_SERVICE_KEY =
-  process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_DEDICATED_SERVICE_KEY;
+const DEDICATED_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 
 const OVERRIDES_TABLE = "scelta_catalog_overrides";
 const SINGLETON_ID = "singleton";
@@ -27,7 +24,16 @@ const READ_CACHE_TTL_MS = 3_000;
 let readCache: PromoCoupon[] | null = null;
 let readCacheAt = 0;
 
+function assertConfigured(): void {
+  if (!DEDICATED_URL || !DEDICATED_SERVICE_KEY) {
+    throw new Error(
+      "Configurazione Supabase dedicata mancante (NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY)."
+    );
+  }
+}
+
 function authHeaders(extra?: Record<string, string>): Record<string, string> {
+  assertConfigured();
   return {
     apikey: DEDICATED_SERVICE_KEY,
     Authorization: `Bearer ${DEDICATED_SERVICE_KEY}`,

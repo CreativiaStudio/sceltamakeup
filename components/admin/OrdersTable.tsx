@@ -16,10 +16,12 @@ import {
   Printer,
   Plus,
   Receipt,
+  Loader2,
 } from "lucide-react";
 import {
   getAdminOrders,
   updateOrderStatus,
+  updateOrderTracking,
   syncAdminStoreFromCloud,
   SceltaAdminOrder,
 } from "@/lib/adminStore";
@@ -36,6 +38,8 @@ export default function OrdersTable() {
   const [printingOrder, setPrintingOrder] = useState<SceltaAdminOrder | null>(null);
   const [isNewOrderModalOpen, setIsNewOrderModalOpen] = useState(false);
   const [multiCartCount, setMultiCartCount] = useState<number>(0);
+  const [packlinkLoadingId, setPacklinkLoadingId] = useState<string | null>(null);
+  const [packlinkError, setPacklinkError] = useState<string | null>(null);
 
   const posOrders = useMemo(
     () => orders.filter((o) => o.fulfillmentType === "pos_receipt"),
@@ -93,6 +97,69 @@ export default function OrdersTable() {
     setTimeout(() => setCopiedOrderId(null), 2000);
   };
 
+  const handleOrderUpdated = (updated: SceltaAdminOrder) => {
+    setOrders((prev) => prev.map((o) => (o.id === updated.id ? updated : o)));
+    setPrintingOrder((prev) => (prev && prev.id === updated.id ? updated : prev));
+  };
+
+  const handleQuickCreatePacklink = async (order: SceltaAdminOrder) => {
+    if (packlinkLoadingId) return;
+
+    setPacklinkLoadingId(order.id);
+    setPacklinkError(null);
+
+    try {
+      const res = await fetch("/api/shipping/packlink", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId: order.id }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        success?: boolean;
+        error?: string;
+        shipment?: { reference: string; carrier: string; trackingCode: string };
+        labelUrl?: string | null;
+        labels?: unknown;
+      };
+
+      if (!res.ok || !data.success || !data.shipment) {
+        setPacklinkError(data.error || "Creazione spedizione Packlink non riuscita.");
+        return;
+      }
+
+      const { reference, carrier, trackingCode } = data.shipment;
+      try {
+        updateOrderTracking(order.id, trackingCode, carrier, reference);
+      } catch (err) {
+        console.error("Aggiornamento locale tracking Packlink non riuscito:", err);
+      }
+
+      const refreshed = getAdminOrders();
+      setOrders(refreshed);
+      setPrintingOrder((prev) => {
+        if (!prev || prev.id !== order.id) return prev;
+        return refreshed.find((o) => o.id === order.id) ?? prev;
+      });
+
+      const labelCandidates: unknown[] = [data.labelUrl];
+      if (Array.isArray(data.labels)) labelCandidates.push(...data.labels);
+      const labelUrl = labelCandidates.find(
+        (item): item is string => typeof item === "string" && item.trim().length > 0
+      );
+
+      window.open(
+        labelUrl ? labelUrl.trim() : "https://pro.packlink.it/private/shipments",
+        "_blank",
+        "noopener,noreferrer"
+      );
+    } catch (err) {
+      console.error("Errore creazione spedizione Packlink:", err);
+      setPacklinkError("Errore di rete durante la creazione della spedizione Packlink.");
+    } finally {
+      setPacklinkLoadingId(null);
+    }
+  };
+
   const filteredOrders = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
 
@@ -138,6 +205,23 @@ export default function OrdersTable() {
 
   return (
     <div className="space-y-6">
+      {packlinkError && (
+        <div
+          role="alert"
+          className="fixed bottom-6 right-6 z-[60] max-w-sm px-4 py-3 rounded-xl shadow-lg bg-rose-600 text-white border border-rose-700 text-xs font-semibold flex items-start gap-2"
+        >
+          <span className="flex-1">{packlinkError}</span>
+          <button
+            type="button"
+            onClick={() => setPacklinkError(null)}
+            className="text-white/80 hover:text-white font-bold cursor-pointer"
+            aria-label="Chiudi avviso Packlink"
+          >
+            ×
+          </button>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -483,6 +567,38 @@ export default function OrdersTable() {
                               <span className="hidden sm:inline">Stampa</span>
                             </button>
 
+                            {isCourier &&
+                              (order.packlinkReference ? (
+                                <button
+                                  type="button"
+                                  onClick={() => setPrintingOrder(order)}
+                                  className="px-2 py-1.5 rounded-lg text-[10px] font-semibold bg-purple-50 text-[#5E1788] border border-[#D8C2E7] hover:bg-purple-100 transition-colors flex items-center gap-1 cursor-pointer"
+                                  title={`Packlink PRO · ${order.packlinkReference} — apri per stampare l'etichetta`}
+                                >
+                                  <Check className="w-3 h-3 text-emerald-600" />
+                                  <span className="font-mono max-w-[90px] truncate">
+                                    {order.packlinkReference}
+                                  </span>
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => handleQuickCreatePacklink(order)}
+                                  disabled={packlinkLoadingId === order.id}
+                                  className="px-2 py-1.5 rounded-lg text-[10px] font-semibold bg-[#5E1788] text-white hover:bg-[#7A3293] disabled:opacity-60 transition-colors flex items-center gap-1 cursor-pointer"
+                                  title="Crea la spedizione su Packlink PRO e apri l'etichetta"
+                                >
+                                  {packlinkLoadingId === order.id ? (
+                                    <Loader2 className="w-3 h-3 animate-spin" />
+                                  ) : (
+                                    <Truck className="w-3 h-3" />
+                                  )}
+                                  <span>
+                                    {packlinkLoadingId === order.id ? "Creo..." : "Packlink"}
+                                  </span>
+                                </button>
+                              ))}
+
                             <button
                               type="button"
                               onClick={() =>
@@ -629,6 +745,39 @@ export default function OrdersTable() {
                                         </strong>
                                       </div>
                                     )}
+
+                                    {/* Etichetta Packlink PRO (lettera di vettura) */}
+                                    {order.packlinkReference ? (
+                                      <div className="pt-2 border-t border-gray-200 flex items-center justify-between text-xs">
+                                        <span className="text-gray-500">
+                                          Etichetta Packlink creata:
+                                        </span>
+                                        <strong className="font-mono text-[#5E1788]">
+                                          {order.packlinkReference}
+                                        </strong>
+                                      </div>
+                                    ) : (
+                                      <div className="pt-2 border-t border-gray-200">
+                                        <button
+                                          type="button"
+                                          onClick={() => void handleQuickCreatePacklink(order)}
+                                          disabled={packlinkLoadingId === order.id}
+                                          className="w-full py-2 rounded-xl bg-gradient-to-r from-[#5E1788] via-[#7A3293] to-[#5E1788] hover:shadow-md disabled:opacity-60 text-white text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer"
+                                          title="Crea la spedizione su Packlink PRO e apri subito la lettera di vettura PDF da incollare all'esterno della scatola"
+                                        >
+                                          {packlinkLoadingId === order.id ? (
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                          ) : (
+                                            <Truck className="w-4 h-4" />
+                                          )}
+                                          <span>
+                                            {packlinkLoadingId === order.id
+                                              ? "Creazione spedizione in corso..."
+                                              : "Crea Spedizione Packlink & Stampa Etichetta"}
+                                          </span>
+                                        </button>
+                                      </div>
+                                    )}
                                   </div>
                                 ) : (
                                   <div className="p-3.5 rounded-xl border border-purple-200 bg-purple-50/50 space-y-2 text-xs">
@@ -684,9 +833,11 @@ export default function OrdersTable() {
 
       {/* Printable Receipt Modal */}
       <OrderPrintModal
+        key={printingOrder?.id ?? "order-print-closed"}
         order={printingOrder}
         isOpen={Boolean(printingOrder)}
         onClose={() => setPrintingOrder(null)}
+        onOrderUpdated={handleOrderUpdated}
       />
 
       {/* Manual Order Creation Modal */}

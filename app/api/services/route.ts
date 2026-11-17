@@ -11,6 +11,7 @@
  */
 
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/adminAuth";
 import type { Service } from "@/types/booking";
 import {
   deleteCentralService,
@@ -66,6 +67,9 @@ export async function GET(): Promise<NextResponse> {
 }
 
 export async function POST(req: Request): Promise<NextResponse> {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   let payload: unknown;
   try {
     payload = await req.json();
@@ -97,6 +101,9 @@ export async function POST(req: Request): Promise<NextResponse> {
 }
 
 export async function DELETE(req: Request): Promise<NextResponse> {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   const id = new URL(req.url).searchParams.get("id");
   if (!id || id.trim() === "") {
     return json({ success: false, error: "Parametro 'id' obbligatorio." }, 400);

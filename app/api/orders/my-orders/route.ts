@@ -6,6 +6,13 @@ export const dynamic = "force-dynamic";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+function maskCustomerName(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "Cliente";
+  if (parts.length === 1) return parts[0];
+  return `${parts[0]} ${parts[parts.length - 1][0].toUpperCase()}.`;
+}
+
 export async function POST(req: Request) {
   try {
     const body = (await req.json().catch(() => ({}))) as { email?: string };
@@ -22,7 +29,15 @@ export async function POST(req: Request) {
     const mine = orders
       .filter((o) => isCustomerVisibleOrder(o) && normalizeEmail(o.customerEmail) === email)
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-      .map(toPublicOrder);
+      .map((order) => {
+        const pub = toPublicOrder(order);
+        return {
+          ...pub,
+          customerName: maskCustomerName(pub.customerName),
+          // Maschera l'indirizzo completo sulle richieste con sola email (senza numero ordine)
+          shippingAddress: undefined,
+        };
+      });
 
     return NextResponse.json({ success: true, orders: mine });
   } catch (err) {

@@ -26,7 +26,7 @@ import {
 } from "@/lib/adminStore";
 import ProductEditorModal from "./ProductEditorModal";
 import { logAdminActivity } from "@/lib/auditLogger";
-import { safeImageSrc } from "@/lib/r2";
+import { safeImageSrc } from "@/lib/r2Public";
 
 const ALL_PRODUCTS = rawCatalog as Product[];
 
