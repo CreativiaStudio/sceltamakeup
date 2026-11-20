@@ -45,7 +45,7 @@ export function getWhatsAppTrackingMessage(
   const courier = courierName || order.courierName || "BRT Express";
   const trackingUrl = getCourierTrackingUrl(courier, code);
 
-  return `Ciao ${order.customerName}! 💄 Il tuo ordine #${order.id} da Scelta Makeup è stato affidato a ${courier}. Puoi seguire la spedizione in tempo reale a questo link: ${trackingUrl} . Per qualsiasi informazione siamo sempre a tua disposizione. A presto, Federica Cesiano - Scelta Makeup Atelier Napoli`;
+  return `Ciao ${order.customerName}! 💄 Il tuo ordine #${order.id} da Scelta Makeup è stato affidato a ${courier}. Puoi seguire la spedizione in tempo reale a questo link: ${trackingUrl} . Per qualsiasi informazione siamo sempre a tua disposizione. A presto, Federica Cesiano - Scelta Makeup Salone Napoli`;
 }
 
 /**

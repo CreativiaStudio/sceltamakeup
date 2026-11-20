@@ -65,7 +65,7 @@ export interface TrackingStep {
 
 export const COURIER_STEPS: TrackingStep[] = [
   { key: "confirmed", label: "Confermato" },
-  { key: "preparing", label: "In Preparazione in Atelier" },
+  { key: "preparing", label: "In Preparazione in Salone" },
   { key: "handed", label: "Affidato al corriere" },
   { key: "transit", label: "In Transito" },
   { key: "delivery", label: "In Consegna" },
@@ -74,7 +74,7 @@ export const COURIER_STEPS: TrackingStep[] = [
 
 export const PICKUP_STEPS: TrackingStep[] = [
   { key: "received", label: "Ricevuto" },
-  { key: "preparing", label: "In Preparazione in Atelier" },
+  { key: "preparing", label: "In Preparazione in Salone" },
   { key: "ready", label: "Pronto per il Ritiro" },
   { key: "collected", label: "Ritirato con Successo" },
 ];

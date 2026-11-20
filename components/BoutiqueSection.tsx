@@ -190,7 +190,7 @@ export default function BoutiqueSection() {
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-tight">
               Vieni a trovarci <br />
               <span className="text-brand-gradient italic font-normal">
-                nel nostro Atelier
+                nel nostro Salone
               </span>
             </h2>
 

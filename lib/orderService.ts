@@ -1,4 +1,5 @@
 import { Order, CreateOrderInput, OrderStatus } from "@/types/order";
+import { calculateShippingCost } from "@/lib/shipping";
 
 const STORAGE_ORDERS_KEY = "scelta_makeup_orders_v1";
 
@@ -53,7 +54,7 @@ const INITIAL_DEMO_ORDERS: Order[] = [
       },
     ],
     subtotal: 60.5,
-    shippingCost: 0.0, // Free shipping over €49
+    shippingCost: 0.0, // Free shipping (historical demo order)
     total: 60.5,
     deliveryMethod: "shipping",
     paymentMethod: "card",
@@ -163,12 +164,7 @@ export function createOrder(data: CreateOrderInput): Order {
 
   let shippingCost = data.shippingCost;
   if (shippingCost === undefined) {
-    if (data.deliveryMethod === "boutique") {
-      shippingCost = 0;
-    } else {
-      // Free shipping threshold is €49.00
-      shippingCost = subtotal >= 49.0 ? 0 : 4.9;
-    }
+    shippingCost = calculateShippingCost(subtotal, data.deliveryMethod);
   }
 
   const total = data.total !== undefined ? data.total : subtotal + shippingCost;

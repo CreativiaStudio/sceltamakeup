@@ -52,7 +52,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
 
           {/* Payoff */}
           <p className="text-base sm:text-xl text-neutral-200 max-w-2xl mx-auto font-light leading-relaxed mb-8">
-            La purezza formulativa Diego dalla Palma e la maestria professionale Cipria Makeup selezionate per esaltare la tua bellezza naturale. Spedizione gratuita da €49 con consegna 24/48h in tutta Italia e salone fisico di proprietà come garanzia di professionalità.
+            La purezza formulativa Diego dalla Palma e la maestria professionale Cipria Makeup selezionate per esaltare la tua bellezza naturale. Spedizione gratuita da €70 con consegna 24/48h in tutta Italia e salone fisico di proprietà come garanzia di professionalità.
           </p>
 
           {/* Dual CTAs */}
@@ -71,7 +71,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white/10 backdrop-blur-md border border-white/30 text-white font-medium text-sm tracking-wider uppercase hover:bg-white/20 hover:border-white/50 transition-all group"
             >
               <Calendar className="h-4 w-4 text-[#D462A6]" />
-              <span>Prenota Make-Up in Atelier</span>
+              <span>Prenota Make-Up in Salone</span>
               <span className="ml-1 px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#D462A6] text-white shadow-xs">
                 -10% Online
               </span>
@@ -93,7 +93,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
               </div>
               <div>
                 <h4 className="text-xs sm:text-sm font-semibold text-white">Spedizione Gratuita 24/48h</h4>
-                <p className="text-xs text-neutral-300">Da €49 in tutta Italia</p>
+                <p className="text-xs text-neutral-300">Da €70 in tutta Italia</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -158,7 +158,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
 
             {/* Payoff */}
             <p className="text-base sm:text-lg text-neutral-600 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
-              La purezza formulativa Diego dalla Palma Milano e l&apos;eccellenza Cipria Make Up: collezioni esclusive per esaltare la tua bellezza autentica, con spedizione rapida in tutta Italia e atelier a Napoli.
+              La purezza formulativa Diego dalla Palma Milano e l&apos;eccellenza Cipria Make Up: collezioni esclusive per esaltare la tua bellezza autentica, con spedizione rapida in tutta Italia e salone a Napoli.
             </p>
 
             {/* Dual CTAs */}
@@ -177,14 +177,14 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-white/90 backdrop-blur-md border border-[#D8C2E7] text-[#5E1788] font-medium text-sm tracking-wider uppercase hover:bg-[#FAF7FC] hover:border-[#5E1788]/40 transition-all group"
               >
                 <Calendar className="h-4 w-4 text-[#D462A6]" />
-                <span>Prenota Make-Up in Atelier</span>
+                <span>Prenota Make-Up in Salone</span>
                 <span className="ml-1 px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#D462A6] to-[#5E1788] text-white shadow-xs">
                   -10% Online
                 </span>
               </Link>
             </div>
 
-            {/* E-Commerce Guarantee Row with subtle Atelier mention */}
+            {/* E-Commerce Guarantee Row with subtle Salone mention */}
             <div className="pt-3 flex flex-wrap items-center justify-center lg:justify-start gap-3.5 text-xs text-neutral-600">
               <div className="flex items-center gap-1.5 font-medium text-[#5E1788]">
                 <Truck className="h-4 w-4 text-[#D462A6]" />
@@ -198,7 +198,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
               <span className="opacity-40">•</span>
               <div className="flex items-center gap-1.5 text-neutral-500">
                 <Store className="h-4 w-4 text-[#7A3293]" />
-                <span>Atelier Napoli (Via dei Pellegrini)</span>
+                <span>Salone Napoli (Via dei Pellegrini)</span>
               </div>
             </div>
 
@@ -266,7 +266,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
                     Spedizione Gratuita
                   </p>
                   <p className="text-xs font-semibold text-[#1F1B24]">
-                    Da €49 in tutta Italia
+                    Da €70 in tutta Italia
                   </p>
                   <p className="text-xs text-neutral-500 font-light">Consegna rapida 24/48h</p>
                 </div>
@@ -289,7 +289,7 @@ export default function HeroSection({ variant = "split" }: HeroSectionProps) {
                 Spedizione Gratuita
               </h4>
               <p className="text-xs text-neutral-600">
-                In tutta Italia per ordini da €49
+                In tutta Italia per ordini da €70
               </p>
             </div>
           </div>

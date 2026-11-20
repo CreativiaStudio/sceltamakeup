@@ -543,7 +543,7 @@ export default function AccountClient({ initialOrderNumber = "" }: AccountClient
                   </h1>
                   <p className="mt-2 flex items-center gap-2 text-sm text-white/80">
                     <MapPin className="h-4 w-4 shrink-0" />
-                    Atelier Scelta Makeup • {ATELIER_ADDRESS}
+                    Salone Scelta Makeup • {ATELIER_ADDRESS}
                   </p>
                 </div>
                 <button
@@ -647,7 +647,7 @@ export default function AccountClient({ initialOrderNumber = "" }: AccountClient
                         href="/prodotti"
                         className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#5E1788] underline-offset-4 hover:underline"
                       >
-                        Scopri le novità dell&apos;Atelier
+                        Scopri le novità del Salone
                         <ChevronRight className="h-4 w-4" />
                       </Link>
                     </div>
@@ -680,7 +680,7 @@ export default function AccountClient({ initialOrderNumber = "" }: AccountClient
                                 <p className="mt-1 flex items-center gap-2 text-xs text-neutral-500">
                                   <Truck className="h-3.5 w-3.5 text-[#D462A6]" />
                                   {order.fulfillmentType === "store_pickup"
-                                    ? "Ritiro in Atelier"
+                                    ? "Ritiro in Salone"
                                     : order.courierName || "Spedizione corriere"}
                                 </p>
                               </button>
@@ -805,7 +805,7 @@ export default function AccountClient({ initialOrderNumber = "" }: AccountClient
                   </h2>
                   {appointments.length === 0 ? (
                     <p className="mt-4 rounded-2xl bg-[#FAF7FC] px-4 py-6 text-center text-sm text-neutral-600">
-                      Non hai ancora appuntamenti prenotati. Ti aspettiamo in Atelier!
+                      Non hai ancora appuntamenti prenotati. Ti aspettiamo in Salone!
                     </p>
                   ) : (
                     <ul className="mt-5 space-y-3">
@@ -852,7 +852,7 @@ export default function AccountClient({ initialOrderNumber = "" }: AccountClient
                       -10% esclusivo online
                     </span>
                     <h3 className="mt-4 font-serif text-2xl font-semibold sm:text-3xl">
-                      Prenota una Consulenza Make-Up o Trattamento Viso in Atelier
+                      Prenota una Consulenza Make-Up o Trattamento Viso in Salone
                     </h3>
                     <p className="mt-3 max-w-xl text-sm text-white/80">
                       Un consulto su misura con le nostre make-up artist per trovare la tua tonalità
@@ -882,7 +882,7 @@ export default function AccountClient({ initialOrderNumber = "" }: AccountClient
                 <div className="rounded-3xl border border-[#D8C2E7]/60 bg-white p-6 shadow-sm sm:p-8">
                   <h3 className="flex items-center gap-2 font-serif text-xl font-semibold text-[#5E1788]">
                     <Store className="h-5 w-5" />
-                    L&apos;Atelier di Napoli
+                    Il Salone di Napoli
                   </h3>
                   <p className="mt-3 text-sm text-neutral-700">{ATELIER_ADDRESS}</p>
                   <p className="text-sm text-neutral-500">{ATELIER_HOURS}</p>
@@ -1125,7 +1125,7 @@ function LoginView({
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-sm text-neutral-600">
           Accedi alla tua Area Personale per ritrovare i tuoi ordini, riordinare i tuoi preferiti e
-          prenotare i tuoi appuntamenti in Atelier.
+          prenotare i tuoi appuntamenti in Salone.
         </p>
       </div>
 

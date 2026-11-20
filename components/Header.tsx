@@ -132,7 +132,7 @@ function HeaderContent() {
       <div className="bg-brand-royal text-white px-4 text-center text-xs tracking-wider flex items-center justify-center gap-2 sm:gap-4 font-light py-1.5 border-b border-purple-900/30">
         <span className="font-normal flex items-center gap-1.5">
           <Sparkles className="h-3.5 w-3.5 inline animate-pulse text-[#D462A6]" />
-          Spedizione Gratuita da <strong>€49</strong>
+          Spedizione Gratuita da <strong>€70</strong>
         </span>
         <span className="opacity-40">|</span>
         <a
@@ -303,7 +303,7 @@ function HeaderContent() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#FAF7FC] border border-[#D8C2E7]/60 text-[#5E1788] font-bold text-xs hover:bg-[#D8C2E7]/20"
               >
-                <span>Scopri Tutti i Servizi Atelier</span>
+                <span>Scopri Tutti i Servizi Salone</span>
               </Link>
               <Link
                 href="/account"

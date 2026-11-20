@@ -225,7 +225,7 @@ export default function CookieBanner() {
                   <div className="flex-1">
                     <span className="font-medium text-sm text-white block mb-1">Cookie di Funzionalità</span>
                     <p className="text-gray-400 text-xs font-light leading-relaxed">
-                      Permettono al sito di ricordare le tue scelte (es. operatore preferito per il trucco in atelier, filtri catalogo) per offrirti un&apos;esperienza personalizzata.
+                      Permettono al sito di ricordare le tue scelte (es. operatore preferito per il trucco in salone, filtri catalogo) per offrirti un&apos;esperienza personalizzata.
                     </p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer mt-1">

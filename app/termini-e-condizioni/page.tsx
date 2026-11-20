@@ -80,8 +80,8 @@ export default function TerminiCondizioniPage() {
               Le spedizioni vengono effettuate con corriere espresso in tutta Italia entro <strong>24/48 ore lavorative</strong> dall&apos;affidamento.
             </p>
             <ul className="list-disc pl-6 space-y-1.5 mt-2">
-              <li><strong>Spedizione Gratuita:</strong> per tutti gli ordini pari o superiori a <strong>49,00 €</strong>.</li>
-              <li><strong>Spedizione Standard:</strong> contributo fisso di 4,90 € per ordini inferiori a 49,00 €.</li>
+              <li><strong>Spedizione Gratuita:</strong> per tutti gli ordini pari o superiori a <strong>70,00 €</strong>.</li>
+              <li><strong>Spedizione Standard:</strong> contributo fisso di 4,90 € per ordini inferiori a 70,00 €.</li>
               <li><strong>Ritiro Gratuito in Store:</strong> sempre gratuito presso il punto vendita in Via dei Pellegrini 28/29, Napoli.</li>
             </ul>
           </section>

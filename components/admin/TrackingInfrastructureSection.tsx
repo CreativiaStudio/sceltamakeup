@@ -362,7 +362,7 @@ export default function TrackingInfrastructureSection() {
           >
             <div className="flex items-center justify-between">
               <Calendar className="w-4 h-4 text-[#D462A6] group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-mono text-gray-400">Atelier</span>
+              <span className="text-[10px] font-mono text-gray-400">Salone</span>
             </div>
             <div className="text-xs font-bold text-gray-900">Generate Lead</div>
             <div className="text-[10px] text-gray-500 line-clamp-1">Prenotazione Make-up</div>

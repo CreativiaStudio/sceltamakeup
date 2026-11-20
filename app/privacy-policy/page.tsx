@@ -55,7 +55,7 @@ export default function PrivacyPolicyPage() {
               2. Tipologia di Dati Trattati
             </h2>
             <p>
-              Scelta Makeup raccoglie e tratta esclusivamente i dati necessari per la gestione degli ordini e-commerce, delle prenotazioni dei servizi in atelier e per la corretta navigazione del sito:
+              Scelta Makeup raccoglie e tratta esclusivamente i dati necessari per la gestione degli ordini e-commerce, delle prenotazioni dei servizi in salone e per la corretta navigazione del sito:
             </p>
             <ul className="list-disc pl-6 space-y-2 mt-2">
               <li><strong>Dati di Spedizione e Fatturazione:</strong> Nome, Cognome, Indirizzo di consegna, CAP, Città, Numero di Telefono ed Email per l&apos;invio della merce e delle ricevute contabili.</li>

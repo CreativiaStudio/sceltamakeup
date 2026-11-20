@@ -24,6 +24,7 @@ import {
   SceltaAdminOrder,
   getProductOverrides,
 } from "@/lib/adminStore";
+import { calculateShippingCost } from "@/lib/shipping";
 
 interface NewManualOrderModalProps {
   isOpen: boolean;
@@ -157,7 +158,7 @@ export default function NewManualOrderModal({
 
   // Financial calculations
   const itemsSubtotal = selectedItems.reduce((acc, it) => acc + it.price * it.quantity, 0);
-  const shippingFee = fulfillmentType === "store_pickup" || itemsSubtotal >= 49 || itemsSubtotal === 0 ? 0 : 5.90;
+  const shippingFee = calculateShippingCost(itemsSubtotal, fulfillmentType, itemsSubtotal > 0);
   const orderTotal = Math.round((itemsSubtotal + shippingFee) * 100) / 100;
 
   const handleSubmitOrder = (e: React.FormEvent) => {
@@ -437,7 +438,7 @@ export default function NewManualOrderModal({
                 </div>
               ) : (
                 <div className="p-3 bg-purple-50/60 rounded-xl border border-purple-100 text-[11px] text-purple-900">
-                  Ritiro concordato presso l&apos;Atelier Scelta Makeup in Via dei Pellegrini 28/29, Napoli.
+                  Ritiro concordato presso il Salone Scelta Makeup in Via dei Pellegrini 28/29, Napoli.
                 </div>
               )}
             </div>

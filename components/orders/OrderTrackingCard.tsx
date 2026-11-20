@@ -201,7 +201,7 @@ export default function OrderTrackingCard({ order, tracking }: OrderTrackingCard
         <section className="rounded-3xl border border-[#D8C2E7]/60 bg-[#FAF7FC] p-6 sm:p-8">
           <h3 className="flex items-center gap-2 font-serif text-xl font-semibold text-[#5E1788]">
             <Store className="h-5 w-5" />
-            Ritiro in Atelier
+            Ritiro in Salone
           </h3>
           <div className="mt-3 space-y-1 text-sm text-neutral-700">
             <p className="flex items-start gap-2 font-medium text-[#1F1B24]">
@@ -287,7 +287,7 @@ export default function OrderTrackingCard({ order, tracking }: OrderTrackingCard
         className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#5E1788] via-[#7A3293] to-[#D462A6] px-6 py-3.5 text-sm font-semibold text-white shadow-md transition-opacity hover:opacity-95"
       >
         <MessageCircle className="h-4 w-4" />
-        Assistenza dedicata dell&apos;Atelier su WhatsApp
+        Assistenza dedicata del Salone su WhatsApp
       </a>
     </article>
   );

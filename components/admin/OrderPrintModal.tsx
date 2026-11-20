@@ -17,6 +17,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { SceltaAdminOrder, updateOrderTracking } from "@/lib/adminStore";
+import { FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_COST } from "@/lib/shipping";
 import ShippingLabelModal from "./ShippingLabelModal";
 
 const PACKLINK_PRO_URL = "https://pro.packlink.it/private/shipments";
@@ -246,7 +247,17 @@ export default function OrderPrintModal({
   };
 
   const subtotal = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shippingCost = order.fulfillmentType === "store_pickup" || order.total >= 49 ? 0 : 5.90;
+  const rawShippingDiff = Math.round((order.total - subtotal) * 100) / 100;
+  const shippingCost =
+    order.fulfillmentType === "store_pickup"
+      ? 0
+      : rawShippingDiff > 0
+        ? rawShippingDiff
+        : rawShippingDiff === 0
+          ? 0
+          : order.total >= FREE_SHIPPING_THRESHOLD
+            ? 0
+            : STANDARD_SHIPPING_COST;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">

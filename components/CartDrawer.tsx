@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { useIsMounted } from "@/lib/useIsMounted";
+import { STANDARD_SHIPPING_COST } from "@/lib/shipping";
 
 export default function CartDrawer() {
   const mounted = useIsMounted();
@@ -58,7 +59,7 @@ export default function CartDrawer() {
   const discountAmount = getDiscountAmount();
   const finalSubtotal = getFinalTotal();
   const shippingInfo = getShippingProgress();
-  const shippingCost = shippingInfo.isFree || items.length === 0 ? 0 : 4.90;
+  const shippingCost = shippingInfo.isFree || items.length === 0 ? 0 : STANDARD_SHIPPING_COST;
   const total = finalSubtotal + shippingCost;
 
   const handleApplyCoupon = async (e: React.FormEvent) => {

@@ -606,7 +606,7 @@ export function renderOrderPlacedEmail(order: Order): EmailRenderOutput {
                     Packaging Esclusivo & Cura Artigianale
                   </span>
                   <p style="margin: 6px 0 0 0; font-size: 12px; color: #725064; line-height: 1.5;">
-                    Il tuo ordine viene preparato a mano nel nostro Atelier con <strong>confezione sigillata, protetta e profumata</strong>.
+                    Il tuo ordine viene preparato a mano nel nostro Salone con <strong>confezione sigillata, protetta e profumata</strong>.
                   </p>
                 </div>
 

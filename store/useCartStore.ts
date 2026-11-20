@@ -6,8 +6,12 @@ import {
   calculateCartDiscount,
   setStoredActiveCoupon,
 } from "@/lib/couponStore";
+import {
+  FREE_SHIPPING_THRESHOLD,
+  getFreeShippingProgress,
+} from "@/lib/shipping";
 
-export const FREE_SHIPPING_THRESHOLD = 49.00;
+export { FREE_SHIPPING_THRESHOLD };
 
 interface CartStore {
   items: CartItem[];
@@ -199,18 +203,7 @@ export const useCartStore = create<CartStore>()(
       },
 
       getShippingProgress: () => {
-        const total = get().getFinalTotal();
-        const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - total);
-        const isFree = total >= FREE_SHIPPING_THRESHOLD;
-        const percentage = Math.min(100, Math.round((total / FREE_SHIPPING_THRESHOLD) * 100));
-
-        return {
-          threshold: FREE_SHIPPING_THRESHOLD,
-          current: total,
-          remaining,
-          isFree,
-          percentage,
-        };
+        return getFreeShippingProgress(get().getFinalTotal());
       },
     }),
     {

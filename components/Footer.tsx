@@ -114,7 +114,7 @@ export default function Footer() {
           <div className="lg:col-span-4 space-y-4">
             <BrandLogo variant="footer" />
             <p className="text-xs text-neutral-400 font-light leading-relaxed pt-2">
-              Salone cosmetico e atelier di bellezza a Napoli. Selezioniamo le migliori formulazioni Diego della Palma e Cipria Makeup per esaltare l&apos;eleganza di ogni donna con autenticità e maestria.
+              Salone di alta cosmesi e bellezza a Napoli. Selezioniamo le migliori formulazioni Diego della Palma e Cipria Makeup per esaltare l&apos;eleganza di ogni donna con autenticità e maestria.
             </p>
             <div className="flex items-center gap-3 pt-2 text-neutral-400">
               <a
@@ -213,7 +213,7 @@ export default function Footer() {
               <li className="pt-2 border-t border-neutral-800">
                 <Link href="/servizi" className="text-[#D8C2E7] font-semibold hover:text-white transition-colors flex items-center gap-1">
                   <Sparkles className="w-3 h-3 text-[#D462A6]" />
-                  Atelier Servizi (-10%)
+                  Salone Servizi (-10%)
                 </Link>
               </li>
               <li>

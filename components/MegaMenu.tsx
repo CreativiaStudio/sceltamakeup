@@ -259,7 +259,7 @@ export default function MegaMenu({
                           className="flex items-center gap-2 text-sm text-[#7A3293] hover:text-[#5E1788] font-medium transition-colors"
                         >
                           <Sparkles className="h-3.5 w-3.5 text-[#D462A6]" />
-                          Atelier Make-Up (-10%)
+                          Salone Make-Up (-10%)
                         </button>
                         <button
                           type="button"

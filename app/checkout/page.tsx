@@ -18,6 +18,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { useIsMounted } from "@/lib/useIsMounted";
 import { Order, OrderItem, PaymentMethod } from "@/types/order";
 import { createOrder, savePendingOrder } from "@/lib/orderService";
+import { STANDARD_SHIPPING_COST, calculateShippingCost } from "@/lib/shipping";
 import { enqueueWhatsAppMessage } from "@/lib/whatsappQueueService";
 import { sendOrderPlacedEmail } from "@/lib/resendService";
 import PaymentMethodSelector from "@/components/checkout/PaymentMethodSelector";
@@ -54,10 +55,11 @@ export default function CheckoutPage() {
   const subtotal = getTotalPrice();
   const discountAmount = getDiscountAmount();
   const shippingInfo = getShippingProgress();
-  const shippingCost =
-    deliveryMethod === "boutique" || shippingInfo.isFree || items.length === 0
-      ? 0
-      : 4.90;
+  const shippingCost = calculateShippingCost(
+    Math.max(0, subtotal - discountAmount),
+    deliveryMethod,
+    items.length > 0
+  );
   const total = Math.max(0, subtotal - discountAmount) + shippingCost;
 
   const buildOrderInput = () => {
@@ -300,7 +302,7 @@ export default function CheckoutPage() {
                         Corriere Espresso
                       </p>
                       <p className="text-xs text-neutral-500">
-                        {shippingInfo.isFree ? "Gratuita" : "€4.90"} • Consegna in 24/48h
+                        {shippingInfo.isFree ? "Gratuita" : `€${STANDARD_SHIPPING_COST.toFixed(2)}`} • Consegna in 24/48h
                       </p>
                     </div>
                   </button>

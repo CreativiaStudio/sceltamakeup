@@ -178,16 +178,16 @@ describe("Milestone 2: Split Editorial Hero & Dynamic Homepage Restyling", () =>
       assert.ok(html.includes("Labbra"), "Must include Labbra");
       assert.ok(html.includes("Skincare &amp; Dermo") || html.includes("Skincare & Dermo"), "Must include Skincare & Dermo");
       assert.ok(html.includes("Accessori"), "Must include Accessori");
-      assert.ok(html.includes("Atelier Servizi"), "Must include Atelier Servizi");
+      assert.ok(html.includes("Salone Servizi"), "Must include Salone Servizi");
 
       // Links
       assert.ok(html.includes("href=\"/prodotti?categoria=Viso\""));
       assert.ok(html.includes("href=\"/prodotti?categoria=Occhi\""));
       assert.ok(html.includes("href=\"/prodotti?categoria=Labbra\""));
-      assert.ok(html.includes("href=\"/prenota\""), "Atelier Servizi must link to /prenota");
+      assert.ok(html.includes("href=\"/prenota\""), "Salone Servizi must link to /prenota");
 
       // Special -10% Online badge
-      assert.ok(html.includes("-10% Online"), "Atelier Servizi circle must feature -10% Online badge");
+      assert.ok(html.includes("-10% Online"), "Salone Servizi circle must feature -10% Online badge");
     });
   });
 
@@ -214,8 +214,8 @@ describe("Milestone 2: Split Editorial Hero & Dynamic Homepage Restyling", () =>
       const html = renderWithContext(React.createElement(AtelierBanner));
 
       assert.ok(
-        html.includes("Atelier di Bellezza &amp; Cabina Trucco • Napoli") ||
-        html.includes("Atelier di Bellezza & Cabina Trucco • Napoli")
+        html.includes("Salone di Bellezza &amp; Cabina Trucco • Napoli") ||
+        html.includes("Salone di Bellezza & Cabina Trucco • Napoli")
       );
       assert.ok(
         html.includes("L&#x27;Arte del Make-Up") || html.includes("L'Arte del Make-Up")

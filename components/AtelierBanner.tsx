@@ -65,7 +65,7 @@ export default function AtelierBanner() {
               {/* Badge */}
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-[#D8C2E7]/40 text-[#D8C2E7] text-xs font-semibold tracking-wider uppercase">
                 <Sparkles className="h-3.5 w-3.5 text-[#D462A6]" />
-                <span>Atelier di Bellezza & Cabina Trucco • Napoli</span>
+                <span>Salone di Bellezza & Cabina Trucco • Napoli</span>
               </div>
 
               {/* Heading */}

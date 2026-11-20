@@ -159,7 +159,7 @@ function buildWhatsAppTemplate(templateId: 1 | 2 | 3, customer: SceltaCrmCustome
 
   return `Ciao ${firstName}! Sono Federica di Scelta Makeup 💕 Ho pensato a te perché sono appena arrivate delle novità sui toni ${customerToneLabel(
     customer
-  )} che ami tanto! Ti andrebbe di vederle o passare in Atelier a Napoli a provarle?`;
+  )} che ami tanto! Ti andrebbe di vederle o passare in Salone a Napoli a provarle?`;
 }
 
 function buildWhatsAppUrl(
@@ -999,7 +999,7 @@ export default function CrmTable() {
                     className="block text-[11px] font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5"
                   >
                     <ShoppingCart className="w-3.5 h-3.5 text-[#5E1788]" />
-                    Trucchi e Cosmetici Acquistati o Provati in Atelier
+                    Trucchi e Cosmetici Acquistati o Provati in Salone
                   </label>
                   <textarea
                     id="crm-purchased"
@@ -1236,7 +1236,7 @@ export default function CrmTable() {
                       Invito Trattamento
                     </div>
                     <div className="text-[10px] text-gray-500 mt-1">
-                      Seduta trucco personalizzata in Atelier
+                      Seduta trucco personalizzata in Salone
                     </div>
                   </button>
                 </div>

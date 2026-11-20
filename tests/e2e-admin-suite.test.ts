@@ -546,7 +546,7 @@ describe("Scelta Makeup E-Commerce Admin Suite E2E Test Suite (/admin)", () => {
       assert.ok(trackingMsg.includes(testOrder.id));
       assert.ok(trackingMsg.includes("BRT Express"));
       assert.ok(trackingMsg.includes("brt.it"));
-      assert.ok(trackingMsg.includes("Federica Cesiano - Scelta Makeup Atelier Napoli"));
+      assert.ok(trackingMsg.includes("Federica Cesiano - Scelta Makeup Salone Napoli"));
 
       // 3. Direct wa.me link generation
       const waUrl = getWhatsAppDirectUrl("+39 349 765 4321", trackingMsg);

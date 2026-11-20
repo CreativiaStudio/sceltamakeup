@@ -65,7 +65,7 @@ const CATEGORIES_DATA: StoryCategory[] = [
   },
   {
     id: "atelier",
-    name: "Atelier Servizi",
+    name: "Salone Servizi",
     subtitle: "Cabina Make-Up",
     href: "/prenota",
     icon: CalendarCheck,

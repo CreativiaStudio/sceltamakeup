@@ -6,9 +6,7 @@ import type { Product, ProductVariant, Shade } from "@/types/product";
 import { getAllProducts } from "@/lib/catalog";
 import { getCentralCatalogState } from "@/lib/serverCatalogStore";
 import { validateCouponForCart } from "@/lib/serverCouponStore";
-
-const FREE_SHIPPING_THRESHOLD = 49.0;
-const STANDARD_SHIPPING_COST = 4.9;
+import { calculateShippingCost } from "@/lib/shipping";
 
 interface CheckoutItemInput {
   productId?: string;
@@ -224,10 +222,7 @@ export async function POST(req: NextRequest) {
     verifiedItems.reduce((s, i) => s + i.price * i.quantity, 0)
   );
   const netSubtotal = Math.max(0, roundMoney(subtotalBeforeDiscount - validatedDiscount));
-  const serverShippingCost =
-    deliveryMethod === "boutique" || netSubtotal >= FREE_SHIPPING_THRESHOLD
-      ? 0
-      : STANDARD_SHIPPING_COST;
+  const serverShippingCost = calculateShippingCost(netSubtotal, deliveryMethod);
 
   const discountRatio =
     subtotalBeforeDiscount > 0
