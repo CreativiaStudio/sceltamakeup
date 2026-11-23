@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   Truck,
   Heart,
+  Smartphone,
 } from "lucide-react";
 
 import {
@@ -246,6 +247,22 @@ export default function Footer() {
                 <Heart className="h-3.5 w-3.5 text-neutral-500" />
                 <span>Consulenza Dedicata</span>
               </li>
+              <li className="pt-2 border-t border-neutral-800">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      window.dispatchEvent(
+                        new CustomEvent("open_install_app_modal", { detail: { mode: "store" } })
+                      );
+                    }
+                  }}
+                  className="inline-flex items-center gap-1.5 text-[#D8C2E7] font-semibold hover:text-white transition-colors cursor-pointer text-left"
+                >
+                  <Smartphone className="h-3.5 w-3.5 text-[#D462A6] shrink-0" />
+                  <span>Scarica l&apos;App (iPhone &amp; Android)</span>
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -298,16 +315,24 @@ export default function Footer() {
           </button>
         </div>
 
-        {/* Bottom Bar: Copyright, Cassa Link & Creativia Studio Credits with desktop clearance for floating WhatsApp pill */}
+        {/* Bottom Bar: Copyright, Scarica App & Creativia Studio Credits with desktop clearance for floating WhatsApp pill */}
         <div className="pt-6 mt-4 border-t border-neutral-800/40 text-xs text-neutral-500 flex flex-col sm:flex-row items-center justify-between gap-4 lg:pr-64">
           <p>© {new Date().getFullYear()} Scelta Makeup di Cesiano Federica. Tutti i diritti riservati.</p>
           <div className="flex items-center gap-4">
-            <Link
-              href="/admin/appuntamenti"
-              className="hover:text-[#D8C2E7] transition-colors underline decoration-dotted text-xs"
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(
+                    new CustomEvent("open_install_app_modal", { detail: { mode: "store" } })
+                  );
+                }
+              }}
+              className="inline-flex items-center gap-1.5 text-[#D8C2E7] hover:text-white transition-colors underline decoration-dotted text-xs font-medium cursor-pointer"
             >
-              Cassa &amp; Cockpit Store
-            </Link>
+              <Smartphone className="h-3.5 w-3.5 text-[#D462A6]" />
+              <span>Scarica l&apos;App</span>
+            </button>
             <span className="opacity-30">|</span>
             <div className="flex items-center gap-1.5 text-neutral-400 text-xs">
               <span>Sviluppato da</span>

@@ -8,6 +8,13 @@ import {
   Barcode,
   Unlock,
   Receipt,
+  LayoutDashboard,
+  ShoppingCart,
+  Package,
+  Users,
+  Lock,
+  Smartphone,
+  X,
 } from "lucide-react";
 import AdminSidebar from "./AdminSidebar";
 import DashboardHome from "./DashboardHome";
@@ -25,6 +32,7 @@ import ServicesManagementTab from "./ServicesManagementTab";
 import CouponsManagementTab from "./CouponsManagementTab";
 import { AdminTab } from "@/types/admin";
 import { startAuditOutboxAutoFlush } from "@/lib/auditLogger";
+import { detectPwaEnvironment } from "@/lib/pwaUtils";
 import {
   getAdminKpis,
   getAdminOrders,
@@ -65,6 +73,29 @@ export default function AdminClientWrapper() {
   const [kpis, setKpis] = useState<AdminKpiSummary>(() => getAdminKpis());
   const [orders, setOrders] = useState<SceltaAdminOrder[]>(() => getAdminOrders());
   const [multiCartCount, setMultiCartCount] = useState<number>(0);
+  const [showMobileAppBanner, setShowMobileAppBanner] = useState<boolean>(false);
+
+  useEffect(() => {
+    queueMicrotask(() => {
+      const env = detectPwaEnvironment();
+      let dismissed = false;
+      try {
+        dismissed = sessionStorage.getItem("scelta_admin_pwa_banner_dismissed") === "1";
+      } catch {
+        dismissed = false;
+      }
+      setShowMobileAppBanner(!env.isStandalone && !dismissed);
+    });
+  }, []);
+
+  const dismissMobileAppBanner = () => {
+    setShowMobileAppBanner(false);
+    try {
+      sessionStorage.setItem("scelta_admin_pwa_banner_dismissed", "1");
+    } catch {
+      // ignore
+    }
+  };
 
   useEffect(() => {
     const updateCount = () => {
@@ -208,17 +239,30 @@ export default function AdminClientWrapper() {
               </button>
             )}
 
-            {/* Quick Open Drawer Trigger */}
+            {/* Quick Open Drawer Trigger (Solo Desktop Salone — hardware Epson RT locale) */}
             <button
               type="button"
               onClick={() => {
                 window.dispatchEvent(new CustomEvent("open_cash_drawer"));
               }}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition-all shadow-2xs cursor-pointer active:scale-95"
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition-all shadow-2xs cursor-pointer active:scale-95"
               title="Invia impulso elettrico alla cassa Epson per aprire il cassetto rendiresto"
             >
               <Unlock className="w-3.5 h-3.5 text-emerald-600" />
-              <span className="hidden md:inline">Apri Cassetto</span>
+              <span>Apri Cassetto</span>
+            </button>
+
+            {/* Mobile Lock Cockpit Button */}
+            <button
+              type="button"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent("scelta_admin_lock_request"));
+              }}
+              className="lg:hidden p-2 rounded-xl bg-[#1F1B24] text-white hover:bg-[#5E1788] transition-colors shadow-xs cursor-pointer"
+              aria-label="Blocca Cockpit"
+              title="Blocca Cockpit"
+            >
+              <Lock className="w-4 h-4 text-[#D462A6]" />
             </button>
 
             {/* Quick Public Link */}
@@ -235,7 +279,46 @@ export default function AdminClientWrapper() {
         </header>
 
         {/* Dynamic Tab Body */}
-        <main className="flex-1 p-4 sm:p-8 max-w-7xl w-full mx-auto">
+        <main className="flex-1 p-4 sm:p-8 pb-24 lg:pb-8 max-w-7xl w-full mx-auto">
+          {/* Mobile Install App Banner (nascosto se già aperta come App standalone) */}
+          {showMobileAppBanner && (
+            <div className="lg:hidden mb-4 rounded-2xl bg-gradient-to-r from-[#5E1788] to-[#7A3293] text-white p-3.5 shadow-md flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+                  <Smartphone className="w-4 h-4 text-[#D8C2E7]" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-bold leading-snug">
+                    Aggiungi il Gestionale alla Home del tuo iPhone
+                  </p>
+                  <p className="text-[11px] text-[#D8C2E7] truncate">
+                    Accesso diretto 1-tap senza refare il login
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => {
+                    window.dispatchEvent(
+                      new CustomEvent("open_install_app_modal", { detail: { mode: "admin" } })
+                    );
+                  }}
+                  className="px-3 py-1.5 rounded-full bg-white text-[#5E1788] text-xs font-bold shadow-xs hover:bg-purple-50 transition-colors cursor-pointer"
+                >
+                  Salva App
+                </button>
+                <button
+                  type="button"
+                  onClick={dismissMobileAppBanner}
+                  aria-label="Chiudi suggerimento App"
+                  className="p-1.5 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
           {activeTab === "panoramica" && (
             <DashboardHome
               kpis={kpis}
@@ -265,6 +348,74 @@ export default function AdminClientWrapper() {
           {activeTab === "analytics" && <AnalyticsTab kpis={kpis} />}
         </main>
       </div>
+
+      {/* Mobile Bottom Tab Bar (App-style iPhone navigation) */}
+      <nav
+        aria-label="Navigazione rapida mobile gestionale"
+        className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#D8C2E7]/60 shadow-[0_-4px_20px_rgba(94,23,136,0.08)] pb-[env(safe-area-inset-bottom)]"
+      >
+        <div className="grid grid-cols-5 h-16">
+          <button
+            type="button"
+            onClick={() => handleTabChange("panoramica")}
+            className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition-colors cursor-pointer ${
+              activeTab === "panoramica" ? "text-[#5E1788]" : "text-gray-500"
+            }`}
+          >
+            <LayoutDashboard className="w-5 h-5" />
+            <span>Home</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleTabChange("ordini")}
+            className={`relative flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition-colors cursor-pointer ${
+              activeTab === "ordini" ? "text-[#5E1788]" : "text-gray-500"
+            }`}
+          >
+            <div className="relative">
+              <ShoppingCart className="w-5 h-5" />
+              {kpis.pendingOrdersCount > 0 && (
+                <span className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-[#D462A6] text-white text-[9px] font-bold flex items-center justify-center">
+                  {kpis.pendingOrdersCount}
+                </span>
+              )}
+            </div>
+            <span>Ordini</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleTabChange("prodotti")}
+            className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition-colors cursor-pointer ${
+              activeTab === "prodotti" ? "text-[#5E1788]" : "text-gray-500"
+            }`}
+          >
+            <Package className="w-5 h-5" />
+            <span>Catalogo</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleTabChange("clienti")}
+            className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition-colors cursor-pointer ${
+              activeTab === "clienti" ? "text-[#5E1788]" : "text-gray-500"
+            }`}
+          >
+            <Users className="w-5 h-5" />
+            <span>Clienti</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsMobileSidebarOpen(true)}
+            className="flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold text-gray-500 hover:text-[#5E1788] transition-colors cursor-pointer"
+          >
+            <Menu className="w-5 h-5" />
+            <span>Menu</span>
+          </button>
+        </div>
+      </nav>
 
       {/* Global Hardware Barcode Scanner Listener & Modal */}
       <QuickScanBarcodeModal />

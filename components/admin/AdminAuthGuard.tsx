@@ -2,7 +2,18 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { Lock, KeyRound, ShieldAlert, ArrowLeft, Eye, EyeOff, Store } from "lucide-react";
+import { usePathname } from "next/navigation";
+import {
+  Lock,
+  KeyRound,
+  ShieldAlert,
+  ArrowLeft,
+  Eye,
+  EyeOff,
+  Store,
+  Smartphone,
+  Sparkles,
+} from "lucide-react";
 import {
   DEFAULT_OPERATOR_LABEL,
   REMOTE_OPERATOR_LABEL,
@@ -10,19 +21,31 @@ import {
   setupGlobalErrorTelemetry,
 } from "@/lib/auditLogger";
 import { uploadDeviceSnapshotOnce } from "@/lib/deviceSnapshot";
+import { detectPwaEnvironment } from "@/lib/pwaUtils";
 
 const STORAGE_AUTH_KEY = "scelta_admin_unlocked_session";
 const PERSISTENT_DEVICE_KEY = "scelta_admin_device_unlocked";
 
 export default function AdminAuthGuard({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState<boolean>(true);
   const [mode, setMode] = useState<"pin" | "password">("pin");
   const [pin, setPin] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [rememberDevice, setRememberDevice] = useState<boolean>(true);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [shake, setShake] = useState<boolean>(false);
+  const [showMobileInstallCta, setShowMobileInstallCta] = useState<boolean>(false);
+
+  useEffect(() => {
+    queueMicrotask(() => {
+      const env = detectPwaEnvironment();
+      setShowMobileInstallCta(env.isMobile && !env.isStandalone);
+    });
+  }, []);
 
   // Verifica sessione reale lato server all'avvio
   useEffect(() => {
@@ -32,21 +55,23 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
       if (!isSettled) {
         isSettled = true;
         setIsAuthenticated(false);
+        setIsCheckingAuth(false);
       }
-    }, 3000);
+    }, 2000);
 
     const settle = (authenticated: boolean) => {
       if (isSettled) return;
       isSettled = true;
       clearTimeout(safetyTimer);
       setIsAuthenticated(authenticated);
+      setIsCheckingAuth(false);
     };
 
     async function checkAuth() {
       try {
         const res = await fetch("/api/admin/auth", {
           cache: "no-store",
-          signal: AbortSignal.timeout(2500),
+          signal: AbortSignal.timeout(2000),
         });
 
         if (!res.ok) {
@@ -121,7 +146,8 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
     setErrorMsg("");
 
     try {
-      const payload = mode === "pin" ? { pin } : { password };
+      const payload =
+        mode === "pin" ? { pin, rememberDevice } : { password, rememberDevice };
 
       const res = await fetch("/api/admin/auth", {
         method: "POST",
@@ -152,7 +178,7 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
     } finally {
       setIsSubmitting(false);
     }
-  }, [mode, pin, password, triggerShake]);
+  }, [mode, pin, password, rememberDevice, triggerShake]);
 
   // Invio automatico del PIN appena si raggiungono 4 cifre
   useEffect(() => {
@@ -163,7 +189,7 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
     }
   }, [pin, mode, handleLogin]);
 
-  const handleLock = async () => {
+  const handleLock = useCallback(async () => {
     try {
       sessionStorage.removeItem(STORAGE_AUTH_KEY);
     } catch {
@@ -182,16 +208,46 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
     setIsAuthenticated(false);
     setPin("");
     setPassword("");
-  };
+  }, []);
 
-  // Zero-wait offline first: schermata di verifica eliminata
+  useEffect(() => {
+    const onLockRequest = () => {
+      void handleLock();
+    };
+    window.addEventListener("scelta_admin_lock_request", onLockRequest);
+    return () => window.removeEventListener("scelta_admin_lock_request", onLockRequest);
+  }, [handleLock]);
+
+  // Splash di verifica elegante per evitare lampeggi del tastierino PIN all'apertura dell'App
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#FAF7FC] via-[#F4EBF7] to-[#E9D7EE] flex flex-col items-center justify-center p-6">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#5E1788] to-[#7A3293] flex items-center justify-center shadow-lg shadow-[#5E1788]/30 text-white animate-pulse">
+            <Sparkles size={28} />
+          </div>
+          <div className="w-7 h-7 border-2 border-[#5E1788] border-t-transparent rounded-full animate-spin" />
+          <span className="text-xs font-semibold text-[#5E1788] tracking-widest uppercase">
+            Apertura Scelta Cockpit...
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   // Se autenticato, mostra il cockpit con il tasto rapido di blocco schermo
   if (isAuthenticated) {
+    const isAppuntamenti = pathname?.startsWith("/admin/appuntamenti");
     return (
       <div className="relative">
-        {/* Floating Lock Cockpit Bar (in alto a destra) */}
-        <div className="fixed top-3 right-4 z-50 flex items-center gap-2">
+        {/* Floating Lock Cockpit Bar (su mobile in /admin è integrato nell'header e nella sidebar) */}
+        <div
+          className={
+            isAppuntamenti
+              ? "fixed bottom-4 right-4 lg:bottom-auto lg:top-3 z-50 flex items-center gap-2"
+              : "hidden lg:flex fixed top-3 right-4 z-50 items-center gap-2"
+          }
+        >
           <button
             type="button"
             onClick={handleLock}
@@ -334,7 +390,7 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
               </button>
             </div>
 
-            <p className="text-[11px] text-gray-600 mt-6 text-center font-medium">
+            <p className="text-[11px] text-gray-600 mt-5 text-center font-medium">
               Inserisci il PIN 4 cifre assegnato al salone per sbloccare la cassa
             </p>
           </div>
@@ -378,6 +434,35 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
               {isSubmitting ? "Verifica in corso..." : "Accedi al Cockpit"}
             </button>
           </form>
+        )}
+
+        {/* Persistenza Dispositivo (6 mesi con rinnovo automatico) */}
+        <label className="mt-5 w-full flex items-center justify-center gap-2.5 px-3 py-2.5 rounded-2xl bg-[#FAF7FC] border border-[#E8DEF8] text-xs text-[#1F1B24] cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={rememberDevice}
+            onChange={(e) => setRememberDevice(e.target.checked)}
+            className="h-4 w-4 rounded accent-[#5E1788] cursor-pointer"
+          />
+          <span className="font-medium">
+            Resta connessa su questo dispositivo <span className="text-[#5E1788] font-semibold">(6 mesi)</span>
+          </span>
+        </label>
+
+        {/* Suggerimento Installazione App Gestionale su Mobile */}
+        {showMobileInstallCta && (
+          <button
+            type="button"
+            onClick={() => {
+              window.dispatchEvent(
+                new CustomEvent("open_install_app_modal", { detail: { mode: "admin" } })
+              );
+            }}
+            className="mt-3 w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-purple-50 hover:bg-purple-100 text-[#5E1788] border border-[#D8C2E7] text-xs font-semibold transition-colors cursor-pointer"
+          >
+            <Smartphone size={15} className="text-[#D462A6]" />
+            <span>Salva Scelta Cockpit su iPhone / Cellulare</span>
+          </button>
         )}
 
         {/* Link di Ritorno */}

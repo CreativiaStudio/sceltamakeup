@@ -17,8 +17,14 @@ import { NextResponse } from "next/server";
 /** Nome del cookie di sessione admin (deve coincidere con la route /api/admin/auth). */
 export const AUTH_COOKIE_NAME = "scelta_admin_session";
 
-/** Durata della sessione: 12 ore (orario lavorativo del salone). */
-export const AUTH_TOKEN_TTL_SECONDS = 12 * 60 * 60;
+/** Durata standard sessione persistente: 180 giorni (6 mesi) per mobilità e app. */
+export const AUTH_TOKEN_TTL_SECONDS = 180 * 24 * 60 * 60;
+
+/** Durata breve opzionale (quando "Resta connessa" è disattivato): 12 ore. */
+export const AUTH_SHORT_TTL_SECONDS = 12 * 60 * 60;
+
+/** Soglia oltre la quale un token valido viene rinnovato silenziosamente (24 ore). */
+export const AUTH_REFRESH_THRESHOLD_SECONDS = 24 * 60 * 60;
 
 /** Versione del formato token, per evoluzioni future senza rottura. */
 const TOKEN_FORMAT_VERSION = 1;
@@ -83,20 +89,31 @@ interface AdminTokenPayload {
   nonce: string; // nonce casuale anti-replay
 }
 
+export interface AdminTokenInspection {
+  valid: boolean;
+  iat?: number;
+  exp?: number;
+  shouldRefresh: boolean;
+}
+
 /**
  * Crea un token di sessione firmato.
  *
  * Formato: `<payloadBase64Url>.<hmacSha256Hex>` dove il payload è un JSON
  * codificato in Base64URL contenente versione, emesso-a, scadenza e nonce.
  */
-export function createSignedAdminToken(): string {
+export function createSignedAdminToken(ttlSeconds: number = AUTH_TOKEN_TTL_SECONDS): string {
   const secret = resolveAdminSecret();
   const nowSeconds = Math.floor(Date.now() / 1000);
+  const effectiveTtl =
+    typeof ttlSeconds === "number" && Number.isFinite(ttlSeconds) && ttlSeconds > 0
+      ? Math.floor(ttlSeconds)
+      : AUTH_TOKEN_TTL_SECONDS;
 
   const payload: AdminTokenPayload = {
     v: TOKEN_FORMAT_VERSION,
     iat: nowSeconds,
-    exp: nowSeconds + AUTH_TOKEN_TTL_SECONDS,
+    exp: nowSeconds + effectiveTtl,
     nonce: randomBytes(12).toString("hex"),
   };
 
@@ -107,14 +124,20 @@ export function createSignedAdminToken(): string {
 }
 
 /**
- * Verifica un token di sessione: HMAC corretto (confronto in tempo costante) e
- * scadenza non superata. Ritorna `true` solo se il token è integro e valido.
+ * Ispeziona un token di sessione: verifica HMAC in tempo costante, scadenza
+ * e segnala se il token ha superato `AUTH_REFRESH_THRESHOLD_SECONDS` dall'emissione.
  */
-export function verifySignedAdminToken(token: string | null | undefined): boolean {
-  if (!token || typeof token !== "string") return false;
+export function inspectSignedAdminToken(
+  token: string | null | undefined
+): AdminTokenInspection {
+  if (!token || typeof token !== "string") {
+    return { valid: false, shouldRefresh: false };
+  }
 
   const dotIndex = token.lastIndexOf(".");
-  if (dotIndex <= 0 || dotIndex === token.length - 1) return false;
+  if (dotIndex <= 0 || dotIndex === token.length - 1) {
+    return { valid: false, shouldRefresh: false };
+  }
 
   const encodedPayload = token.slice(0, dotIndex);
   const signature = token.slice(dotIndex + 1);
@@ -127,18 +150,47 @@ export function verifySignedAdminToken(token: string | null | undefined): boolea
 
   // La lunghezza deve coincidere prima di chiamare timingSafeEqual (che la richiede).
   if (expectedBuffer.length === 0 || providedBuffer.length !== expectedBuffer.length) {
-    return false;
+    return { valid: false, shouldRefresh: false };
   }
-  if (!timingSafeEqual(providedBuffer, expectedBuffer)) return false;
+  if (!timingSafeEqual(providedBuffer, expectedBuffer)) {
+    return { valid: false, shouldRefresh: false };
+  }
 
   try {
     const parsed = JSON.parse(fromBase64Url(encodedPayload)) as Partial<AdminTokenPayload>;
-    if (!parsed || parsed.v !== TOKEN_FORMAT_VERSION) return false;
-    if (typeof parsed.exp !== "number" || !Number.isFinite(parsed.exp)) return false;
-    return parsed.exp > Math.floor(Date.now() / 1000);
+    if (!parsed || parsed.v !== TOKEN_FORMAT_VERSION) {
+      return { valid: false, shouldRefresh: false };
+    }
+    if (typeof parsed.exp !== "number" || !Number.isFinite(parsed.exp)) {
+      return { valid: false, shouldRefresh: false };
+    }
+    const nowSeconds = Math.floor(Date.now() / 1000);
+    if (parsed.exp <= nowSeconds) {
+      return { valid: false, shouldRefresh: false };
+    }
+
+    const iat = typeof parsed.iat === "number" && Number.isFinite(parsed.iat) ? parsed.iat : undefined;
+    const isLongSession = parsed.exp - (iat ?? nowSeconds) > AUTH_SHORT_TTL_SECONDS;
+    const shouldRefresh =
+      isLongSession && iat !== undefined && nowSeconds - iat >= AUTH_REFRESH_THRESHOLD_SECONDS;
+
+    return {
+      valid: true,
+      iat,
+      exp: parsed.exp,
+      shouldRefresh,
+    };
   } catch {
-    return false;
+    return { valid: false, shouldRefresh: false };
   }
+}
+
+/**
+ * Verifica un token di sessione: HMAC corretto (confronto in tempo costante) e
+ * scadenza non superata. Ritorna `true` solo se il token è integro e valido.
+ */
+export function verifySignedAdminToken(token: string | null | undefined): boolean {
+  return inspectSignedAdminToken(token).valid;
 }
 
 // ------------------------------------------------------------------------------

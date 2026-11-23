@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
@@ -9,6 +9,14 @@ import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
 import CookieBanner from "@/components/CookieBanner";
 import VisitTrackerClient from "@/components/VisitTrackerClient";
 import PromoBannerListener from "@/components/PromoBannerListener";
+import PwaManager from "@/components/PwaManager";
+
+export const viewport: Viewport = {
+  themeColor: "#5E1788",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -43,8 +51,19 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Scelta Makeup & Creativia Studio" }],
   icons: {
-    icon: "/brand/logo.png",
-    apple: "/brand/logo.png",
+    icon: "/icons/icon-192.png",
+    apple: [
+      {
+        url: "/icons/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
+  },
+  appleWebApp: {
+    capable: true,
+    title: "Scelta Makeup",
+    statusBarStyle: "default",
   },
   openGraph: {
     type: "website",
@@ -105,6 +124,7 @@ export default function RootLayout({
         <Suspense fallback={null}>
           <PromoBannerListener />
         </Suspense>
+        <PwaManager />
       </body>
     </html>
   );

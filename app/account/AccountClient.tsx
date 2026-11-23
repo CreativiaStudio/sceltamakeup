@@ -194,6 +194,11 @@ export default function AccountClient({ initialOrderNumber = "" }: AccountClient
   const commitSession = useCallback((next: CustomerSession) => {
     saveCustomerSession(next);
     setSession(next);
+    void fetch("/api/account/session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(next),
+    }).catch(() => {});
   }, []);
 
   // Risoluzione dei preferiti (prodotti acquistati) per il riordino rapido.
@@ -351,9 +356,8 @@ export default function AccountClient({ initialOrderNumber = "" }: AccountClient
     [commitSession, loadAppointments, loadOrdersFor]
   );
 
-  // Ripristino sessione / auto-login da URL (?email=... e ?order=...&email=...).
-  // L'accesso a localStorage e gli aggiornamenti di stato sono differiti in un
-  // microtask, così l'effetto si limita a sincronizzarsi con lo storage esterno.
+  // Ripristino sessione / auto-login da URL (?email=... e ?order=...&email=...),
+  // con fallback su cookie server-side HttpOnly (180 giorni, immune al limite 7gg di Safari).
   useEffect(() => {
     if (bootedRef.current) return;
     bootedRef.current = true;
@@ -363,13 +367,33 @@ export default function AccountClient({ initialOrderNumber = "" }: AccountClient
       const effectiveEmail = urlEmail || stored?.email || "";
 
       if (stored && stored.email === effectiveEmail) {
+        void fetch("/api/account/session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(stored),
+        }).catch(() => {});
         loadAppointments(stored.email);
         void loadOrdersFor(stored.email, urlOrder || undefined);
         return;
       }
       if (effectiveEmail) {
         startSession(effectiveEmail, urlOrder || undefined);
+        return;
       }
+
+      void fetch("/api/account/session", { cache: "no-store" })
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data: { session?: CustomerSession | null } | null) => {
+          const serverSession = data?.session;
+          if (!serverSession?.email) return;
+          saveCustomerSession(serverSession);
+          setSession(serverSession);
+          setNameForm(serverSession.name || "");
+          setAddressForm(serverSession.savedAddress ?? EMPTY_SHIPPING_ADDRESS);
+          loadAppointments(serverSession.email);
+          void loadOrdersFor(serverSession.email, urlOrder || undefined);
+        })
+        .catch(() => {});
     });
   }, [loadAppointments, loadOrdersFor, startSession, urlEmail, urlOrder]);
 
@@ -443,6 +467,7 @@ export default function AccountClient({ initialOrderNumber = "" }: AccountClient
 
   const handleLogout = () => {
     clearCustomerSession();
+    void fetch("/api/account/session", { method: "DELETE" }).catch(() => {});
     setSession(null);
     setOrders(null);
     setSelected(null);

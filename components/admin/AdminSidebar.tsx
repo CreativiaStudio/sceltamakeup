@@ -17,6 +17,8 @@ import {
   X,
   Store,
   History,
+  Smartphone,
+  Lock,
 } from "lucide-react";
 import { AdminTab } from "@/types/admin";
 import { AdminKpiSummary } from "@/lib/adminStore";
@@ -245,6 +247,40 @@ export default function AdminSidebar({
 
         {/* Footer Actions */}
         <div className="p-3.5 border-t border-[#7A3293]/80 bg-[#531478]/80 space-y-2">
+          {/* Save Admin App on Mobile */}
+          <button
+            type="button"
+            onClick={() => {
+              onCloseMobile();
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(
+                  new CustomEvent("open_install_app_modal", { detail: { mode: "admin" } })
+                );
+              }
+            }}
+            className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs text-white bg-[#7A3293]/80 hover:bg-[#D462A6] transition-colors font-semibold cursor-pointer"
+          >
+            <div className="flex items-center gap-2">
+              <Smartphone className="w-3.5 h-3.5 text-[#D8C2E7]" />
+              <span>Salva App sul Cellulare</span>
+            </div>
+          </button>
+
+          {/* Mobile Lock Cockpit */}
+          <button
+            type="button"
+            onClick={() => {
+              onCloseMobile();
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("scelta_admin_lock_request"));
+              }
+            }}
+            className="lg:hidden w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-rose-200 hover:text-white hover:bg-rose-600/40 transition-colors font-semibold cursor-pointer"
+          >
+            <Lock className="w-3.5 h-3.5" />
+            <span>Blocca Cockpit</span>
+          </button>
+
           {/* Public Store Link */}
           <Link
             href="/"

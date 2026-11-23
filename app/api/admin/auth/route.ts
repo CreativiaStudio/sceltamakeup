@@ -2,8 +2,10 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import {
   AUTH_COOKIE_NAME,
+  AUTH_SHORT_TTL_SECONDS,
+  AUTH_TOKEN_TTL_SECONDS,
   createSignedAdminToken,
-  verifySignedAdminToken,
+  inspectSignedAdminToken,
 } from "@/lib/adminAuth";
 
 // La verifica di sessione deve sempre leggere il cookie a runtime:
@@ -21,12 +23,22 @@ function readCredentials(): { pin: string; masterPassword: string } {
   return { pin, masterPassword };
 }
 
+function buildCookieOptions(maxAgeSeconds: number) {
+  return {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax" as const,
+    maxAge: maxAgeSeconds,
+    path: "/",
+  };
+}
+
 export async function POST(req: Request) {
   const credentials = readCredentials();
 
   try {
     const body = await req.json();
-    const { pin, password } = body;
+    const { pin, password, rememberDevice } = body;
 
     let isAuthenticated = false;
     let authRole = "";
@@ -49,22 +61,19 @@ export async function POST(req: Request) {
       );
     }
 
-    const token = createSignedAdminToken();
+    const persistent = rememberDevice !== false;
+    const ttlSeconds = persistent ? AUTH_TOKEN_TTL_SECONDS : AUTH_SHORT_TTL_SECONDS;
+    const token = createSignedAdminToken(ttlSeconds);
     const cookieStore = await cookies();
 
-    // Cookie valido per 12 ore (orario lavorativo salone)
-    cookieStore.set(AUTH_COOKIE_NAME, token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 12 * 60 * 60,
-      path: "/",
-    });
+    // Cookie persistente di default (180 giorni / 6 mesi) oppure 12 ore se disattivato
+    cookieStore.set(AUTH_COOKIE_NAME, token, buildCookieOptions(ttlSeconds));
 
     return NextResponse.json({
       success: true,
       role: authRole,
-      expiresIn: "12h",
+      expiresIn: persistent ? "180d" : "12h",
+      maxAgeSeconds: ttlSeconds,
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Richiesta non valida";
@@ -75,12 +84,23 @@ export async function POST(req: Request) {
 export async function GET() {
   const cookieStore = await cookies();
   const session = cookieStore.get(AUTH_COOKIE_NAME);
+  const inspection = inspectSignedAdminToken(session?.value);
 
-  if (!session?.value || !verifySignedAdminToken(session.value)) {
+  if (!inspection.valid) {
     return NextResponse.json({ authenticated: false }, { status: 401 });
   }
 
-  return NextResponse.json({ authenticated: true });
+  // Rolling sliding session: se il token ha più di 24h, rinnova silenziosamente per altri 180 giorni
+  if (inspection.shouldRefresh) {
+    const refreshedToken = createSignedAdminToken(AUTH_TOKEN_TTL_SECONDS);
+    cookieStore.set(AUTH_COOKIE_NAME, refreshedToken, buildCookieOptions(AUTH_TOKEN_TTL_SECONDS));
+  }
+
+  return NextResponse.json({
+    authenticated: true,
+    refreshed: inspection.shouldRefresh,
+    persistentDays: 180,
+  });
 }
 
 export async function DELETE() {

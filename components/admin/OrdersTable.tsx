@@ -420,7 +420,233 @@ export default function OrdersTable() {
 
       {/* Orders Table Card */}
       <div className="bg-white rounded-2xl border border-gray-200/80 shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Mobile Card View (< md) */}
+        <div className="md:hidden divide-y divide-gray-100">
+          {filteredOrders.length === 0 ? (
+            <div className="py-12 px-4 text-center text-xs text-gray-400">
+              Nessun ordine trovato per i filtri selezionati.
+            </div>
+          ) : (
+            filteredOrders.map((order) => {
+              const isExpanded = expandedOrderId === order.id;
+              const isCourier = order.fulfillmentType === "courier";
+              const isPos = order.fulfillmentType === "pos_receipt";
+
+              return (
+                <div key={order.id} className="p-4 space-y-3">
+                  {/* Top row: Order ID + Date + Total */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <span className="font-mono text-xs font-bold text-[#5E1788]">
+                        {order.id}
+                      </span>
+                      <div className="text-[11px] text-gray-400">
+                        {formatDate(order.createdAt)}
+                      </div>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="text-sm font-bold text-[#1F1B24]">
+                        {formatEuro(order.total)}
+                      </div>
+                      <div className="text-[10px] text-gray-400">
+                        {order.items.length} {order.items.length === 1 ? "pezzo" : "pezzi"}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Customer & Channel */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <div className="min-w-0">
+                      <div className="font-semibold text-[#1F1B24] truncate">
+                        {order.customerName}
+                      </div>
+                      <div className="text-[11px] text-gray-500 font-mono">
+                        {order.customerPhone}
+                      </div>
+                    </div>
+
+                    {isPos ? (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200">
+                        <Receipt className="w-3 h-3 text-emerald-600" />
+                        <span>Cassa RT</span>
+                      </span>
+                    ) : isCourier ? (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium border bg-blue-50 text-blue-800 border-blue-200">
+                        <Truck className="w-3 h-3 text-blue-600" />
+                        <span>Corriere</span>
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium border bg-purple-50 text-[#5E1788] border-purple-200">
+                        <Store className="w-3 h-3 text-[#5E1788]" />
+                        <span>Ritiro Salone</span>
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Status selector */}
+                  <div>
+                    {isPos ? (
+                      <span className="inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-300">
+                        <Check className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>Incassato al Banco</span>
+                      </span>
+                    ) : (
+                      <select
+                        value={order.status}
+                        onChange={(e) =>
+                          handleStatusChange(
+                            order.id,
+                            e.target.value as SceltaAdminOrder["status"]
+                          )
+                        }
+                        className={`w-full px-3 py-2 rounded-xl text-xs font-semibold border cursor-pointer focus:outline-none transition-colors ${
+                          order.status === "processing"
+                            ? "bg-amber-50 text-amber-800 border-amber-300"
+                            : order.status === "shipped"
+                            ? "bg-blue-50 text-blue-800 border-blue-300"
+                            : order.status === "ready_for_pickup"
+                            ? "bg-purple-50 text-[#5E1788] border-purple-300"
+                            : order.status === "completed"
+                            ? "bg-emerald-50 text-emerald-800 border-emerald-300"
+                            : "bg-rose-50 text-rose-800 border-rose-300"
+                        }`}
+                      >
+                        <option value="processing">In Elaborazione</option>
+                        <option value="shipped">Spedito con Corriere</option>
+                        <option value="ready_for_pickup">Pronto Ritiro Salone</option>
+                        <option value="completed">Completato</option>
+                        <option value="cancelled">Annullato</option>
+                      </select>
+                    )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setPrintingOrder(order)}
+                      className="flex-1 min-w-[90px] py-2 px-3 rounded-xl text-xs font-semibold text-gray-700 border border-gray-200 hover:bg-purple-50 hover:text-[#5E1788] flex items-center justify-center gap-1.5"
+                    >
+                      <Printer className="w-3.5 h-3.5 text-[#5E1788]" />
+                      <span>Stampa</span>
+                    </button>
+
+                    {isCourier &&
+                      (order.packlinkReference ? (
+                        <button
+                          type="button"
+                          onClick={() => setPrintingOrder(order)}
+                          className="flex-1 min-w-[110px] py-2 px-3 rounded-xl text-xs font-semibold bg-purple-50 text-[#5E1788] border border-[#D8C2E7] flex items-center justify-center gap-1"
+                        >
+                          <Check className="w-3.5 h-3.5 text-emerald-600" />
+                          <span className="truncate font-mono text-[11px]">
+                            {order.packlinkReference}
+                          </span>
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => void handleQuickCreatePacklink(order)}
+                          disabled={packlinkLoadingId === order.id}
+                          className="flex-1 min-w-[110px] py-2 px-3 rounded-xl text-xs font-semibold bg-[#5E1788] text-white disabled:opacity-60 flex items-center justify-center gap-1.5"
+                        >
+                          {packlinkLoadingId === order.id ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          ) : (
+                            <Truck className="w-3.5 h-3.5" />
+                          )}
+                          <span>{packlinkLoadingId === order.id ? "Creo..." : "Packlink"}</span>
+                        </button>
+                      ))}
+
+                    <button
+                      type="button"
+                      onClick={() => setExpandedOrderId(isExpanded ? null : order.id)}
+                      className="py-2 px-3 rounded-xl bg-[#FAF7FC] border border-[#D8C2E7]/60 text-xs font-semibold text-[#5E1788] flex items-center gap-1"
+                    >
+                      <span>{isExpanded ? "Chiudi" : "Dettagli"}</span>
+                      {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    </button>
+                  </div>
+
+                  {/* Mobile expanded details */}
+                  {isExpanded && (
+                    <div className="pt-3 border-t border-gray-100 space-y-3 text-xs">
+                      <div className="space-y-1.5 bg-[#FAF7FC] p-3 rounded-xl border border-[#D8C2E7]/40">
+                        <div className="font-bold text-[#5E1788]">
+                          Articoli ({order.items.length})
+                        </div>
+                        {order.items.map((item, idx) => (
+                          <div
+                            key={`${item.productId}-m-${idx}`}
+                            className="flex items-center justify-between gap-2 text-[11px]"
+                          >
+                            <span className="text-[#1F1B24] truncate">
+                              {item.quantity}× {item.productTitle}
+                              {item.variantName ? ` (${item.variantName})` : ""}
+                            </span>
+                            <span className="font-semibold shrink-0">
+                              {formatEuro(item.price * item.quantity)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {isCourier && order.shippingAddress && (
+                        <div className="p-3 rounded-xl bg-gray-50 border border-gray-200 space-y-2">
+                          <div className="text-[11px] text-gray-700 leading-relaxed">
+                            {order.shippingAddress.street}, {order.shippingAddress.postalCode}{" "}
+                            {order.shippingAddress.city} ({order.shippingAddress.province})
+                          </div>
+                          {order.trackingCode && (
+                            <div className="text-[11px]">
+                              Tracking:{" "}
+                              <strong className="font-mono text-[#5E1788]">
+                                {order.trackingCode}
+                              </strong>
+                            </div>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => handleCopyAddress(order)}
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-gray-200 text-[11px] font-medium"
+                          >
+                            {copiedOrderId === order.id ? (
+                              <>
+                                <Check className="w-3 h-3 text-emerald-600" />
+                                <span className="text-emerald-700">Copiato!</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="w-3 h-3 text-gray-500" />
+                                <span>Copia Indirizzo</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      )}
+
+                      <a
+                        href={`https://wa.me/${order.customerPhone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
+                          `Ciao ${order.customerName}! Ti scriviamo dal salone Scelta Makeup di Napoli in merito al tuo ordine #${order.id}.`
+                        )}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold flex items-center justify-center gap-2"
+                      >
+                        <MessageSquare className="w-4 h-4" />
+                        <span>Contatta su WhatsApp</span>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          )}
+        </div>
+
+        {/* Desktop Table View (>= md) */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-gray-200 bg-gray-50/75 text-[11px] uppercase tracking-wider font-semibold text-gray-500">
