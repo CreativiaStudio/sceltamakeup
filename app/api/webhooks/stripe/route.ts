@@ -2,8 +2,13 @@ import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
 import type { SceltaAdminOrder } from "@/lib/adminStore";
+import { getAllProducts } from "@/lib/catalog";
 import { getCentralOrders, saveCentralOrder } from "@/lib/serverOrderStore";
 import { incrementCouponUsage } from "@/lib/serverCouponStore";
+import {
+  extractStripeShippingAddress,
+  mapStripeLineItemsToOrderItems,
+} from "@/lib/stripeOrderMapper";
 
 export const dynamic = "force-dynamic";
 
@@ -58,16 +63,17 @@ export async function POST(req: Request) {
               ? Math.round(session.amount_total) / 100
               : 0;
 
-          const collectedAddress = session.collected_information?.shipping_details?.address;
-          const shippingAddress =
-            collectedAddress?.line1
-              ? {
-                  street: collectedAddress.line1,
-                  city: collectedAddress.city || "Napoli",
-                  postalCode: collectedAddress.postal_code || "",
-                  province: collectedAddress.state || "",
-                }
-              : undefined;
+          const shippingAddress = extractStripeShippingAddress(session);
+          let items: SceltaAdminOrder["items"] = [];
+          try {
+            const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
+              limit: 100,
+            });
+            const catalogProducts = await getAllProducts({ includeLocalOnly: true });
+            items = mapStripeLineItemsToOrderItems(lineItems.data, catalogProducts);
+          } catch (lineItemsErr) {
+            console.warn("[Stripe Webhook] Impossibile leggere line_items:", lineItemsErr);
+          }
 
           const adminOrder: SceltaAdminOrder = {
             id: `SC-ORD-${new Date().getFullYear()}-${session.id.slice(-6).toUpperCase()}`,
@@ -88,7 +94,7 @@ export async function POST(req: Request) {
             paymentMethod: "stripe",
             stripeSessionId: session.id,
             shippingAddress,
-            items: [],
+            items,
             createdAt: now,
             updatedAt: now,
           };

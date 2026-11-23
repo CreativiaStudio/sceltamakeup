@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import type { SceltaAdminOrder } from "@/lib/adminStore";
+import { getAllProducts } from "@/lib/catalog";
 import { getCentralOrders, saveCentralOrder } from "@/lib/serverOrderStore";
 import { incrementCouponUsage } from "@/lib/serverCouponStore";
 import { toPublicOrder } from "@/lib/orderTracking";
 import { consumeRateLimit, getClientIp } from "@/lib/rateLimit";
+import {
+  extractStripeShippingAddress,
+  mapStripeLineItemsToOrderItems,
+} from "@/lib/stripeOrderMapper";
 import type { Order } from "@/types/order";
 
 export const dynamic = "force-dynamic";
@@ -122,7 +127,7 @@ export async function POST(req: Request) {
           postalCode: pending.customer.cap || "80134",
           province: "NA",
         }
-      : undefined;
+      : extractStripeShippingAddress(session);
 
     const sanitizedPendingItems = Array.isArray(pending?.items)
       ? pending.items
@@ -146,18 +151,10 @@ export async function POST(req: Request) {
     const stripeFallbackItems =
       sanitizedPendingItems.length > 0
         ? sanitizedPendingItems
-        : (session.line_items?.data ?? [])
-            .filter((li) => !/spedizione/i.test(li.description || ""))
-            .map((li, idx) => {
-              const qty = li.quantity && li.quantity > 0 ? li.quantity : 1;
-              const lineTotal = typeof li.amount_total === "number" ? li.amount_total / 100 : 0;
-              return {
-                productId: li.id || `stripe-item-${idx + 1}`,
-                productTitle: li.description || "Prodotto Scelta Makeup",
-                quantity: qty,
-                price: Math.round((lineTotal / qty) * 100) / 100,
-              };
-            });
+        : mapStripeLineItemsToOrderItems(
+            session.line_items?.data,
+            await getAllProducts({ includeLocalOnly: true })
+          );
 
     const adminOrder: SceltaAdminOrder = {
       id: orderId,

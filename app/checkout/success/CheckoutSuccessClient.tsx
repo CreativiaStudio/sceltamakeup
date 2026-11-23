@@ -19,6 +19,12 @@ export default function CheckoutSuccessClient() {
 
   const [status, setStatus] = useState<VerifyStatus>(sessionId ? "loading" : "error");
   const [order, setOrder] = useState<Order | null>(null);
+  const [confirmedSummary, setConfirmedSummary] = useState<{
+    orderNumber: string;
+    total: number;
+    deliveryMethod: "shipping" | "boutique";
+    email: string;
+  } | null>(null);
   const processedRef = useRef(false);
 
   useEffect(() => {
@@ -53,6 +59,7 @@ export default function CheckoutSuccessClient() {
             fetch("/api/orders/confirm", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
+              keepalive: true,
               body: JSON.stringify({
                 sessionId,
                 pendingOrder: created,
@@ -90,6 +97,41 @@ export default function CheckoutSuccessClient() {
             });
           } catch (notifErr) {
             console.warn("Failed to enqueue notifications for order:", notifErr);
+          }
+        } else {
+          // Fallback resiliente (es. ritorno da PayPal su Safari/iPhone senza localStorage):
+          // conferma e salva comunque l'ordine su Supabase ricostruendolo da Stripe.
+          clearCart();
+          try {
+            const confirmRes = await fetch("/api/orders/confirm", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              keepalive: true,
+              body: JSON.stringify({
+                sessionId,
+                pendingOrder: null,
+              }),
+            });
+            const confirmData = (await confirmRes.json().catch(() => null)) as {
+              success?: boolean;
+              order?: { id?: string; total?: number; fulfillmentType?: string };
+            } | null;
+            if (!cancelled && confirmData?.success && confirmData.order?.id) {
+              setConfirmedSummary({
+                orderNumber: confirmData.order.id,
+                total:
+                  typeof confirmData.order.total === "number"
+                    ? confirmData.order.total
+                    : typeof data.amount_total === "number"
+                    ? data.amount_total / 100
+                    : 0,
+                deliveryMethod:
+                  confirmData.order.fulfillmentType === "store_pickup" ? "boutique" : "shipping",
+                email: typeof data.customer_email === "string" ? data.customer_email : "",
+              });
+            }
+          } catch (syncErr) {
+            console.warn("Failed to confirm Stripe order without local draft:", syncErr);
           }
         }
 
@@ -141,6 +183,11 @@ export default function CheckoutSuccessClient() {
     );
   }
 
+  const summaryOrderNumber = order?.orderNumber || confirmedSummary?.orderNumber;
+  const summaryTotal = order?.total ?? confirmedSummary?.total;
+  const summaryDeliveryMethod = order?.deliveryMethod ?? confirmedSummary?.deliveryMethod;
+  const summaryEmail = order?.customer.email ?? confirmedSummary?.email;
+
   return (
     <div className="min-h-[70vh] flex items-center justify-center bg-[#FAF7FC] py-16 px-4">
       <div className="max-w-lg w-full bg-white rounded-3xl p-8 sm:p-10 shadow-2xl border border-[#D8C2E7]/60 text-center space-y-6">
@@ -150,7 +197,7 @@ export default function CheckoutSuccessClient() {
 
         <div className="space-y-2">
           <span className="text-xs font-semibold tracking-widest uppercase text-[#7A3293]">
-            {order ? order.orderNumber : "Ordine Confermato"}
+            {summaryOrderNumber || "Ordine Confermato"}
           </span>
           <h1 className="font-serif text-3xl font-bold text-[#1F1B24]">
             Grazie per il tuo acquisto
@@ -161,30 +208,32 @@ export default function CheckoutSuccessClient() {
           </p>
         </div>
 
-        {order && (
+        {summaryOrderNumber && summaryTotal !== undefined && (
           <>
             <div className="p-4 rounded-2xl bg-[#FAF7FC] border border-neutral-200 text-left text-xs space-y-1.5 text-neutral-600">
               <p>
                 <strong>Metodo di consegna:</strong>{" "}
-                {order.deliveryMethod === "boutique"
+                {summaryDeliveryMethod === "boutique"
                   ? "Ritiro in Salone (Via dei Pellegrini 28/29, Napoli)"
                   : "Corriere Espresso Tracciato 24/48h"}
               </p>
               <p>
-                <strong>Totale pagato:</strong> €{order.total.toFixed(2)}
+                <strong>Totale pagato:</strong> €{summaryTotal.toFixed(2)}
               </p>
               <p>
                 <strong>Packaging:</strong> Confezione protetta con cura artigianale
               </p>
             </div>
 
-            <Link
-              href={`/account?order=${encodeURIComponent(order.orderNumber)}&email=${encodeURIComponent(order.customer.email)}`}
-              className="inline-flex items-center justify-center w-full py-3.5 px-4 rounded-xl border-2 border-[#5E1788] text-[#5E1788] font-semibold text-xs tracking-wider uppercase hover:bg-[#5E1788] hover:text-white transition-colors"
-            >
-              <Truck className="h-4 w-4 mr-2" />
-              Traccia il tuo ordine in tempo reale
-            </Link>
+            {summaryEmail && (
+              <Link
+                href={`/account?order=${encodeURIComponent(summaryOrderNumber)}&email=${encodeURIComponent(summaryEmail)}`}
+                className="inline-flex items-center justify-center w-full py-3.5 px-4 rounded-xl border-2 border-[#5E1788] text-[#5E1788] font-semibold text-xs tracking-wider uppercase hover:bg-[#5E1788] hover:text-white transition-colors"
+              >
+                <Truck className="h-4 w-4 mr-2" />
+                Traccia il tuo ordine in tempo reale
+              </Link>
+            )}
           </>
         )}
 
