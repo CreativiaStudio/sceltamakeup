@@ -1,11 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
+import { consumeRateLimit, getClientIp } from "@/lib/rateLimit";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
-  const sessionId = req.nextUrl.searchParams.get("session_id");
+  const gate = consumeRateLimit(`checkout_session:${getClientIp(req)}`, 30, 10 * 60 * 1000);
+  if (!gate.allowed) {
+    return NextResponse.json(
+      { error: "Troppe richieste. Riprova tra qualche minuto." },
+      { status: 429, headers: { "Retry-After": String(gate.retryAfterSeconds) } }
+    );
+  }
 
-  if (!sessionId) {
-    return NextResponse.json({ error: "session_id mancante" }, { status: 400 });
+  const sessionId = (req.nextUrl.searchParams.get("session_id") || "").trim();
+
+  if (!sessionId || !sessionId.startsWith("cs_")) {
+    return NextResponse.json({ error: "session_id mancante o non valido" }, { status: 400 });
   }
 
   try {
@@ -22,7 +33,9 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("Stripe Session retrieve error:", error);
-    const message = error instanceof Error ? error.message : "Errore di connessione con Stripe";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: "Sessione di pagamento non disponibile" },
+      { status: 500 }
+    );
   }
 }

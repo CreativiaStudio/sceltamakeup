@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server";
 import { getCentralOrders } from "@/lib/serverOrderStore";
 import { getPacklinkTracking, type PacklinkTracking } from "@/lib/packlink";
-import { isCustomerVisibleOrder, normalizeEmail, toPublicOrder } from "@/lib/orderTracking";
+import {
+  isCustomerVisibleOrder,
+  maskCustomerName,
+  maskShippingAddress,
+  normalizeEmail,
+  toPublicOrder,
+} from "@/lib/orderTracking";
+import { consumeRateLimit, getClientIp } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +16,14 @@ const NOT_FOUND_MESSAGE =
   "Nessun ordine trovato con questi dati. Controlla numero ordine ed email usata al checkout.";
 
 export async function GET(req: Request) {
+  const gate = consumeRateLimit(`orders_lookup:${getClientIp(req)}`, 30, 10 * 60 * 1000);
+  if (!gate.allowed) {
+    return NextResponse.json(
+      { success: false, error: "Troppe richieste. Riprova tra qualche minuto." },
+      { status: 429, headers: { "Retry-After": String(gate.retryAfterSeconds) } }
+    );
+  }
+
   try {
     const params = new URL(req.url).searchParams;
     const orderNumber = (params.get("orderNumber") || params.get("orderId") || "").trim().toLowerCase();
@@ -38,7 +53,16 @@ export async function GET(req: Request) {
       tracking = await getPacklinkTracking(order.packlinkReference).catch(() => null);
     }
 
-    return NextResponse.json({ success: true, order: toPublicOrder(order), tracking });
+    const publicOrder = toPublicOrder(order);
+    return NextResponse.json({
+      success: true,
+      order: {
+        ...publicOrder,
+        customerName: maskCustomerName(publicOrder.customerName),
+        shippingAddress: maskShippingAddress(publicOrder.shippingAddress),
+      },
+      tracking,
+    });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Errore interno ricerca ordine";
     return NextResponse.json({ success: false, error: message }, { status: 500 });

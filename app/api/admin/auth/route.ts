@@ -1,3 +1,4 @@
+import { createHash, timingSafeEqual } from "crypto";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import {
@@ -7,20 +8,33 @@ import {
   createSignedAdminToken,
   inspectSignedAdminToken,
 } from "@/lib/adminAuth";
+import {
+  checkRateLimit,
+  getClientIp,
+  recordRateLimitFailure,
+  resetRateLimit,
+} from "@/lib/rateLimit";
 
 // La verifica di sessione deve sempre leggere il cookie a runtime:
 // nessuna cache statica su CDN/edge (evita 401/stati stale sul laptop salone).
 export const dynamic = "force-dynamic";
 
-/**
- * Credenziali lette dall'ambiente con fallback server-only per garantire
- * la continuità operativa del salone anche se una variabile mancasse sul deploy.
- */
-function readCredentials(): { pin: string; masterPassword: string } {
-  const pin = (process.env.ADMIN_PIN || "2829").trim();
-  const masterPassword = (process.env.ADMIN_MASTER_PASSWORD || "%sceltamakeup%2026").trim();
+const MAX_AUTH_FAILURES = 8;
+const AUTH_LOCKOUT_WINDOW_MS = 15 * 60 * 1000;
 
+/** Credenziali lette esclusivamente dalle variabili ambiente server-side. */
+function readCredentials(): { pin: string; masterPassword: string } {
+  const pin = (process.env.ADMIN_PIN || "").trim();
+  const masterPassword = (process.env.ADMIN_MASTER_PASSWORD || "").trim();
   return { pin, masterPassword };
+}
+
+/** Comparazione in tempo costante su hash SHA-256 (previene timing attack). */
+function safeSecretEquals(provided: string, expected: string): boolean {
+  if (!expected) return false;
+  const a = createHash("sha256").update(provided, "utf8").digest();
+  const b = createHash("sha256").update(expected, "utf8").digest();
+  return timingSafeEqual(a, b);
 }
 
 function buildCookieOptions(maxAgeSeconds: number) {
@@ -35,6 +49,27 @@ function buildCookieOptions(maxAgeSeconds: number) {
 
 export async function POST(req: Request) {
   const credentials = readCredentials();
+  if (!credentials.pin && !credentials.masterPassword) {
+    return NextResponse.json(
+      { success: false, error: "Credenziali admin non configurate sul server" },
+      { status: 503 }
+    );
+  }
+
+  const rateKey = `admin_auth:${getClientIp(req)}`;
+  const gate = checkRateLimit(rateKey, MAX_AUTH_FAILURES);
+  if (!gate.allowed) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Troppi tentativi errati. Attendi qualche minuto prima di riprovare.",
+      },
+      {
+        status: 429,
+        headers: { "Retry-After": String(gate.retryAfterSeconds) },
+      }
+    );
+  }
 
   try {
     const body = await req.json();
@@ -43,23 +78,50 @@ export async function POST(req: Request) {
     let isAuthenticated = false;
     let authRole = "";
 
-    if (typeof pin === "string" && pin.trim() === credentials.pin) {
+    if (
+      typeof pin === "string" &&
+      credentials.pin.length > 0 &&
+      safeSecretEquals(pin.trim(), credentials.pin)
+    ) {
       isAuthenticated = true;
       authRole = "store_operator";
     } else if (
       typeof password === "string" &&
-      password.trim() === credentials.masterPassword
+      credentials.masterPassword.length > 0 &&
+      safeSecretEquals(password.trim(), credentials.masterPassword)
     ) {
       isAuthenticated = true;
       authRole = "master_admin";
     }
 
     if (!isAuthenticated) {
+      const failure = recordRateLimitFailure(
+        rateKey,
+        MAX_AUTH_FAILURES,
+        AUTH_LOCKOUT_WINDOW_MS
+      );
+      await new Promise((resolve) => setTimeout(resolve, 250));
+
+      if (failure.blocked) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Troppi tentativi errati. Attendi qualche minuto prima di riprovare.",
+          },
+          {
+            status: 429,
+            headers: { "Retry-After": String(failure.retryAfterSeconds) },
+          }
+        );
+      }
+
       return NextResponse.json(
         { success: false, error: "Credenziali o PIN non validi" },
         { status: 401 }
       );
     }
+
+    resetRateLimit(rateKey);
 
     const persistent = rememberDevice !== false;
     const ttlSeconds = persistent ? AUTH_TOKEN_TTL_SECONDS : AUTH_SHORT_TTL_SECONDS;

@@ -1,12 +1,57 @@
+import { createHmac, randomBytes, timingSafeEqual } from "crypto";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import type { CustomerSession, ShippingAddress } from "@/lib/customerSession";
+import { consumeRateLimit, getClientIp } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 
 const CUSTOMER_COOKIE_NAME = "scelta_customer_session";
 const CUSTOMER_TTL_SECONDS = 180 * 24 * 60 * 60; // 180 giorni (6 mesi)
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+let cachedCustomerSecret: string | null = null;
+
+function resolveCustomerSecret(): string {
+  if (cachedCustomerSecret) return cachedCustomerSecret;
+  const base =
+    process.env.ADMIN_SESSION_SECRET ||
+    process.env.STRIPE_SECRET_KEY ||
+    randomBytes(32).toString("hex");
+  cachedCustomerSecret = `scelta_customer_cookie_v1:${base}`;
+  return cachedCustomerSecret;
+}
+
+function signCustomerSession(session: CustomerSession): string {
+  const encoded = Buffer.from(JSON.stringify(session), "utf8").toString("base64url");
+  const sig = createHmac("sha256", resolveCustomerSecret()).update(encoded).digest("hex");
+  return `${encoded}.${sig}`;
+}
+
+function verifyCustomerToken(token: string | undefined): CustomerSession | null {
+  if (!token || typeof token !== "string") return null;
+  const dotIdx = token.lastIndexOf(".");
+  if (dotIdx <= 0 || dotIdx === token.length - 1) return null;
+
+  const encoded = token.slice(0, dotIdx);
+  const providedSig = token.slice(dotIdx + 1);
+  const expectedSig = createHmac("sha256", resolveCustomerSecret())
+    .update(encoded)
+    .digest("hex");
+
+  const a = Buffer.from(providedSig, "hex");
+  const b = Buffer.from(expectedSig, "hex");
+  if (a.length === 0 || a.length !== b.length || !timingSafeEqual(a, b)) {
+    return null;
+  }
+
+  try {
+    const decoded = Buffer.from(encoded, "base64url").toString("utf8");
+    return sanitizeSessionPayload(JSON.parse(decoded));
+  } catch {
+    return null;
+  }
+}
 
 function sanitizeAddress(raw: unknown): ShippingAddress | undefined {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return undefined;
@@ -45,26 +90,26 @@ function cookieOptions() {
 export async function GET() {
   const cookieStore = await cookies();
   const rawCookie = cookieStore.get(CUSTOMER_COOKIE_NAME)?.value;
-  if (!rawCookie) {
+  const session = verifyCustomerToken(rawCookie);
+
+  if (!session) {
     return NextResponse.json({ session: null });
   }
 
-  try {
-    const decoded = Buffer.from(rawCookie, "base64url").toString("utf8");
-    const session = sanitizeSessionPayload(JSON.parse(decoded));
-    if (!session) {
-      return NextResponse.json({ session: null });
-    }
-
-    // Rinnovo silenzioso del cookie server-side (bypass ITP 7gg Safari iPhone)
-    cookieStore.set(CUSTOMER_COOKIE_NAME, rawCookie, cookieOptions());
-    return NextResponse.json({ session });
-  } catch {
-    return NextResponse.json({ session: null });
-  }
+  // Rinnovo silenzioso del cookie firmato server-side (bypass ITP 7gg Safari iPhone)
+  cookieStore.set(CUSTOMER_COOKIE_NAME, signCustomerSession(session), cookieOptions());
+  return NextResponse.json({ session });
 }
 
 export async function POST(req: Request) {
+  const gate = consumeRateLimit(`account_session:${getClientIp(req)}`, 30, 10 * 60 * 1000);
+  if (!gate.allowed) {
+    return NextResponse.json(
+      { success: false, error: "Troppe richieste. Riprova tra qualche minuto." },
+      { status: 429, headers: { "Retry-After": String(gate.retryAfterSeconds) } }
+    );
+  }
+
   try {
     const body = await req.json();
     const session = sanitizeSessionPayload(body);
@@ -75,9 +120,9 @@ export async function POST(req: Request) {
       );
     }
 
-    const encoded = Buffer.from(JSON.stringify(session), "utf8").toString("base64url");
+    const signed = signCustomerSession(session);
     const cookieStore = await cookies();
-    cookieStore.set(CUSTOMER_COOKIE_NAME, encoded, cookieOptions());
+    cookieStore.set(CUSTOMER_COOKIE_NAME, signed, cookieOptions());
 
     return NextResponse.json({ success: true, maxAgeSeconds: CUSTOMER_TTL_SECONDS });
   } catch {

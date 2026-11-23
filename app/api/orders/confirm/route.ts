@@ -3,6 +3,8 @@ import { stripe } from "@/lib/stripe";
 import type { SceltaAdminOrder } from "@/lib/adminStore";
 import { getCentralOrders, saveCentralOrder } from "@/lib/serverOrderStore";
 import { incrementCouponUsage } from "@/lib/serverCouponStore";
+import { toPublicOrder } from "@/lib/orderTracking";
+import { consumeRateLimit, getClientIp } from "@/lib/rateLimit";
 import type { Order } from "@/types/order";
 
 export const dynamic = "force-dynamic";
@@ -13,6 +15,14 @@ interface ConfirmOrderBody {
 }
 
 export async function POST(req: Request) {
+  const gate = consumeRateLimit(`orders_confirm:${getClientIp(req)}`, 20, 10 * 60 * 1000);
+  if (!gate.allowed) {
+    return NextResponse.json(
+      { success: false, error: "Troppe richieste. Riprova tra qualche minuto." },
+      { status: 429, headers: { "Retry-After": String(gate.retryAfterSeconds) } }
+    );
+  }
+
   let body: ConfirmOrderBody;
   try {
     body = (await req.json()) as ConfirmOrderBody;
@@ -24,15 +34,17 @@ export async function POST(req: Request) {
   }
 
   const sessionId = typeof body.sessionId === "string" ? body.sessionId.trim() : "";
-  if (!sessionId) {
+  if (!sessionId || !sessionId.startsWith("cs_")) {
     return NextResponse.json(
-      { success: false, error: "sessionId obbligatorio" },
+      { success: false, error: "sessionId non valido" },
       { status: 400 }
     );
   }
 
   try {
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ["line_items"],
+    });
 
     if (session.payment_status !== "paid") {
       return NextResponse.json(
@@ -47,23 +59,32 @@ export async function POST(req: Request) {
     const bySession = existingOrders.find((o) => o.stripeSessionId === session.id);
     const pendingOrderId =
       typeof pending?.orderNumber === "string" ? pending.orderNumber.trim() : "";
+    // Fix IDOR: un ordine esistente può essere associato per ID solo se privo di sessione
+    // Stripe o se appartiene esattamente alla stessa sessione Stripe verificata.
     const byId = pendingOrderId
-      ? existingOrders.find((o) => o.id.toLowerCase() === pendingOrderId.toLowerCase())
+      ? existingOrders.find(
+          (o) =>
+            o.id.toLowerCase() === pendingOrderId.toLowerCase() &&
+            (!o.stripeSessionId || o.stripeSessionId === session.id)
+        )
       : undefined;
 
     const existing = bySession || byId;
     if (existing) {
       return NextResponse.json({
         success: true,
-        order: existing,
+        order: toPublicOrder(existing),
         alreadyConfirmed: true,
       });
     }
 
     const now = new Date().toISOString();
     const deliveryMethod =
-      pending?.deliveryMethod ||
-      (session.metadata?.deliveryMethod === "boutique" ? "boutique" : "shipping");
+      session.metadata?.deliveryMethod === "boutique"
+        ? "boutique"
+        : pending?.deliveryMethod === "boutique"
+          ? "boutique"
+          : "shipping";
 
     const paidTotal =
       typeof session.amount_total === "number"
@@ -90,8 +111,9 @@ export async function POST(req: Request) {
       "";
 
     const orderId =
-      pendingOrderId ||
-      `SC-ORD-${new Date().getFullYear()}-${session.id.slice(-6).toUpperCase()}`;
+      pendingOrderId && !existingOrders.some((o) => o.id.toLowerCase() === pendingOrderId.toLowerCase())
+        ? pendingOrderId
+        : `SC-ORD-${new Date().getFullYear()}-${session.id.slice(-6).toUpperCase()}`;
 
     const shippingAddress = pending?.customer?.indirizzo
       ? {
@@ -101,6 +123,41 @@ export async function POST(req: Request) {
           province: "NA",
         }
       : undefined;
+
+    const sanitizedPendingItems = Array.isArray(pending?.items)
+      ? pending.items
+          .filter((item) => item && typeof item.productId === "string" && typeof item.name === "string")
+          .map((item) => ({
+            productId: item.productId,
+            productTitle: item.name,
+            variantName: item.shade?.name,
+            quantity:
+              typeof item.quantity === "number" && Number.isFinite(item.quantity) && item.quantity >= 1
+                ? Math.floor(item.quantity)
+                : 1,
+            price:
+              typeof item.price === "number" && Number.isFinite(item.price) && item.price >= 0
+                ? Math.round(item.price * 100) / 100
+                : 0,
+            image: typeof item.image === "string" ? item.image : undefined,
+          }))
+      : [];
+
+    const stripeFallbackItems =
+      sanitizedPendingItems.length > 0
+        ? sanitizedPendingItems
+        : (session.line_items?.data ?? [])
+            .filter((li) => !/spedizione/i.test(li.description || ""))
+            .map((li, idx) => {
+              const qty = li.quantity && li.quantity > 0 ? li.quantity : 1;
+              const lineTotal = typeof li.amount_total === "number" ? li.amount_total / 100 : 0;
+              return {
+                productId: li.id || `stripe-item-${idx + 1}`,
+                productTitle: li.description || "Prodotto Scelta Makeup",
+                quantity: qty,
+                price: Math.round((lineTotal / qty) * 100) / 100,
+              };
+            });
 
     const adminOrder: SceltaAdminOrder = {
       id: orderId,
@@ -113,16 +170,7 @@ export async function POST(req: Request) {
       paymentMethod: "stripe",
       stripeSessionId: session.id,
       shippingAddress,
-      items: Array.isArray(pending?.items)
-        ? pending.items.map((item) => ({
-            productId: item.productId,
-            productTitle: item.name,
-            variantName: item.shade?.name,
-            quantity: item.quantity,
-            price: item.price,
-            image: item.image,
-          }))
-        : [],
+      items: stripeFallbackItems,
       createdAt: pending?.createdAt || now,
       updatedAt: now,
     };
@@ -136,12 +184,14 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      order: adminOrder,
+      order: toPublicOrder(adminOrder),
       alreadyConfirmed: false,
     });
   } catch (err) {
     console.error("Order confirm error:", err);
-    const message = err instanceof Error ? err.message : "Errore interno conferma ordine";
-    return NextResponse.json({ success: false, error: message }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Errore durante la verifica della conferma ordine" },
+      { status: 500 }
+    );
   }
 }

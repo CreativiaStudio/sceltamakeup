@@ -1,19 +1,26 @@
 import { NextResponse } from "next/server";
 import { getCentralOrders } from "@/lib/serverOrderStore";
-import { isCustomerVisibleOrder, normalizeEmail, toPublicOrder } from "@/lib/orderTracking";
+import {
+  isCustomerVisibleOrder,
+  maskCustomerName,
+  normalizeEmail,
+  toPublicOrder,
+} from "@/lib/orderTracking";
+import { consumeRateLimit, getClientIp } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function maskCustomerName(name: string): string {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return "Cliente";
-  if (parts.length === 1) return parts[0];
-  return `${parts[0]} ${parts[parts.length - 1][0].toUpperCase()}.`;
-}
-
 export async function POST(req: Request) {
+  const gate = consumeRateLimit(`orders_mine:${getClientIp(req)}`, 30, 10 * 60 * 1000);
+  if (!gate.allowed) {
+    return NextResponse.json(
+      { success: false, error: "Troppe richieste. Riprova tra qualche minuto." },
+      { status: 429, headers: { "Retry-After": String(gate.retryAfterSeconds) } }
+    );
+  }
+
   try {
     const body = (await req.json().catch(() => ({}))) as { email?: string };
     const email = normalizeEmail(body.email);

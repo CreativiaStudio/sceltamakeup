@@ -33,6 +33,27 @@ export function isCustomerVisibleOrder(order: SceltaAdminOrder): boolean {
   return order.fulfillmentType !== "pos_receipt" && order.status !== "cancelled";
 }
 
+/** Maschera il cognome lasciando solo il nome e l'iniziale (es. "Maria Rossi" -> "Maria R."). */
+export function maskCustomerName(name: string | undefined | null): string {
+  const parts = (name ?? "").trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "Cliente";
+  if (parts.length === 1) return parts[0];
+  return `${parts[0]} ${parts[parts.length - 1][0].toUpperCase()}.`;
+}
+
+/** Maschera via/civico mantenendo città, CAP e provincia per il riconoscimento della consegna. */
+export function maskShippingAddress(
+  address?: SceltaAdminOrder["shippingAddress"]
+): SceltaAdminOrder["shippingAddress"] | undefined {
+  if (!address) return undefined;
+  return {
+    street: "Indirizzo protetto per la tua privacy",
+    city: address.city,
+    postalCode: address.postalCode,
+    province: address.province,
+  };
+}
+
 /** Rimuove i dati interni (telefono, email, pagamento, scontrino) prima dell'invio al browser. */
 export function toPublicOrder(order: SceltaAdminOrder): PublicOrder {
   return {

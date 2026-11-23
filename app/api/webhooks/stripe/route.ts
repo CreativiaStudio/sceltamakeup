@@ -7,14 +7,18 @@ import { incrementCouponUsage } from "@/lib/serverCouponStore";
 
 export const dynamic = "force-dynamic";
 
-const DEFAULT_STRIPE_WEBHOOK_SECRET = "whsec_4d1GPEtR35zyt4A71IykdyXnUnpKfATY";
-
 export async function POST(req: Request) {
-  const envSecret = (process.env.STRIPE_WEBHOOK_SECRET || "").trim();
-  const webhookSecret =
-    envSecret && envSecret !== "whsec_da_sostituire_dopo_il_webhook_stripe"
-      ? envSecret
-      : DEFAULT_STRIPE_WEBHOOK_SECRET;
+  const webhookSecret = (process.env.STRIPE_WEBHOOK_SECRET || "").trim();
+  if (
+    !webhookSecret ||
+    webhookSecret === "whsec_da_sostituire_dopo_il_webhook_stripe"
+  ) {
+    console.error("[Stripe Webhook] STRIPE_WEBHOOK_SECRET non configurata sul server.");
+    return NextResponse.json(
+      { error: "Webhook secret non configurato sul server" },
+      { status: 500 }
+    );
+  }
 
   const sig = req.headers.get("stripe-signature");
   if (!sig) {
