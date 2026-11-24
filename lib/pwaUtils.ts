@@ -1,5 +1,7 @@
 "use client";
 
+export const APP_ROLE_STORAGE_KEY = "scelta_app_role";
+
 export interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
   readonly userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;

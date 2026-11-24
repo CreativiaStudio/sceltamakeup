@@ -21,7 +21,7 @@ import {
   setupGlobalErrorTelemetry,
 } from "@/lib/auditLogger";
 import { uploadDeviceSnapshotOnce } from "@/lib/deviceSnapshot";
-import { detectPwaEnvironment } from "@/lib/pwaUtils";
+import { APP_ROLE_STORAGE_KEY, detectPwaEnvironment } from "@/lib/pwaUtils";
 
 const STORAGE_AUTH_KEY = "scelta_admin_unlocked_session";
 const PERSISTENT_DEVICE_KEY = "scelta_admin_device_unlocked";
@@ -163,6 +163,11 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
           mode === "pin" ? DEFAULT_OPERATOR_LABEL : REMOTE_OPERATOR_LABEL,
           mode === "pin" ? "YASHI (Laptop Salone)" : "Browser Amministratore"
         );
+        try {
+          localStorage.setItem(APP_ROLE_STORAGE_KEY, "admin");
+        } catch {
+          // ignore
+        }
         setIsAuthenticated(true);
         setPin("");
         setPassword("");
@@ -197,6 +202,7 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
     }
     try {
       localStorage.removeItem(PERSISTENT_DEVICE_KEY);
+      localStorage.removeItem(APP_ROLE_STORAGE_KEY);
     } catch {
       // Storage non accessibile: il blocco via cookie resta comunque attivo.
     }

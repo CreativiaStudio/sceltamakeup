@@ -2,11 +2,11 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Scelta Makeup — Salone & Alta Cosmesi",
+    name: "Scelta Makeup",
     short_name: "Scelta Makeup",
     description:
-      "Salone ufficiale di alta cosmesi a Napoli. Shop, Area Personale, Tracking Ordini e Prenotazioni.",
-    start_url: "/",
+      "App ufficiale Scelta Makeup — Salone di alta cosmesi a Napoli.",
+    start_url: "/app-start",
     scope: "/",
     display: "standalone",
     orientation: "portrait",

@@ -253,11 +253,16 @@ export function InstallAppContent({
             </li>
           </ol>
 
-          {isAdmin && (
+          {isAdmin ? (
             <div className="rounded-xl bg-white border border-emerald-200 px-3 py-2.5 text-[11px] text-emerald-900 leading-relaxed">
               <strong>Accesso 1 sola volta:</strong> dopo aver aggiunto l&apos;icona, apri{" "}
               <strong>Scelta Cockpit</strong> dalla schermata Home ed entra col PIN una sola volta:
               resterai connessa per 6 mesi.
+            </div>
+          ) : (
+            <div className="rounded-xl bg-white border border-[#D8C2E7]/60 px-3 py-2.5 text-[11px] text-neutral-700 leading-relaxed">
+              <strong>Accesso rapido 1 sola volta:</strong> al primo avvio inserisci la tua email e
+              l&apos;App ti porta subito nella tua area dedicata senza rifare il login per 6 mesi.
             </div>
           )}
         </div>

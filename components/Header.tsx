@@ -20,6 +20,7 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { CategoryKey } from "@/types/product";
 import { useIsMounted } from "@/lib/useIsMounted";
 import { catalog } from "@/lib/catalog";
+import { APP_ROLE_STORAGE_KEY } from "@/lib/pwaUtils";
 
 const NAV_CATEGORIES: { label: string; key: CategoryKey }[] = [
   { label: "Tutti", key: "Tutti" },
@@ -45,6 +46,31 @@ function HeaderContent() {
     null
   );
   const isMounted = useIsMounted();
+  const [hasAdminShortcut, setHasAdminShortcut] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    let savedRole = "";
+    try {
+      savedRole = localStorage.getItem(APP_ROLE_STORAGE_KEY) || "";
+    } catch {
+      savedRole = "";
+    }
+    if (savedRole !== "admin") return;
+
+    fetch("/api/admin/auth", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { authenticated?: boolean } | null) => {
+        if (!cancelled && data?.authenticated) {
+          setHasAdminShortcut(true);
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const categoryBarRef = useRef<HTMLDivElement>(null);
   const megaMenuTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -222,6 +248,16 @@ function HeaderContent() {
                 <span>Prenota una Consulenza</span>
               </Link>
 
+              {/* Scorciatoia Cockpit visibile SOLO su dispositivi con sessione admin verificata */}
+              {isMounted && hasAdminShortcut && (
+                <Link
+                  href="/admin"
+                  className="px-2.5 py-1.5 rounded-full bg-[#5E1788]/10 hover:bg-[#5E1788] text-[#5E1788] hover:text-white border border-[#5E1788]/30 text-[11px] font-bold transition-colors"
+                >
+                  Cockpit
+                </Link>
+              )}
+
               {/* Area Clienti & Traccia Ordine */}
               <Link
                 href="/account"
@@ -394,7 +430,7 @@ function HeaderContent() {
 
 export default function Header() {
   const pathname = usePathname();
-  if (pathname?.startsWith("/admin")) {
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/app-start")) {
     return null;
   }
 

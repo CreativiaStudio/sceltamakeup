@@ -97,8 +97,16 @@ describe("Security Hardening & Cassa RT Compatibility", () => {
       path.join(ROOT, "app", "api", "account", "session", "route.ts"),
       "utf-8"
     );
-    assert.ok(accountSessionRoute.includes("createHmac"));
-    assert.ok(accountSessionRoute.includes("timingSafeEqual"));
+    assert.ok(accountSessionRoute.includes("customerSessionCookie"));
+    assert.ok(accountSessionRoute.includes("signCustomerSession"));
+    assert.ok(accountSessionRoute.includes("verifyCustomerToken"));
+
+    const customerCookieLib = fs.readFileSync(
+      path.join(ROOT, "lib", "customerSessionCookie.ts"),
+      "utf-8"
+    );
+    assert.ok(customerCookieLib.includes("createHmac"));
+    assert.ok(customerCookieLib.includes("timingSafeEqual"));
 
     const confirmRoute = fs.readFileSync(
       path.join(ROOT, "app", "api", "orders", "confirm", "route.ts"),

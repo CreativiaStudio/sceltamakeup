@@ -35,6 +35,7 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { resolveProductImageUrl } from "@/lib/r2Public";
 import { useCartStore } from "@/store/useCartStore";
 import { useIsMounted } from "@/lib/useIsMounted";
+import { APP_ROLE_STORAGE_KEY } from "@/lib/pwaUtils";
 import {
   EMPTY_SHIPPING_ADDRESS,
   clearCustomerSession,
@@ -467,6 +468,11 @@ export default function AccountClient({ initialOrderNumber = "" }: AccountClient
 
   const handleLogout = () => {
     clearCustomerSession();
+    try {
+      localStorage.removeItem(APP_ROLE_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
     void fetch("/api/account/session", { method: "DELETE" }).catch(() => {});
     setSession(null);
     setOrders(null);
