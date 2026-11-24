@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { 
@@ -8,8 +8,7 @@ import {
   Search, 
   X, 
   SlidersHorizontal, 
-  ChevronLeft, 
-  ChevronRight, 
+  ArrowUp,
   RefreshCw,
   Home,
   ChevronRight as BreadcrumbArrow
@@ -22,7 +21,7 @@ interface CatalogClientProps {
   initialProducts: Product[];
 }
 
-const ITEMS_PER_PAGE = 24;
+const BATCH_SIZE = 24;
 
 export default function CatalogClient({ initialProducts }: CatalogClientProps) {
   const router = useRouter();
@@ -37,9 +36,10 @@ export default function CatalogClient({ initialProducts }: CatalogClientProps) {
   const urlSearch = searchParams.get("cerca") || "";
   const activeSort = searchParams.get("ordina") || "default";
 
-  // Local state for search query input and pagination
+  // Local state for search query input and infinite scroll
   const [searchQuery, setSearchQuery] = useState<string>(urlSearch);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [visibleCount, setVisibleCount] = useState<number>(BATCH_SIZE);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   // Unique brands present in the catalog
   const brands = useMemo(() => {
@@ -59,7 +59,7 @@ export default function CatalogClient({ initialProducts }: CatalogClientProps) {
       const queryString = params.toString();
       const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
       router.replace(newUrl, { scroll: false });
-      setCurrentPage(1);
+      setVisibleCount(BATCH_SIZE);
     },
     [pathname, router]
   );
@@ -74,7 +74,7 @@ export default function CatalogClient({ initialProducts }: CatalogClientProps) {
 
   const handleSearchChange = (val: string) => {
     setSearchQuery(val);
-    setCurrentPage(1);
+    setVisibleCount(BATCH_SIZE);
     updateUrl(activeCategory, activeBrand, val, activeSort);
   };
 
@@ -84,7 +84,7 @@ export default function CatalogClient({ initialProducts }: CatalogClientProps) {
 
   const resetAllFilters = () => {
     setSearchQuery("");
-    setCurrentPage(1);
+    setVisibleCount(BATCH_SIZE);
     router.replace(pathname, { scroll: false });
   };
 
@@ -124,19 +124,34 @@ export default function CatalogClient({ initialProducts }: CatalogClientProps) {
     filteredAndSortedProducts.sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  // Pagination calculation
+  // Infinite scroll slice calculation
   const totalItems = filteredAndSortedProducts.length;
-  const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedProducts = filteredAndSortedProducts.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE
-  );
+  const visibleProducts = filteredAndSortedProducts.slice(0, visibleCount);
+  const hasMore = visibleProducts.length < totalItems;
+  const progressPercent =
+    totalItems > 0 ? Math.min(100, Math.round((visibleProducts.length / totalItems) * 100)) : 0;
 
-  const goToPage = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 180, behavior: "smooth" });
-  };
+  useEffect(() => {
+    setVisibleCount(BATCH_SIZE);
+  }, [activeCategory, activeBrand, effectiveSearch, activeSort]);
+
+  useEffect(() => {
+    if (!hasMore) return;
+    const target = loadMoreRef.current;
+    if (!target || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setVisibleCount((prev) => Math.min(prev + BATCH_SIZE, totalItems));
+        }
+      },
+      { rootMargin: "320px 0px", threshold: 0.01 }
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [hasMore, totalItems]);
 
   const hasActiveFilters =
     activeCategory !== "Tutti" ||
@@ -298,86 +313,60 @@ export default function CatalogClient({ initialProducts }: CatalogClientProps) {
         </div>
 
         {/* Products Grid */}
-        {paginatedProducts.length > 0 ? (
+        {visibleProducts.length > 0 ? (
           <div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
-              {paginatedProducts.map((product) => (
+              {visibleProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
 
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="mt-14 pt-8 border-t border-[#D8C2E7]/40 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-xs text-neutral-500">
-                  Mostrando da <strong>{startIndex + 1}</strong> a{" "}
-                  <strong>{Math.min(startIndex + ITEMS_PER_PAGE, totalItems)}</strong> di{" "}
-                  <strong>{totalItems}</strong> prodotti (Pagina {currentPage} di {totalPages})
+            {/* Infinite Scroll Progress & Sentinel */}
+            {(hasMore || totalItems > BATCH_SIZE) && (
+              <div className="mt-14 pt-8 border-t border-[#D8C2E7]/40 flex flex-col items-center gap-4 text-center">
+                <div className="text-xs text-neutral-600">
+                  Mostrando <strong>{visibleProducts.length}</strong> di{" "}
+                  <strong>{totalItems}</strong> creazioni
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => goToPage(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    aria-label="Pagina precedente"
-                    className={`p-2.5 rounded-xl border transition-all ${
-                      currentPage > 1
-                        ? "bg-white border-[#D8C2E7] text-[#5E1788] hover:bg-[#FAF7FC] cursor-pointer"
-                        : "bg-neutral-100 border-neutral-200 text-neutral-300 cursor-not-allowed"
-                    }`}
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
+                <div className="w-full max-w-xs h-1.5 rounded-full bg-[#EDE4F4] overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-[#5E1788] to-[#D462A6] transition-all duration-300"
+                    style={{ width: `${progressPercent}%` }}
+                  />
+                </div>
 
-                  {/* Page numbers */}
-                  <div className="flex items-center gap-1">
-                    {Array.from({ length: totalPages }, (_, i) => i + 1)
-                      .filter((p) => {
-                        // Display first, last, and current +/- 2
-                        return (
-                          p === 1 ||
-                          p === totalPages ||
-                          Math.abs(p - currentPage) <= 2
-                        );
-                      })
-                      .map((p, idx, arr) => {
-                        const showEllipsis = idx > 0 && p - arr[idx - 1] > 1;
-                        return (
-                          <div key={p} className="flex items-center">
-                            {showEllipsis && (
-                              <span className="px-2 text-xs text-neutral-400">...</span>
-                            )}
-                            <button
-                              type="button"
-                              onClick={() => goToPage(p)}
-                              className={`w-9 h-9 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                                currentPage === p
-                                  ? "bg-[#5E1788] text-white shadow-sm"
-                                  : "bg-white text-neutral-700 hover:bg-[#FAF7FC] border border-[#E2E8F0]"
-                              }`}
-                            >
-                              {p}
-                            </button>
-                          </div>
-                        );
-                      })}
+                {hasMore ? (
+                  <div ref={loadMoreRef} className="pt-2 flex flex-col items-center gap-3">
+                    <div className="inline-flex items-center gap-2 text-xs font-medium text-[#7A3293]">
+                      <span className="h-2 w-2 rounded-full bg-[#D462A6] animate-ping" />
+                      <span>Caricamento automatico allo scorrimento...</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setVisibleCount((prev) => Math.min(prev + BATCH_SIZE, totalItems))
+                      }
+                      className="px-5 py-2.5 rounded-full bg-white border border-[#D8C2E7] text-xs font-semibold text-[#5E1788] hover:bg-[#FAF7FC] transition-colors shadow-xs cursor-pointer"
+                    >
+                      Carica altri prodotti
+                    </button>
                   </div>
-
-                  <button
-                    type="button"
-                    onClick={() => goToPage(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    aria-label="Pagina successiva"
-                    className={`p-2.5 rounded-xl border transition-all ${
-                      currentPage < totalPages
-                        ? "bg-white border-[#D8C2E7] text-[#5E1788] hover:bg-[#FAF7FC] cursor-pointer"
-                        : "bg-neutral-100 border-neutral-200 text-neutral-300 cursor-not-allowed"
-                    }`}
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                </div>
+                ) : (
+                  <div className="pt-2 flex flex-col items-center gap-3">
+                    <span className="text-xs font-medium text-neutral-500">
+                      Hai esplorato tutte le {totalItems} creazioni
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                      className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-white border border-[#D8C2E7] text-xs font-semibold text-[#5E1788] hover:bg-[#FAF7FC] transition-colors shadow-xs cursor-pointer"
+                    >
+                      <ArrowUp className="h-3.5 w-3.5" />
+                      <span>Torna su</span>
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -398,7 +387,7 @@ export default function CatalogClient({ initialProducts }: CatalogClientProps) {
               className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#5E1788] text-white text-xs font-semibold tracking-wider uppercase hover:bg-[#7A3293] transition-colors shadow-md cursor-pointer"
             >
               <RefreshCw className="h-3.5 w-3.5" />
-              <span>Mostra Tutti i 341 Prodotti</span>
+              <span>Mostra Tutti i {initialProducts.length} Prodotti</span>
             </button>
           </div>
         )}
