@@ -14,6 +14,8 @@ import {
   Minus,
   Store,
   ArrowLeft,
+  ZoomIn,
+  X,
 } from "lucide-react";
 import { Product, Shade } from "@/types/product";
 import { useCartStore } from "@/store/useCartStore";
@@ -89,6 +91,25 @@ export default function ProductDetailClient({
 
   const [viewMode, setViewMode] = useState<"packshot" | "texture">("packshot");
   const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+  const [isZooming, setIsZooming] = useState(false);
+  const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsLightboxOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isLightboxOpen]);
+
+  const handleStageMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+    setZoomOrigin({ x, y });
+  };
 
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
@@ -303,15 +324,28 @@ export default function ProductDetailClient({
             )}
 
             {/* Main Stage Packshot */}
-            <div className="relative w-full sm:flex-1 aspect-square max-w-[480px] mx-auto self-start rounded-3xl overflow-hidden bg-white border border-[#E2E8F0] shadow-xs flex items-center justify-center">
+            <div
+              onMouseEnter={() => {
+                if (!failedImages[activeImage]) setIsZooming(true);
+              }}
+              onMouseMove={handleStageMouseMove}
+              onMouseLeave={() => setIsZooming(false)}
+              onClick={() => {
+                if (!failedImages[activeImage]) setIsLightboxOpen(true);
+              }}
+              className="relative w-full sm:flex-1 aspect-square max-w-[520px] mx-auto self-start rounded-3xl overflow-hidden bg-white border border-[#E2E8F0] shadow-xs flex items-center justify-center group cursor-zoom-in"
+            >
               {!failedImages[activeImage] ? (
                 <Image
                   src={activeImage}
                   alt={`${product.name} - ${selectedShade ? selectedShade.name : ""}`}
                   fill
                   priority
-                  sizes="(max-width: 1024px) 100vw, 480px"
-                  className="object-contain object-center p-3 sm:p-4 transition-all duration-500"
+                  sizes="(max-width: 1024px) 100vw, 520px"
+                  className={`object-contain object-center p-2 sm:p-3 transition-transform duration-200 ease-out ${
+                    isZooming ? "scale-[1.75]" : "scale-100"
+                  }`}
+                  style={{ transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%` }}
                   onError={() => handleImageError(activeImage)}
                 />
               ) : (
@@ -339,7 +373,10 @@ export default function ProductDetailClient({
 
               {/* Packshot vs Texture View Switcher Toggle (if texture available) */}
               {selectedShade?.textureImage && (
-                <div className="absolute top-4 right-4 z-10 bg-white/95 backdrop-blur-md p-1 rounded-full border border-purple-200/80 shadow-md flex items-center gap-1">
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  className="absolute top-4 right-4 z-10 bg-white/95 backdrop-blur-md p-1 rounded-full border border-purple-200/80 shadow-md flex items-center gap-1"
+                >
                   <button
                     type="button"
                     onClick={() => handleToggleViewMode("packshot")}
@@ -363,6 +400,18 @@ export default function ProductDetailClient({
                     <Sparkles className="w-3 h-3 text-[#D462A6]" />
                     <span>Texture HD</span>
                   </button>
+                </div>
+              )}
+
+              {!failedImages[activeImage] && (
+                <div
+                  className={`pointer-events-none absolute bottom-3.5 right-3.5 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-xs border border-[#D8C2E7]/70 text-[11px] font-medium text-[#5E1788] shadow-xs transition-opacity duration-200 ${
+                    isZooming ? "opacity-0" : "opacity-90"
+                  }`}
+                >
+                  <ZoomIn className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Passa sopra per zoom</span>
+                  <span className="sm:hidden">Tocca per ingrandire</span>
                 </div>
               )}
 
@@ -768,6 +817,34 @@ export default function ProductDetailClient({
         )}
 
       </div>
+
+      {isLightboxOpen && !failedImages[activeImage] && (
+        <div
+          onClick={() => setIsLightboxOpen(false)}
+          className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 sm:p-8"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-2xl aspect-square bg-white rounded-3xl overflow-hidden shadow-2xl p-4 sm:p-8"
+          >
+            <button
+              type="button"
+              onClick={() => setIsLightboxOpen(false)}
+              aria-label="Chiudi zoom"
+              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/95 border border-neutral-200 text-neutral-700 hover:text-[#5E1788] shadow-sm cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <Image
+              src={activeImage}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 100vw, 680px"
+              className="object-contain p-4 sm:p-8"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
