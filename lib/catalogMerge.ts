@@ -1,5 +1,6 @@
 import type { Product, ProductCategory, ProductVariant, Shade } from "@/types/product";
 import type { SceltaVariantStock } from "@/lib/adminStore";
+import { isPlaceholderImage } from "@/lib/r2Public";
 
 function isValidVariant(value: unknown): value is ProductVariant {
   return Boolean(value && typeof value === "object");
@@ -46,6 +47,16 @@ export function mergeProductWithOverride(
     ? override.variants.filter(isValidVariant)
     : (Array.isArray(base.variants) ? base.variants : []).filter(isValidVariant);
 
+  const allRealCandidates = [
+    ...candidateImages,
+    ...rawVariants.map((v) => v.image),
+    ...rawVariants.map((v) => variantStocks?.[v.id]?.image),
+  ].filter(
+    (u): u is string =>
+      typeof u === "string" && u.trim().length > 0 && !isPlaceholderImage(u)
+  );
+  const bestRealImage = allRealCandidates[0] || "";
+
   const mergedVariants: ProductVariant[] = rawVariants.map((v) => {
     const vs = variantStocks?.[v.id];
     const price =
@@ -65,7 +76,13 @@ export function mergeProductWithOverride(
           : undefined;
 
     const inStock = stock !== undefined ? stock > 0 : (v.inStock ?? true);
+    const ownReal = v.image && v.image.trim() && !isPlaceholderImage(v.image) ? v.image.trim() : "";
+    const vsReal =
+      vs?.image && vs.image.trim() && !isPlaceholderImage(vs.image) ? vs.image.trim() : "";
     const image =
+      ownReal ||
+      vsReal ||
+      bestRealImage ||
       (v.image && v.image.trim()) ||
       (vs?.image && vs.image.trim()) ||
       candidateImages[0] ||
@@ -81,12 +98,19 @@ export function mergeProductWithOverride(
   });
 
   let mergedImages = candidateImages;
+  if (allRealCandidates.length > 0) {
+    const withoutPlaceholders = candidateImages.filter((img) => !isPlaceholderImage(img));
+    mergedImages =
+      withoutPlaceholders.length > 0
+        ? withoutPlaceholders
+        : Array.from(new Set(allRealCandidates));
+  }
   if (
     mergedVariants.length > 0 &&
     mergedVariants.every((v) => v.image && v.image.includes("salone-federica/"))
   ) {
     const variantImgSet = new Set(mergedVariants.map((v) => v.image));
-    const filtered = candidateImages.filter(
+    const filtered = mergedImages.filter(
       (img) => !img.includes("/products/") || variantImgSet.has(img)
     );
     mergedImages = filtered.length > 0 ? filtered : Array.from(variantImgSet);
@@ -115,12 +139,21 @@ export function mergeProductWithOverride(
         const textureImage = v.textureImage || existing?.textureImage;
         const resolvedStock = v.stock !== undefined ? v.stock : existing?.stock;
 
+        const shadeImage =
+          [v.image, existing?.image, mergedImages[0]].find(
+            (u): u is string => typeof u === "string" && u.trim().length > 0 && !isPlaceholderImage(u)
+          ) ||
+          v.image ||
+          existing?.image ||
+          mergedImages[0] ||
+          "";
+
         return {
           id: v.id,
           name: v.name,
           code: v.ean || v.sku || existing?.code || "",
           hex: v.colorHex || existing?.hex || "",
-          image: v.image || existing?.image || mergedImages[0] || "",
+          image: shadeImage,
           ...(textureImage ? { textureImage } : {}),
           price: v.price,
           ...(resolvedStock !== undefined ? { stock: resolvedStock } : {}),

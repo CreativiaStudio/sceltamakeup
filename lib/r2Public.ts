@@ -37,6 +37,11 @@ export function resolveProductImageUrl(src?: string | null): string {
  */
 const PLACEHOLDER_IMAGE_MARKERS = [
   "eveline-cosmetics-packshot",
+  "cipria-milano-packshot",
+  "pierre-rene-packshot",
+  "miyo-packshot",
+  "rvb-lab-packshot",
+  "diego-dalla-palma-packshot",
   "/brand/logo.png",
   "brand/logo.png",
   "placeholder",

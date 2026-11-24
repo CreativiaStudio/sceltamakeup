@@ -20,7 +20,7 @@ import { useCartStore } from "@/store/useCartStore";
 import ProductCard from "@/components/ProductCard";
 import { getProductOverride, getAdminVariantStocks } from "@/lib/adminStore";
 import { mergeProductWithOverride } from "@/lib/catalogMerge";
-import { resolveProductImageUrl } from "@/lib/r2Public";
+import { resolveProductImageUrl, isPlaceholderImage } from "@/lib/r2Public";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -217,9 +217,11 @@ export default function ProductDetailClient({
     ...(product.shades || []).map((s) => s.image).filter(Boolean),
   ].map((img) => resolveProductImageUrl(img));
 
-  // Strictly deduplicate by URL path and filter out known broken images
+  const hasRealGalleryImage = rawGalleryList.some((img) => !isPlaceholderImage(img));
+
+  // Strictly deduplicate by URL path and filter out known broken images and redundant placeholders
   const allGalleryImages = Array.from(new Set(rawGalleryList)).filter(
-    (img) => !failedImages[img]
+    (img) => !failedImages[img] && (!hasRealGalleryImage || !isPlaceholderImage(img))
   );
 
   return (
@@ -256,10 +258,10 @@ export default function ProductDetailClient({
 
       {/* Main Product Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           
           {/* Left Column: Image Gallery */}
-          <div className="lg:col-span-7 flex flex-col-reverse sm:flex-row gap-4">
+          <div className="lg:col-span-7 flex flex-col-reverse sm:flex-row gap-4 items-start lg:sticky lg:top-24">
             {/* Thumbnails */}
             {allGalleryImages.length > 1 && (
               <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-y-auto sm:max-h-[600px] pb-2 sm:pb-0 scrollbar-none shrink-0">
@@ -301,15 +303,15 @@ export default function ProductDetailClient({
             )}
 
             {/* Main Stage Packshot */}
-            <div className="relative flex-1 aspect-square w-full max-w-[540px] mx-auto rounded-3xl overflow-hidden bg-white border border-[#E2E8F0] shadow-xs flex items-center justify-center">
+            <div className="relative w-full sm:flex-1 aspect-square max-w-[480px] mx-auto self-start rounded-3xl overflow-hidden bg-white border border-[#E2E8F0] shadow-xs flex items-center justify-center">
               {!failedImages[activeImage] ? (
                 <Image
                   src={activeImage}
                   alt={`${product.name} - ${selectedShade ? selectedShade.name : ""}`}
                   fill
                   priority
-                  sizes="(max-width: 1024px) 100vw, 540px"
-                  className="object-contain object-center p-6 sm:p-10 transition-all duration-500"
+                  sizes="(max-width: 1024px) 100vw, 480px"
+                  className="object-contain object-center p-3 sm:p-4 transition-all duration-500"
                   onError={() => handleImageError(activeImage)}
                 />
               ) : (

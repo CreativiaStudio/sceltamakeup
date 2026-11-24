@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { ShoppingBag, Check } from "lucide-react";
 import { Product, Shade } from "@/types/product";
 import { useCartStore } from "@/store/useCartStore";
-import { resolveProductImageUrl } from "@/lib/r2Public";
+import { safeImageSrc } from "@/lib/r2Public";
 
 interface ProductCardProps {
   product: Product;
@@ -24,10 +24,8 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const addItem = useCartStore((state) => state.addItem);
 
-  // Active image: if shade has specific image, or fallback to product images
-  const activeImage = resolveProductImageUrl(
-    selectedShade?.image || product.images[0]
-  );
+  // Active image: prefer real product image over brand placeholder
+  const activeImage = safeImageSrc(selectedShade?.image, product.images[0]);
 
   // Price & stock (can vary per shade if specified)
   const currentPrice = selectedShade?.price ?? product.price;
@@ -79,7 +77,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             alt={`${product.name} - ${selectedShade ? selectedShade.name : ""}`}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-contain object-center p-3 sm:p-4 transition-transform duration-500 group-hover:scale-105"
+            className="object-contain object-center p-2 sm:p-3 transition-transform duration-500 group-hover:scale-105"
             onError={() => setImageError(true)}
           />
         </Link>
