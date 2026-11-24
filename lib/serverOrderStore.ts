@@ -155,9 +155,9 @@ async function patchRow(order: SceltaAdminOrder): Promise<boolean> {
 // Public API
 // ------------------------------------------------------------------------------
 
-export async function getCentralOrders(): Promise<SceltaAdminOrder[]> {
+export async function getCentralOrders(options?: { fresh?: boolean }): Promise<SceltaAdminOrder[]> {
   const now = Date.now();
-  if (memoryCache && now - cacheFetchedAt < CACHE_TTL_MS) {
+  if (!options?.fresh && memoryCache && now - cacheFetchedAt < CACHE_TTL_MS) {
     return memoryCache;
   }
 

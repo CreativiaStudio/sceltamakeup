@@ -29,12 +29,17 @@ export default function ProductCard({ product }: ProductCardProps) {
     selectedShade?.image || product.images[0]
   );
 
-  // Price (can vary per shade if specified)
+  // Price & stock (can vary per shade if specified)
   const currentPrice = selectedShade?.price ?? product.price;
+  const selectedStock =
+    selectedShade?.stock !== undefined ? selectedShade.stock : product.stock;
+  const isOutOfStock =
+    typeof selectedStock === "number" && selectedStock <= 0;
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    if (isOutOfStock) return;
 
     addItem({
       productId: product.id,
@@ -105,14 +110,19 @@ export default function ProductCard({ product }: ProductCardProps) {
         >
           <button
             type="button"
+            disabled={isOutOfStock}
             onClick={handleQuickAdd}
             className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold tracking-wider uppercase shadow-md flex items-center justify-center gap-2 transition-all ${
-              isAdded
-                ? "bg-emerald-600 text-white"
-                : "bg-[#5E1788] hover:bg-[#7A3293] text-white active:scale-95"
+              isOutOfStock
+                ? "bg-neutral-300 text-neutral-600 cursor-not-allowed"
+                : isAdded
+                  ? "bg-emerald-600 text-white"
+                  : "bg-[#5E1788] hover:bg-[#7A3293] text-white active:scale-95"
             }`}
           >
-            {isAdded ? (
+            {isOutOfStock ? (
+              <span>Esaurito</span>
+            ) : isAdded ? (
               <>
                 <Check className="h-3.5 w-3.5" />
                 Aggiunto!
@@ -134,17 +144,17 @@ export default function ProductCard({ product }: ProductCardProps) {
           <span className="tracking-wider uppercase text-xs font-semibold text-[#7A3293]">
             {product.category}
           </span>
-          {product.stock !== undefined && (
+          {selectedStock !== undefined && (
             <span
               className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
-                product.stock <= 0
+                selectedStock <= 0
                   ? "bg-rose-50 text-rose-700 font-semibold"
-                  : product.stock < 5
+                  : selectedStock < 5
                   ? "bg-amber-50 text-amber-800 font-semibold"
                   : "bg-emerald-50 text-emerald-800 font-semibold"
               }`}
             >
-              {product.stock <= 0 ? "Esaurito" : product.stock < 5 ? `Ultime ${product.stock} pz` : "Disponibile"}
+              {selectedStock <= 0 ? "Esaurito" : selectedStock < 5 ? `Ultime ${selectedStock} pz` : "Disponibile"}
             </span>
           )}
         </div>
@@ -220,11 +230,16 @@ export default function ProductCard({ product }: ProductCardProps) {
           {/* Mobile Quick Add Button */}
           <button
             type="button"
+            disabled={isOutOfStock}
             onClick={handleQuickAdd}
             className={`sm:hidden p-2 rounded-full text-white transition-all ${
-              isAdded ? "bg-emerald-600" : "bg-[#5E1788] active:scale-95"
+              isOutOfStock
+                ? "bg-neutral-300 text-neutral-500 opacity-50 cursor-not-allowed"
+                : isAdded
+                  ? "bg-emerald-600"
+                  : "bg-[#5E1788] active:scale-95"
             }`}
-            aria-label="Aggiungi al carrello"
+            aria-label={isOutOfStock ? "Prodotto esaurito" : "Aggiungi al carrello"}
           >
             {isAdded ? (
               <Check className="h-4 w-4" />

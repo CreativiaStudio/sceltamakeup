@@ -38,7 +38,7 @@ export function mergeProductWithOverride(
     Array.isArray(override?.images) && override.images.length > 0
       ? override.images
       : base.images;
-  const mergedImages = (Array.isArray(rawImages) ? rawImages : []).filter(
+  const candidateImages = (Array.isArray(rawImages) ? rawImages : []).filter(
     (img): img is string => typeof img === "string" && img.trim().length > 0
   );
 
@@ -68,7 +68,7 @@ export function mergeProductWithOverride(
     const image =
       (v.image && v.image.trim()) ||
       (vs?.image && vs.image.trim()) ||
-      mergedImages[0] ||
+      candidateImages[0] ||
       "";
 
     return {
@@ -79,6 +79,18 @@ export function mergeProductWithOverride(
       image,
     };
   });
+
+  let mergedImages = candidateImages;
+  if (
+    mergedVariants.length > 0 &&
+    mergedVariants.every((v) => v.image && v.image.includes("salone-federica/"))
+  ) {
+    const variantImgSet = new Set(mergedVariants.map((v) => v.image));
+    const filtered = candidateImages.filter(
+      (img) => !img.includes("/products/") || variantImgSet.has(img)
+    );
+    mergedImages = filtered.length > 0 ? filtered : Array.from(variantImgSet);
+  }
 
   const baseShadesLookup = buildShadeLookups(base.shades);
   const ovShadesLookup = buildShadeLookups(override?.shades);

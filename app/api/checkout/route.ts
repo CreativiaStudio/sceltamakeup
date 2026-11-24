@@ -45,6 +45,7 @@ interface CheckoutRequestBody {
 interface VerifiedCheckoutItem {
   id: string;
   productId: string;
+  variantId?: string;
   name: string;
   brand: string;
   category: string;
@@ -152,6 +153,7 @@ export async function POST(req: NextRequest) {
 
   const variantStocks = centralState.variantStocks ?? {};
   const verifiedItems: VerifiedCheckoutItem[] = [];
+  const requestedQtyByKey = new Map<string, { qty: number; available: number; label: string }>();
 
   for (const item of items) {
     const qty = Number(item?.quantity);
@@ -186,12 +188,51 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const stockOverridePrice = variant ? variantStocks[variant.id]?.price : undefined;
+    const effectiveVariant =
+      variant ??
+      (!requestedVariant && Array.isArray(product.variants) && product.variants.length === 1
+        ? product.variants[0]
+        : undefined);
+
+    const stockEntry = effectiveVariant ? variantStocks[effectiveVariant.id] : undefined;
+    const rawAvailable =
+      stockEntry?.stockQuantity !== undefined
+        ? Number(stockEntry.stockQuantity)
+        : effectiveVariant?.stock !== undefined
+          ? Number(effectiveVariant.stock)
+          : shade?.stock !== undefined
+            ? Number(shade.stock)
+            : product.stock !== undefined
+              ? Number(product.stock)
+              : undefined;
+
+    if (typeof rawAvailable === "number" && Number.isFinite(rawAvailable)) {
+      const variantLabel = effectiveVariant?.name || shade?.name;
+      const label = `${product.name}${variantLabel ? ` — ${variantLabel}` : ""}`;
+      if (rawAvailable <= 0) {
+        return NextResponse.json(
+          { error: `"${label}" è attualmente esaurito.` },
+          { status: 409 }
+        );
+      }
+      const stockKey = `${product.id}::${effectiveVariant?.id || shade?.id || "default"}`;
+      const prev = requestedQtyByKey.get(stockKey);
+      const nextQty = (prev?.qty ?? 0) + qty;
+      if (nextQty > rawAvailable) {
+        return NextResponse.json(
+          { error: `Disponibilità insufficiente per "${label}": disponibili solo ${rawAvailable} pz.` },
+          { status: 409 }
+        );
+      }
+      requestedQtyByKey.set(stockKey, { qty: nextQty, available: rawAvailable, label });
+    }
+
+    const stockOverridePrice = effectiveVariant ? variantStocks[effectiveVariant.id]?.price : undefined;
     const rawPrice =
       stockOverridePrice !== undefined
         ? stockOverridePrice
-        : variant?.price !== undefined
-        ? variant.price
+        : effectiveVariant?.price !== undefined
+        ? effectiveVariant.price
         : shade?.price !== undefined
         ? shade.price
         : product.price;
@@ -207,13 +248,14 @@ export async function POST(req: NextRequest) {
     verifiedItems.push({
       id: product.id,
       productId: product.id,
+      variantId: effectiveVariant?.id || shade?.id,
       name: product.name,
       brand: product.brand,
       category: product.category,
       price: unitPrice,
       quantity: qty,
-      image: variant?.image || shade?.image || product.images?.[0] || item.image,
-      shade: variant?.name || shade?.name || (item.shade ? item.shade.trim() : undefined),
+      image: effectiveVariant?.image || shade?.image || product.images?.[0] || item.image,
+      shade: effectiveVariant?.name || shade?.name || (item.shade ? item.shade.trim() : undefined),
     });
   }
 
@@ -280,6 +322,12 @@ export async function POST(req: NextRequest) {
     .join(", ")
     .slice(0, 480);
 
+  const stockItemsJson = JSON.stringify(
+    verifiedItems
+      .filter((i) => Boolean(i.variantId))
+      .map((i) => ({ vid: i.variantId, qty: i.quantity }))
+  );
+
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -292,6 +340,7 @@ export async function POST(req: NextRequest) {
         deliveryMethod,
         paymentMethod,
         itemsSummary,
+        stockItems: stockItemsJson.length <= 480 ? stockItemsJson : "",
         couponCode: validCouponCode || "",
         discountAmount: String(validatedDiscount),
         shippingCost: String(serverShippingCost),

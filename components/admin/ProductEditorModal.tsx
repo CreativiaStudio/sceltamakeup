@@ -284,7 +284,8 @@ function ProductEditorModalDialog({
         throw new Error(data.error || "Errore durante l'upload su Cloud Storage");
       }
       setFormData((prev) => {
-        const images = [data.url, ...prev.images];
+        const cleanedPrev = prev.images.filter((u) => u && u !== "/brand/logo.png");
+        const images = [data.url, ...cleanedPrev];
         return {
           ...prev,
           images,

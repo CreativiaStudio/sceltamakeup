@@ -31,21 +31,31 @@ export default function ProductDetailClient({
   product: initialProduct,
   relatedProducts,
 }: ProductDetailClientProps) {
-  const [product, setProduct] = useState<Product>(() => {
-    const override = getProductOverride(initialProduct.id);
-    if (!override) return initialProduct;
-    return mergeProductWithOverride(initialProduct, override, getAdminVariantStocks());
-  });
+  const [product, setProduct] = useState<Product>(initialProduct);
 
   const [selectedShade, setSelectedShade] = useState<Shade | null>(
-    product.shades && product.shades.length > 0 ? product.shades[0] : null
+    initialProduct.shades && initialProduct.shades.length > 0
+      ? initialProduct.shades[0]
+      : null
   );
 
   const [activeImage, setActiveImage] = useState<string>(
-    resolveProductImageUrl(selectedShade?.image || product.images[0])
+    resolveProductImageUrl(
+      (initialProduct.shades && initialProduct.shades.length > 0
+        ? initialProduct.shades[0]?.image
+        : undefined) || initialProduct.images[0]
+    )
   );
 
   useEffect(() => {
+    setProduct(initialProduct);
+    const firstShade =
+      initialProduct.shades && initialProduct.shades.length > 0
+        ? initialProduct.shades[0]
+        : null;
+    setSelectedShade(firstShade);
+    setActiveImage(resolveProductImageUrl(firstShade?.image || initialProduct.images[0]));
+
     const applyOverride = () => {
       const override = getProductOverride(initialProduct.id);
       if (override) {
@@ -64,16 +74,11 @@ export default function ProductDetailClient({
         });
       } else {
         setProduct(initialProduct);
-        const firstShade =
-          initialProduct.shades && initialProduct.shades.length > 0
-            ? initialProduct.shades[0]
-            : null;
         setSelectedShade(firstShade);
         setActiveImage(resolveProductImageUrl(firstShade?.image || initialProduct.images[0]));
       }
     };
 
-    applyOverride();
     window.addEventListener("scelta_admin_store_updated", applyOverride);
     window.addEventListener("scelta_admin_store_reset", applyOverride);
     return () => {

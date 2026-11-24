@@ -4,7 +4,7 @@ import { stripe } from "@/lib/stripe";
 import type { SceltaAdminOrder } from "@/lib/adminStore";
 import { getAllProducts } from "@/lib/catalog";
 import { getCentralOrders, saveCentralOrder } from "@/lib/serverOrderStore";
-import { incrementCouponUsage } from "@/lib/serverCouponStore";
+import { applyPaidOrderSideEffects } from "@/lib/orderFulfillment";
 import {
   extractStripeShippingAddress,
   mapStripeLineItemsToOrderItems,
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     // Gestisce solo ordini e-commerce pagati (le prenotazioni salone hanno metadata.serviceId)
     if (session.payment_status === "paid" && !session.metadata?.serviceId) {
       try {
-        const existingOrders = await getCentralOrders();
+        const existingOrders = await getCentralOrders({ fresh: true });
         const alreadyExists = existingOrders.some(
           (o) => o.stripeSessionId === session.id
         );
@@ -64,12 +64,12 @@ export async function POST(req: Request) {
               : 0;
 
           const shippingAddress = extractStripeShippingAddress(session);
+          const catalogProducts = await getAllProducts({ includeLocalOnly: true });
           let items: SceltaAdminOrder["items"] = [];
           try {
             const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
               limit: 100,
             });
-            const catalogProducts = await getAllProducts({ includeLocalOnly: true });
             items = mapStripeLineItemsToOrderItems(lineItems.data, catalogProducts);
           } catch (lineItemsErr) {
             console.warn("[Stripe Webhook] Impossibile leggere line_items:", lineItemsErr);
@@ -101,10 +101,13 @@ export async function POST(req: Request) {
 
           await saveCentralOrder(adminOrder);
 
-          const couponCode = session.metadata?.couponCode?.trim();
-          if (couponCode) {
-            await incrementCouponUsage(couponCode);
-          }
+          await applyPaidOrderSideEffects({
+            session,
+            orderId: adminOrder.id,
+            orderItems: items,
+            catalogProducts,
+            couponCode: session.metadata?.couponCode?.trim(),
+          });
         }
       } catch (err) {
         console.error("Stripe webhook order persistence error:", err);

@@ -3,7 +3,7 @@ import { stripe } from "@/lib/stripe";
 import type { SceltaAdminOrder } from "@/lib/adminStore";
 import { getAllProducts } from "@/lib/catalog";
 import { getCentralOrders, saveCentralOrder } from "@/lib/serverOrderStore";
-import { incrementCouponUsage } from "@/lib/serverCouponStore";
+import { applyPaidOrderSideEffects } from "@/lib/orderFulfillment";
 import { toPublicOrder } from "@/lib/orderTracking";
 import { consumeRateLimit, getClientIp } from "@/lib/rateLimit";
 import {
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
     }
 
     const pending = body.pendingOrder ?? undefined;
-    const existingOrders = await getCentralOrders();
+    const existingOrders = await getCentralOrders({ fresh: true });
 
     const bySession = existingOrders.find((o) => o.stripeSessionId === session.id);
     const pendingOrderId =
@@ -148,13 +148,13 @@ export async function POST(req: Request) {
           }))
       : [];
 
-    const stripeFallbackItems =
-      sanitizedPendingItems.length > 0
-        ? sanitizedPendingItems
-        : mapStripeLineItemsToOrderItems(
-            session.line_items?.data,
-            await getAllProducts({ includeLocalOnly: true })
-          );
+    const catalogProducts = await getAllProducts({ includeLocalOnly: true });
+    const stripeLineItems = mapStripeLineItemsToOrderItems(
+      session.line_items?.data,
+      catalogProducts
+    );
+    const finalItems =
+      stripeLineItems.length > 0 ? stripeLineItems : sanitizedPendingItems;
 
     const adminOrder: SceltaAdminOrder = {
       id: orderId,
@@ -167,17 +167,20 @@ export async function POST(req: Request) {
       paymentMethod: "stripe",
       stripeSessionId: session.id,
       shippingAddress,
-      items: stripeFallbackItems,
+      items: finalItems,
       createdAt: pending?.createdAt || now,
       updatedAt: now,
     };
 
     await saveCentralOrder(adminOrder);
 
-    const couponCode = session.metadata?.couponCode?.trim();
-    if (couponCode) {
-      await incrementCouponUsage(couponCode);
-    }
+    await applyPaidOrderSideEffects({
+      session,
+      orderId: adminOrder.id,
+      orderItems: finalItems,
+      catalogProducts,
+      couponCode: session.metadata?.couponCode?.trim(),
+    });
 
     return NextResponse.json({
       success: true,
