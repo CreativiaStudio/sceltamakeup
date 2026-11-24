@@ -72,14 +72,14 @@ export default function ProductCard({ product }: ProductCardProps) {
       className="group relative flex flex-col rounded-2xl bg-white border border-[#E2E8F0] overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-[#D8C2E7]/80 cursor-pointer"
     >
       {/* Visual Header / Image Container */}
-      <div className="relative aspect-square w-full overflow-hidden bg-[#FAF7FC]">
+      <div className="relative aspect-square w-full overflow-hidden bg-white border-b border-[#FAF7FC]">
         <Link href={`/prodotti/${product.slug}`} className="block h-full w-full">
           <Image
             src={imageError ? "/brand/logo.png" : activeImage}
             alt={`${product.name} - ${selectedShade ? selectedShade.name : ""}`}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+            className="object-contain object-center p-3 sm:p-4 transition-transform duration-500 group-hover:scale-105"
             onError={() => setImageError(true)}
           />
         </Link>

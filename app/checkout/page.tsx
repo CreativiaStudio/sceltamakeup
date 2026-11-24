@@ -467,13 +467,13 @@ export default function CheckoutPage() {
             <div className="divide-y divide-neutral-100 max-h-96 overflow-y-auto pr-1">
               {items.map((item) => (
                 <div key={item.id} className="py-3 flex gap-3 items-center">
-                  <div className="relative h-14 w-14 rounded-lg overflow-hidden bg-[#FAF7FC] border border-neutral-200 shrink-0">
+                  <div className="relative h-14 w-14 rounded-lg overflow-hidden bg-white border border-neutral-200 shrink-0">
                     <Image
                       src={item.image}
                       alt={item.name}
                       fill
                       sizes="56px"
-                      className="object-cover"
+                      className="object-contain p-1"
                     />
                   </div>
                   <div className="flex-1 min-w-0 text-xs">

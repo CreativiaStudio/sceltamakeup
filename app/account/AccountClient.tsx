@@ -776,13 +776,13 @@ export default function AccountClient({ initialOrderNumber = "" }: AccountClient
                         key={favourite.key}
                         className="flex gap-4 rounded-2xl border border-[#D8C2E7]/60 bg-white p-4"
                       >
-                        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-[#FAF7FC]">
+                        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-white border border-neutral-100">
                           <Image
                             src={resolveProductImageUrl(favourite.image)}
                             alt={favourite.name}
                             fill
                             sizes="80px"
-                            className="object-cover"
+                            className="object-contain p-1"
                             unoptimized
                           />
                         </div>

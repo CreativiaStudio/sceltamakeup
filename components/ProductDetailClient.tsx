@@ -274,7 +274,7 @@ export default function ProductDetailClient({
                       key={idx}
                       type="button"
                       onClick={() => handleThumbnailClick(img)}
-                      className={`relative h-18 w-18 sm:h-20 sm:w-20 rounded-xl overflow-hidden border-2 transition-all group ${
+                      className={`relative h-18 w-18 sm:h-20 sm:w-20 rounded-xl overflow-hidden bg-white border-2 transition-all group ${
                         isSelected
                           ? "border-[#5E1788] shadow-md ring-2 ring-[#5E1788]/20"
                           : "border-neutral-200 hover:border-purple-300 opacity-75 hover:opacity-100"
@@ -286,7 +286,7 @@ export default function ProductDetailClient({
                         alt={`${product.name} preview ${idx + 1}`}
                         fill
                         sizes="80px"
-                        className="object-cover"
+                        className="object-contain p-1"
                         onError={() => handleImageError(img)}
                       />
                       {isTexture && (
@@ -301,15 +301,15 @@ export default function ProductDetailClient({
             )}
 
             {/* Main Stage Packshot */}
-            <div className="relative flex-1 aspect-square rounded-3xl overflow-hidden bg-[#FAF7FC] border border-[#E2E8F0] shadow-sm flex items-center justify-center">
+            <div className="relative flex-1 aspect-square w-full max-w-[540px] mx-auto rounded-3xl overflow-hidden bg-white border border-[#E2E8F0] shadow-xs flex items-center justify-center">
               {!failedImages[activeImage] ? (
                 <Image
                   src={activeImage}
                   alt={`${product.name} - ${selectedShade ? selectedShade.name : ""}`}
                   fill
                   priority
-                  sizes="(max-width: 1024px) 100vw, 55vw"
-                  className="object-cover object-center transition-all duration-500"
+                  sizes="(max-width: 1024px) 100vw, 540px"
+                  className="object-contain object-center p-6 sm:p-10 transition-all duration-500"
                   onError={() => handleImageError(activeImage)}
                 />
               ) : (
@@ -378,7 +378,7 @@ export default function ProductDetailClient({
                         alt={selectedShade.name}
                         fill
                         sizes="32px"
-                        className="object-cover"
+                        className="object-contain p-0.5 bg-white"
                       />
                     </span>
                   ) : (
@@ -539,7 +539,7 @@ export default function ProductDetailClient({
                               alt={shade.name}
                               fill
                               sizes="28px"
-                              className="object-cover"
+                              className="object-contain p-0.5 bg-white"
                             />
                           </span>
                         ) : (

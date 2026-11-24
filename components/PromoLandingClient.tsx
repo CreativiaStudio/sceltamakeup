@@ -266,13 +266,13 @@ export default function PromoLandingClient({
                     className="bg-white rounded-3xl p-5 border border-[#D8C2E7]/60 shadow-sm hover:shadow-xl hover:border-[#5E1788]/60 transition-all flex flex-col justify-between space-y-4 group"
                   >
                     {/* Image Box */}
-                    <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-[#FAF7FC] border border-neutral-100">
+                    <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-white border border-neutral-100">
                       <Image
                         src={displayImage}
                         alt={product.name}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="object-contain p-3 group-hover:scale-105 transition-transform duration-500"
                       />
 
                       {/* Savings Pill */}

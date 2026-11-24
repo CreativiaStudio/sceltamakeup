@@ -101,7 +101,7 @@ function compressImage(file: File): Promise<string> {
       }
       const img = new window.Image();
       img.onload = () => {
-        const maxDim = 800;
+        const maxDim = 1200;
         let width = img.width;
         let height = img.height;
         if (width > maxDim || height > maxDim) {

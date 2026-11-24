@@ -173,13 +173,13 @@ export default function CartDrawer() {
             items.map((item) => (
               <div key={item.id} className="py-4 flex gap-4 items-start group">
                 {/* Thumbnail */}
-                <div className="relative h-20 w-20 rounded-xl overflow-hidden bg-[#FAF7FC] border border-[#E2E8F0] shrink-0">
+                <div className="relative h-20 w-20 rounded-xl overflow-hidden bg-white border border-[#E2E8F0] shrink-0">
                   <Image
                     src={item.image}
                     alt={item.name}
                     fill
                     sizes="80px"
-                    className="object-cover"
+                    className="object-contain p-1"
                   />
                 </div>
 
