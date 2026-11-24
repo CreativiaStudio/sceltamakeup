@@ -17,9 +17,10 @@ import SearchOverlay from "@/components/SearchOverlay";
 import MegaMenu from "@/components/MegaMenu";
 import { useCartStore } from "@/store/useCartStore";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
-import { CategoryKey } from "@/types/product";
+import { CategoryKey, Product } from "@/types/product";
 import { useIsMounted } from "@/lib/useIsMounted";
 import { catalog } from "@/lib/catalog";
+import { applyCatalogOverrides } from "@/lib/catalogMerge";
 import { APP_ROLE_STORAGE_KEY } from "@/lib/pwaUtils";
 
 const NAV_CATEGORIES: { label: string; key: CategoryKey }[] = [
@@ -47,6 +48,42 @@ function HeaderContent() {
   );
   const isMounted = useIsMounted();
   const [hasAdminShortcut, setHasAdminShortcut] = useState(false);
+  const [liveCatalog, setLiveCatalog] = useState<Product[]>(() =>
+    catalog.filter((p) => !p.isLocalOnly)
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    const syncLiveCatalog = () => {
+      fetch("/api/catalog/overrides", { cache: "no-store" })
+        .then((res) => (res.ok ? res.json() : null))
+        .then(
+          (
+            data: {
+              success?: boolean;
+              productOverrides?: Record<string, Partial<Product>>;
+              variantStocks?: Record<string, Record<string, unknown>>;
+            } | null
+          ) => {
+            if (cancelled || !data?.success) return;
+            const merged = applyCatalogOverrides(
+              catalog,
+              data.productOverrides || {},
+              (data.variantStocks || {}) as Record<string, Partial<import("@/lib/adminStore").SceltaVariantStock>>
+            ).filter((p) => !p.isLocalOnly);
+            setLiveCatalog(merged);
+          }
+        )
+        .catch(() => {});
+    };
+
+    syncLiveCatalog();
+    window.addEventListener("scelta_admin_store_updated", syncLiveCatalog);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("scelta_admin_store_updated", syncLiveCatalog);
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -409,7 +446,7 @@ function HeaderContent() {
         {/* Mega Menu Portal — renders below the pills */}
         {megaMenuCategory && (
           <MegaMenu
-            products={catalog}
+            products={liveCatalog}
             activeCategory={megaMenuCategory}
             onClose={handleMegaMenuClose}
             onCategoryChange={setMegaMenuCategory}
@@ -420,7 +457,7 @@ function HeaderContent() {
 
       {/* Search Overlay (both desktop + mobile) */}
       <SearchOverlay
-        products={catalog}
+        products={liveCatalog}
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
       />

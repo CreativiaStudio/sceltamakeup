@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { getAllProducts } from "@/lib/catalog";
 import CatalogClient from "@/components/CatalogClient";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Catalogo Completo Make-Up & Skincare | Scelta Makeup Napoli",

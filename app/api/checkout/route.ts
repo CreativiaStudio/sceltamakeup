@@ -3,7 +3,8 @@ import type Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
 import type { DeliveryMethod, PaymentMethod } from "@/types/order";
 import type { Product, ProductVariant, Shade } from "@/types/product";
-import { getAllProducts } from "@/lib/catalog";
+import { catalog } from "@/lib/catalog";
+import { applyCatalogOverrides } from "@/lib/catalogMerge";
 import { getCentralCatalogState } from "@/lib/serverCatalogStore";
 import { validateCouponForCart } from "@/lib/serverCouponStore";
 import { calculateShippingCost } from "@/lib/shipping";
@@ -132,12 +133,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Email cliente mancante" }, { status: 400 });
   }
 
-  const [products, centralState] = await Promise.all([
-    getAllProducts(),
-    getCentralCatalogState().catch(() => null),
-  ]);
+  let centralState;
+  try {
+    centralState = await getCentralCatalogState({ fresh: true });
+  } catch (err) {
+    console.error("[checkout] Impossibile leggere catalogo centralizzato Supabase:", err);
+    return NextResponse.json(
+      { error: "Servizio catalogo momentaneamente non disponibile. Riprova tra qualche secondo." },
+      { status: 503 }
+    );
+  }
 
-  const variantStocks = centralState?.variantStocks ?? {};
+  const products = applyCatalogOverrides(
+    catalog,
+    centralState.productOverrides || {},
+    centralState.variantStocks || {}
+  ).filter((p) => !p.isLocalOnly);
+
+  const variantStocks = centralState.variantStocks ?? {};
   const verifiedItems: VerifiedCheckoutItem[] = [];
 
   for (const item of items) {

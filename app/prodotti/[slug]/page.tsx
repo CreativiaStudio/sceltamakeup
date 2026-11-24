@@ -1,7 +1,9 @@
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
-import { getProductBySlug, getAllProducts } from "@/lib/catalog";
+import { resolveProductBySlug, getProductBySlug, getAllProducts } from "@/lib/catalog";
 import ProductDetailClient from "@/components/ProductDetailClient";
+
+export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{
@@ -48,12 +50,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ProductDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const resolved = await resolveProductBySlug(slug);
 
-  if (!product) {
+  if (!resolved) {
     notFound();
   }
 
+  if (resolved.redirectedFromLegacySlug) {
+    permanentRedirect(`/prodotti/${resolved.product.slug}`);
+  }
+
+  const product = resolved.product;
   const allProducts = await getAllProducts();
   const relatedProducts = allProducts.filter(
     (p) => p.id !== product.id && (p.category === product.category || p.brand === product.brand)

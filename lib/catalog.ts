@@ -1,6 +1,7 @@
 import { Product, ProductCategory, ProductBrand, CategoryKey } from "@/types/product";
 import rawCatalog from "@/data/catalog.json";
 import { getCentralCatalogState } from "@/lib/serverCatalogStore";
+import { applyCatalogOverrides } from "@/lib/catalogMerge";
 
 export const catalog: Product[] = rawCatalog as Product[];
 
@@ -14,52 +15,30 @@ export const CATEGORIES: CategoryKey[] = [
 ];
 
 /**
- * Applica gli override centralizzati salvati nel cloud (Supabase dedicato)
- */
-function applyOverrides(baseProducts: Product[], overrides: Record<string, Partial<Product>>): Product[] {
-  if (!overrides || Object.keys(overrides).length === 0) return baseProducts;
-  const baseMap = baseProducts.map((p) => {
-    const ov = overrides[p.id];
-    if (!ov) return p;
-    return {
-      ...p,
-      ...ov,
-      variants: ov.variants || p.variants,
-      images: ov.images || p.images,
-    };
-  });
-
-  const baseIds = new Set(baseProducts.map((p) => p.id));
-  const baseVariantIds = new Set(
-    baseProducts.flatMap((p) => (p.variants || []).map((v) => v.id))
-  );
-  const extraProducts: Product[] = [];
-  for (const [id, ov] of Object.entries(overrides)) {
-    if (baseIds.has(id) || !ov || !ov.name || !ov.variants) continue;
-    // Evita la "resurrezione" di una scheda raggruppata rimossa: se tutte le
-    // sue varianti sono già native a catalogo su schede autonome, è un ghost.
-    const isGhost =
-      ov.variants.length > 0 &&
-      ov.variants.every((v) => baseVariantIds.has(v.id));
-    if (isGhost) continue;
-    extraProducts.push(ov as Product);
-  }
-
-  return [...baseMap, ...extraProducts];
-}
-
-/**
  * Restituisce i prodotti a catalogo sincronizzati con il cloud.
  * Di default per lo storefront pubblico esclude i prodotti contrassegnati come "isLocalOnly: true" (Solo Negozio Fisico).
  * Passando options: { includeLocalOnly: true } restituisce il catalogo integrale.
  */
-export async function getAllProducts(options?: { includeLocalOnly?: boolean }): Promise<Product[]> {
+export async function getAllProducts(options?: {
+  includeLocalOnly?: boolean;
+  fresh?: boolean;
+  strict?: boolean;
+}): Promise<Product[]> {
   try {
-    const central = await getCentralCatalogState();
-    const withOverrides = applyOverrides(rawCatalog as Product[], central.productOverrides || {});
+    const central = await getCentralCatalogState({ fresh: options?.fresh });
+    const withOverrides = applyCatalogOverrides(
+      rawCatalog as Product[],
+      central.productOverrides || {},
+      central.variantStocks || {}
+    );
     if (options?.includeLocalOnly) return withOverrides;
     return withOverrides.filter((p) => !p.isLocalOnly);
-  } catch {
+  } catch (err) {
+    if (options?.strict) throw err;
+    console.error(
+      "[catalog] Fallback a catalogo statico:",
+      err instanceof Error ? err.message : err
+    );
     if (options?.includeLocalOnly) return catalog;
     return catalog.filter((p) => !p.isLocalOnly);
   }
@@ -74,11 +53,37 @@ export async function getProductById(id: string): Promise<Product | undefined> {
 }
 
 /**
+ * Risolve un prodotto dato lo slug attuale oppure uno slug storico rinominato.
+ */
+export async function resolveProductBySlug(
+  slug: string
+): Promise<{ product: Product; redirectedFromLegacySlug: boolean } | undefined> {
+  const all = await getAllProducts();
+  const direct = all.find((p) => p.slug === slug);
+  if (direct) {
+    return { product: direct, redirectedFromLegacySlug: false };
+  }
+
+  const legacyBase = catalog.find((p) => p.slug === slug);
+  if (legacyBase) {
+    const current = all.find((p) => p.id === legacyBase.id);
+    if (current) {
+      return {
+        product: current,
+        redirectedFromLegacySlug: current.slug !== slug,
+      };
+    }
+  }
+
+  return undefined;
+}
+
+/**
  * Trova un prodotto dato il suo slug URL
  */
 export async function getProductBySlug(slug: string): Promise<Product | undefined> {
-  const all = await getAllProducts();
-  return all.find(p => p.slug === slug);
+  const resolved = await resolveProductBySlug(slug);
+  return resolved?.product;
 }
 
 /**

@@ -18,7 +18,8 @@ import {
 import { Product, Shade } from "@/types/product";
 import { useCartStore } from "@/store/useCartStore";
 import ProductCard from "@/components/ProductCard";
-import { getProductOverride } from "@/lib/adminStore";
+import { getProductOverride, getAdminVariantStocks } from "@/lib/adminStore";
+import { mergeProductWithOverride } from "@/lib/catalogMerge";
 import { resolveProductImageUrl } from "@/lib/r2Public";
 
 interface ProductDetailClientProps {
@@ -33,13 +34,7 @@ export default function ProductDetailClient({
   const [product, setProduct] = useState<Product>(() => {
     const override = getProductOverride(initialProduct.id);
     if (!override) return initialProduct;
-    return {
-      ...initialProduct,
-      ...override,
-      variants: override.variants || initialProduct.variants,
-      shades: override.shades || initialProduct.shades,
-      images: override.images || initialProduct.images,
-    };
+    return mergeProductWithOverride(initialProduct, override, getAdminVariantStocks());
   });
 
   const [selectedShade, setSelectedShade] = useState<Shade | null>(
@@ -54,21 +49,27 @@ export default function ProductDetailClient({
     const applyOverride = () => {
       const override = getProductOverride(initialProduct.id);
       if (override) {
-        setProduct((prev) => ({
-          ...prev,
-          ...override,
-          variants: override.variants || prev.variants,
-          shades: override.shades || prev.shades,
-          images: override.images || prev.images,
-        }));
-        if (override.images && override.images.length > 0) {
-          setActiveImage(override.images[0]);
-        }
-        if (override.shades && override.shades.length > 0) {
-          setSelectedShade(override.shades[0]);
-        }
+        const merged = mergeProductWithOverride(
+          initialProduct,
+          override,
+          getAdminVariantStocks()
+        );
+        setProduct(merged);
+        setSelectedShade((prevShade) => {
+          const nextShade =
+            (prevShade && merged.shades.find((s) => s.id === prevShade.id)) ||
+            (merged.shades.length > 0 ? merged.shades[0] : null);
+          setActiveImage(resolveProductImageUrl(nextShade?.image || merged.images[0]));
+          return nextShade;
+        });
       } else {
         setProduct(initialProduct);
+        const firstShade =
+          initialProduct.shades && initialProduct.shades.length > 0
+            ? initialProduct.shades[0]
+            : null;
+        setSelectedShade(firstShade);
+        setActiveImage(resolveProductImageUrl(firstShade?.image || initialProduct.images[0]));
       }
     };
 
