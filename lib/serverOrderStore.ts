@@ -29,6 +29,25 @@ const DEDICATED_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const ORDERS_TABLE = "scelta_admin_orders";
 const CACHE_TTL_MS = 3000;
 
+const PURGED_FAILED_RT_IDS = new Set([
+  "SC-POS-2026-0061",
+  "SC-POS-2026-0062",
+  "SC-POS-2026-0063",
+  "SC-POS-2026-0064",
+  "SC-POS-2026-0065",
+  "SC-POS-2026-0066",
+  "SC-POS-2026-0067",
+  "SC-POS-2026-0068",
+]);
+const PURGED_WINDOW_START_MS = Date.parse("2026-11-25T09:00:00.000Z");
+const PURGED_WINDOW_END_MS = Date.parse("2026-11-25T11:20:00.000Z");
+
+function isPurgedFailedRtOrder(order: Pick<SceltaAdminOrder, "id" | "createdAt">): boolean {
+  if (!PURGED_FAILED_RT_IDS.has(order.id)) return false;
+  const ts = Date.parse(order.createdAt || "");
+  return Number.isFinite(ts) && ts > PURGED_WINDOW_START_MS && ts < PURGED_WINDOW_END_MS;
+}
+
 let memoryCache: SceltaAdminOrder[] | null = null;
 let cacheFetchedAt = 0;
 
@@ -102,7 +121,8 @@ async function readFromDedicated(): Promise<SceltaAdminOrder[] | null> {
     if (!Array.isArray(rows)) return [];
     return rows
       .map((r) => r?.data)
-      .filter((o): o is SceltaAdminOrder => Boolean(o && typeof o === "object"));
+      .filter((o): o is SceltaAdminOrder => Boolean(o && typeof o === "object"))
+      .filter((o) => !isPurgedFailedRtOrder(o));
   } catch (err) {
     console.error("[serverOrderStore] Read error:", err);
     return null;
@@ -170,6 +190,9 @@ export async function getCentralOrders(options?: { fresh?: boolean }): Promise<S
 }
 
 export async function saveCentralOrder(newOrder: SceltaAdminOrder): Promise<SceltaAdminOrder[]> {
+  if (isPurgedFailedRtOrder(newOrder)) {
+    return getCentralOrders();
+  }
   return enqueue(async () => {
     const current = await getCentralOrders();
     const map = new Map<string, SceltaAdminOrder>();
@@ -197,11 +220,15 @@ export async function saveCentralOrder(newOrder: SceltaAdminOrder): Promise<Scel
 }
 
 export async function saveCentralOrders(ordersBatch: SceltaAdminOrder[]): Promise<SceltaAdminOrder[]> {
+  const allowedBatch = ordersBatch.filter((o) => !isPurgedFailedRtOrder(o));
+  if (allowedBatch.length === 0) {
+    return getCentralOrders();
+  }
   return enqueue(async () => {
     const current = await getCentralOrders();
     const map = new Map<string, SceltaAdminOrder>();
 
-    for (const o of ordersBatch) {
+    for (const o of allowedBatch) {
       const safe = normalizeOrder(o);
       map.set(safe.id, safe);
     }
@@ -213,7 +240,7 @@ export async function saveCentralOrders(ordersBatch: SceltaAdminOrder[]): Promis
     }
 
     const updated = sortOrders(Array.from(map.values()));
-    const rows = ordersBatch.map((o) => toRow(normalizeOrder(o)));
+    const rows = allowedBatch.map((o) => toRow(normalizeOrder(o)));
 
     const ok = await upsertRows(rows);
     if (ok) {
