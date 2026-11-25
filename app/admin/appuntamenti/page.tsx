@@ -34,6 +34,11 @@ import {
   getAgendaSlots,
   AGENDA_BOUTIQUE_SLOTS,
 } from "@/lib/bookingService";
+import {
+  CASSA_RT_ENDPOINT,
+  buildNonFiscalTestXml,
+  parseFpmateResponse,
+} from "@/lib/epsonFiscal";
 
 export default function AdminAppuntamentiPage() {
   const [appointments, setAppointments] = useState<Appointment[]>(() => getAllAppointments());
@@ -129,34 +134,23 @@ export default function AdminAppuntamentiPage() {
   const handleTestPrint = async () => {
     setTestPrintLoading(true);
     try {
-      const testXml = `<?xml version="1.0" encoding="utf-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-  <soapenv:Body>
-    <printerNonFiscal>
-      <beginNonFiscal operator="1" />
-      <printNormal text="       SCELTA MAKEUP NAPOLI       " />
-      <printNormal text="   Via dei Pellegrini 28/29 Napoli" />
-      <printNormal text="--------------------------------" />
-      <printNormal text="TEST CONNESSIONE CASSA RT       " />
-      <printNormal text="DATA: ${new Date().toLocaleDateString("it-IT")} ORA: ${new Date().toLocaleTimeString("it-IT")} " />
-      <printNormal text="IP: 192.168.68.63 (PORTA 80)    " />
-      <printNormal text="STATO: OPERATIVO 100%           " />
-      <printNormal text="--------------------------------" />
-      <endNonFiscal operator="1" />
-    </printerNonFiscal>
-  </soapenv:Body>
-</soapenv:Envelope>`;
+      const now = new Date();
+      const testXml = buildNonFiscalTestXml(
+        now.toLocaleDateString("it-IT"),
+        now.toLocaleTimeString("it-IT")
+      );
 
-      const res = await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=10000", {
+      const res = await fetch(CASSA_RT_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "text/xml; charset=utf-8" },
         body: testXml,
       });
       const text = await res.text();
-      if (text.includes('success="true"')) {
+      const parsed = parseFpmateResponse(text);
+      if (res.ok && parsed.success) {
         alert("✅ Scontrino di test stampato con successo sulla cassa Epson FP-81II RT!");
       } else {
-        alert("Risposta cassa: " + text);
+        alert(`⚠️ La cassa ha rifiutato la stampa${parsed.code ? ` (codice ${parsed.code})` : ""}: ${text.slice(0, 150)}`);
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Errore";
@@ -173,15 +167,24 @@ export default function AdminAppuntamentiPage() {
 
       // Send hardware print command to Cassa RT (Epson FP-81II RT fpmate.cgi)
       try {
-        await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=10000", {
+        const res = await fetch(CASSA_RT_ENDPOINT, {
           method: "POST",
           headers: {
             "Content-Type": "text/xml; charset=utf-8",
           },
           body: result.receiptXml,
         });
+        const resText = await res.text();
+        const parsed = parseFpmateResponse(resText);
+        if (!res.ok || !parsed.success) {
+          console.warn("[Cassa RT] Risposta negativa saldo appuntamento:", resText);
+          alert(
+            `⚠️ Attenzione: la cassa Epson ha rifiutato lo scontrino${parsed.code ? ` (codice ${parsed.code})` : ""}. Premi "Sblocco cassa" dallo scanner barcode se la cassa resta bloccata.`
+          );
+        }
       } catch (hardwareErr) {
-        console.warn("[Cassa RT] Invio hardware a 192.168.68.63 completato con fallback:", hardwareErr);
+        console.warn("[Cassa RT] Invio hardware a 192.168.68.63 non riuscito:", hardwareErr);
+        alert("⚠️ Attenzione: impossibile raggiungere la cassa Epson (192.168.68.63) per stampare lo scontrino.");
       }
 
       setCheckoutSuccessMessage({

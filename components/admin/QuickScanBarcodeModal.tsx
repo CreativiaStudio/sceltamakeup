@@ -39,6 +39,15 @@ import {
 } from "@/lib/adminStore";
 import { logAdminActivity, logAdminError } from "@/lib/auditLogger";
 import { safeImageSrc } from "@/lib/r2Public";
+import {
+  CASSA_RT_ENDPOINT,
+  CASSA_RT_DRAWER_ENDPOINT,
+  buildFiscalReceiptXml,
+  buildOpenDrawerXml,
+  buildVoidReceiptXml,
+  parseFpmateResponse,
+  sanitizeFiscalDescription,
+} from "@/lib/epsonFiscal";
 
 interface QuickScanBarcodeModalProps {
   onOpenManualOrderWithItem?: (item: {
@@ -851,7 +860,82 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       const effectivePayment = multiPaymentMethod === "cash" && cashNum >= multiTotal ? cashNum : multiTotal;
       const change = Math.max(0, effectivePayment - multiTotal);
 
-      // 1. Decrement stock for all items
+      // 1. Build sanitized SOAP XML and send to Cassa RT FIRST (Epson FP-81II RT)
+      const fiscalReceiptXml = buildFiscalReceiptXml({
+        items: multiItemsWithDiscount.map((item) => ({
+          description:
+            item.productName +
+            (item.variantName && item.variantName !== "Standard" ? ` ${item.variantName}` : ""),
+          quantity: item.quantity,
+          unitPrice: item.finalUnitPrice,
+          department: 1,
+        })),
+        paymentMethod: multiPaymentMethod,
+        tenderedAmount: effectivePayment,
+      });
+
+      try {
+        const res = await fetch(CASSA_RT_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "text/xml; charset=utf-8" },
+          body: fiscalReceiptXml,
+        });
+        const resText = await res.text();
+        const parsed = parseFpmateResponse(resText);
+        if (!res.ok || !parsed.success) {
+          console.warn("[Cassa RT] Stampa hardware rifiutata:", resText);
+          logAdminError({
+            action: "fiscal_receipt_multi_rejected",
+            title: "Cassa RT: Risposta Stampa Non Riuscita",
+            description: `La cassa fiscale ha risposto con esito negativo${parsed.code ? ` (${parsed.code})` : ""}: ${resText.slice(0, 150)}`,
+            details: {
+              response: resText.slice(0, 300),
+              code: parsed.code,
+              status: parsed.status,
+              total: multiTotal,
+              paymentMethod: multiPaymentMethod,
+            },
+          });
+          setSuccessToast(
+            makeToast(
+              `⚠️ La cassa Epson ha rifiutato lo scontrino${parsed.code ? ` (codice ${parsed.code})` : ""}. Premi "Sblocco cassa" e riprova — giacenza NON scalata.`,
+              "error"
+            )
+          );
+          return;
+        }
+      } catch (hardwareErr) {
+        console.warn("[Cassa RT] Stampa hardware:", hardwareErr);
+        logAdminError({
+          action: "fiscal_receipt_multi_network_failed",
+          title: "Cassa RT: Connessione Non Riuscita",
+          description: "Impossibile raggiungere la cassa RT all'indirizzo 192.168.68.63",
+          error: hardwareErr,
+          details: { total: multiTotal, paymentMethod: multiPaymentMethod },
+        });
+        setSuccessToast(
+          makeToast(
+            "⚠️ Cassa Epson non raggiungibile (192.168.68.63). Controlla cassa/Wi-Fi o permessi browser — giacenza NON scalata.",
+            "error"
+          )
+        );
+        return;
+      }
+
+      // 2. Hardware confirmed success="true": open cash drawer if cash payment
+      if (multiPaymentMethod === "cash") {
+        try {
+          await fetch(CASSA_RT_DRAWER_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "text/xml; charset=utf-8" },
+            body: buildOpenDrawerXml(),
+          });
+        } catch (dErr) {
+          console.warn("[Cassa RT] Trigger apertura cassetto:", dErr);
+        }
+      }
+
+      // 3. Decrement stock for all items ONLY after confirmed fiscal print
       const state = getAdminStoreState();
       const overrides = state.productOverrides || {};
 
@@ -878,90 +962,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         }
       }
 
-      // 2. Emit SOAP XML to Cassa RT (Epson FP-81II RT on 192.168.68.63)
-      const itemsXml = multiItemsWithDiscount
-        .map((item) => {
-          const rawDesc = (
-            item.productName +
-            (item.variantName && item.variantName !== "Standard" ? ` ${item.variantName}` : "")
-          ).slice(0, 22);
-          const cleanDesc = rawDesc
-            .replace(/&/g, " e ")
-            .replace(/[<>"']/g, "");
-          const priceFormatted = item.finalUnitPrice.toFixed(2);
-          return `<printRecItem operator="1" description="${cleanDesc}" quantity="${item.quantity}" unitPrice="${priceFormatted}" department="1" />`;
-        })
-        .join("\n      ");
-
-      // Sum of the fiscal item lines actually printed, computed in exact cents.
-      // For Carta the RT requires payment to match the items sum exactly, otherwise it rejects the receipt.
-      const itemsSum =
-        multiItemsWithDiscount.reduce(
-          (sum, item) => sum + Math.round(item.finalUnitPrice * 100) * item.quantity,
-          0
-        ) / 100;
-      // Contanti may exceed the total (the RT computes the change); Carta must strictly match itemsSum.
-      const paymentFormatted = (multiPaymentMethod === "card" ? itemsSum : effectivePayment).toFixed(2);
-      const fiscalReceiptXml = `<?xml version="1.0" encoding="utf-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-  <soapenv:Body>
-    <printerFiscalReceipt>
-      <beginFiscalReceipt operator="1" />
-      ${itemsXml}
-      <printRecTotal operator="1" description="${multiPaymentMethod === "card" ? "PAGAMENTO ELETTRONICO" : "CONTANTI"}" payment="${paymentFormatted}" paymentType="${multiPaymentMethod === "card" ? "2" : "0"}" index="${multiPaymentMethod === "card" ? "2" : "0"}" />
-      <endFiscalReceipt operator="1" />
-    </printerFiscalReceipt>
-  </soapenv:Body>
-</soapenv:Envelope>`;
-
-      let hardwarePrintOk = false;
-      try {
-        const res = await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=10000", {
-          method: "POST",
-          headers: { "Content-Type": "text/xml; charset=utf-8" },
-          body: fiscalReceiptXml,
-        });
-        const resText = await res.text();
-        hardwarePrintOk = res.ok && resText.includes('success="true"');
-        if (!hardwarePrintOk) {
-          console.warn("[Cassa RT] Stampa hardware rifiutata:", resText);
-          logAdminError({
-            action: "fiscal_receipt_multi_rejected",
-            title: "Cassa RT: Risposta Stampa Non Riuscita",
-            description: `La cassa fiscale ha risposto con esito negativo: ${resText.slice(0, 150)}`,
-            details: { response: resText, total: multiTotal, paymentMethod: multiPaymentMethod },
-          });
-        }
-
-        if (multiPaymentMethod === "cash") {
-          const drawerKickXml = `<?xml version="1.0" encoding="utf-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-  <soapenv:Body>
-    <openDrawer />
-  </soapenv:Body>
-</soapenv:Envelope>`;
-          try {
-            await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=5000", {
-              method: "POST",
-              headers: { "Content-Type": "text/xml; charset=utf-8" },
-              body: drawerKickXml,
-            });
-          } catch (dErr) {
-            console.warn("[Cassa RT] Trigger apertura cassetto:", dErr);
-          }
-        }
-      } catch (hardwareErr) {
-        console.warn("[Cassa RT] Stampa hardware:", hardwareErr);
-        logAdminError({
-          action: "fiscal_receipt_multi_network_failed",
-          title: "Cassa RT: Connessione Non Riuscita",
-          description: "Impossibile raggiungere la cassa RT all'indirizzo 192.168.68.63",
-          error: hardwareErr,
-          details: { total: multiTotal, paymentMethod: multiPaymentMethod },
-        });
-      }
-
-      // 3. Record verified in-store order with cloud synchronization
+      // 4. Record verified in-store order with cloud synchronization
       createAdminOrder({
         customerName: "Cliente al Banco",
         customerEmail: "banco@sceltamakeup.it",
@@ -1066,18 +1067,23 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
 
   // Dedicated 1-Click Physical Drawer Kick
   const handleOpenCashDrawerOnly = useCallback(async () => {
-    const drawerKickXml = `<?xml version="1.0" encoding="utf-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-  <soapenv:Body>
-    <openDrawer />
-  </soapenv:Body>
-</soapenv:Envelope>`;
     try {
-      await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=5000", {
+      const res = await fetch(CASSA_RT_DRAWER_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "text/xml; charset=utf-8" },
-        body: drawerKickXml,
+        body: buildOpenDrawerXml(),
       });
+      const resText = await res.text();
+      const parsed = parseFpmateResponse(resText);
+      if (!res.ok || !parsed.success) {
+        setSuccessToast(
+          makeToast(
+            `⚠️ Cassetto non aperto dalla cassa${parsed.code ? ` (codice ${parsed.code})` : ""}.`,
+            "error"
+          )
+        );
+        return;
+      }
       logAdminActivity({
         category: "cassa_rt",
         action: "cash_drawer_open",
@@ -1089,7 +1095,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
       setSuccessToast(makeToast("🔓 Cassetto portamonete aperto con successo!"));
     } catch (err) {
       console.warn("[Cassa RT] Apertura cassetto:", err);
-      setSuccessToast(makeToast("Comando apertura inviato alla cassa RT.", "info"));
+      setSuccessToast(makeToast("⚠️ Cassa Epson non raggiungibile per aprire il cassetto.", "error"));
     }
   }, []);
 
@@ -1251,11 +1257,13 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     if (!matchedProduct || !matchedProduct.variants) return;
     const v = matchedProduct.variants[matchedVariantIndex];
     if (!v) return; // Never write at an out-of-bounds index (sparse array -> null -> crash)
-    const basePrice = v?.price ?? matchedProduct.price;
+    const basePrice = resolveScanUnitPrice(matchedProduct, matchedVariantIndex) || 1.0;
     // The final unit price is the net amount actually paid after the counter discount
     const discountApplied = computeDiscountAmount(basePrice, discountMode, discountPercent, discountAmount);
     const price = Math.max(0, Math.round((basePrice - discountApplied) * 100) / 100);
-    const itemDesc = (matchedProduct.name + (v?.name && v.name !== "Standard" ? ` ${v.name}` : "")).slice(0, 22);
+    const rawItemDesc =
+      matchedProduct.name + (v?.name && v.name !== "Standard" ? ` ${v.name}` : "");
+    const itemDesc = sanitizeFiscalDescription(rawItemDesc, 22);
 
     const cashNum = parseFloat(cashTendered.replace(",", ".")) || price;
     const effectivePayment = checkoutPaymentMethod === "cash" && cashNum >= price ? cashNum : price;
@@ -1264,7 +1272,89 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     setIsCheckingOut(true);
 
     try {
-      // 1. Decrement stock
+      // 1. Build sanitized SOAP XML and send to Cassa RT FIRST (Epson FP-81II RT)
+      const fiscalReceiptXml = buildFiscalReceiptXml({
+        items: [
+          {
+            description: rawItemDesc,
+            quantity: 1,
+            unitPrice: price,
+            department: 1,
+          },
+        ],
+        paymentMethod: checkoutPaymentMethod,
+        tenderedAmount: effectivePayment,
+      });
+
+      try {
+        const res = await fetch(CASSA_RT_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "text/xml; charset=utf-8" },
+          body: fiscalReceiptXml,
+        });
+        const resText = await res.text();
+        const parsed = parseFpmateResponse(resText);
+        if (!res.ok || !parsed.success) {
+          console.warn("[Cassa RT] Stampa hardware rifiutata:", resText);
+          logAdminError({
+            action: "fiscal_receipt_single_rejected",
+            title: "Cassa RT: Risposta Stampa Non Riuscita",
+            description: `La cassa fiscale ha rifiutato lo scontrino${parsed.code ? ` (${parsed.code})` : ""}: ${resText.slice(0, 150)}`,
+            details: {
+              response: resText.slice(0, 300),
+              code: parsed.code,
+              status: parsed.status,
+              productId: matchedProduct.id,
+              productName: matchedProduct.name,
+              unitPrice: price,
+              paymentMethod: checkoutPaymentMethod,
+            },
+          });
+          setSuccessToast(
+            makeToast(
+              `⚠️ La cassa Epson ha rifiutato lo scontrino${parsed.code ? ` (codice ${parsed.code})` : ""}. Premi "Sblocco cassa" e riprova — giacenza NON scalata.`,
+              "error"
+            )
+          );
+          return;
+        }
+      } catch (hardwareErr) {
+        console.warn("[Cassa RT] Stampa hardware:", hardwareErr);
+        logAdminError({
+          action: "fiscal_receipt_single_network_failed",
+          title: "Cassa RT: Connessione Non Riuscita",
+          description: "Impossibile raggiungere la cassa RT all'indirizzo 192.168.68.63",
+          error: hardwareErr,
+          details: {
+            productId: matchedProduct.id,
+            productName: matchedProduct.name,
+            unitPrice: price,
+            paymentMethod: checkoutPaymentMethod,
+          },
+        });
+        setSuccessToast(
+          makeToast(
+            "⚠️ Cassa Epson non raggiungibile (192.168.68.63). Controlla cassa/Wi-Fi o permessi browser — giacenza NON scalata.",
+            "error"
+          )
+        );
+        return;
+      }
+
+      // 2. For cash payments, trigger physical cash drawer opening after confirmed receipt
+      if (checkoutPaymentMethod === "cash") {
+        try {
+          await fetch(CASSA_RT_DRAWER_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "text/xml; charset=utf-8" },
+            body: buildOpenDrawerXml(),
+          });
+        } catch (dErr) {
+          console.warn("[Cassa RT] Trigger apertura cassetto:", dErr);
+        }
+      }
+
+      // 3. Decrement stock ONLY after confirmed fiscal print
       const newQty = Math.max(0, currentStock - 1);
       setCurrentStock(newQty);
       const updatedVariants = [...matchedProduct.variants];
@@ -1279,51 +1369,6 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         stock: updatedVariants.reduce((sum, item) => sum + (item?.stock || 0), 0),
         inStock: newQty > 0,
       }, { baseline: matchedProduct });
-
-      // 2. Emit SOAP XML to Cassa RT (Epson FP-81II RT on 192.168.68.63)
-      // When effectivePayment > price, Epson RT automatically computes and prints RESTO!
-      const priceFormatted = price.toFixed(2);
-      const paymentFormatted = effectivePayment.toFixed(2);
-      const fiscalReceiptXml = `<?xml version="1.0" encoding="utf-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-  <soapenv:Body>
-    <printerFiscalReceipt>
-      <beginFiscalReceipt operator="1" />
-      <printRecItem operator="1" description="${itemDesc}" quantity="1" unitPrice="${priceFormatted}" department="1" />
-      <printRecTotal operator="1" description="${checkoutPaymentMethod === "card" ? "PAGAMENTO ELETTRONICO" : "CONTANTI"}" payment="${paymentFormatted}" paymentType="${checkoutPaymentMethod === "card" ? "2" : "0"}" index="${checkoutPaymentMethod === "card" ? "2" : "0"}" />
-      <endFiscalReceipt operator="1" />
-    </printerFiscalReceipt>
-  </soapenv:Body>
-</soapenv:Envelope>`;
-
-      try {
-        await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=10000", {
-          method: "POST",
-          headers: { "Content-Type": "text/xml; charset=utf-8" },
-          body: fiscalReceiptXml,
-        });
-
-        // 3. For cash payments, trigger physical cash drawer opening
-        if (checkoutPaymentMethod === "cash") {
-          const drawerKickXml = `<?xml version="1.0" encoding="utf-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-  <soapenv:Body>
-    <openDrawer />
-  </soapenv:Body>
-</soapenv:Envelope>`;
-          try {
-            await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=5000", {
-              method: "POST",
-              headers: { "Content-Type": "text/xml; charset=utf-8" },
-              body: drawerKickXml,
-            });
-          } catch (dErr) {
-            console.warn("[Cassa RT] Trigger apertura cassetto:", dErr);
-          }
-        }
-      } catch (hardwareErr) {
-        console.warn("[Cassa RT] Stampa hardware:", hardwareErr);
-      }
 
       // 4. Record verified in-store order with cloud synchronization
       createAdminOrder({
@@ -1412,23 +1457,49 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
   // Void / Cancel any open stuck receipt on the physical Epson RT
   const handleVoidOpenReceipt = async () => {
     setIsCheckingOut(true);
-    const voidXml = `<?xml version="1.0" encoding="utf-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-  <soapenv:Body>
-    <printerFiscalReceipt>
-      <printRecVoid operator="1" />
-      <endFiscalReceipt operator="1" />
-    </printerFiscalReceipt>
-  </soapenv:Body>
-</soapenv:Envelope>`;
-
     try {
-      await fetch("http://192.168.68.63/cgi-bin/fpmate.cgi?devid=local_printer&timeout=10000", {
+      const res = await fetch(CASSA_RT_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "text/xml; charset=utf-8" },
-        body: voidXml,
+        body: buildVoidReceiptXml(),
       });
-      setSuccessToast(makeToast("✅ Comando inviato! La cassa ha annullato lo scontrino aperto."));
+      const resText = await res.text();
+      const parsed = parseFpmateResponse(resText);
+      if (res.ok && parsed.success) {
+        logAdminActivity({
+          category: "cassa_rt",
+          action: "fiscal_receipt_void",
+          title: "Sblocco Cassa RT",
+          description: "Scontrino rimasto aperto annullato con successo sulla cassa Epson FP-81II RT.",
+          details: {
+            printer: "Epson FP-81II RT",
+            address: "192.168.68.63",
+            command: "printRecVoid",
+            status: parsed.status,
+          },
+        });
+        setSuccessToast(makeToast("✅ Cassa sbloccata! Lo scontrino aperto è stato annullato."));
+      } else {
+        logAdminError({
+          action: "fiscal_receipt_void_rejected",
+          title: "Cassa RT: Sblocco Rifiutato",
+          description: `La cassa ha risposto negativamente allo sblocco${parsed.code ? ` (${parsed.code})` : ""}: ${resText.slice(0, 150)}`,
+          details: {
+            printer: "Epson FP-81II RT",
+            address: "192.168.68.63",
+            command: "printRecVoid",
+            code: parsed.code,
+            status: parsed.status,
+            response: resText.slice(0, 300),
+          },
+        });
+        setSuccessToast(
+          makeToast(
+            `⚠️ La cassa ha risposto: ${parsed.code || resText.slice(0, 80) || "errore"}. Se sul display compare ancora STATO REGISTRAZIONE, riprova o premi ANNULLA/STORNO sulla tastiera della cassa.`,
+            "error"
+          )
+        );
+      }
     } catch (err) {
       console.warn("[Cassa RT] Annullamento scontrino:", err);
       logAdminError({

@@ -12,6 +12,7 @@ import {
   getClientServiceById,
   getClientServiceBySlug,
 } from "@/lib/servicesStore";
+import { buildFiscalReceiptXml } from "@/lib/epsonFiscal";
 
 // Standard solo-worker slots (Outside store counter hours)
 // Store opening hours: Martedì – Sabato: 09:30 - 14:00 / 16:00 - 19:30 (Lunedì e Domenica Chiuso)
@@ -324,18 +325,18 @@ export function markAppointmentPaid(
   list[index] = updated;
   saveStoredAppointments(list);
 
-  // Generate XML for Epson FP-81II RT printer over HTTP (fpmate.cgi)
-  const receiptXml = `<?xml version="1.0" encoding="utf-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-  <soapenv:Body>
-    <printerFiscalReceipt>
-      <beginFiscalReceipt operator="1" />
-      <printRecItem operator="1" description="${app.serviceName.slice(0, 22)}" quantity="1" unitPrice="${app.pricing.balanceDue.toFixed(2)}" department="1" />
-      <printRecTotal operator="1" description="${method === "mypos_card" ? "PAGAMENTO ELETTRONICO" : "CONTANTI"}" payment="${app.pricing.balanceDue.toFixed(2)}" paymentType="${method === "mypos_card" ? "2" : "0"}" index="${method === "mypos_card" ? "2" : "0"}" />
-      <endFiscalReceipt operator="1" />
-    </printerFiscalReceipt>
-  </soapenv:Body>
-</soapenv:Envelope>`;
+  // Generate sanitized XML for Epson FP-81II RT printer over HTTP (fpmate.cgi)
+  const receiptXml = buildFiscalReceiptXml({
+    items: [
+      {
+        description: app.serviceName,
+        quantity: 1,
+        unitPrice: app.pricing.balanceDue,
+        department: 1,
+      },
+    ],
+    paymentMethod: method === "mypos_card" ? "card" : "cash",
+  });
 
   return { success: true, appointment: updated, receiptXml };
 }
