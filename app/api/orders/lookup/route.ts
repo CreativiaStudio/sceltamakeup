@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getCentralOrders } from "@/lib/serverOrderStore";
+import { getCentralOrders, updateCentralOrderFields } from "@/lib/serverOrderStore";
 import { getPacklinkTracking, type PacklinkTracking } from "@/lib/packlink";
 import {
   isCustomerVisibleOrder,
@@ -8,6 +8,7 @@ import {
   normalizeEmail,
   toPublicOrder,
 } from "@/lib/orderTracking";
+import { isPacklinkReference } from "@/lib/trackingUtils";
 import { consumeRateLimit, getClientIp } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
@@ -49,11 +50,29 @@ export async function GET(req: Request) {
     }
 
     let tracking: PacklinkTracking | null = null;
+    let resolvedOrder = order;
     if (order.packlinkReference) {
       tracking = await getPacklinkTracking(order.packlinkReference).catch(() => null);
+      if (
+        tracking?.trackingNumber &&
+        (!order.trackingCode ||
+          order.trackingCode === order.packlinkReference ||
+          isPacklinkReference(order.trackingCode))
+      ) {
+        const nextCourier = !order.courierName && tracking.carrier ? tracking.carrier : order.courierName;
+        resolvedOrder = {
+          ...order,
+          trackingCode: tracking.trackingNumber,
+          ...(nextCourier ? { courierName: nextCourier } : {}),
+        };
+        await updateCentralOrderFields(order.id, {
+          trackingCode: tracking.trackingNumber,
+          ...(tracking.carrier && !order.courierName ? { courierName: tracking.carrier } : {}),
+        }).catch(() => null);
+      }
     }
 
-    const publicOrder = toPublicOrder(order);
+    const publicOrder = toPublicOrder(resolvedOrder);
     return NextResponse.json({
       success: true,
       order: {

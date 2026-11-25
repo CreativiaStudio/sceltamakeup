@@ -31,6 +31,7 @@ import {
 import OrderTrackingCard from "@/components/orders/OrderTrackingCard";
 import { ORDER_STATUS_LABELS, normalizeEmail, type PublicOrder } from "@/lib/orderTracking";
 import type { PacklinkTracking } from "@/lib/packlink";
+import { getCourierTrackingUrl, resolveCarrierTrackingCode } from "@/lib/trackingUtils";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { resolveProductImageUrl } from "@/lib/r2Public";
 import { useCartStore } from "@/store/useCartStore";
@@ -687,6 +688,14 @@ export default function AccountClient({ initialOrderNumber = "" }: AccountClient
                       {orders.map((order) => {
                         const badge = ORDER_STATUS_LABELS[order.status];
                         const isSelected = selected?.order.id === order.id;
+                        const carrierCode =
+                          order.fulfillmentType === "courier"
+                            ? resolveCarrierTrackingCode(order)
+                            : "";
+                        const courierLabel = order.courierName || "Poste Italiane";
+                        const trackingUrl = carrierCode
+                          ? getCourierTrackingUrl(courierLabel, carrierCode)
+                          : "";
                         return (
                           <li key={order.id}>
                             <div
@@ -715,7 +724,19 @@ export default function AccountClient({ initialOrderNumber = "" }: AccountClient
                                     : order.courierName || "Spedizione corriere"}
                                 </p>
                               </button>
-                              <div className="flex shrink-0 items-center justify-between gap-3 sm:justify-end">
+                              <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 sm:justify-end sm:gap-3">
+                                {trackingUrl && (
+                                  <a
+                                    href={trackingUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 rounded-full border border-[#D8C2E7] bg-[#FAF7FC] px-3 py-1.5 font-mono text-xs font-semibold text-[#5E1788] transition-colors hover:bg-[#D8C2E7]/40"
+                                    title={`Segui il pacco su ${courierLabel}`}
+                                  >
+                                    <span>Tracking: {carrierCode}</span>
+                                    <ExternalLink className="h-3 w-3 shrink-0" />
+                                  </a>
+                                )}
                                 <div className="text-right">
                                   <span
                                     className={`inline-flex rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${badge.className}`}

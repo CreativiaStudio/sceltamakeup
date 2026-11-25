@@ -13,6 +13,7 @@
  */
 
 import type { SceltaAdminOrder } from "@/lib/adminStore";
+import { getCourierTrackingUrl, isPacklinkReference } from "@/lib/trackingUtils";
 
 const PACKLINK_BASE_URL = "https://api.packlink.com/v1";
 const REQUEST_TIMEOUT_MS = 12000;
@@ -44,6 +45,7 @@ export interface PacklinkTrackingEvent {
   date: string;
   description: string;
   city?: string;
+  statusCode?: string;
 }
 
 export interface PacklinkTracking {
@@ -52,6 +54,8 @@ export interface PacklinkTracking {
   events: PacklinkTrackingEvent[];
   carrier?: string;
   trackingNumber?: string;
+  trackingUrl?: string;
+  shipmentState?: string;
   mock: boolean;
 }
 
@@ -361,17 +365,31 @@ export async function getPacklinkLabels(reference: string): Promise<string[]> {
 
 interface RawTrackEvent {
   city?: string;
+  location?: string;
   description?: string;
+  status_code?: string;
   timestamp?: number | string;
   date?: string;
 }
 
-interface RawTrackResponse {
+interface RawTrackObject {
   history?: RawTrackEvent[];
   events?: RawTrackEvent[];
+  track?: RawTrackEvent[];
   carrier?: string;
   tracking_number?: string;
   trackingNumber?: string;
+}
+
+type RawTrackResponse = RawTrackEvent[] | RawTrackObject;
+
+interface RawShipmentDetails {
+  carrier?: string;
+  service?: string;
+  state?: string;
+  trackings?: string[];
+  tracking_codes?: Array<string | { tracking_number?: string; trackingNumber?: string }>;
+  tracking_url?: string;
 }
 
 function toIsoDate(value: number | string | undefined): string {
@@ -383,18 +401,47 @@ function toIsoDate(value: number | string | undefined): string {
   return Number.isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString();
 }
 
-export function normalizeTrackingStatus(events: PacklinkTrackingEvent[]): PacklinkNormalizedStatus {
-  if (events.length === 0) return "created";
-  const latest = [...events].sort((a, b) => b.date.localeCompare(a.date))[0].description.toLowerCase();
+export function normalizeTrackingStatus(
+  events: PacklinkTrackingEvent[],
+  shipmentState?: string
+): PacklinkNormalizedStatus {
+  const stateUpper = (shipmentState || "").trim().toUpperCase();
+  if (stateUpper === "DELIVERED") return "delivered";
+  if (stateUpper === "OUT_FOR_DELIVERY") return "out_for_delivery";
+  if (/(INCIDENT|EXCEPTION|RETURNED|CANCELLED)/.test(stateUpper)) return "exception";
 
-  if (/(consegnat|delivered|consegna effettuata|ritirat)/.test(latest)) return "delivered";
-  if (/(in consegna|out for delivery|presa in carico per la consegna|in distribuzione|with courier)/.test(latest)) {
+  if (events.length === 0) return "created";
+
+  const latestEvent = [...events].sort((a, b) => b.date.localeCompare(a.date))[0];
+  const latestCode = (latestEvent.statusCode || "").trim().toUpperCase();
+  const latest = latestEvent.description.toLowerCase();
+
+  if (latestCode === "DELIVERED" || /(consegnat|delivered|consegna effettuata|ritirat)/.test(latest)) {
+    return "delivered";
+  }
+  if (
+    latestCode === "OUT_FOR_DELIVERY" ||
+    /(in consegna|out for delivery|presa in carico per la consegna|in distribuzione|with courier)/.test(
+      latest
+    )
+  ) {
     return "out_for_delivery";
   }
-  if (/(giacenza|mancata|failed|exception|undeliverable|eccezione|rifiutat|danneggiat|returned|reso)/.test(latest)) {
+  if (
+    /(INCIDENT|EXCEPTION|RETURNED|FAILED)/.test(latestCode) ||
+    /(giacenza|mancata|failed|exception|undeliverable|eccezione|rifiutat|danneggiat|returned|reso)/.test(
+      latest
+    )
+  ) {
     return "exception";
   }
-  if (/(transit|transito|partit|arrivat|hub|sede|depot|smistamento|departed|arrived|ritirato dal corriere|picked up)/.test(latest)) {
+  if (
+    latestCode === "IN_TRANSIT" ||
+    latestCode === "READY_FOR_COLLECTION" ||
+    /(accettazione|lavorazione|transit|transito|partit|arrivat|arrivo|hub|sede|depot|smistamento|departed|arrived|ritirato dal corriere|picked up)/.test(
+      latest
+    )
+  ) {
     return "in_transit";
   }
   return "in_transit";
@@ -404,38 +451,106 @@ function buildMockTracking(reference: string): PacklinkTracking {
   return { reference, status: "created", events: [], mock: true };
 }
 
+function extractCarrierTrackingNumber(
+  shipment: RawShipmentDetails | null,
+  rawTrack: RawTrackResponse | null
+): string | undefined {
+  const candidates: string[] = [];
+
+  if (Array.isArray(shipment?.trackings)) {
+    for (const code of shipment.trackings) {
+      if (typeof code === "string" && code.trim()) candidates.push(code.trim());
+    }
+  }
+
+  if (Array.isArray(shipment?.tracking_codes)) {
+    for (const entry of shipment.tracking_codes) {
+      if (typeof entry === "string" && entry.trim()) {
+        candidates.push(entry.trim());
+      } else if (entry && typeof entry === "object") {
+        const val = entry.tracking_number ?? entry.trackingNumber;
+        if (typeof val === "string" && val.trim()) candidates.push(val.trim());
+      }
+    }
+  }
+
+  if (rawTrack && !Array.isArray(rawTrack)) {
+    const direct = rawTrack.tracking_number ?? rawTrack.trackingNumber;
+    if (typeof direct === "string" && direct.trim()) candidates.push(direct.trim());
+  }
+
+  return candidates.find((code) => !isPacklinkReference(code));
+}
+
 export async function getPacklinkTracking(reference: string): Promise<PacklinkTracking> {
   const ref = reference.trim();
   if (!ref) throw new PacklinkError("Riferimento Packlink mancante");
 
-  try {
-    const raw = await packlinkFetch<RawTrackResponse>(
-      `/shipments/${encodeURIComponent(ref)}/track`
-    );
-    const source = Array.isArray(raw?.history) ? raw.history : Array.isArray(raw?.events) ? raw.events : [];
-    const events: PacklinkTrackingEvent[] = source
-      .map((e) => ({
-        date: toIsoDate(e.timestamp ?? e.date),
-        description: (e.description || "").trim(),
-        city: e.city?.trim() || undefined,
-      }))
-      .filter((e) => e.description)
-      .sort((a, b) => b.date.localeCompare(a.date));
+  const [trackOutcome, shipmentOutcome] = await Promise.allSettled([
+    packlinkFetch<RawTrackResponse>(`/shipments/${encodeURIComponent(ref)}/track`),
+    packlinkFetch<RawShipmentDetails>(`/shipments/${encodeURIComponent(ref)}`),
+  ]);
 
-    return {
-      reference: ref,
-      status: normalizeTrackingStatus(events),
-      events,
-      carrier: raw?.carrier,
-      trackingNumber: raw?.tracking_number ?? raw?.trackingNumber,
-      mock: false,
-    };
-  } catch (err) {
-    // Spedizione appena creata o non ancora tracciabile: stato "created" senza eventi
-    if (err instanceof PacklinkError && (err.status === 404 || err.status === 204)) {
-      return { reference: ref, status: "created", events: [], mock: false };
-    }
-    console.warn("[packlink] Tracking non disponibile:", (err as Error).message);
+  const trackNotFound =
+    trackOutcome.status === "rejected" &&
+    trackOutcome.reason instanceof PacklinkError &&
+    (trackOutcome.reason.status === 404 || trackOutcome.reason.status === 204);
+
+  const shipmentNotFound =
+    shipmentOutcome.status === "rejected" &&
+    shipmentOutcome.reason instanceof PacklinkError &&
+    (shipmentOutcome.reason.status === 404 || shipmentOutcome.reason.status === 204);
+
+  if (
+    trackOutcome.status === "rejected" &&
+    shipmentOutcome.status === "rejected" &&
+    !trackNotFound &&
+    !shipmentNotFound
+  ) {
+    const err = trackOutcome.reason;
+    console.warn("[packlink] Tracking non disponibile:", err instanceof Error ? err.message : err);
     return buildMockTracking(ref);
   }
+
+  const rawTrack = trackOutcome.status === "fulfilled" ? trackOutcome.value : null;
+  const shipment = shipmentOutcome.status === "fulfilled" ? shipmentOutcome.value : null;
+
+  const source: RawTrackEvent[] = Array.isArray(rawTrack)
+    ? rawTrack
+    : Array.isArray(rawTrack?.history)
+      ? rawTrack.history
+      : Array.isArray(rawTrack?.events)
+        ? rawTrack.events
+        : Array.isArray(rawTrack?.track)
+          ? rawTrack.track
+          : [];
+
+  const events: PacklinkTrackingEvent[] = source
+    .map((e) => ({
+      date: toIsoDate(e.timestamp ?? e.date),
+      description: (e.description || "").trim(),
+      city: (e.city || e.location || "").trim() || undefined,
+      statusCode: e.status_code?.trim() || undefined,
+    }))
+    .filter((e) => e.description)
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  const carrier =
+    shipment?.carrier?.trim() ||
+    (!Array.isArray(rawTrack) ? rawTrack?.carrier?.trim() : undefined) ||
+    undefined;
+  const trackingNumber = extractCarrierTrackingNumber(shipment, rawTrack);
+  const trackingUrl = trackingNumber ? getCourierTrackingUrl(carrier || "", trackingNumber) : undefined;
+  const shipmentState = shipment?.state?.trim() || undefined;
+
+  return {
+    reference: ref,
+    status: normalizeTrackingStatus(events, shipmentState),
+    events,
+    carrier,
+    trackingNumber,
+    trackingUrl,
+    shipmentState,
+    mock: false,
+  };
 }

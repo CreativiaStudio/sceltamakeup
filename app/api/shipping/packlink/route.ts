@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/adminAuth";
 import { getCentralOrders, updateCentralOrderFields } from "@/lib/serverOrderStore";
 import { createPacklinkShipment, getPacklinkLabels, getPacklinkTracking, PacklinkError } from "@/lib/packlink";
+import { isPacklinkReference } from "@/lib/trackingUtils";
 
 export const dynamic = "force-dynamic";
 
@@ -100,6 +101,33 @@ export async function GET(req: Request) {
       return NextResponse.json({ success: true, labels });
     }
     const tracking = await getPacklinkTracking(reference);
+    if (tracking.trackingNumber) {
+      try {
+        const orderIdParam = params.get("orderId")?.trim();
+        const orders = await getCentralOrders();
+        const matchingOrder = orders.find((o) =>
+          orderIdParam
+            ? o.id.toLowerCase() === orderIdParam.toLowerCase()
+            : o.packlinkReference?.toLowerCase() === reference.toLowerCase()
+        );
+        if (
+          matchingOrder &&
+          (!matchingOrder.trackingCode ||
+            matchingOrder.trackingCode === matchingOrder.packlinkReference ||
+            isPacklinkReference(matchingOrder.trackingCode))
+        ) {
+          await updateCentralOrderFields(matchingOrder.id, {
+            trackingCode: tracking.trackingNumber,
+            ...(tracking.carrier ? { courierName: tracking.carrier } : {}),
+          });
+        }
+      } catch (syncErr) {
+        console.warn(
+          "[packlink] Sync codice corriere su ordine fallito:",
+          syncErr instanceof Error ? syncErr.message : syncErr
+        );
+      }
+    }
     return NextResponse.json({ success: true, tracking });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Errore interno tracking";

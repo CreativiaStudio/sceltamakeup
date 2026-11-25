@@ -17,6 +17,7 @@ import {
   Plus,
   Receipt,
   Loader2,
+  ExternalLink,
 } from "lucide-react";
 import {
   getAdminOrders,
@@ -25,8 +26,13 @@ import {
   syncAdminStoreFromCloud,
   SceltaAdminOrder,
 } from "@/lib/adminStore";
+import {
+  getCourierTrackingUrl,
+  resolveCarrierTrackingCode,
+} from "@/lib/trackingUtils";
 import OrderPrintModal from "./OrderPrintModal";
 import NewManualOrderModal from "./NewManualOrderModal";
+import OrderTrackingModal from "@/components/orders/OrderTrackingModal";
 
 export default function OrdersTable() {
   const [orders, setOrders] = useState<SceltaAdminOrder[]>(() => getAdminOrders());
@@ -36,6 +42,7 @@ export default function OrdersTable() {
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [copiedOrderId, setCopiedOrderId] = useState<string | null>(null);
   const [printingOrder, setPrintingOrder] = useState<SceltaAdminOrder | null>(null);
+  const [trackingModalOrder, setTrackingModalOrder] = useState<SceltaAdminOrder | null>(null);
   const [isNewOrderModalOpen, setIsNewOrderModalOpen] = useState(false);
   const [multiCartCount, setMultiCartCount] = useState<number>(0);
   const [packlinkLoadingId, setPacklinkLoadingId] = useState<string | null>(null);
@@ -100,6 +107,7 @@ export default function OrdersTable() {
   const handleOrderUpdated = (updated: SceltaAdminOrder) => {
     setOrders((prev) => prev.map((o) => (o.id === updated.id ? updated : o)));
     setPrintingOrder((prev) => (prev && prev.id === updated.id ? updated : prev));
+    setTrackingModalOrder((prev) => (prev && prev.id === updated.id ? updated : prev));
   };
 
   const handleQuickCreatePacklink = async (order: SceltaAdminOrder) => {
@@ -471,10 +479,42 @@ export default function OrdersTable() {
                         <span>Cassa RT</span>
                       </span>
                     ) : isCourier ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium border bg-blue-50 text-blue-800 border-blue-200">
-                        <Truck className="w-3 h-3 text-blue-600" />
-                        <span>Corriere</span>
-                      </span>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium border bg-blue-50 text-blue-800 border-blue-200">
+                          <Truck className="w-3 h-3 text-blue-600" />
+                          <span>Corriere</span>
+                        </span>
+                        {(order.trackingCode || order.packlinkReference) && (() => {
+                          const carrierCode = resolveCarrierTrackingCode(order);
+                          const displayCode = carrierCode || order.packlinkReference || order.trackingCode || "";
+                          const carrierUrl = carrierCode
+                            ? getCourierTrackingUrl(order.courierName, carrierCode)
+                            : "";
+                          return (
+                            <span className="inline-flex items-center gap-1">
+                              <button
+                                type="button"
+                                onClick={() => setTrackingModalOrder(order)}
+                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-purple-50 text-[#5E1788] border border-[#D8C2E7] hover:bg-purple-100 cursor-pointer"
+                                title="Vedi dov'è il pacco nel pop-up"
+                              >
+                                <span className="max-w-[110px] truncate">{displayCode}</span>
+                              </button>
+                              {carrierUrl && (
+                                <a
+                                  href={carrierUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="p-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100"
+                                  title={`Apri su ${order.courierName || "Poste Italiane"}`}
+                                >
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
+                              )}
+                            </span>
+                          );
+                        })()}
+                      </div>
                     ) : (
                       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium border bg-purple-50 text-[#5E1788] border-purple-200">
                         <Store className="w-3 h-3 text-[#5E1788]" />
@@ -598,14 +638,39 @@ export default function OrdersTable() {
                             {order.shippingAddress.street}, {order.shippingAddress.postalCode}{" "}
                             {order.shippingAddress.city} ({order.shippingAddress.province})
                           </div>
-                          {order.trackingCode && (
-                            <div className="text-[11px]">
-                              Tracking:{" "}
-                              <strong className="font-mono text-[#5E1788]">
-                                {order.trackingCode}
-                              </strong>
-                            </div>
-                          )}
+                          {(order.trackingCode || order.packlinkReference) && (() => {
+                            const carrierCode = resolveCarrierTrackingCode(order);
+                            const carrierUrl = carrierCode
+                              ? getCourierTrackingUrl(order.courierName, carrierCode)
+                              : "";
+                            return (
+                              <div className="flex flex-wrap items-center gap-2 text-[11px]">
+                                <span className="text-gray-500">Tracking:</span>
+                                {carrierUrl ? (
+                                  <a
+                                    href={carrierUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 font-mono font-bold text-[#5E1788] underline underline-offset-2"
+                                  >
+                                    <span>{carrierCode}</span>
+                                    <ExternalLink className="w-3 h-3" />
+                                  </a>
+                                ) : (
+                                  <strong className="font-mono text-[#5E1788]">
+                                    {order.packlinkReference || order.trackingCode}
+                                  </strong>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={() => setTrackingModalOrder(order)}
+                                  className="px-2 py-0.5 rounded-lg bg-purple-50 text-[#5E1788] border border-[#D8C2E7] font-semibold hover:bg-purple-100 cursor-pointer"
+                                >
+                                  Dov&apos;è il pacco
+                                </button>
+                              </div>
+                            );
+                          })()}
                           <button
                             type="button"
                             onClick={() => handleCopyAddress(order)}
@@ -721,10 +786,43 @@ export default function OrdersTable() {
                               <span>Scontrino Cassa RT</span>
                             </span>
                           ) : isCourier ? (
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border bg-blue-50 text-blue-800 border-blue-200">
-                              <Truck className="w-3 h-3 text-blue-600" />
-                              <span>Corriere Espresso</span>
-                            </span>
+                            <div className="space-y-1.5">
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border bg-blue-50 text-blue-800 border-blue-200">
+                                <Truck className="w-3 h-3 text-blue-600" />
+                                <span>{order.courierName || "Corriere Espresso"}</span>
+                              </span>
+                              {(order.trackingCode || order.packlinkReference) && (() => {
+                                const carrierCode = resolveCarrierTrackingCode(order);
+                                const displayCode =
+                                  carrierCode || order.packlinkReference || order.trackingCode || "";
+                                const carrierUrl = carrierCode
+                                  ? getCourierTrackingUrl(order.courierName, carrierCode)
+                                  : "";
+                                return (
+                                  <div className="flex items-center gap-1">
+                                    <button
+                                      type="button"
+                                      onClick={() => setTrackingModalOrder(order)}
+                                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-mono font-semibold bg-purple-50 text-[#5E1788] border border-[#D8C2E7] hover:bg-purple-100 transition-colors cursor-pointer"
+                                      title="Clicca per vedere nel pop-up dov'è il pacco"
+                                    >
+                                      <span className="max-w-[130px] truncate">{displayCode}</span>
+                                    </button>
+                                    {carrierUrl && (
+                                      <a
+                                        href={carrierUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="p-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition-colors"
+                                        title={`Apri su ${order.courierName || "Poste Italiane"} (codice precompilato)`}
+                                      >
+                                        <ExternalLink className="w-3 h-3" />
+                                      </a>
+                                    )}
+                                  </div>
+                                );
+                              })()}
+                            </div>
                           ) : (
                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border bg-purple-50 text-[#5E1788] border-purple-200">
                               <Store className="w-3 h-3 text-[#5E1788]" />
@@ -963,14 +1061,46 @@ export default function OrdersTable() {
                                       </button>
                                     </div>
 
-                                    {order.trackingCode && (
-                                      <div className="pt-2 border-t border-gray-200 text-xs">
-                                        <span className="text-gray-500">Tracking Code: </span>
-                                        <strong className="font-mono text-[#5E1788]">
-                                          {order.trackingCode}
-                                        </strong>
-                                      </div>
-                                    )}
+                                    {(order.trackingCode || order.packlinkReference) && (() => {
+                                      const carrierCode = resolveCarrierTrackingCode(order);
+                                      const carrierUrl = carrierCode
+                                        ? getCourierTrackingUrl(order.courierName, carrierCode)
+                                        : "";
+                                      return (
+                                        <div className="pt-2 border-t border-gray-200 flex flex-wrap items-center justify-between gap-2 text-xs">
+                                          <div className="flex items-center gap-1.5 min-w-0">
+                                            <span className="text-gray-500">Tracking Code:</span>
+                                            {carrierUrl ? (
+                                              <a
+                                                href={carrierUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center gap-1 font-mono font-bold text-[#5E1788] hover:underline underline-offset-2"
+                                                title={`Apri su ${order.courierName || "Poste Italiane"}`}
+                                              >
+                                                <span>{carrierCode}</span>
+                                                <ExternalLink className="w-3 h-3 shrink-0" />
+                                              </a>
+                                            ) : (
+                                              <button
+                                                type="button"
+                                                onClick={() => setTrackingModalOrder(order)}
+                                                className="font-mono font-bold text-[#5E1788] hover:underline underline-offset-2 cursor-pointer"
+                                              >
+                                                {order.packlinkReference || order.trackingCode}
+                                              </button>
+                                            )}
+                                          </div>
+                                          <button
+                                            type="button"
+                                            onClick={() => setTrackingModalOrder(order)}
+                                            className="px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-[#5E1788] border border-[#D8C2E7] text-[11px] font-semibold transition-colors cursor-pointer"
+                                          >
+                                            {carrierUrl ? "Dov'è il pacco" : "Verifica stato & codice"}
+                                          </button>
+                                        </div>
+                                      );
+                                    })()}
 
                                     {/* Etichetta Packlink PRO (lettera di vettura) */}
                                     {order.packlinkReference ? (
@@ -1063,6 +1193,15 @@ export default function OrdersTable() {
         order={printingOrder}
         isOpen={Boolean(printingOrder)}
         onClose={() => setPrintingOrder(null)}
+        onOrderUpdated={handleOrderUpdated}
+      />
+
+      {/* Live Parcel Tracking Pop-up Modal */}
+      <OrderTrackingModal
+        key={trackingModalOrder?.id ?? "order-tracking-closed"}
+        order={trackingModalOrder}
+        isOpen={Boolean(trackingModalOrder)}
+        onClose={() => setTrackingModalOrder(null)}
         onOrderUpdated={handleOrderUpdated}
       />
 

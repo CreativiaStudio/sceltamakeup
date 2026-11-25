@@ -25,16 +25,20 @@ import {
   getCourierTrackingUrl,
   getWhatsAppTrackingMessage,
   getWhatsAppDirectUrl,
+  resolveCarrierTrackingCode,
 } from "@/lib/trackingUtils";
 import ShippingLabelModal from "./ShippingLabelModal";
+import OrderTrackingModal from "@/components/orders/OrderTrackingModal";
 
 const PACKLINK_PRO_URL = "https://pro.packlink.it/private/shipments";
 
 const COURIER_OPTIONS = [
+  { value: "Poste Italiane", label: "Poste Italiane / SDA" },
   { value: "BRT Express", label: "BRT Express" },
   { value: "GLS Italy", label: "GLS Italy" },
   { value: "DHL Express", label: "DHL Express" },
-  { value: "Poste Italiane", label: "Poste Italiane SDA" },
+  { value: "UPS", label: "UPS" },
+  { value: "InPost", label: "InPost" },
 ] as const;
 
 export default function ShippingTable() {
@@ -59,6 +63,7 @@ export default function ShippingTable() {
   const [savedTrackingId, setSavedTrackingId] = useState<string | null>(null);
   const [packlinkLoadingId, setPacklinkLoadingId] = useState<string | null>(null);
   const [activeLabelOrder, setActiveLabelOrder] = useState<SceltaAdminOrder | null>(null);
+  const [trackingModalOrder, setTrackingModalOrder] = useState<SceltaAdminOrder | null>(null);
   const [toast, setToast] = useState<{ message: string; type: "success" | "warning" | "error" } | null>(null);
 
   useEffect(() => {
@@ -571,35 +576,57 @@ export default function ShippingTable() {
                           )}
                         </button>
 
-                        {/* Direct Clickable Tracking Link & WhatsApp 1-Click Button */}
-                        {Boolean((tracking || order.trackingCode || "").trim()) && (
-                          <div className="pt-1.5 space-y-2">
-                            {(tracking || order.trackingCode || "").trim() !== order.packlinkReference && (
-                              <a
-                                href={getCourierTrackingUrl(courier, (tracking || order.trackingCode || "").trim())}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="w-full py-2 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
-                              >
-                                <ExternalLink className="w-3.5 h-3.5 text-blue-600" />
-                                <span>Apri Portale Tracking ({courier})</span>
-                              </a>
-                            )}
+                        {/* Direct Clickable Tracking Link, Live Pop-up & WhatsApp 1-Click Button */}
+                        {(() => {
+                          const rawInput = (tracking || order.trackingCode || "").trim();
+                          const resolvedCode =
+                            (rawInput && rawInput !== order.packlinkReference
+                              ? resolveCarrierTrackingCode({ trackingCode: rawInput, packlinkReference: order.packlinkReference })
+                              : "") || resolveCarrierTrackingCode(order);
+                          const hasTrackingOrPacklink = Boolean(rawInput || order.packlinkReference);
+                          if (!hasTrackingOrPacklink) return null;
 
-                            <a
-                              href={getWhatsAppDirectUrl(
-                                order.customerPhone,
-                                getWhatsAppTrackingMessage(order, (tracking || order.trackingCode || "").trim(), courier)
+                          const effectiveCodeForWa = resolvedCode || rawInput;
+                          return (
+                            <div className="pt-1.5 space-y-2">
+                              <button
+                                type="button"
+                                onClick={() => setTrackingModalOrder(order)}
+                                className="w-full py-2 px-3 rounded-xl bg-purple-50 hover:bg-purple-100 border border-[#D8C2E7] text-[#5E1788] text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                              >
+                                <Truck className="w-3.5 h-3.5" />
+                                <span>Vedi stato pacco (Pop-up)</span>
+                              </button>
+
+                              {resolvedCode && (
+                                <a
+                                  href={getCourierTrackingUrl(courier, resolvedCode)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="w-full py-2 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
+                                >
+                                  <ExternalLink className="w-3.5 h-3.5 text-blue-600" />
+                                  <span>Apri Portale Tracking ({courier})</span>
+                                </a>
                               )}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="w-full py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition-colors flex items-center justify-center gap-1.5"
-                            >
-                              <MessageSquare className="w-3.5 h-3.5" />
-                              <span>Notifica Spedizione WhatsApp (1-Click)</span>
-                            </a>
-                          </div>
-                        )}
+
+                              {effectiveCodeForWa && (
+                                <a
+                                  href={getWhatsAppDirectUrl(
+                                    order.customerPhone,
+                                    getWhatsAppTrackingMessage(order, effectiveCodeForWa, courier)
+                                  )}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="w-full py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition-colors flex items-center justify-center gap-1.5"
+                                >
+                                  <MessageSquare className="w-3.5 h-3.5" />
+                                  <span>Notifica Spedizione WhatsApp (1-Click)</span>
+                                </a>
+                              )}
+                            </div>
+                          );
+                        })()}
 
                         {order.status !== "completed" &&
                           order.status !== "cancelled" &&
@@ -668,6 +695,24 @@ export default function ShippingTable() {
         order={activeLabelOrder}
         isOpen={Boolean(activeLabelOrder)}
         onClose={() => setActiveLabelOrder(null)}
+      />
+
+      {/* Live Parcel Tracking Pop-up Modal */}
+      <OrderTrackingModal
+        key={trackingModalOrder?.id ?? "shipping-tracking-closed"}
+        order={trackingModalOrder}
+        isOpen={Boolean(trackingModalOrder)}
+        onClose={() => setTrackingModalOrder(null)}
+        onOrderUpdated={(updated) => {
+          setOrders((prev) => prev.map((o) => (o.id === updated.id ? updated : o)));
+          setTrackingModalOrder((prev) => (prev && prev.id === updated.id ? updated : prev));
+          if (updated.trackingCode) {
+            setTrackingInputs((prev) => ({ ...prev, [updated.id]: updated.trackingCode! }));
+          }
+          if (updated.courierName) {
+            setCourierInputs((prev) => ({ ...prev, [updated.id]: updated.courierName! }));
+          }
+        }}
       />
     </div>
   );

@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import {
   Check,
+  Copy,
   ExternalLink,
   MapPin,
   MessageCircle,
@@ -10,7 +12,7 @@ import {
   Store,
   Truck,
 } from "lucide-react";
-import { getCourierTrackingUrl } from "@/lib/trackingUtils";
+import { getCourierTrackingUrl, resolveCarrierTrackingCode } from "@/lib/trackingUtils";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import {
   getOrderProgress,
@@ -87,15 +89,23 @@ interface OrderTrackingCardProps {
 }
 
 export default function OrderTrackingCard({ order, tracking }: OrderTrackingCardProps) {
+  const [copiedCode, setCopiedCode] = useState(false);
   const isPickup = order.fulfillmentType === "store_pickup";
   const cancelled = order.status === "cancelled";
   const statusBadge = ORDER_STATUS_LABELS[order.status];
   const { steps, currentIndex } = getOrderProgress(order, tracking?.status);
 
-  const hasCarrierCode = Boolean(order.trackingCode) && order.trackingCode !== order.packlinkReference;
-  const carrierCode = tracking?.trackingNumber || (hasCarrierCode ? order.trackingCode : "");
-  const courier = order.courierName || tracking?.carrier || "";
+  const carrierCode = resolveCarrierTrackingCode(order, tracking?.trackingNumber);
+  const courier = order.courierName || tracking?.carrier || (carrierCode ? "Poste Italiane" : "");
   const trackingUrl = carrierCode ? getCourierTrackingUrl(courier, carrierCode) : "";
+
+  const handleCopyTracking = () => {
+    const codeToCopy = carrierCode || order.packlinkReference || order.trackingCode || "";
+    if (!codeToCopy) return;
+    navigator.clipboard?.writeText(codeToCopy);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
+  };
 
   return (
     <article className="space-y-6">
@@ -134,43 +144,82 @@ export default function OrderTrackingCard({ order, tracking }: OrderTrackingCard
             Corriere &amp; Tracciamento
           </h3>
 
-          {!courier && !order.packlinkReference ? (
+          {!courier && !order.packlinkReference && !order.trackingCode ? (
             <p className="mt-3 text-sm text-neutral-600">
               Il tuo ordine è in preparazione. Riceverai il codice di tracciamento appena il pacco
               verrà affidato al corriere.
             </p>
           ) : (
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl bg-white p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
-                  Corriere incaricato
-                </p>
-                <p className="mt-1 text-base font-semibold text-[#1F1B24]">{courier || "Corriere Espresso"}</p>
-              </div>
-              <div className="rounded-2xl bg-white p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
-                  {carrierCode ? "Codice tracking" : "Riferimento spedizione"}
-                </p>
-                {trackingUrl ? (
-                  <a
-                    href={trackingUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-1 inline-flex items-center gap-1.5 font-mono text-base font-semibold text-[#5E1788] underline-offset-4 hover:underline"
-                  >
-                    {carrierCode}
-                    <ExternalLink className="h-3.5 w-3.5" />
-                  </a>
-                ) : (
-                  <p className="mt-1 font-mono text-base font-semibold text-[#1F1B24]">
-                    {order.packlinkReference || order.trackingCode}
+            <div className="mt-4 space-y-4">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="rounded-2xl bg-white p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
+                    Corriere incaricato
                   </p>
-                )}
+                  <p className="mt-1 text-base font-semibold text-[#1F1B24]">
+                    {courier || "Corriere Espresso"}
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-white p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
+                    {carrierCode ? "Codice tracking" : "Riferimento spedizione"}
+                  </p>
+                  <div className="mt-1 flex items-center justify-between gap-2">
+                    {trackingUrl ? (
+                      <a
+                        href={trackingUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 font-mono text-base font-semibold text-[#5E1788] underline-offset-4 hover:underline"
+                      >
+                        {carrierCode}
+                        <ExternalLink className="h-3.5 w-3.5" />
+                      </a>
+                    ) : (
+                      <p className="font-mono text-base font-semibold text-[#1F1B24]">
+                        {order.packlinkReference || order.trackingCode}
+                      </p>
+                    )}
+
+                    {(carrierCode || order.packlinkReference || order.trackingCode) && (
+                      <button
+                        type="button"
+                        onClick={handleCopyTracking}
+                        className="inline-flex shrink-0 items-center gap-1 rounded-full border border-[#D8C2E7] bg-[#FAF7FC] px-2.5 py-1 text-[11px] font-semibold text-[#5E1788] transition-colors hover:bg-[#D8C2E7]/40 cursor-pointer"
+                        title="Copia codice di tracciamento"
+                      >
+                        {copiedCode ? (
+                          <>
+                            <Check className="h-3 w-3 text-emerald-600" />
+                            <span className="text-emerald-700">Copiato</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-3 w-3" />
+                            <span>Copia</span>
+                          </>
+                        )}
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
+
+              {trackingUrl && (
+                <a
+                  href={trackingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-[#5E1788]/25 bg-white px-5 py-3 text-sm font-semibold text-[#5E1788] shadow-xs transition-colors hover:bg-[#5E1788] hover:text-white"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  <span>Segui il pacco su {courier || "Poste Italiane"} (codice già inserito)</span>
+                </a>
+              )}
             </div>
           )}
 
-          {tracking && tracking.events.length > 0 && (
+          {tracking && tracking.events.length > 0 ? (
             <div className="mt-6">
               <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
                 Ultimi aggiornamenti
@@ -192,7 +241,11 @@ export default function OrderTrackingCard({ order, tracking }: OrderTrackingCard
                 ))}
               </ul>
             </div>
-          )}
+          ) : tracking && order.packlinkReference && !carrierCode ? (
+            <p className="mt-4 text-xs text-neutral-500">
+              Il codice del corriere e gli aggiornamenti appariranno qui non appena il pacco verrà scansionato al ritiro.
+            </p>
+          ) : null}
         </section>
       )}
 
