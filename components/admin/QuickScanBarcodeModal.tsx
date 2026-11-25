@@ -44,9 +44,10 @@ import {
   CASSA_RT_DRAWER_ENDPOINT,
   buildFiscalReceiptXml,
   buildOpenDrawerXml,
-  buildVoidReceiptXml,
   parseFpmateResponse,
   sanitizeFiscalDescription,
+  sendFiscalReceiptWithAutoRecovery,
+  unlockEpsonPrinter,
 } from "@/lib/epsonFiscal";
 
 interface QuickScanBarcodeModalProps {
@@ -874,24 +875,25 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         tenderedAmount: effectivePayment,
       });
 
+      let multiAutoRecovered = false;
       try {
-        const res = await fetch(CASSA_RT_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "text/xml; charset=utf-8" },
-          body: fiscalReceiptXml,
-        });
-        const resText = await res.text();
-        const parsed = parseFpmateResponse(resText);
-        if (!res.ok || !parsed.success) {
-          console.warn("[Cassa RT] Stampa hardware rifiutata:", resText);
+        const printOutcome = await sendFiscalReceiptWithAutoRecovery(
+          fiscalReceiptXml,
+          CASSA_RT_ENDPOINT
+        );
+        multiAutoRecovered = printOutcome.recovered;
+        if (!printOutcome.ok) {
+          const parsed = printOutcome.response;
+          console.warn("[Cassa RT] Stampa hardware rifiutata:", parsed.raw);
           logAdminError({
             action: "fiscal_receipt_multi_rejected",
             title: "Cassa RT: Risposta Stampa Non Riuscita",
-            description: `La cassa fiscale ha risposto con esito negativo${parsed.code ? ` (${parsed.code})` : ""}: ${resText.slice(0, 150)}`,
+            description: `La cassa fiscale ha risposto con esito negativo${parsed.code ? ` (${parsed.code})` : ""}: ${parsed.raw.slice(0, 150)}`,
             details: {
-              response: resText.slice(0, 300),
+              response: parsed.raw.slice(0, 300),
               code: parsed.code,
               status: parsed.status,
+              firstErrorCode: printOutcome.firstError?.code,
               total: multiTotal,
               paymentMethod: multiPaymentMethod,
             },
@@ -1001,6 +1003,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
           itemsCount: multiItemsCount,
           linesCount: multiCartItems.length,
           change,
+          autoRecovered: multiAutoRecovered,
           tipoScontrino: "Fiscale (RT)",
           items: multiItemsWithDiscount.map((it) => ({
             productId: it.productId,
@@ -1286,24 +1289,25 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
         tenderedAmount: effectivePayment,
       });
 
+      let singleAutoRecovered = false;
       try {
-        const res = await fetch(CASSA_RT_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "text/xml; charset=utf-8" },
-          body: fiscalReceiptXml,
-        });
-        const resText = await res.text();
-        const parsed = parseFpmateResponse(resText);
-        if (!res.ok || !parsed.success) {
-          console.warn("[Cassa RT] Stampa hardware rifiutata:", resText);
+        const printOutcome = await sendFiscalReceiptWithAutoRecovery(
+          fiscalReceiptXml,
+          CASSA_RT_ENDPOINT
+        );
+        singleAutoRecovered = printOutcome.recovered;
+        if (!printOutcome.ok) {
+          const parsed = printOutcome.response;
+          console.warn("[Cassa RT] Stampa hardware rifiutata:", parsed.raw);
           logAdminError({
             action: "fiscal_receipt_single_rejected",
             title: "Cassa RT: Risposta Stampa Non Riuscita",
-            description: `La cassa fiscale ha rifiutato lo scontrino${parsed.code ? ` (${parsed.code})` : ""}: ${resText.slice(0, 150)}`,
+            description: `La cassa fiscale ha rifiutato lo scontrino${parsed.code ? ` (${parsed.code})` : ""}: ${parsed.raw.slice(0, 150)}`,
             details: {
-              response: resText.slice(0, 300),
+              response: parsed.raw.slice(0, 300),
               code: parsed.code,
               status: parsed.status,
+              firstErrorCode: printOutcome.firstError?.code,
               productId: matchedProduct.id,
               productName: matchedProduct.name,
               unitPrice: price,
@@ -1412,6 +1416,7 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
           paymentMethod: checkoutPaymentMethod,
           contantiRicevuti: checkoutPaymentMethod === "cash" ? effectivePayment : undefined,
           resto: change,
+          autoRecovered: singleAutoRecovered,
           tipoScontrino: "Fiscale (RT)",
         },
       });
@@ -1454,48 +1459,45 @@ export default function QuickScanBarcodeModal({}: QuickScanBarcodeModalProps) {
     }
   };
 
-  // Void / Cancel any open stuck receipt on the physical Epson RT
+  // Void / Cancel any open stuck receipt on the physical Epson RT (cascade)
   const handleVoidOpenReceipt = async () => {
     setIsCheckingOut(true);
     try {
-      const res = await fetch(CASSA_RT_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "text/xml; charset=utf-8" },
-        body: buildVoidReceiptXml(),
-      });
-      const resText = await res.text();
-      const parsed = parseFpmateResponse(resText);
-      if (res.ok && parsed.success) {
+      const unlock = await unlockEpsonPrinter(CASSA_RT_ENDPOINT);
+      if (unlock.unlocked) {
         logAdminActivity({
           category: "cassa_rt",
           action: "fiscal_receipt_void",
           title: "Sblocco Cassa RT",
-          description: "Scontrino rimasto aperto annullato con successo sulla cassa Epson FP-81II RT.",
+          description: `Cassa Epson FP-81II RT sbloccata con metodo ${unlock.method}.`,
           details: {
             printer: "Epson FP-81II RT",
             address: "192.168.68.63",
-            command: "printRecVoid",
-            status: parsed.status,
+            method: unlock.method,
+            status: unlock.lastResponse.status,
           },
         });
-        setSuccessToast(makeToast("✅ Cassa sbloccata! Lo scontrino aperto è stato annullato."));
+        setSuccessToast(
+          makeToast(`✅ Cassa sbloccata (${unlock.method})! Ora puoi battere lo scontrino.`)
+        );
       } else {
+        const parsed = unlock.lastResponse;
         logAdminError({
           action: "fiscal_receipt_void_rejected",
           title: "Cassa RT: Sblocco Rifiutato",
-          description: `La cassa ha risposto negativamente allo sblocco${parsed.code ? ` (${parsed.code})` : ""}: ${resText.slice(0, 150)}`,
+          description: `La cassa ha risposto negativamente a tutti i tentativi di sblocco${parsed.code ? ` (${parsed.code})` : ""}: ${parsed.raw.slice(0, 150)}`,
           details: {
             printer: "Epson FP-81II RT",
             address: "192.168.68.63",
-            command: "printRecVoid",
+            command: "unlock_cascade",
             code: parsed.code,
             status: parsed.status,
-            response: resText.slice(0, 300),
+            response: parsed.raw.slice(0, 300),
           },
         });
         setSuccessToast(
           makeToast(
-            `⚠️ La cassa ha risposto: ${parsed.code || resText.slice(0, 80) || "errore"}. Se sul display compare ancora STATO REGISTRAZIONE, riprova o premi ANNULLA/STORNO sulla tastiera della cassa.`,
+            `⚠️ La cassa ha risposto: ${parsed.code || parsed.raw.slice(0, 80) || "errore"}. Se sul display compare ancora STATO REGISTRAZIONE, riprova o premi ANNULLA/STORNO sulla tastiera della cassa.`,
             "error"
           )
         );

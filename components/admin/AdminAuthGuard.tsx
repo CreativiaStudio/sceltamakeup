@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -39,6 +39,55 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [shake, setShake] = useState<boolean>(false);
   const [showMobileInstallCta, setShowMobileInstallCta] = useState<boolean>(false);
+  const initialBuildIdRef = useRef<string | null>(null);
+  const lastVersionCheckRef = useRef<number>(0);
+
+  // Auto-reload admin cockpit when a new production deploy goes live on Vercel
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    let cancelled = false;
+
+    const checkDeployVersion = async (force = false) => {
+      const now = Date.now();
+      if (!force && now - lastVersionCheckRef.current < 30_000) return;
+      lastVersionCheckRef.current = now;
+      try {
+        const res = await fetch("/api/version", { cache: "no-store" });
+        if (!res.ok) return;
+        const data = (await res.json()) as { buildId?: string };
+        const buildId = data?.buildId;
+        if (!buildId || buildId === "local" || cancelled) return;
+        if (initialBuildIdRef.current === null) {
+          initialBuildIdRef.current = buildId;
+          return;
+        }
+        if (initialBuildIdRef.current !== buildId) {
+          window.location.reload();
+        }
+      } catch {
+        // Ignore transient network errors
+      }
+    };
+
+    void checkDeployVersion(true);
+
+    const onFocus = () => {
+      void checkDeployVersion(false);
+    };
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") {
+        void checkDeployVersion(false);
+      }
+    };
+
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
 
   useEffect(() => {
     queueMicrotask(() => {

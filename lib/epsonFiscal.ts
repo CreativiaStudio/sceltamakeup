@@ -234,3 +234,118 @@ export function buildNonFiscalTestXml(dateStr: string, timeStr: string): string 
   </soapenv:Body>
 </soapenv:Envelope>`;
 }
+
+/**
+ * Builds the SOAP XML command to reset a locked printer state.
+ */
+export function buildResetPrinterXml(): string {
+  return `<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <printerCommand>
+      <resetPrinter operator="1" />
+    </printerCommand>
+  </soapenv:Body>
+</soapenv:Envelope>`;
+}
+
+/**
+ * Builds the SOAP XML command to force-close a pending receipt.
+ */
+export function buildCloseEmptyReceiptXml(): string {
+  return `<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <printerFiscalReceipt>
+      <endFiscalReceipt operator="1" />
+    </printerFiscalReceipt>
+  </soapenv:Body>
+</soapenv:Envelope>`;
+}
+
+export interface UnlockResult {
+  unlocked: boolean;
+  method: string;
+  lastResponse: FpmateResponse;
+}
+
+/**
+ * Attempts to unlock a stuck Epson FP-81II RT by trying printRecVoid,
+ * resetPrinter, and endFiscalReceipt in cascade. Network errors propagate.
+ */
+export async function unlockEpsonPrinter(
+  endpoint: string = CASSA_RT_ENDPOINT
+): Promise<UnlockResult> {
+  const attempts: Array<{ method: string; xml: string }> = [
+    { method: "printRecVoid", xml: buildVoidReceiptXml() },
+    { method: "resetPrinter", xml: buildResetPrinterXml() },
+    { method: "endFiscalReceipt", xml: buildCloseEmptyReceiptXml() },
+  ];
+
+  let lastResponse: FpmateResponse = { success: false, code: "", status: "", raw: "" };
+
+  for (const attempt of attempts) {
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "text/xml; charset=utf-8" },
+      body: attempt.xml,
+    });
+    const resText = await res.text();
+    const parsed = parseFpmateResponse(resText);
+    lastResponse = parsed;
+    if (res.ok && parsed.success) {
+      return { unlocked: true, method: attempt.method, lastResponse: parsed };
+    }
+  }
+
+  return { unlocked: false, method: "none", lastResponse };
+}
+
+export interface AutoRecoveryResult {
+  ok: boolean;
+  recovered: boolean;
+  recoveryMethod?: string;
+  response: FpmateResponse;
+  firstError?: FpmateResponse;
+}
+
+/**
+ * Sends a fiscal receipt XML to Epson fpmate.cgi. If the printer rejects it
+ * (e.g. an open stuck receipt in volatile memory), runs unlockEpsonPrinter()
+ * and retries once automatically. Network errors propagate.
+ */
+export async function sendFiscalReceiptWithAutoRecovery(
+  xml: string,
+  endpoint: string = CASSA_RT_ENDPOINT
+): Promise<AutoRecoveryResult> {
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "text/xml; charset=utf-8" },
+    body: xml,
+  });
+  const resText = await res.text();
+  const parsed = parseFpmateResponse(resText);
+
+  if (res.ok && parsed.success) {
+    return { ok: true, recovered: false, response: parsed };
+  }
+
+  const unlockRes = await unlockEpsonPrinter(endpoint);
+
+  const retryRes = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "text/xml; charset=utf-8" },
+    body: xml,
+  });
+  const retryText = await retryRes.text();
+  const retryParsed = parseFpmateResponse(retryText);
+  const ok = retryRes.ok && retryParsed.success;
+
+  return {
+    ok,
+    recovered: ok,
+    recoveryMethod: unlockRes.unlocked ? unlockRes.method : undefined,
+    response: retryParsed,
+    firstError: parsed,
+  };
+}

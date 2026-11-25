@@ -9,6 +9,10 @@ import {
   buildVoidReceiptXml,
   buildOpenDrawerXml,
   buildNonFiscalTestXml,
+  buildResetPrinterXml,
+  buildCloseEmptyReceiptXml,
+  unlockEpsonPrinter,
+  sendFiscalReceiptWithAutoRecovery,
 } from "../lib/epsonFiscal.ts";
 
 interface CatalogVariant {
@@ -137,5 +141,72 @@ describe("Epson FP-81II RT Fiscal Module", () => {
     const testXml = buildNonFiscalTestXml("25/11/2026", "12:00:00");
     assert.ok(testXml.includes("<beginNonFiscal operator=\"1\" />"));
     assert.ok(testXml.includes("DATA: 25/11/2026 ORA: 12:00:00"));
+
+    const resetXml = buildResetPrinterXml();
+    assert.ok(resetXml.includes("<printerCommand>"));
+    assert.ok(resetXml.includes("<resetPrinter operator=\"1\" />"));
+
+    const closeXml = buildCloseEmptyReceiptXml();
+    assert.ok(closeXml.includes("<printerFiscalReceipt>"));
+    assert.ok(closeXml.includes("<endFiscalReceipt operator=\"1\" />"));
+  });
+
+  it("unlockEpsonPrinter cascades from printRecVoid to resetPrinter when void fails", async () => {
+    const originalFetch = globalThis.fetch;
+    const calls: string[] = [];
+    globalThis.fetch = (async (_url: unknown, init?: RequestInit) => {
+      const body = String(init?.body || "");
+      calls.push(body);
+      if (body.includes("<printRecVoid")) {
+        return new Response('<response success="false" code="EPTR_VOID_ERR" status="1" />', { status: 200 });
+      }
+      if (body.includes("<resetPrinter")) {
+        return new Response('<response success="true" code="" status="2" />', { status: 200 });
+      }
+      return new Response('<response success="false" code="UNEXPECTED" status="0" />', { status: 200 });
+    }) as typeof fetch;
+
+    try {
+      const result = await unlockEpsonPrinter("http://mock-rt/fpmate.cgi");
+      assert.strictEqual(result.unlocked, true);
+      assert.strictEqual(result.method, "resetPrinter");
+      assert.strictEqual(calls.length, 2);
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  });
+
+  it("sendFiscalReceiptWithAutoRecovery unlocks and retries once when first print is rejected", async () => {
+    const originalFetch = globalThis.fetch;
+    let receiptAttempts = 0;
+    globalThis.fetch = (async (_url: unknown, init?: RequestInit) => {
+      const body = String(init?.body || "");
+      if (body.includes("<printRecItem")) {
+        receiptAttempts++;
+        if (receiptAttempts === 1) {
+          return new Response('<response success="false" code="FP_OPEN_REC" status="1" />', { status: 200 });
+        }
+        return new Response('<response success="true" code="" status="2" />', { status: 200 });
+      }
+      if (body.includes("<printRecVoid")) {
+        return new Response('<response success="true" code="" status="2" />', { status: 200 });
+      }
+      return new Response('<response success="false" code="ERR" status="0" />', { status: 200 });
+    }) as typeof fetch;
+
+    try {
+      const xml = buildFiscalReceiptXml({
+        items: [{ description: "4D Pro Lash&brow", quantity: 1, unitPrice: 27.39 }],
+        paymentMethod: "cash",
+      });
+      const outcome = await sendFiscalReceiptWithAutoRecovery(xml, "http://mock-rt/fpmate.cgi");
+      assert.strictEqual(outcome.ok, true);
+      assert.strictEqual(outcome.recovered, true);
+      assert.strictEqual(outcome.recoveryMethod, "printRecVoid");
+      assert.strictEqual(outcome.firstError?.code, "FP_OPEN_REC");
+      assert.strictEqual(receiptAttempts, 2);
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
   });
 });

@@ -133,6 +133,12 @@ const CATALOG_STOCK_API = "/api/catalog/stock";
 const ORDERS_API = "/api/admin/orders";
 const CUSTOMERS_API = "/api/admin/customers";
 
+// Tracks orders created in this browser session that have not yet been
+// confirmed in a cloud GET response so deleted orders are never resurrected
+// from stale localStorage across devices.
+const PENDING_ORDER_TTL_MS = 5 * 60 * 1000;
+const pendingCloudOrderIds = new Map<string, number>();
+
 // ------------------------------------------------------------------------------
 // Interface Contracts (PROJECT.md)
 // ------------------------------------------------------------------------------
@@ -1104,10 +1110,18 @@ export async function syncAdminStoreFromCloud(): Promise<boolean> {
           for (const co of cloudOrders) {
             if (!co || typeof co.id !== "string" || !Array.isArray(co.items)) continue;
             map.set(co.id, co);
+            pendingCloudOrderIds.delete(co.id);
           }
-          // Preserve any locally created orders not yet on cloud and push them up
+          // Preserve ONLY newly created local orders awaiting initial cloud confirmation
+          const nowTs = Date.now();
           for (const lo of state.orders) {
             if (!lo || typeof lo.id !== "string") continue;
+            if (map.has(lo.id)) continue;
+            const pendingAt = pendingCloudOrderIds.get(lo.id);
+            if (!pendingAt || nowTs - pendingAt >= PENDING_ORDER_TTL_MS) {
+              pendingCloudOrderIds.delete(lo.id);
+              continue;
+            }
             if (
               lo.fulfillmentType !== "pos_receipt" &&
               (lo.customerEmail === "banco@sceltamakeup.it" ||
@@ -1118,10 +1132,8 @@ export async function syncAdminStoreFromCloud(): Promise<boolean> {
               lo.fulfillmentType = "pos_receipt";
               if (!lo.paymentMethod) lo.paymentMethod = "cash";
             }
-            if (!map.has(lo.id)) {
-              map.set(lo.id, lo);
-              postCatalogUpdate(ORDERS_API, { order: lo });
-            }
+            map.set(lo.id, lo);
+            postCatalogUpdate(ORDERS_API, { order: lo });
           }
           const merged = Array.from(map.values()).sort(
             (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -2090,7 +2102,8 @@ export function createAdminOrder(
   state.orders = [newOrder, ...state.orders];
   saveAdminStoreState(state);
 
-  // Synchronize immediately to cloud (Supabase dedicato)
+  // Mark as pending cloud confirmation before uploading
+  pendingCloudOrderIds.set(newOrder.id, Date.now());
   postCatalogUpdate(ORDERS_API, { order: newOrder });
 
   return newOrder;
