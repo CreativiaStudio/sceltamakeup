@@ -2,12 +2,16 @@ import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 import { resolveProductBySlug, getProductBySlug, getAllProducts } from "@/lib/catalog";
 import ProductDetailClient from "@/components/ProductDetailClient";
+import { BASE_URL, getProductPageSchema, toAbsoluteUrl } from "@/lib/schema";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{
     slug: string;
+  }>;
+  searchParams?: Promise<{
+    variant?: string;
   }>;
 }
 
@@ -28,11 +32,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const primaryImage = product.images[0] || "/brand/logo.png";
+  const primaryImage = toAbsoluteUrl(product.images[0] || "/brand/logo.png");
 
   return {
     title: `${product.name} — ${product.brand} | Scelta Makeup`,
     description: product.shortDescription,
+    alternates: {
+      canonical: `${BASE_URL}/prodotti/${product.slug}`,
+    },
     openGraph: {
       title: `${product.name} — Scelta Makeup`,
       description: product.shortDescription,
@@ -48,8 +55,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function ProductDetailPage({ params }: PageProps) {
+export default async function ProductDetailPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
+  const sp = searchParams ? await searchParams : {};
   const resolved = await resolveProductBySlug(slug);
 
   if (!resolved) {
@@ -61,15 +69,27 @@ export default async function ProductDetailPage({ params }: PageProps) {
   }
 
   const product = resolved.product;
+  const selectedVariant = sp.variant
+    ? product.variants?.find((v) => v.id === sp.variant) || null
+    : null;
   const allProducts = await getAllProducts();
   const relatedProducts = allProducts.filter(
     (p) => p.id !== product.id && (p.category === product.category || p.brand === product.brand)
   );
 
   return (
-    <ProductDetailClient
-      product={product}
-      relatedProducts={relatedProducts}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(getProductPageSchema(product, selectedVariant)),
+        }}
+      />
+      <ProductDetailClient
+        product={product}
+        relatedProducts={relatedProducts}
+        initialVariantId={selectedVariant?.id}
+      />
+    </>
   );
 }

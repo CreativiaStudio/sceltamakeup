@@ -317,7 +317,7 @@ export default function Footer() {
 
         {/* Bottom Bar: Copyright, Scarica App & Creativia Studio Credits with desktop clearance for floating WhatsApp pill */}
         <div className="pt-6 mt-4 border-t border-neutral-800/40 text-xs text-neutral-500 flex flex-col sm:flex-row items-center justify-between gap-4 lg:pr-64">
-          <p>© {new Date().getFullYear()} Scelta Makeup di Cesiano Federica. Tutti i diritti riservati.</p>
+          <p>© {new Date().getFullYear()} Scelta Makeup di Cesiano Federica — P.IVA 09914431219. Tutti i diritti riservati.</p>
           <div className="flex items-center gap-4">
             <button
               type="button"

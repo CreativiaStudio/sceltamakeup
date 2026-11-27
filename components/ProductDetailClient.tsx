@@ -27,34 +27,37 @@ import { resolveProductImageUrl, isPlaceholderImage } from "@/lib/r2Public";
 interface ProductDetailClientProps {
   product: Product;
   relatedProducts: Product[];
+  initialVariantId?: string;
 }
 
 export default function ProductDetailClient({
   product: initialProduct,
   relatedProducts,
+  initialVariantId,
 }: ProductDetailClientProps) {
   const [product, setProduct] = useState<Product>(initialProduct);
 
-  const [selectedShade, setSelectedShade] = useState<Shade | null>(
-    initialProduct.shades && initialProduct.shades.length > 0
+  const initialShadeMatch =
+    (initialVariantId &&
+      initialProduct.shades?.find((s) => s.id === initialVariantId)) ||
+    (initialProduct.shades && initialProduct.shades.length > 0
       ? initialProduct.shades[0]
-      : null
-  );
+      : null);
+
+  const [selectedShade, setSelectedShade] = useState<Shade | null>(initialShadeMatch);
 
   const [activeImage, setActiveImage] = useState<string>(
-    resolveProductImageUrl(
-      (initialProduct.shades && initialProduct.shades.length > 0
-        ? initialProduct.shades[0]?.image
-        : undefined) || initialProduct.images[0]
-    )
+    resolveProductImageUrl(initialShadeMatch?.image || initialProduct.images[0])
   );
 
   useEffect(() => {
     setProduct(initialProduct);
     const firstShade =
-      initialProduct.shades && initialProduct.shades.length > 0
+      (initialVariantId &&
+        initialProduct.shades?.find((s) => s.id === initialVariantId)) ||
+      (initialProduct.shades && initialProduct.shades.length > 0
         ? initialProduct.shades[0]
-        : null;
+        : null);
     setSelectedShade(firstShade);
     setActiveImage(resolveProductImageUrl(firstShade?.image || initialProduct.images[0]));
 
@@ -70,6 +73,7 @@ export default function ProductDetailClient({
         setSelectedShade((prevShade) => {
           const nextShade =
             (prevShade && merged.shades.find((s) => s.id === prevShade.id)) ||
+            (initialVariantId && merged.shades.find((s) => s.id === initialVariantId)) ||
             (merged.shades.length > 0 ? merged.shades[0] : null);
           setActiveImage(resolveProductImageUrl(nextShade?.image || merged.images[0]));
           return nextShade;
@@ -87,7 +91,7 @@ export default function ProductDetailClient({
       window.removeEventListener("scelta_admin_store_updated", applyOverride);
       window.removeEventListener("scelta_admin_store_reset", applyOverride);
     };
-  }, [initialProduct]);
+  }, [initialProduct, initialVariantId]);
 
   const [viewMode, setViewMode] = useState<"packshot" | "texture">("packshot");
   const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});

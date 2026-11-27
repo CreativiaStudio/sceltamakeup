@@ -10,6 +10,7 @@ import CookieBanner from "@/components/CookieBanner";
 import VisitTrackerClient from "@/components/VisitTrackerClient";
 import PromoBannerListener from "@/components/PromoBannerListener";
 import PwaManager from "@/components/PwaManager";
+import { getOrganizationAndWebsiteSchema } from "@/lib/schema";
 
 export const viewport: Viewport = {
   themeColor: "#5E1788",
@@ -32,6 +33,12 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.sceltamakeup.it"),
+  alternates: {
+    canonical: "/",
+  },
+  ...(process.env.GOOGLE_SITE_VERIFICATION
+    ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
+    : {}),
   title: {
     default: "Scelta Makeup | L'eleganza di essere autentica",
     template: "%s | Scelta Makeup",
@@ -112,6 +119,12 @@ export default function RootLayout({
       className={`${cormorant.variable} ${inter.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col bg-white text-[#1F1B24] [overflow-anchor:none]">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(getOrganizationAndWebsiteSchema()),
+          }}
+        />
         <Suspense fallback={<div className="h-20 bg-white" />}>
           <Header />
         </Suspense>
